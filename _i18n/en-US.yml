@@ -1,0 +1,36 @@
+global:
+  pt-BR:
+    icon: ":brazil:"
+    name: "Portuguese"
+  en-US:
+    icon: ":us:"
+    name: "English"
+  readalsoin: "Leia também em "
+  alsoavailablein: "Disponível também em "
+  bio: "Just another Cybersecurity professional"
+  terms: "Terms of Service and Privacy Policy"
+  termsurl: "https://davicruz.com/en-US/terms-and-privacy/"
+  reviewConsent: "Review consent"
+  share: "Share"
+  atom_feed_path: "/en-US/feed.xml"
+cookie:
+  strMessage: "This website uses cookies to ensure you get the best experience"
+  strDismiss: "Got it!"
+  strAllow: "Allow cookies"
+  strDeny: "No, thanks!"
+  strLink: "Learn More"
+  strHref: "https://davicruz.com/en-US/terms-and-privacy/"
+tag_archive:
+  path: "/tag/"
+  type: liquid
+category_archive:
+  path: "/categories/"
+  type: liquid
+navigation:
+  main:
+    - title: "Categories"
+      url: /categories/
+    - title: "Tags"
+      url: /tag/
+    - title: "About"
+      url: /about/ 
