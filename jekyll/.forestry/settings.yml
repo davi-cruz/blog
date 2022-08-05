@@ -5,13 +5,9 @@ admin_path: ''
 webhook_url: 
 sections:
 - type: directory
-  path: _i18n/pt-BR/_pages
-  label: _Pages-PtBr
-  create: all
-  match: "**/*"
-- type: jekyll-pages
+  path: jekyll/_pages
   label: _Pages
-  create: documents
+  create: all
   match: "**/*"
 upload_dir: jekyll//uploads
 public_path: "/uploads"
