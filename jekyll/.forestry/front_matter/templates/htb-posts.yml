@@ -51,3 +51,5 @@ fields:
 - type: text
   name: redirect_from
   label: Redirect From
+pages:
+- jekyll/_i18n/en-US/_posts/2021-01/2021-04-03-htb-time.md
