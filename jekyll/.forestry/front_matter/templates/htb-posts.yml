@@ -4,32 +4,50 @@ hide_body: false
 fields:
 - type: text
   name: layout
-  label: layout
+  label: Layout
+  config:
+    required: true
+  default: single
 - type: text
   name: title
-  label: title
+  label: Title
+  config:
+    required: true
 - type: text
   name: namespace
-  label: namespace
+  label: Namespace
+  config:
+    required: true
 - type: text
   name: category
-  label: category
+  label: Category
+  config:
+    required: true
 - type: list
   name: tags
-  label: tags
+  label: Tags
+  config:
+    use_select: false
+    source:
+      type: simple
 - type: datetime
   name: date
-  label: date
+  label: Date
+  config:
+    required: false
+  default: now
 - type: field_group
   name: header
-  label: header
+  label: Header
   fields:
   - type: file
     name: teaser
-    label: teaser
+    label: Teaser image
   - type: text
     name: og_image
     label: og_image
+    hidden: true
+    default: "*teaser"
 - type: text
   name: redirect_from
-  label: redirect_from
+  label: Redirect From
