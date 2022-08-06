@@ -1,0 +1,35 @@
+---
+label: HTB Posts
+hide_body: false
+fields:
+- type: text
+  name: layout
+  label: layout
+- type: text
+  name: title
+  label: title
+- type: text
+  name: namespace
+  label: namespace
+- type: text
+  name: category
+  label: category
+- type: list
+  name: tags
+  label: tags
+- type: datetime
+  name: date
+  label: date
+- type: field_group
+  name: header
+  label: header
+  fields:
+  - type: file
+    name: teaser
+    label: teaser
+  - type: text
+    name: og_image
+    label: og_image
+- type: text
+  name: redirect_from
+  label: redirect_from
