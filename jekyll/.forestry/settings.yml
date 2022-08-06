@@ -7,7 +7,6 @@ sections:
 - type: jekyll-posts
   label: Posts
   create: all
-  match: "**/*"
 - type: directory
   path: jekyll/_i18n/en-US/_posts
   label: Posts en-US
