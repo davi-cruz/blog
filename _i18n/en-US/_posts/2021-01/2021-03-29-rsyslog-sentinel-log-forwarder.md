@@ -21,18 +21,6 @@ date: 2021-03-29 12:00:00 -03
 last_modified_at: 2021-04-30 16:00:00 -03
 ---
 
-{% capture updated %}
-
-:arrows_clockwise: **Este post foi atualizado!**
-
-Voce pode encontrar a versão mais recente deste post no link [Microsoft Sentinel: Configuração do Log Forwarder [Atualizado]]({% post_url 2022-02/2022-09-30-rsyslog-sentinel-log-forwarder-updated %})
-
-{% endcapture %}
-
-<div>
-{{ updated | markdownify }}
-</div>{: .notice--success}
-
 Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel.<!--more-->
 
 Besides having plenty documentation on how to do this deployment, as well as other community resources like Tech Community and Webinars, I have compiled all the resources I normally review with my customers during this deployment or revision in their environments.
