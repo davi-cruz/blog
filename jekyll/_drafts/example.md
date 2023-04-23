@@ -9,7 +9,7 @@ tags:
   - HTB Linux
 header:
   teaser: https://i.imgur.com/r9JpwZX.png
-  og_image: *teaser
+  og_image: https://i.imgur.com/r9JpwZX.png
 redirect_from: /writeup/2021/07/htb-ophiuchi
 ---
 
