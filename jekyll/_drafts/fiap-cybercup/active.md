@@ -5,9 +5,8 @@ category: FIAP CyberCup
 
 ## Enumeration
 
-- Nmap
-
-- Validado que a versão do ActiveMQ é 5.8 ou 5.9 de acordo com a release date no rodape da pagina e site do github. COnsiderando este fato optamos pelo ultimo exploit **48181**
+* Nmap
+* Validado que a versão do ActiveMQ é 5.8 ou 5.9 de acordo com a release date no rodapé da página e site do github. Considerando este fato optamos pelo último exploit **48181**
 
 ```plaintext
 ----------------------------------------------------------------------------------- ---------------------
