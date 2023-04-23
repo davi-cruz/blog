@@ -349,49 +349,49 @@ Inspecting both repositories, saw the following:
 
   - The only relevant information obtained is the Tomcat running version, which is **8.0.61**, based on the content of `./roles/tomcat/tasks/main.yml`, where the binary is downloaded from the following URL
 
-    ```yaml
-    - name: Download Tomcat
-      get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.61/bin/apache-tomcat-8.0.61.tar.gz dest=/opt/apache-tomcat-8.0.61.tar.gz
-    ```
+```yaml
+- name: Download Tomcat
+  get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v8.0.61/bin/apache-tomcat-8.0.61.tar.gz dest=/opt/apache-tomcat-8.0.61.tar.gz
+```
 
 - **root/seal_market** repository contains all configuration files for the app and tomcat and Nginx configuration files. This repository was a little bit more interesting, where the following information was found:
 
   - Noticed that in `README.md`, at the root of this repository, there are indicators that this app uses Mutual Authentication for some of its features
 
-    ```markdown
-    Seal Market App
-    ===============
-    A simple online market application which offers free shopping, avoid crowd in this pandemic situation, saves time.
-    
-    ## ToDo
-    * Remove mutual authentication for dashboard, setup registration and login features.
-    * Deploy updated tomcat configuration.
-    * Disable manager and host-manager.
-    ```
+```markdown
+Seal Market App
+===============
+A simple online market application which offers free shopping, avoid crowd in this pandemic situation, saves time.
 
-  - This was confirmed by inspecting Nginx configuration files, where `/manager/html`(Tomcat administration page), `/admin/dashboard` and, that is proxied to 8000/TCP running in the same host, requires `$ssl_client_verify` to be true, returning HTTP error 403 if criteria are not satisfied.
+## ToDo
+* Remove mutual authentication for dashboard, setup registration and login features.
+* Deploy updated tomcat configuration.
+* Disable manager and host-manager.
+```
 
-  - Observed also that repository contains **13 commits**, which were quickly inspected to see if there are changes in this repository during credential cleanup without reinitializing git history, which was confirmed by grepping the words `password` and `username` from git log, allowing us to obtain tomcat credentials: **tomcat:42MrHBf*z8{Z%**.
+- This was confirmed by inspecting Nginx configuration files, where `/manager/html`(Tomcat administration page), `/admin/dashboard` and, that is proxied to 8000/TCP running in the same host, requires `$ssl_client_verify` to be true, returning HTTP error 403 if criteria are not satisfied.
 
-    ```bash
-    $ git log -p | grep -E 'username|password'
-    +select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input{display:inline-block;height:20px;padding:4px 6px;margin-bottom:10px;font-size:14px;line-height:20px;color:#555555;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;vertical-align:middle;}
-    
-    [...]
-    
-       <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
-       <user username="role1" password="<must-be-changed>" roles="role1"/>
-    -<user username="tomcat" password="42MrHBf*z8{Z%" roles="manager-gui,admin-gui"/>
-    +      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
-    +  you must define such a user - the username and password are arbitrary. It is
-    +  them. You will also need to set the passwords to something appropriate.
-    +  <user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
-    +  <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
-    +  <user username="role1" password="<must-be-changed>" roles="role1"/>
-    +<user username="tomcat" password="42MrHBf*z8{Z%" roles="manager-gui,admin-gui"/>
-    ```
+- Observed also that repository contains **13 commits**, which were quickly inspected to see if there are changes in this repository during credential cleanup without reinitializing git history, which was confirmed by grepping the words `password` and `username` from git log, allowing us to obtain tomcat credentials: **tomcat:42MrHBf*z8{Z%**.
 
-    Accessing tomcat through the path `/manager` we're automatically redirected to `/manager/html`, which is prevented by mutual authentication. Looking for another URL under management console, found in this documentation page [Apache Tomcat 7 (7.0.109) - Manager App HOW-TO](https://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html) a few other URLs, being `/manager/text` the first one listed, to which I'm not authorized. Trying the second URL found on the same page, which is `/manager/status`, once already authenticated, returned server information but as this is a static page there's nothing to do here.
+```bash
+$ git log -p | grep -E 'username|password'
++select,textarea,input[type="text"],input[type="password"],input[type="datetime"],input[type="datetime-local"],input[type="date"],input[type="month"],input[type="time"],input[type="week"],input[type="number"],input[type="email"],input[type="url"],input[type="search"],input[type="tel"],input[type="color"],.uneditable-input{display:inline-block;height:20px;padding:4px 6px;margin-bottom:10px;font-size:14px;line-height:20px;color:#555555;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;vertical-align:middle;}
+
+[...]
+
+    <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
+    <user username="role1" password="<must-be-changed>" roles="role1"/>
+-<user username="tomcat" password="42MrHBf*z8{Z%" roles="manager-gui,admin-gui"/>
++      <!-- Use the LockOutRealm to prevent attempts to guess user passwords
++  you must define such a user - the username and password are arbitrary. It is
++  them. You will also need to set the passwords to something appropriate.
++  <user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
++  <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
++  <user username="role1" password="<must-be-changed>" roles="role1"/>
++<user username="tomcat" password="42MrHBf*z8{Z%" roles="manager-gui,admin-gui"/>
+```
+
+  Accessing tomcat through the path `/manager` we're automatically redirected to `/manager/html`, which is prevented by mutual authentication. Looking for another URL under management console, found in this documentation page [Apache Tomcat 7 (7.0.109) - Manager App HOW-TO](https://tomcat.apache.org/tomcat-7.0-doc/manager-howto.html) a few other URLs, being `/manager/text` the first one listed, to which I'm not authorized. Trying the second URL found on the same page, which is `/manager/status`, once already authenticated, returned server information but as this is a static page there's nothing to do here.
 
 ## Initial Access
 
@@ -412,10 +412,10 @@ Enumerating this box, now that we have an interactive shell, ran `linpeas.sh`, w
 
 - Users with console access:
 
-  ```plaintext
-  uid=0(root) gid=0(root) groups=0(root)
-  uid=1000(luis) gid=1000(luis) groups=1000(luis)
-  ```
+```plaintext
+uid=0(root) gid=0(root) groups=0(root)
+uid=1000(luis) gid=1000(luis) groups=1000(luis)
+```
 
 - Read access to Nginx logs at `/var/log/nginx/` where we could extract some information from the logs
 
@@ -423,40 +423,40 @@ Enumerating this box, now that we have an interactive shell, ran `linpeas.sh`, w
 
 - Web files (possible certificate for mutual auth)
 
-  ```plaintext
-  /var/www/:
-  total 16K
-  drwxr-xr-x  4 root root 4.0K May  7 09:06 .
-  drwxr-xr-x 14 root root 4.0K May  7 09:06 ..
-  drwxr-xr-x  2 root root 4.0K Jul  5 07:57 html
-  drwxr-xr-x  2 root root 4.0K May  7 09:06 keys
-  ```
+```plaintext
+/var/www/:
+total 16K
+drwxr-xr-x  4 root root 4.0K May  7 09:06 .
+drwxr-xr-x 14 root root 4.0K May  7 09:06 ..
+drwxr-xr-x  2 root root 4.0K Jul  5 07:57 html
+drwxr-xr-x  2 root root 4.0K May  7 09:06 keys
+```
 
 - Interesting files inside `luis` profile
 
-  ```plaintext
-  ╔══════════╣ Files inside others home (limit 20)
-  grep: /home/luis/.bash_logout
-  /home/luis/.cache/fontconfig/7ef2298fde41cc6eeb7af42e48b7d293-le64.cache-7
-  /home/luis/.cache/fontconfig/3830d5c3ddfd5cd38a049b759396e72e-le64.cache-7
-  /home/luis/.cache/fontconfig/CACHEDIR.TAG
-  /home/luis/.cache/fontconfig/4c599c202bc5c08e2d34565a40eac3b2-le64.cache-7
-  /home/luis/.cache/fontconfig/d589a48862398ed80a3d6066f4f56f4c-le64.cache-7
-  /home/luis/.cache/motd.legal-displayed
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/Servlet.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/Registration$Dynamic.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletRequestWrapper.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/RequestDispatcher.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletResponse.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContainerInitializer.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/DispatcherType.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletRequestEvent.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContextAttributeEvent.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContext.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/HttpConstraintElement.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletOutputStream.class
-  /home/luis/.gitbucket/tmp/webapp/javax/servlet/Filter.class
-  ```
+```plaintext
+╔══════════╣ Files inside others home (limit 20)
+grep: /home/luis/.bash_logout
+/home/luis/.cache/fontconfig/7ef2298fde41cc6eeb7af42e48b7d293-le64.cache-7
+/home/luis/.cache/fontconfig/3830d5c3ddfd5cd38a049b759396e72e-le64.cache-7
+/home/luis/.cache/fontconfig/CACHEDIR.TAG
+/home/luis/.cache/fontconfig/4c599c202bc5c08e2d34565a40eac3b2-le64.cache-7
+/home/luis/.cache/fontconfig/d589a48862398ed80a3d6066f4f56f4c-le64.cache-7
+/home/luis/.cache/motd.legal-displayed
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/Servlet.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/Registration$Dynamic.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletRequestWrapper.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/RequestDispatcher.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletResponse.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContainerInitializer.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/DispatcherType.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletRequestEvent.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContextAttributeEvent.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletContext.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/HttpConstraintElement.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/ServletOutputStream.class
+/home/luis/.gitbucket/tmp/webapp/javax/servlet/Filter.class
+```
 
 Starting with the contents inside `/var/www`, where there's a folder called `keys` inside it, noticed that all certificates used for mutual authentication are present but, due to ACL restrictions, I wasn't able to copy the keys, preventing us from obtaining them.
 

