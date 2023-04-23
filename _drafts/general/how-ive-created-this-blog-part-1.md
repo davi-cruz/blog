@@ -2,7 +2,10 @@
 layout: single
 title: How I've created this blog - Part 1
 category: how to
-tags: jekyll github multilanguage
+tags:
+ - jekyll
+ - github
+ - multilanguage
 ---
 
 ## Why I have started this blog

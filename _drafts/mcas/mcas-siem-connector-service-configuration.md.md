@@ -1,5 +1,6 @@
 ---
-
+title: Defender for Cloud Apps - SIEM Connector Configuration
+category: MDA
 ---
 
 Occasionally, during some deliveries that involves Microsoft Cloud App Security, customers that are still not using Azure Sentinel and have a 3rd party SIEM would like to integrate MCAS alerts (and eventually activities) to this resource.

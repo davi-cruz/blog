@@ -1,7 +1,6 @@
 ---
 title: Alice
-category:
-  - FIAP CyberCup
+category: FIAP CyberCup
 ---
 
 ## Enumeração

@@ -7,6 +7,7 @@ tags: HackTheBox htb-medium htb-linux
 date: 2021-02-27 12:00:00
 header:
    teaser: https://i.imgur.com/CVlQBn9.png
+   og_image: https://i.imgur.com/CVlQBn9.png
 ---
 
 Frequentemente, quando precisamos realizar alguma demonstração, ou mesmo se está buscando uma plataforma de onde realizar exercicios de red team em sua organização, as nuvens públicas são excelentes opções para.

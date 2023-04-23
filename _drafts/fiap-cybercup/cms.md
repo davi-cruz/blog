@@ -1,7 +1,6 @@
 ---
 title: CMS
-category:
- - FIAP Cybercup
+category: FIAP Cybercup
 ---
 
 ## Enumeration

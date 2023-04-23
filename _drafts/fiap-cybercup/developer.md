@@ -1,7 +1,6 @@
 ---
 title: Developer
-category:
- - FIAP CyberCup
+category: FIAP CyberCup
 ---
 
 ## Enumeration

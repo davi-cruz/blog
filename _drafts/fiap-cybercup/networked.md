@@ -150,7 +150,6 @@ C:\Users\Public\Documents
 C:\Users\Public\Documents\notes.txt
 C:\Users\mario
 C:\Users\mario\OneDrive
-
 ```
 
 - Dentro do últimos arquivos modificados, o arquivo C:\Users\Public\Documents\notes.txt foi encontrado contendo uma possível senha

