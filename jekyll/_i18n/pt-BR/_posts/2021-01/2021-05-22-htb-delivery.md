@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Delivery"
 namespace: htb-delivery
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox

@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Academy"
 namespace: htb-academy
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox

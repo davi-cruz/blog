@@ -1,7 +1,7 @@
 ---
-layout: single
 title: 'Azure Arc enabled Servers: Deployment and Update using Configuration Manager'
 namespace: install-update-azure-arc-windows-configmgr
+language: en-US
 category: Azure Arc
 tags:
 - Azure

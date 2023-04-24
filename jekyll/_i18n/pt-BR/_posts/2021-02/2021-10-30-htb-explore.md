@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Explore"
 namespace: htb-explore
+language: pt-BR
 category: Walkthrough
 tags:
     - HackTheBox

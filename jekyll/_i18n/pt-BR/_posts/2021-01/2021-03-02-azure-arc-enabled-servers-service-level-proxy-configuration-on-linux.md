@@ -1,7 +1,7 @@
 ---
-layout: single
 title: 'Azure Arc enabled Servers: Configuração de proxy a nível de serviço em Linux'
 namespace: azure-arc-enabled-servers-service-level-proxy-configuration-on-linux
+language: pt-BR
 category: Azure Arc
 tags:
 - Azure

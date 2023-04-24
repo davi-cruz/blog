@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Dynstr"
 namespace: htb-dynstr
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox
@@ -244,7 +244,7 @@ uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
 /home/dyna/.sudo_as_admin_successful
 ```
 
-  - Revisando o conteúdo do diretório `/home/bindmgr`, podemos observar o arquivo `user.txt` para o qual não temos direitos de leitura. Neste perfil de usuário existe também uma pasta chamada `support-case-C62796521`, que contém alguns ouputs de debugging/trace de outras tarefas executadas no servidor.
+- Revisando o conteúdo do diretório `/home/bindmgr`, podemos observar o arquivo `user.txt` para o qual não temos direitos de leitura. Neste perfil de usuário existe também uma pasta chamada `support-case-C62796521`, que contém alguns ouputs de debugging/trace de outras tarefas executadas no servidor.
 
 ```bash
 www-data@dynstr:/var/www$ ls -la /home/bindmgr/
@@ -262,7 +262,7 @@ drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
 www-data@dynstr:/var/www$
 ```
 
-  - Após analisar estes arquivos, notei que no `strace-C62796521.txt` temos uma chave privada em texto plano, que foi extraída e salva como `id_rsa`.
+- Após analisar estes arquivos, notei que no `strace-C62796521.txt` temos uma chave privada em texto plano, que foi extraída e salva como `id_rsa`.
 
 ```plaintext
 [...]
@@ -270,14 +270,14 @@ www-data@dynstr:/var/www$
 [...]
 ```
 
-  - Quando tentei utilizar esta chave para conectar via SSH com a conta `bindmgr`, recebi um erro. Ao revisar o conteúdo do arquivo `authorized_keys`, notei que temos uma instrução `from` definida, que limita a conexão utilizando a referida chave RSA a um determinado escopo de sistemas, neste caso máquinas com no subdomínio `*.infra.dyna.htb`.
+- Quando tentei utilizar esta chave para conectar via SSH com a conta `bindmgr`, recebi um erro. Ao revisar o conteúdo do arquivo `authorized_keys`, notei que temos uma instrução `from` definida, que limita a conexão utilizando a referida chave RSA a um determinado escopo de sistemas, neste caso máquinas com no subdomínio `*.infra.dyna.htb`.
 
 ```bash
 www-data@dynstr:/tmp$ cat /home/bindmgr/.ssh/authorized_keys
 from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
 ```
 
-  - Para contornar este ponto, poderíamos alterar o arquivo hosts da máquina, o que não é possível dado privilégios atuais, ou utilizar o `nsupdate` para incluir a entrada desejada no servidor DNS, na zona `infra.dyna.htb`, o que foi tentado a partir do comando que é utilizado pela API, conforme abaixo:
+- Para contornar este ponto, poderíamos alterar o arquivo hosts da máquina, o que não é possível dado privilégios atuais, ou utilizar o `nsupdate` para incluir a entrada desejada no servidor DNS, na zona `infra.dyna.htb`, o que foi tentado a partir do comando que é utilizado pela API, conforme abaixo:
 
 ```php
 // Update DNS entry
@@ -285,7 +285,7 @@ $cmd = sprintf("server 127.0.0.1\nzone %s\nupdate delete %s.%s\nupdate add %s.%s
 system('echo "'.$cmd.'" | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key',$retval);
 ```
 
-  - Com base nisso, utilizei o seguinte comando para adicionar a nossa entrada no referido subdomínio, porém a ação foi recusada.
+- Com base nisso, utilizei o seguinte comando para adicionar a nossa entrada no referido subdomínio, porém a ação foi recusada.
 
 ```bash
 www-data@dynstr:/dev/shm$ cat nsupdate
@@ -298,7 +298,7 @@ www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/ddn
 update failed: REFUSED
 ```
 
-  - Após alguma pesquisa, encontrei que o status REFUSED poderia ocorrer se utilizasse uma chave inválida e, validando o diretório onde a chave `ddns.key` está localizada, encontrei outros dois arquivos (conforme abaixo) que poderiam ser utilizados, para o qual o `infra.key` retornou o sucesso esperado, embora ainda não tenha conseguido me conectar via SSH
+- Após alguma pesquisa, encontrei que o status REFUSED poderia ocorrer se utilizasse uma chave inválida e, validando o diretório onde a chave `ddns.key` está localizada, encontrei outros dois arquivos (conforme abaixo) que poderiam ser utilizados, para o qual o `infra.key` retornou o sucesso esperado, embora ainda não tenha conseguido me conectar via SSH
 
 ```bash
 www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
@@ -307,7 +307,7 @@ www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
 -rw-r----- 1 bind bind 100 Mar 15 20:14 /etc/bind/rndc.key
 ```
 
-  - Com algum troubleshooting adicional notei que a partir do servidor DNS era capaz de resolver o nome `attacker.infra.dyna.htb` mas a busca a reversa, a partir do endereço IP não era possível. Para contornar isso, incluí no comando de `nsupdate` as instruções necessárias para também incluir o registro do tipo PTR no DNS. Um ponto crucial que tive que fazer troubleshoot foi que entre as entradas A e PTR **deve existir uma linha em branco**, caso contrário o update falhará.
+- Com algum troubleshooting adicional notei que a partir do servidor DNS era capaz de resolver o nome `attacker.infra.dyna.htb` mas a busca a reversa, a partir do endereço IP não era possível. Para contornar isso, incluí no comando de `nsupdate` as instruções necessárias para também incluir o registro do tipo PTR no DNS. Um ponto crucial que tive que fazer troubleshoot foi que entre as entradas A e PTR **deve existir uma linha em branco**, caso contrário o update falhará.
 
 ```bash
 www-data@dynstr:/dev/shm$ cat nsupdate
@@ -321,7 +321,7 @@ www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/inf
 www-data@dynstr:/dev/shm$
 ```
 
-  - Após os devidos ajustes, fui capaz de me conectar com a conta `bindmgr` via SSH e ler o conteúdo do arquivo `user.txt`
+- Após os devidos ajustes, fui capaz de me conectar com a conta `bindmgr` via SSH e ler o conteúdo do arquivo `user.txt`
 
 ```bash
 bindmgr@dynstr:~$ ls -la

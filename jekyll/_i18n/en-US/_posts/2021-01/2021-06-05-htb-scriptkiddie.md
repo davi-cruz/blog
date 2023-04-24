@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB ScriptKiddie"
 namespace: htb-scriptkiddie
+language: en-US
 category: Walkthrough
 tags:
     - HackTheBox

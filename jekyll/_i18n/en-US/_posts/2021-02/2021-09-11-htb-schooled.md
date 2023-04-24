@@ -1,7 +1,7 @@
 ---
-layout: single
 title: 'Walktrough: HTB Schooled'
 namespace: htb-schooled
+language: en-US
 category: Walkthrough
 tags:
 - HTB Linux

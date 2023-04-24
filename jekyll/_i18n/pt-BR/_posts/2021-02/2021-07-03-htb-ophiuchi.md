@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Ophiuchi"
 namespace: htb-ophiuchi
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox

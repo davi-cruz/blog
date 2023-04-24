@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Doctor"
 namespace: htb-doctor
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox
@@ -230,7 +230,7 @@ web@doctor:/home$ id
 uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
 ```
 
-  - The **adm** group on Linux systems grants access to files located at `/var/log`, which will possibly allow us to find some sensitive information in the logs from web services or other tasks.
+- The **adm** group on Linux systems grants access to files located at `/var/log`, which will possibly allow us to find some sensitive information in the logs from web services or other tasks.
 
 ### Analyzing log files under /var/log
 

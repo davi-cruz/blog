@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Bucket"
 namespace: htb-bucket
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox

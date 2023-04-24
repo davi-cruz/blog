@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Laboratory"
 namespace: htb-laboratory
+language: pt-BR
 category: Walkthrough
 tags:
    - HackTheBox

@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB TheNotebook"
 namespace: htb-thenotebook
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox
@@ -190,7 +190,7 @@ $ python3 generate-jwt.py
 eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMTY6NzA3MC9wcml2S2V5LmtleSJ9.eyJ1c2VybmFtZSI6Impkb2UiLCJlbWFpbCI6Impkb2VAZHVtbXkuY29tIiwiYWRtaW5fY2FwIjoxfQ.WMokYjjMMECoF2UWM2fcMVcR99X34dHXwuj8nXqBlQWOnwC1NdBoO6PD-ZHjAZ5p969Jbf4XnRKZedAAokxvIgG2ymYNV1F8CcDzDfuHlMlk_CiYGvimoJWgvA3S-24KDql2bRrvJgoPbKKjqJ5Ir7mWZF1USGSwsttc9Ff1qniFAWTJ8CXkTLtfR498_rY_uIJfBdvqTbi3C9fWJcnSwjCGROkEGxCYve4cf5rjFvm_D_G5-S8oWkXICYAFp5lMQ288E0qGQp04nD16H1v2YzOROolNDeqMVB2uaI060xjKEA8mv6taa095q7rEqzpzXSj21Uq2-xcZonk0LI1-yg
 ```
 
-  - O token gerado pelo conteúdo acima, conforme JWT.ms, gerou o payload abaixo:
+- O token gerado pelo conteúdo acima, conforme JWT.ms, gerou o payload abaixo:
 
 ```json
 {

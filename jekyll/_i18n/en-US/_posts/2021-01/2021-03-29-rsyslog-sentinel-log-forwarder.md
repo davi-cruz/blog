@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Azure Sentinel: Log Forwarder Configuration"
 namespace: rsyslog-sentinel-log-forwarder
+language: en-US
 category: "Microsoft Sentinel"
 redirect_from: /azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder
 tags:

@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Dynstr"
 namespace: htb-dynstr
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox

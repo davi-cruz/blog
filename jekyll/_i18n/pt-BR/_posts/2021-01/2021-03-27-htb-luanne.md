@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Luanne"
 namespace: htb-luanne
+language: pt-BR
 category: Walkthrough
 tags:
    - HackTheBox

@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Passage"
 namespace: htb-passage
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox
@@ -181,7 +181,7 @@ Após executar o script `linpeas.sh`, encontrei alguns itens interessantes:
 Vulnerable!!
 ```
 
-  - Embora seja vulnerável, quando tentei explorá-la conforme explicado [neste link](https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/), não funcionou corretamente dado a privilégios insuficientes deste usuário.
+- Embora seja vulnerável, quando tentei explorá-la conforme explicado [neste link](https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/), não funcionou corretamente dado a privilégios insuficientes deste usuário.
 
 ```bash
 www-data@passage:~$ gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCreator --method com.ubuntu.USBCreator.Image /root/root.txt /tmp/somefilename true

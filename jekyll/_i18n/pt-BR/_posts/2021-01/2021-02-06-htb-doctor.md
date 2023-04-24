@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Doctor"
 namespace: htb-doctor
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox
@@ -230,7 +230,7 @@ web@doctor:/home$ id
 uid=1001(web) gid=1001(web) groups=1001(web),4(adm)
 ```
 
-  - O grupo **adm** no Linux permite acesso a arquivos localizados no diretório `/var/log`, que possivelmente pode permitir que consigamos alguma informação sensivel dentro das logs de componentes do sistema como webservers e tarefas agendadas (cron).
+- O grupo **adm** no Linux permite acesso a arquivos localizados no diretório `/var/log`, que possivelmente pode permitir que consigamos alguma informação sensivel dentro das logs de componentes do sistema como webservers e tarefas agendadas (cron).
 
 ### Analizando as logs em /var/log
 

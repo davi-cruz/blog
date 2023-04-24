@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB TheNotebook"
 namespace: htb-thenotebook
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox

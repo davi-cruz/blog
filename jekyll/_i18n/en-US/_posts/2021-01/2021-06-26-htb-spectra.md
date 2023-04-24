@@ -1,7 +1,7 @@
 ---
-layout: single
 title: "Walktrough: HTB Spectra"
 namespace: htb-spectra
+language: en-US
 category: Walkthrough
 tags:
   - HackTheBox
