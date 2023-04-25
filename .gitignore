@@ -1,2 +1,2 @@
-blog_md/*
-gatsby-blog/content/blog/*
+blog_md/*.md
+gatsby-blog/content/blog/*.md
