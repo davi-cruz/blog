@@ -123,12 +123,3 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
 }
-
-/**
- * Export TinaCMS for Development
- */
-const express = require("express");
-
-exports.onCreateDevServer = ({ app }) => {
-  app.use("/admin", express.static("public/admin"));
-};
