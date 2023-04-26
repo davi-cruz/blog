@@ -9,19 +9,21 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `Davi Cruz`,
     author: {
-      name: `Kyle Mathews`,
+      name: `Davi Cruz`,
       summary: `who lives and works in San Francisco building useful things.`,
     },
     description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
+    siteUrl: `https://davicruz.com/`,
     social: {
-      twitter: `kylemathews`,
+      github: `davi-cruz`,
     },
+    minimalMistakesSkin: `dark`,
   },
   plugins: [
     `gatsby-plugin-image`,
+    `gatsby-plugin-sass`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
