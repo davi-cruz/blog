@@ -12,14 +12,18 @@ module.exports = {
     title: `Davi Cruz`,
     author: {
       name: `Davi Cruz`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      summary: `Just another cybersecurity professional`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
+    description: `Just another cybersecurity professional blog.`,
     siteUrl: `https://davicruz.com/`,
     social: {
       github: `davi-cruz`,
+      linkedin: `davi-cruz`,
     },
-    minimalMistakesSkin: `dark`,
+    theme: {
+      name: `minimal-mistakes`,
+      skin: `dark`,
+    },
   },
   plugins: [
     `gatsby-plugin-image`,
