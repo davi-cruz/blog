@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "gatsby-plugin-sass": "^6.9.0",
-    "sass": "^1.62.1"
-  }
-}
