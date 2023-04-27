@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Academy"
-namespace: htb-academy
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Easy
-  - HTB Linux
 date: 2021-02-27 16:00:00
 header:
+  og_image: https://i.imgur.com/fq8Np1C.png
   teaser: https://i.imgur.com/fq8Np1C.png
-  og_image:   https://i.imgur.com/fq8Np1C.png
+language: pt-BR
+namespace: htb-academy
 redirect_from: /writeup/2021/02/htb-academy
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Academy'
 ---
 
 Olá pessoal!

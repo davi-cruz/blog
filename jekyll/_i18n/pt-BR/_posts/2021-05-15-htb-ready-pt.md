@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Ready"
-namespace: htb-ready
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-05-15 16:00:00
 header:
-  teaser: https://i.imgur.com/0eaJMfD.png
   og_image: https://i.imgur.com/0eaJMfD.png
+  teaser: https://i.imgur.com/0eaJMfD.png
+language: pt-BR
+namespace: htb-ready
 redirect_from: /writeup/2021/05/htb-ready
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Ready'
 ---
 
 Olá pessoal!
@@ -58,7 +58,7 @@ Nmap done: 1 IP address (1 host up) scanned in 16.65 seconds
 
 ### 5080/TCP - Serviço HTTP
 
-Conforme pode ser visto no resultado do `nmap` se trata de um serviço GitLab Community. Similar à máquina [Laboratory]({% post_url 2021-04-17-htb-laboratory %}), segui com a criação de uma nova conta para verificar a versão do servidor e eventuais projetos públicos disponíveis.
+Conforme pode ser visto no resultado do `nmap` se trata de um serviço GitLab Community. Similar à máquina [Laboratory]({% post_url 2021-01/2021-04-17-htb-laboratory %}), segui com a criação de uma nova conta para verificar a versão do servidor e eventuais projetos públicos disponíveis.
 
 Após criada a conta, pude comprovar que a versão em execução é a **11.4.7**, conforme podemos ver na imagem abaixo.
 

@@ -1,8 +1,11 @@
 ---
-title: 'Azure Arc enabled Servers: Instalação e Atualização via Configuration Manager'
-namespace: install-update-azure-arc-windows-configmgr
-language: pt-BR
 category: Azure Arc
+date: 2021-04-01 12:00:00+00:00
+header:
+  og_image: https://i.imgur.com/UXKgEpC.png
+  teaser: https://i.imgur.com/UXKgEpC.png
+language: pt-BR
+namespace: install-update-azure-arc-windows-configmgr
 tags:
 - Azure
 - Azure Arc
@@ -13,10 +16,8 @@ tags:
 - Microsoft Endpoint Manager
 - SCCM
 - MEM
-date: 2021-04-01T12:00:00.000+00:00
-header:
-  teaser: https://i.imgur.com/UXKgEpC.png
-  og_image: https://i.imgur.com/UXKgEpC.png
+title: "Azure Arc enabled Servers: Instala\xE7\xE3o e Atualiza\xE7\xE3o via Configuration\
+  \ Manager"
 ---
 Neste post compartilho o procedimento de como realizar o deploy e atualização do Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM).<!--more-->
 

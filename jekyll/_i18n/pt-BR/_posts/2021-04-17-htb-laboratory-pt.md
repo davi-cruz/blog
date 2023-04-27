@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Laboratory"
-namespace: htb-laboratory
-language: pt-BR
 category: Walkthrough
-tags:
-   - HackTheBox
-   - HTB Easy
-   - HTB Linux
 date: 2021-04-17 16:00:00
 header:
-  teaser: https://i.imgur.com/kUCyV6R.png
   og_image: https://i.imgur.com/kUCyV6R.png
+  teaser: https://i.imgur.com/kUCyV6R.png
+language: pt-BR
+namespace: htb-laboratory
 redirect_from: /writeup/2021/04/htb-laboratory
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Laboratory'
 ---
 
 Olá pessoal!
@@ -295,7 +295,7 @@ $ tree -a -I '.git'
 2 directories, 6 files
 ```
 
-Assim como na máquina [Luanne]({% post_url 2021-03-27-htb-luanne %}), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
+Assim como na máquina [Luanne]({% post_url 2021-01/2021-03-27-htb-luanne %}), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
 
 ```bash
 $ chmod 600 id_rsa

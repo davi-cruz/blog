@@ -1,16 +1,16 @@
 ---
-title: "Walktrough: HTB Dynstr"
-namespace: htb-dynstr
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-10-16 16:00:00
 header:
-  teaser: https://i.imgur.com/89b1SdH.png
   og_image: https://i.imgur.com/89b1SdH.png
+  teaser: https://i.imgur.com/89b1SdH.png
+language: pt-BR
+namespace: htb-dynstr
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Dynstr'
 ---
 
 Olá pessoal!

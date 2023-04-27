@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Delivery"
-namespace: htb-delivery
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Easy
-  - HTB Linux
 date: 2021-05-22 16:00:00
 header:
-  teaser: https://i.imgur.com/NSbB9Rc.png
   og_image: https://i.imgur.com/NSbB9Rc.png
+  teaser: https://i.imgur.com/NSbB9Rc.png
+language: pt-BR
+namespace: htb-delivery
 redirect_from: /writeup/2021/05/htb-delivery
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Delivery'
 ---
 
 Olá pessoal!

@@ -1,17 +1,17 @@
 ---
-title: 'Azure Arc enabled Servers: Configuração de proxy a nível de serviço em Linux'
-namespace: azure-arc-enabled-servers-service-level-proxy-configuration-on-linux
-language: pt-BR
 category: Azure Arc
+date: 2021-03-02 18:00:00+00:00
+header:
+  og_image: https://i.imgur.com/faH4EDJ.png
+  teaser: https://i.imgur.com/faH4EDJ.png
+language: pt-BR
+namespace: azure-arc-enabled-servers-service-level-proxy-configuration-on-linux
 tags:
 - Azure
 - Azure Arc
 - Linux
-header:
-  teaser: https://i.imgur.com/faH4EDJ.png
-  og_image: https://i.imgur.com/faH4EDJ.png
-date: 2021-03-02T18:00:00.000+00:00
-
+title: "Azure Arc enabled Servers: Configura\xE7\xE3o de proxy a n\xEDvel de servi\xE7\
+  o em Linux"
 ---
 Algumas vezes, durante engajamentos com clientes, recebo questionamentos de como configurar o proxy para acesso à internet apenas em serviços específicos e com o Azure Arc para Servidores Linux isso não é diferente.
 

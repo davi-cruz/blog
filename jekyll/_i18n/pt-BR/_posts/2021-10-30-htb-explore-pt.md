@@ -1,16 +1,16 @@
 ---
-title: "Walktrough: HTB Explore"
-namespace: htb-explore
-language: pt-BR
 category: Walkthrough
-tags:
-    - HackTheBox
-    - HTB Easy
-    - HTB Android
 date: 2021-10-30 16:00:00
 header:
-   teaser: https://i.imgur.com/TJKS5F6.png
-   og_image: https://i.imgur.com/TJKS5F6.png
+  og_image: https://i.imgur.com/TJKS5F6.png
+  teaser: https://i.imgur.com/TJKS5F6.png
+language: pt-BR
+namespace: htb-explore
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Android
+title: 'Walktrough: HTB Explore'
 ---
 
 Olá pessoal!

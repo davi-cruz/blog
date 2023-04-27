@@ -1,24 +1,24 @@
 ---
-title: "Azure Sentinel: Configuração do Log Forwarder"
-namespace: rsyslog-sentinel-log-forwarder
+category: Microsoft Sentinel
+date: 2021-03-29 12:00:00-03:00
+header:
+  og_image: https://i.imgur.com/xsbyF4T.png
+  teaser: https://i.imgur.com/xsbyF4T.png
 language: pt-BR
-category: "Microsoft Sentinel"
+last_modified_at: 2021-04-30 16:00:00-03:00
+namespace: rsyslog-sentinel-log-forwarder
 redirect_from: /azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder
 tags:
-  - Sentinel
-  - Syslog
-  - CEF
-  - Rsyslog
-  - Linux
-  - Syslog Server
-  - Syslog Forwarder
-  - Log Collector
-  - Log Forwarder
-header:
-   teaser: https://i.imgur.com/xsbyF4T.png
-   og_image: https://i.imgur.com/xsbyF4T.png
-date: 2021-03-29 12:00:00 -03
-last_modified_at: 2021-04-30 16:00:00 -03
+- Sentinel
+- Syslog
+- CEF
+- Rsyslog
+- Linux
+- Syslog Server
+- Syslog Forwarder
+- Log Collector
+- Log Forwarder
+title: "Azure Sentinel: Configura\xE7\xE3o do Log Forwarder"
 ---
 
 Frequentemente apoio clientes no deployment de *forwarders* (encaminhadores) de logs CEF/Syslog em seus ambientes para coletar informações de appliances de rede e/ou servidores e serviços para o Log Analytics, que consequentemente os disponibiliza para o Azure Sentinel.<!--more-->

@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Passage"
-namespace: htb-passage
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-03-06 16:00:00
 header:
-  teaser: https://i.imgur.com/47HPk8O.png
   og_image: https://i.imgur.com/47HPk8O.png
+  teaser: https://i.imgur.com/47HPk8O.png
+language: pt-BR
+namespace: htb-passage
 redirect_from: /writeup/2021/03/htb-passage
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Passage'
 ---
 
 Olá pessoal!

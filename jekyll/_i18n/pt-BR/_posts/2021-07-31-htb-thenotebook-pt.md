@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB TheNotebook"
-namespace: htb-thenotebook
-language: pt-BR
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-07-31 12:00:00
 header:
-  teaser: https://i.imgur.com/Arm1Pyr.png
   og_image: https://i.imgur.com/Arm1Pyr.png
+  teaser: https://i.imgur.com/Arm1Pyr.png
+language: pt-BR
+namespace: htb-thenotebook
 redirect_from: /writeup/2021/07/htb-thenotebook
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB TheNotebook'
 ---
 
 Olá pessoal!

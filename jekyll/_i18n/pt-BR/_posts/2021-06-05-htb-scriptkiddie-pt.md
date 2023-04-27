@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB ScriptKiddie"
-namespace: htb-scriptkiddie
-language: pt-BR
 category: Walkthrough
-tags:
-    - HackTheBox
-    - HTB Easy
-    - HTB Linux
 date: 2021-06-05 16:00:00
 header:
-    teaser: https://i.imgur.com/Egv2O1k.png
-    og_image: https://i.imgur.com/Egv2O1k.png
+  og_image: https://i.imgur.com/Egv2O1k.png
+  teaser: https://i.imgur.com/Egv2O1k.png
+language: pt-BR
+namespace: htb-scriptkiddie
 redirect_from: /writeup/2021/06/htb-scriptkiddie
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB ScriptKiddie'
 ---
 
 Olá pessoal!

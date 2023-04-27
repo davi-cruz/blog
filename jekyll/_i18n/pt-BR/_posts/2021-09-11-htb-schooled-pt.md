@@ -1,15 +1,16 @@
 ---
-title: 'Walktrough: HTB Schooled'
-namespace: htb-schooled
-language: pt-BR
 category: Walkthrough
+date: 2021-09-11
+header:
+  og_image: https://i.imgur.com/ksBoJIQ.png
+  teaser: https://i.imgur.com/ksBoJIQ.png
+language: pt-BR
+namespace: htb-schooled
 tags:
 - HTB Linux
 - HTB Medium
 - HackTheBox
-header:
-  teaser: https://i.imgur.com/ksBoJIQ.png
-  og_image: https://i.imgur.com/ksBoJIQ.png
+title: 'Walktrough: HTB Schooled'
 ---
 
 Olá pessoal!
