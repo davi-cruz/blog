@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Tenet"
-namespace: htb-tenet
-language: en-US
 category: Walkthrough
-tags:
-    - HackTheBox
-    - HTB Medium
-    - HTB Linux
 date: 2021-06-12 16:00:00
 header:
-    teaser: https://i.imgur.com/Ya8KoOZ.png
-    og_image: https://i.imgur.com/Ya8KoOZ.png
+  og_image: https://i.imgur.com/Ya8KoOZ.png
+  teaser: https://i.imgur.com/Ya8KoOZ.png
+language: en-US
+namespace: htb-tenet
 redirect_from: /writeup/2021/06/htb-tenet
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Tenet'
 ---
 
 Hello guys!

@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Ophiuchi"
-namespace: htb-ophiuchi
-language: en-US
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-07-03 16:00:00
 header:
-  teaser: https://i.imgur.com/r9JpwZX.png
   og_image: https://i.imgur.com/r9JpwZX.png
+  teaser: https://i.imgur.com/r9JpwZX.png
+language: en-US
+namespace: htb-ophiuchi
 redirect_from: /writeup/2021/07/htb-ophiuchi
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Ophiuchi'
 ---
 
 Hello guys!

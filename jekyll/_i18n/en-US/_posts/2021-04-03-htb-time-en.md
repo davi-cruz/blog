@@ -1,8 +1,12 @@
 ---
-title: 'Walktrough: HTB Time'
-namespace: htb-time
-language: en-US
 category: Walkthrough
+date: 2021-04-03 16:00:00+00:00
+header:
+  og_image: https://i.imgur.com/jiSvU4u.png
+  teaser: https://i.imgur.com/jiSvU4u.png
+language: en-US
+namespace: htb-time
+redirect_from: /writeup/2021/04/htb-time
 tags:
 - HackTheBox
 - Jackson
@@ -10,12 +14,7 @@ tags:
 - Service Hijack
 - HTB Linux
 - HTB Medium
-date: 2021-04-03T16:00:00.000+00:00
-header:
-  teaser: https://i.imgur.com/jiSvU4u.png
-  og_image: https://i.imgur.com/jiSvU4u.png
-redirect_from: "/writeup/2021/04/htb-time"
-
+title: 'Walktrough: HTB Time'
 ---
 Hello everyone!
 

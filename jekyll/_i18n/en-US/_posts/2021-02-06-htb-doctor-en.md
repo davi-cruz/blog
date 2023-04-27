@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Doctor"
-namespace: htb-doctor
-language: en-US
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Easy
-  - HTB Linux
 date: 2021-02-06 12:00:00
 header:
+  og_image: https://i.imgur.com/AXKMi8H.png
   teaser: https://i.imgur.com/AXKMi8H.png
-  og_image:   https://i.imgur.com/AXKMi8H.png
+language: en-US
+namespace: htb-doctor
 redirect_from: /writeup/2021/02/htb-doctor
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Doctor'
 ---
 Hello everyone!
 

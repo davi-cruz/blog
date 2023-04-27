@@ -1,24 +1,24 @@
 ---
-title: "Azure Sentinel: Log Forwarder Configuration"
-namespace: rsyslog-sentinel-log-forwarder
+category: Microsoft Sentinel
+date: 2021-03-29 12:00:00-03:00
+header:
+  og_image: https://i.imgur.com/xsbyF4T.png
+  teaser: https://i.imgur.com/xsbyF4T.png
 language: en-US
-category: "Microsoft Sentinel"
+last_modified_at: 2021-04-30 16:00:00-03:00
+namespace: rsyslog-sentinel-log-forwarder
 redirect_from: /azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder
 tags:
-  - Sentinel
-  - Syslog
-  - CEF
-  - Rsyslog
-  - Linux
-  - Syslog Server
-  - Syslog Forwarder
-  - Log Collector
-  - Log Forwarder
-header:
-   teaser: https://i.imgur.com/xsbyF4T.png
-   og_image: https://i.imgur.com/xsbyF4T.png
-date: 2021-03-29 12:00:00 -03
-last_modified_at: 2021-04-30 16:00:00 -03
+- Sentinel
+- Syslog
+- CEF
+- Rsyslog
+- Linux
+- Syslog Server
+- Syslog Forwarder
+- Log Collector
+- Log Forwarder
+title: 'Azure Sentinel: Log Forwarder Configuration'
 ---
 
 Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel.<!--more-->

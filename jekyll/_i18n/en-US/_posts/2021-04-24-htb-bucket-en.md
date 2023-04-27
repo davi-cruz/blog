@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Bucket"
-namespace: htb-bucket
-language: en-US
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Medium
-  - HTB Linux
 date: 2021-04-24 12:00:00
 header:
-  teaser: https://i.imgur.com/CjKnqww.png
   og_image: https://i.imgur.com/CjKnqww.png
+  teaser: https://i.imgur.com/CjKnqww.png
+language: en-US
+namespace: htb-bucket
 redirect_from: /writeup/2021/04/htb-bucket
+tags:
+- HackTheBox
+- HTB Medium
+- HTB Linux
+title: 'Walktrough: HTB Bucket'
 ---
 
 Hello guys!
@@ -431,7 +431,7 @@ drwxr-x---+ 4 root root 4096 Feb 10 12:29 ..
 
 Once we have been able to make the request work, the second step is finding a way to get sensitive data into the PDF file.
 
-The easiest way would be to import `/root/root.txt`, but this doesn't give us an interactive shell in the box. Just like we did in [**Passage**]({% post_url 2021-03-06-htb-passage %}), we can look for the file `/root/.ssh/id_rsa` and use it to SSH into the machine as root but our issue right now is to find a way to import this file in the static HTML file that will later be rendered into the PDF.
+The easiest way would be to import `/root/root.txt`, but this doesn't give us an interactive shell in the box. Just like we did in [**Passage**]({% post_url 2021-01/2021-03-06-htb-passage %}), we can look for the file `/root/.ssh/id_rsa` and use it to SSH into the machine as root but our issue right now is to find a way to import this file in the static HTML file that will later be rendered into the PDF.
 
 After some research, the easiest way without using a Javascript to make this possible would be using an **iframe**, which I've added the tag `<iframe src="/root/.ssh/id_rsa" seamless></iframe>` in the HTML content sent earlier:
 

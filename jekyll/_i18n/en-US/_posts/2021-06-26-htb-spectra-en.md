@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Spectra"
-namespace: htb-spectra
-language: en-US
 category: Walkthrough
-tags:
-  - HackTheBox
-  - HTB Easy
-  - HTB Linux
 date: 2021-06-26 16:00:00
 header:
-  teaser: https://i.imgur.com/KjpVjtL.png
   og_image: https://i.imgur.com/KjpVjtL.png
+  teaser: https://i.imgur.com/KjpVjtL.png
+language: en-US
+namespace: htb-spectra
 redirect_from: /writeup/2021/06/htb-spectra
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Spectra'
 ---
 
 Hello guys!

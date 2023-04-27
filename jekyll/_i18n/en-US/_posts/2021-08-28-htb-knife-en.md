@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Knife"
-namespace: htb-knife
-language: en-US
 category: Walkthrough
-tags:
-   - HackTheBox
-   - HTB Easy
-   - HTB Linux
 date: 2021-08-28 12:00:00
 header:
-   teaser: https://i.imgur.com/U5A7c9y.png
-   og_image:   https://i.imgur.com/U5A7c9y.png
+  og_image: https://i.imgur.com/U5A7c9y.png
+  teaser: https://i.imgur.com/U5A7c9y.png
+language: en-US
+namespace: htb-knife
 redirect_from: /writeup/2021/08/htb-knife
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Knife'
 ---
 
 Hello guys!

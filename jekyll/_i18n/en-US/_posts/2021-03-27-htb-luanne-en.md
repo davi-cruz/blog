@@ -1,17 +1,17 @@
 ---
-title: "Walktrough: HTB Luanne"
-namespace: htb-luanne
-language: en-US
 category: Walkthrough
-tags:
-   - HackTheBox
-   - HTB Easy
-   - HTB Linux
 date: 2021-03-27 12:00:00
 header:
-   teaser: https://i.imgur.com/MA88HKo.png
-   og_image: https://i.imgur.com/MA88HKo.png
+  og_image: https://i.imgur.com/MA88HKo.png
+  teaser: https://i.imgur.com/MA88HKo.png
+language: en-US
+namespace: htb-luanne
 redirect_from: /writeup/2021/03/htb-luanne
+tags:
+- HackTheBox
+- HTB Easy
+- HTB Linux
+title: 'Walktrough: HTB Luanne'
 ---
 
 Hello everyone!
