@@ -295,7 +295,7 @@ $ tree -a -I '.git'
 2 directories, 6 files
 ```
 
-Just like we did on [Luanne]({% post_url 2021-01/2021-03-27-htb-luanne %}), we have converted it to an RSA key using the commands below:
+Just like we did on [Luanne]({% post_url 2021-03-27-htb-luanne %}), we have converted it to an RSA key using the commands below:
 
 ```bash
 $ chmod 600 id_rsa

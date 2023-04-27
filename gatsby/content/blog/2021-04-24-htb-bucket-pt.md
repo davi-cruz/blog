@@ -431,7 +431,7 @@ drwxr-x---+ 4 root root 4096 Feb 10 12:29 ..
 
 Uma vez que conseguimos renderizar o conteúdo desejado, precisamos encontrar uma forma de incluir arquivos na página renderizada e que resulta no PDF, de modo a dar continuidade na exploração.
 
-A forma mais fácil de obter o root flag seria importar o arquivo `/root/root.txt`, porém isso não nos dá um shell reverso de fato. Seguindo o exemplo da máquina [**Passage**]({% post_url 2021-01/2021-03-06-htb-passage %}), podemos buscar por um arquivo `/root/.ssh/id_rsa` e nos conectar à máquina via shell interativo, porém nosso maior problema no momento é inserir o conteúdo destes em um arquivo HTML.
+A forma mais fácil de obter o root flag seria importar o arquivo `/root/root.txt`, porém isso não nos dá um shell reverso de fato. Seguindo o exemplo da máquina [**Passage**]({% post_url 2021-03-06-htb-passage %}), podemos buscar por um arquivo `/root/.ssh/id_rsa` e nos conectar à máquina via shell interativo, porém nosso maior problema no momento é inserir o conteúdo destes em um arquivo HTML.
 
 Após algumas pesquisas, a forma mais simples de alcançar este objetivo sem o uso de Javascript é utilizando um **iframe**, onde as alterações, para a qual incluí a tag `<iframe src="/root/.ssh/id_rsa" seamless></iframe>` no HTML utilizado anteriormente, conforme chamadas abaixo:
 

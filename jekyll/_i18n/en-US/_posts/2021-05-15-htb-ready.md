@@ -58,7 +58,7 @@ Nmap done: 1 IP address (1 host up) scanned in 16.65 seconds
 
 ### 5080/TCP - HTTP Service
 
-As we can see in `nmap` output, a GitLab Server Community is running. Similar to [Laboratory]({% post_url 2021-01/2021-04-17-htb-laboratory %}), proceeded with an account creation to have access to public repositories in this server that could help us proceed in this box.
+As we can see in `nmap` output, a GitLab Server Community is running. Similar to [Laboratory]({% post_url 2021-04-17-htb-laboratory %}), proceeded with an account creation to have access to public repositories in this server that could help us proceed in this box.
 
 After account creation, no repository was found but noticed that the running GitLab Server version was **11.4.7**, as we can see in the image below.
 

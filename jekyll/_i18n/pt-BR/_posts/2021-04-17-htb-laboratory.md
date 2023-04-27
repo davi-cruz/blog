@@ -295,7 +295,7 @@ $ tree -a -I '.git'
 2 directories, 6 files
 ```
 
-Assim como na máquina [Luanne]({% post_url 2021-01/2021-03-27-htb-luanne %}), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
+Assim como na máquina [Luanne]({% post_url 2021-03-27-htb-luanne %}), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
 
 ```bash
 $ chmod 600 id_rsa
