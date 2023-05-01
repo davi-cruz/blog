@@ -1,2 +1,5 @@
 blog_md/*.md
 gatsby-blog/content/blog/*.md
+jekyll/_i18n/en-US/_posts/2023-04-30-test.md
+jekyll/_i18n/pt-BR/_posts/2023-04-30-test.md
+.gitignore
