@@ -12,13 +12,15 @@ module.exports = {
     title: `Davi Cruz`,
     author: {
       name: `Davi Cruz`,
-      summary: `Just another cybersecurity professional`,
+      summary: `Just another Cybersecurity professional`,
+      locality: `São Paulo, BR`,	
     },
-    description: `Just another cybersecurity professional blog.`,
+    description: `Just another Cybersecurity professional blog.`,
     siteUrl: `https://davicruz.com/`,
     social: {
       github: `davi-cruz`,
-      linkedin: `davi-cruz`,
+      linkedin: `davicruz`,
+      twitter: `zerahzurc`,
     },
     theme: {
       name: `minimal-mistakes`,
@@ -54,6 +56,22 @@ module.exports = {
       options: {
         plugins: [
           {
+            // Support for Mermaid inside Markdown files
+            resolve: `gatsby-remark-mermaid`,
+            options: {
+              launchOptions: {
+                executablePath: 'path/to/chrome/executable'
+              },
+              svgo: {
+                plugins: [{ name: 'removeTitle', active: false }]
+              },
+              mermaidOptions: {
+                theme: 'neutral',
+                themeCSS: '.node rect { fill: #fff; }'
+              }
+            }
+          },
+          {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 630,
@@ -70,6 +88,7 @@ module.exports = {
       },
     },
     {
+      // SEO Options
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Davi Cruz Blog`,
@@ -81,6 +100,32 @@ module.exports = {
         // theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/logo.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: "gatsby-plugin-google-tagmanager",
+      options: {
+        id: "GTM-MF4PLJ5",
+        // Defaults to false meaning GTM will only be loaded in production.
+        includeInDevelopment: false,
+  
+        // Defaults to null
+        defaultDataLayer: { platform: "gatsby" },
+  
+        // Specify optional GTM environment details.
+        gtmAuth: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING",
+        gtmPreview: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_PREVIEW_NAME",
+        dataLayerName: "YOUR_DATA_LAYER_NAME",
+  
+        // Name of the event that is triggered
+        // on every Gatsby route change.
+        //
+        // Defaults to gatsby-route-change
+        routeChangeEventName: "YOUR_ROUTE_CHANGE_EVENT_NAME",
+        // Defaults to false
+        enableWebVitalsTracking: true,
+        // Defaults to https://www.googletagmanager.com
+        selfHostedOrigin: "YOUR_SELF_HOSTED_ORIGIN",
       },
     },
     `gatsby-transformer-sharp`,
