@@ -5,5 +5,8 @@ module.exports = {
   siteMetadata: {
     siteUrl: `https://davicruz.com`,
   },
-  plugins: [],
+  plugins: [
+    "gatsby-plugin-image",
+    "gatsby-plugin-sharp",
+  ],
 }
