@@ -7,20 +7,19 @@ import { Wrapper, Container, Nav, NavList, CategoryLink } from "./styles";
 
 export const CategoriesMenu = () => {
   const data = useStaticQuery(graphql`
-    query {
-      allDatoCmsCategory(filter: { noTranslate: { ne: true } }) {
-        categoryNodes: nodes {
-          id: originalId
+  query MyQuery {
+    allMdx {
+      nodes {
+        frontmatter {
+          category
           locale
-          title
         }
       }
     }
+  }
   `);
 
-  const {
-    allDatoCmsCategory: { categoryNodes },
-  } = data;
+  const categoryNodes = [...new Set(data.allMdx.nodes.map(({ frontmatter }) => frontmatter.category))];
 
   const { pageLocale } = usePageLocale();
   const { isRtl } = useTextDirection();
