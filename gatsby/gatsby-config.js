@@ -43,6 +43,16 @@ module.exports = {
         slug: "blog",
         locale: "pt-BR"
       }
+    ],
+    textStringNodes: [
+      {
+        locale: "en-US",
+        backToBlogAriaLabel: "Back to blog"
+      },
+      {
+          locale: "pt-BR",
+          backToBlogAriaLabel: "Voltar para o blog"
+      },
     ]
   },
   plugins: [
