@@ -5,6 +5,8 @@ module.exports = {
   siteMetadata: {
     siteUrl: `https://davicruz.com`,
     title: "Davi Cruz",	
+    locales: ["en-US", "pt-BR"],
+    defaultLocale: "pt-BR",
   },
   plugins: [
     "gatsby-plugin-image",
