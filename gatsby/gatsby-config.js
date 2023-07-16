@@ -5,8 +5,7 @@ module.exports = {
   siteMetadata: {
     siteUrl: `https://davicruz.com`,
     title: "Davi Cruz",
-    locales: ["en-US", "pt-BR"],
-    defaultLocale: "pt-BR",
+    locales: ["pt-BR", "en-US"],
     seoAndPwaNodes: [
       {
         locale: "pt-BR",
@@ -62,7 +61,14 @@ module.exports = {
       resolve: "gatsby-source-filesystem",
       options: {
         name: `blog`,
-        path: `${__dirname}/blog`,
+        path: `${__dirname}/blog/posts`,
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: `page`,
+        path: `${__dirname}/blog/pages`,
       },
     },
     "gatsby-plugin-mdx",
