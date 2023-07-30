@@ -1,2 +1,6 @@
+---
+layout: null
+sitemap: false
+---
 User-agent: *
-Sitemap: https://davicruz.com/sitemap_index.xml
+Sitemap: {{ site.baseurl_root | append: '/sitemap_index.xml' | absolute_url }}

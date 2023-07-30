@@ -1,16 +1,18 @@
+---
+layout: null
+sitemap: false
+---
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    
-    
+    {% for lang in site.languages %}
+    {% if lang == site.default_lang and site.default_locale_in_subfolder != true %}
     <sitemap>
-        <loc>https://davicruz.com/sitemap.xml</loc>
+        <loc>{{ site.baseurl_root | append: '/sitemap.xml' | absolute_url }}</loc>
     </sitemap>
-    
-    
-    
+    {% else %}
     <sitemap>
-        <loc>https://davicruz.com/en-US/sitemap.xml</loc>
+        <loc>{{ site.baseurl_root | append: '/' | append: lang | append: '/sitemap.xml' | absolute_url }}</loc>
     </sitemap>
-    
-    
+    {% endif %}
+    {% endfor %}
 </sitemapindex>
