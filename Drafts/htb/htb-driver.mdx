@@ -14,12 +14,12 @@ header:
 
 Hello guys!
 
-This week's machine will be **Driver**, an easy-rated Windows box from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.com/users/13531). <!--more-->
+This week's machine will be **Driver**, an easy-rated Windows box from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.com/users/13531).  [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Driver](https://i.imgur.com/Q7q1Nyx.png){: .align-center}
+
+![HTB Driver](https://i.imgur.com/Q7q1Nyx.png)
 
 This was a pretty interesting box, where the most challenging part of this box was getting the initial foothold, where we needed to play with some attributes on very special Windows Explorer Files. To get SYSTEM, we could use several methods but once its name, picture, and all context (printing drivers/firmware, etc) allude to Printing Services, **PrintNightmare** was the chosen method to get the final flag :smile:.
 
@@ -72,11 +72,11 @@ Besides the identified ports listed in the scan above, ran also a quick full sca
 
 Starting with the HTTP page, noticed that a sign-in prompt for basic authentication was shown, to which I have tested default credentials once prompt was requesting *a password for user **admin***, so had success using the credentials **admin:admin**, showing us the following page:
 
-![HTB Driver - MFP Firmware Update Center - Home](https://i.imgur.com/BNm9Su7.png){: .align-center}
+![HTB Driver - MFP Firmware Update Center - Home](https://i.imgur.com/BNm9Su7.png)
 
 From the existing pages, the only one containing a link was **Firmware Updates**, which allow us to upload a file for verification where you can also provide a printer model. For this page, I have tried several file updates while executing a `gobuster dir` brute-forcing, to find the upload folder and eventually be able to upload a reverse shell but I had no success on this.
 
-![HTB Driver - MFP Firmware Update Center - Firmware Updates](https://i.imgur.com/g5ywY2g.png){: .align-center}
+![HTB Driver - MFP Firmware Update Center - Firmware Updates](https://i.imgur.com/g5ywY2g.png)
 
 As the page mentions that the testing team will review the uploaded files soon, I have tried to upload several exploits using formats like `*.bat` , `*.cmd` and `*.exe` but none of them worked as expected.
 

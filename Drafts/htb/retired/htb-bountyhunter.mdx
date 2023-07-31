@@ -14,12 +14,12 @@ header:
 
 Hello guys!
 
-This week's machine will be **BountyHunter**, an easy-rated Android box from [Hack The Box](https://www.hackthebox.eu/), created by [ejedev](https://app.hackthebox.eu/users/280547).<!--more-->
+This week's machine will be **BountyHunter**, an easy-rated Android box from [Hack The Box](https://www.hackthebox.eu/), created by [ejedev](https://app.hackthebox.eu/users/280547). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB BountyHunter](https://i.imgur.com/CndNDLB.png){: .align-center}
+
+![HTB BountyHunter](https://i.imgur.com/CndNDLB.png)
 
 add **Comment**
 
@@ -53,7 +53,7 @@ Nmap done: 1 IP address (1 host up) scanned in 13.65 seconds
 
 Starting with the HTTP Service, noticed that this is an institutional page for a bounty hunters group.
 
-![HTB BountyHunters - HTTP WebSite](https://i.imgur.com/Z6ItoRV.png){: .align-center}
+![HTB BountyHunters - HTTP WebSite](https://i.imgur.com/Z6ItoRV.png)
 
 Analyzing the references and comments using `curl` nothing interesting was found, besides the **Portal** link already available through normal browsing. Also, checking page components, this doesn't seem to be anything we could achieve something, as doesdoesn'took like a CMS platform
 
@@ -104,7 +104,7 @@ Portal under development. Go <a href="log_submit.php">here</a> to test the bount
 
 The bounty tracker page is pretty simple as we can see below. When informing data through this form it prints the data that would be added to the database if it was configured.
 
-![HTB BountyHunters - Bounty Reporting System](https://i.imgur.com/TnOEmCu.png){: .align-center}
+![HTB BountyHunters - Bounty Reporting System](https://i.imgur.com/TnOEmCu.png)
 
 Inspecting the webpage, it imports a javascript called `bountylog.js`, from which a method called `bountySubmit()` is invoked when the form is submitted
 

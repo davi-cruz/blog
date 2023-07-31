@@ -20,7 +20,7 @@ date: 2021-03-29 12:00:00 -03
 last_modified_at: 2021-04-30 16:00:00 -03
 ---
 
-Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel.<!--more-->
+Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel. [more]
 
 Besides having plenty documentation on how to do this deployment, as well as other community resources like Tech Community and Webinars, I have compiled all the resources I normally review with my customers during this deployment or revision in their environments.
 
@@ -67,7 +67,7 @@ Before deploying/reviewing your forwarder infrastructure there are some question
 The initial installation can be easily achieved by running the `cef_installer.py` from [Official Github Repository](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF/cef_installer.py) using the command line below, which can be obtained for your environment by accessing the **Common Event Format (CEF)** connector page in Sentinel or simply by replacing the `<workspace id>` and `<workspace secret>` by yours.
 
 :bulb: **Note**: If you don't have python 2.7 in your system you might need to replace `python` by `python3` prior to executing the line below.
-{: .notice--info}
+
 
 ```bash
 sudo wget -O cef_installer.py https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/DataConnectors/CEF/cef_installer.py && sudo python cef_installer.py <workspace id> <workspace secret>
@@ -181,7 +181,7 @@ One point that is always requested by customers is that after configuring machin
 This happens because the default definitions on the service, listed below, gets some facilities and severities stored in some local files without checking the source of the events (line comments and empty removed for simplicity).
 
 :bulb: **Note**: The location you can find this default configuration vary depending on your linux distribution. For Ubuntu there's a file named `/etc/rsyslog.d/50-default.conf` while for RHEL based distributions (RHEL, CentOS, Fedora) it is in the main `/etc/rsyslog.conf`.
-{: .notice--info}
+
 
 ```ini
 #Extracted from Ubuntu /etc/rsyslog.d/50-default.conf
@@ -247,7 +247,7 @@ To prevent this behavior, as Ofer Shezaf shared in one of the [Security Communit
 Also, we need to ensure that once the messages are forwarded to the CEF listener at TCP/25226 we'll discard them, which can be done by the instruction `stop`. **Stop** drops the messages and they are no longer processed in the message flow.
 
 :bulb: **Note**: You may find some variations of the stop instruction as a tilde (`~`). This came from the legacy syslogd syntax
-{: .notice--info}
+
 
 The configuration will look like this:
 
@@ -300,7 +300,7 @@ sudo su omsagent -c 'python /opt/microsoft/omsconfig/Scripts/OMS_MetaConfigHelpe
 The only thing that cannot be changed at `95-omsagent.conf` file is the forwarding instruction to `@127.0.0.1:25224`.
 
 :bulb: **Note**: In syslogd syntax a single at sign (`@`) means UDP while double at sign (`@@`) means TCP.
-{: .notice--info}
+
 
 :warning: **Warning**: In the previously mentioned Deep Dive CEF webinar, Ofer also recommend you change the omsagent configuration to accept messages using TCP. If you follow his recommendation, you also need to adjust any forwarding instruction to double at signs in your `95-omsagent.conf` file, otherwise the messages won't be sent to Log Analytics.
 {: .notice--warning}

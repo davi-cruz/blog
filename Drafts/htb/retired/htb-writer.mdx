@@ -11,12 +11,12 @@ header:
 
 Hello guys!
 
-This week's machine will be **Writer**, another medium-rated Linux machine from [HackTheBox](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053).<!--more-->
+This week's machine will be **Writer**, another medium-rated Linux machine from [HackTheBox](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Writer](https://i.imgur.com/kZntfPn.png){: .align-center}
+
+![HTB Writer](https://i.imgur.com/kZntfPn.png)
 
 - **Add Comment**
 
@@ -197,7 +197,7 @@ Progress: 145484 / 882244 (16.49%)
 - Accessing `/static` I was surprised by seeing **directory browsing** enabled but no interesting information available there, while `/logout` and `/dashboard` redirects to the main page.
 - Things got interesting when I accessed `/administrative`, which presents the login page below.
 
-![HTB Writer - Admin Login](https://i.imgur.com/KWfbBm7.png){: .align-center}
+![HTB Writer - Admin Login](https://i.imgur.com/KWfbBm7.png)
 
 What called my attention at this moment was the **Bootstrap** logo, so executing `whatweb` once again for this page returned version **4.1.3** which contains some XSS Vulnerabilities but as user interaction is required, I'll skip that for now.
 
@@ -230,19 +230,19 @@ uname=admin&password=admin
 
 As expected, some payloads worked successfully, where we can see that anything with a Length different than 1763 is a success :smile:
 
-![HTB Writer - Burp Intruder](https://i.imgur.com/jEsTiFx.png){: .align-center}
+![HTB Writer - Burp Intruder](https://i.imgur.com/jEsTiFx.png)
 
 Using the first payload in the list (in this case, was `admin'#`) I was able to successfully log on and have access to this administration dashboard.
 
-![HTB Writer - Admin Dashboard](https://i.imgur.com/Sz4rOg9.png){: .align-center}
+![HTB Writer - Admin Dashboard](https://i.imgur.com/Sz4rOg9.png)
 
 Poking around with the administration console, located a **Stories** menu at the left side which allowed me to add, edit or delete currently published stories in the portal and what called attention when adding a new story was the possibility to upload a `*.jpg` file to be used.
 
-![HTB Writer - Dashboard - Add Story](https://i.imgur.com/FkUBtfs.png){: .align-center}
+![HTB Writer - Dashboard - Add Story](https://i.imgur.com/FkUBtfs.png)
 
 Doing a quick test with a real image, later inspecting the published post, noticed that the link to the content is broken, which was created pointing me to `http://writer.htb/static/blog/post/9`. Removing the static portion of the URL, got access to my post, where the image was stored with the same name as uploaded but in the `/img` directory as `/static/img/placeholder.jpg`.
 
-![HTB Writer - Added Story](https://i.imgur.com/nsLanY7.png){: .align-center}
+![HTB Writer - Added Story](https://i.imgur.com/nsLanY7.png)
 
 Reviewing the directory `/static/img` as we found previously I can see it there along with other content already present on the page. As this seems to be generated using a static CMS engine (like Jekyll, Hugo, or similar) we might not get code execution through a fake image upload so we should probably be able to achieve code execution from other methods.
 

@@ -14,12 +14,12 @@ header:
 
 Hello guys!
 
-This week's machine will be **Previse**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [m4lwhere](https://app.hackthebox.eu/users/107145)<!--more-->
+This week's machine will be **Previse**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [m4lwhere](https://app.hackthebox.eu/users/107145) [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Previse](https://i.imgur.com/MAA6AbX.png){: .align-center}
+
+![HTB Previse](https://i.imgur.com/MAA6AbX.png)
 
 Add **Comment**
 
@@ -58,7 +58,7 @@ Nmap done: 1 IP address (1 host up) scanned in 12.16 seconds
 
 Inspecting the page, we can see a "Previse File Storage" login page
 
-![HTB Previse - Previse File Storage Login Page](https://i.imgur.com/XnvhpeW.png){: .align-center}
+![HTB Previse - Previse File Storage Login Page](https://i.imgur.com/XnvhpeW.png)
 
 Checking with `whatweb`
 
@@ -164,15 +164,15 @@ Based on this request I can see a page `/accounts.php`, which displays a form fo
 
 Considering this, configured Burp to **ignore redirects** by replacing responses `302 Found` to `200 OK`, preventing redirects. After doing this the following page was seen in the browser
 
-![HTB Previse - Home - No redirect](https://i.imgur.com/vMilnPY.png){: .align-center}
+![HTB Previse - Home - No redirect](https://i.imgur.com/vMilnPY.png)
 
 After navigating to the Accounts page, found a form to create a user account, which allowed me to successfully create a user called `dummy:P@ssw0rd`
 
-![HTB Previse - Accounts Page](https://i.imgur.com/sWr3RwU.png){: .align-center}
+![HTB Previse - Accounts Page](https://i.imgur.com/sWr3RwU.png)
 
 After creating the account, I was able to successfully enter the system with it and, navigating to Files, noticed that there is a *.zip file containing the site backup, uploaded by the user `newguy`
 
-![HTB Previse - Files Page](https://i.imgur.com/dQZLxxm.png){: .align-center}
+![HTB Previse - Files Page](https://i.imgur.com/dQZLxxm.png)
 
 After downloading the source code and inspecting all pages, one thing that called my attention was a PHP file **invoking a python script** in `logs.php`, as excerpt below:
 

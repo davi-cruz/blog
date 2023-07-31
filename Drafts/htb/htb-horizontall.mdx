@@ -14,12 +14,12 @@ header:
 
 Hello guys!
 
-This week's machine will be **Horizontall**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [Micah](https://app.hackthebox.eu/users/22435). <!--more-->
+This week's machine will be **Horizontall**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [Micah](https://app.hackthebox.eu/users/22435).  [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Horizontall](https://i.imgur.com/ruq2KM8.png){: .align-center}
+
+![HTB Horizontall](https://i.imgur.com/ruq2KM8.png)
 
 add **Comment**!
 
@@ -63,7 +63,7 @@ nmap -p- -Pn -oA allPorts 10.10.11.105
 
 Accessing the page with a browser, we can see a website, the only difference from what we normally see over there is that this website is completely created using JavaScript. So nothing is shown using `curl` or other tools.
 
-![HTB Horizontall - HTTP Website](https://i.imgur.com/4CYplRP.png){: .align-center}
+![HTB Horizontall - HTTP Website](https://i.imgur.com/4CYplRP.png)
 
 Inspecting the rendered page using grep, looking for references, found nothing interesting, besides an HTTPS entry for this same page, not listening (at least not publicly)
 
@@ -220,7 +220,7 @@ Progress: 212376 / 882244 (24.07%)
 
 Starting by the `robots.txt` file, nothing interesting was found, and navigating to `/admin`, found a page for **strapi** Login
 
-![HTB Horizontall - strapi Login Page](https://i.imgur.com/elvyAQG.png){: .align-center}
+![HTB Horizontall - strapi Login Page](https://i.imgur.com/elvyAQG.png)
 
 Searching for this product in Exploit-DB's `searchsploit`, found some entries for 3.0.0 beta versions, that could allow us to take over accounts in an unauthenticated way and, based on this account, get remote code execution on the server.
 
@@ -294,7 +294,7 @@ $ python 50237.py
 [+] New password 'P@ssw0rd' set for user admin@horizontall.htb
 ```
 
-![HTB Horizontall - strapi Admin Panel](https://i.imgur.com/IGt9hHs.png){: .align-center}
+![HTB Horizontall - strapi Admin Panel](https://i.imgur.com/IGt9hHs.png)
 
 Now with active access to the tool, we can use exploit 50238, which requires a JWT token, which was collected from the sign-in request in Burp Suite History.
 
@@ -325,7 +325,7 @@ As we can't use browser in this session, have configured a private key in this b
 - created a folder **.ssh** ** ~ (`/opt/strapi/`) and pasted contents from `id_rsa.pub` to `authorized_keys` file
 - after that, connected using the command `ssh -i id_rsa strapi@horizontall.htb -L 8000:127.0.0.1:8000`, which redirects traffic from local machine at port 8000 to 8000 at destination host, displaying to us the following page
 
-![HTB Horizontall - Laravel page](https://i.imgur.com/XwW7RxT.png){: .align-center}
+![HTB Horizontall - Laravel page](https://i.imgur.com/XwW7RxT.png)
 
 After some research, came across this page at [Laravel - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/laravel), that mentions CVE-2021-3129, which can allow us get root on this box if this version running is `<= 8.4.2`
 

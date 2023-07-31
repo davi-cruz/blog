@@ -21,7 +21,7 @@ last_modified_at: 2021-11-06 16:00:00 -03
 toc: true
 ---
 
-Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel.<!--more-->
+Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel. [more]
 
 Besides having plenty of documentation on how to do this deployment, as well as other community resources like Tech Community and Webinars, I have compiled all the resources I normally review with my customers in their environments.
 
@@ -79,7 +79,7 @@ Before deploying/reviewing your forwarder infrastructure there are some question
 The initial installation can be easily achieved by running the `cef_installer.py` from [Official Github Repository](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF/cef_installer.py) using the command line below, which can be obtained for your environment by accessing the **Common Event Format (CEF)** connector page in Sentinel or simply by replacing the `<workspace id>` and `<workspace secret>` with yours.
 
 :bulb: **Note**: If you don't have python 2.7 in your system you might need to replace `python` with `python3` before executing the line below.
-{: .notice--info}
+
 
 ```bash
 sudo wget -O cef_installer.py https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/DataConnectors/CEF/cef_installer.py && sudo python cef_installer.py <workspace id> <workspace secret>
@@ -193,7 +193,7 @@ One point that is always requested by customers is that after configuring machin
 This happens because the default definitions on the service, listed below, get some facilities and severities stored in some local files without checking the source of the events (line comments and empty removed for simplicity).
 
 :bulb: **Note**: The location you can find in this default configuration varies depending on your Linux distribution. For Ubuntu there's a file named `/etc/rsyslog.d/50-default.conf` while for RHEL based distributions (RHEL, CentOS, Fedora) it is in the main `/etc/rsyslog.conf`.
-{: .notice--info}
+
 
 ```ini
 #Extracted from Ubuntu /etc/rsyslog.d/50-default.conf
@@ -246,7 +246,7 @@ ruleset(name="NewQueue"){
 ```
 
 :bulb: **Note**: For simplicity legacy syslogd syntax was used. You can benefit from a better performance by using a dedicated queue on this ruleset processing, according to rsyslog reference at [RSyslog Documentation - rsyslog](https://www.rsyslog.com/doc/v8-stable/concepts/queues.html), which is also used by Microsoft CEF-VMSS configuration available on [GitHub](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF-VMSS/security-config-omsagent.conf)
-{: .notice--info}
+
 
 Considering you have both Syslog and CEF reception in the same infrastructure you can choose between one of the following scenarios:
 
@@ -302,7 +302,7 @@ At rsyslog, the first file to be processed is `rsyslog.conf`, which normally con
 
 In the configuration below, let's consider that we're forwarding messages in CEF format from an appliance that comes with facility `local4.info`:
 
-<img src="https://i.imgur.com/8HW60a9.png" alt="processing - initial configuration" style="zoom:80%;" />{: .align-center}
+<img src="https://i.imgur.com/8HW60a9.png" alt="processing - initial configuration" style="zoom:80%;" />
 
 - If no changes were made to `rsyslog.conf` or `50-default.conf` to prevent logging from remote hosts, these messages will be stored in the `/var/log/Syslog file.
 - Also, if I there's a match in `95-omsagent.conf` this message will be sent to Log Analytics workspace as raw Syslog.
@@ -315,7 +315,7 @@ To prevent this behavior, as Ofer Shezaf shared in one of the [Security Communit
 Also, we need to ensure that once the messages are forwarded to the CEF listener at TCP/25226 we'll discard them, which can be done by the instruction `stop`. **Stop** drops the messages and they are no longer processed in the message flow.
 
 :bulb: **Note**: You may find some variations of the stop instruction as a tilde (`~`). This came from the legacy syslogd syntax
-{: .notice--info}
+
 
 The configuration will look like this:
 
@@ -327,7 +327,7 @@ if ($rawmsg contains "CEF:") or ($rawmsg contains "ASA-") then {
 }
 ```
 
-<img src="https://i.imgur.com/fTZellZ.png" alt="processing - reordering" style="zoom:80%;" />{: .align-center}
+<img src="https://i.imgur.com/fTZellZ.png" alt="processing - reordering" style="zoom:80%;" />
 
 ### Adjusting `95-omsagent.conf`
 
@@ -358,7 +358,7 @@ sudo su omsagent -c 'python /opt/microsoft/omsconfig/Scripts/OMS_MetaConfigHelpe
 The only thing that cannot be changed at `95-omsagent.conf` file is the forwarding instruction to `@127.0.0.1:25224`.
 
 :bulb: **Note**: In syslogd syntax, a single at-sign (`@`) means UDP while double at sign (`@@`) means TCP.
-{: .notice--info}
+
 
 :warning: **Warning**: In the previously mentioned Deep Dive CEF webinar, Ofer also recommends you change the omsagent configuration to accept messages using TCP. If you follow his recommendation, you also need to adjust any forwarding instruction to double at signs in your `95-omsagent.conf` file, otherwise, the messages won't be sent to Log Analytics.
 {: .notice--warning}
@@ -377,7 +377,7 @@ If you're still noticing ingestion of unnecessary events into your workspace, yo
 
 An uncomplicated way to implement this is creating a file to be processed before the files `60-cef.conf` and `95-omsagent.conf`, in this example named `59-filter-out.conf` but you can use whatever name you want but need to ensure they'll be processed in the right order.
 
-<img src="https://i.imgur.com/gxTHSWA.png" alt="filtering out messages" style="zoom:80%;" />{: .align-center}
+<img src="https://i.imgur.com/gxTHSWA.png" alt="filtering out messages" style="zoom:80%;" />
 
 In this file we'll make use again of the instruction `stop`, dropping the messages we don't want to be forwarded either to Syslog or CEF. The sample below drops any messages containing "test" and matching one of the severities/facilities will be dropped.
 

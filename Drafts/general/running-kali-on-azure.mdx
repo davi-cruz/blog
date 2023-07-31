@@ -23,7 +23,7 @@ Frequentemente, quando precisamos realizar alguma demonstração, ou mesmo se es
 #### Criação
 
 Utilize VMs serie B que possui um custo mais acessível, uma vez que nao dependemos de muita performance o tempo todo para uma máquina **D**
-{: .notice--info}
+
 
 #### Configurações padrão
 
@@ -39,7 +39,7 @@ passwd <username>
 
 Como a imagem do Kali no Azure está um pouco desatualizada, é necessário executar, como root, o comando abaixo para atualizar a chave publica utilizada para se conectar nos repositórios, de acordo com a [documentação oficial](https://www.kali.org/blog/kali-linux-2018-1-release/).
 
-> Note that if you haven’t updated your Kali installation in some time (tsk2), you will like receive a GPG error about the repository key being expired (ED444FF07D8D0BF6). Fortunately, this issue is quickly resolved by running the following as root:
+> Note that if you haven't updated your Kali installation in some time (tsk2), you will like receive a GPG error about the repository key being expired (ED444FF07D8D0BF6). Fortunately, this issue is quickly resolved by running the following as root:
 
 ```bash
 wget -q -O - https://archive.kali.org/archive-key.asc | apt-key add
