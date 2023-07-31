@@ -20,6 +20,8 @@ date: 2021-03-29 12:00:00 -03
 last_modified_at: 2021-04-30 16:00:00 -03
 ---
 
+import { Message } from 'theme-ui';
+
 Often I help customers on deploying CEF/Syslog forwarders in their environments to gather data from Network Appliances and/or other servers and services into Log Analytics, which is consequently available for Azure Sentinel. [more]
 
 Besides having plenty documentation on how to do this deployment, as well as other community resources like Tech Community and Webinars, I have compiled all the resources I normally review with my customers during this deployment or revision in their environments.
@@ -301,9 +303,9 @@ The only thing that cannot be changed at `95-omsagent.conf` file is the forwardi
 
 :bulb: **Note**: In syslogd syntax a single at sign (`@`) means UDP while double at sign (`@@`) means TCP.
 
-
+<Message>
 :warning: **Warning**: In the previously mentioned Deep Dive CEF webinar, Ofer also recommend you change the omsagent configuration to accept messages using TCP. If you follow his recommendation, you also need to adjust any forwarding instruction to double at signs in your `95-omsagent.conf` file, otherwise the messages won't be sent to Log Analytics.
-{: .notice--warning}
+</Message>
 
 ### Filtering out events
 

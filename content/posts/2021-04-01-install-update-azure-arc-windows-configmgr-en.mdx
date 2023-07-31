@@ -18,6 +18,9 @@ tags:
 - ConfigMgr
 title: 'Azure Arc enabled Servers: Deployment and Update using Configuration Manager'
 ---
+
+import { Message } from 'theme-ui';
+
 In this post I'll be guiding you through the process of deploying and updating Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM). [more]
 
 The process is pretty simple, but some small tips are shared to help you to make the most of this powerful configuration management solution for this task :smile:.
@@ -105,8 +108,9 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
 %windir%\System32\WindowsPowerShell\v1.0\powershell.exe -File .\Install-AzureArcMECM.ps1
 ```
 
+<Message>
 :bulb: **Tip**: Fill in the other requested information for this application, which will enrich the application catalog and make it easier to administer it later.
-{: .notice--primary}
+</Message>
 
 ![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png)
 
@@ -134,8 +138,9 @@ After creating this application, we need to adjust a few details so it can work 
 
 ![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png)
 
-  :warning: **Alert**: Is important that this script only return an output if the software is installed. Any output is interpreted by ConfigMgr as installed.
-  {: .notice--warning}
+<Message>
+:warning: **Alert**: Is important that this script only return an output if the software is installed. Any output is interpreted by ConfigMgr as installed.
+</Message>
 
 ```powershell
 # Detection Method: Returns the installed version if properly installed

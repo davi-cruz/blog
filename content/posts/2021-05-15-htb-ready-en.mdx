@@ -14,6 +14,8 @@ tags:
 title: 'Walktrough: HTB Ready'
 ---
 
+import { Link } from "gatsby"
+
 Hello guys!
 
 This week's machine will be **Ready**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu), created by [bertolis](https://app.hackthebox.eu/users/27897). [more]
@@ -58,7 +60,7 @@ Nmap done: 1 IP address (1 host up) scanned in 16.65 seconds
 
 ### 5080/TCP - HTTP Service
 
-As we can see in `nmap` output, a GitLab Server Community is running. Similar to [Laboratory]({% post_url 2021-04-17-htb-laboratory %}), proceeded with an account creation to have access to public repositories in this server that could help us proceed in this box.
+As we can see in `nmap` output, a GitLab Server Community is running. Similar to <Link to="/en-US/walkthrough/htb-laboratory">**Laboratory**</Link>, proceeded with an account creation to have access to public repositories in this server that could help us proceed in this box.
 
 After account creation, no repository was found but noticed that the running GitLab Server version was **11.4.7**, as we can see in the image below.
 
@@ -111,9 +113,9 @@ After initial shell, started enumeration using `linenum.sh`, where the following
 
 - Obtained the GitLab Server credentials dump, where the user `root` is the only one with privileges, which has the password hash below:
 
-  | username | e-mail            | admin | hash                                                         |
-  | -------- | ----------------- | ----- | ------------------------------------------------------------ |
-  | root     | admin@example.com | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
+| username | e-mail            | admin | hash                                                         |
+| -------- | ----------------- | ----- | ------------------------------------------------------------ |
+| root     | admin@example.com | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
 Based on the information above, first thing tried was to check the required privileges to read `user.txt`, where we identified that `git` user had access, so we've collected it.
 

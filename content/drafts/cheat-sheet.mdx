@@ -1,35 +1,24 @@
 ---
 ---
 
+import { Message } from 'theme-ui';
+
 ## Text call-out
 
 ```markdown
-{% capture updated %}
-
+<Message>
 :arrows_clockwise: **Este post foi atualizado!**
 
-Voce pode encontrar a versão mais recente deste post no link [Microsoft Sentinel: Configuração do Log Forwarder [Atualizado]]({% post_url 2022-09-30-rsyslog-sentinel-log-forwarder-updated %})
-
-{% endcapture %}
-
-<div>
-{{ updated | markdownify }}
-</div>{: .notice--success}
+Voce pode encontrar a versão mais recente deste post no link <Link to='/en-US/azure-sentinel/rsyslog-sentinel-log-forwarder-updated'>**Microsoft Sentinel: Configuração do Log Forwarder**</Link>
+<Message>
 ```
 
-Resutado:
-
-{% capture updated %}
-
+Resultado:
+<Message>
 :arrows_clockwise: **Este post foi atualizado!**
 
-Voce pode encontrar a versão mais recente deste post no link [Microsoft Sentinel: Configuração do Log Forwarder [Atualizado]]({% post_url 2021-02-06-htb-doctor.md %})
-
-{% endcapture %}
-
-<div>
-{{ updated | markdownify }}
-</div>{: .notice--success}
+Voce pode encontrar a versão mais recente deste post no link <Link to='/en-US/azure-sentinel/rsyslog-sentinel-log-forwarder-updated'>**Microsoft Sentinel: Configuração do Log Forwarder**</Link>
+<Message>
 
 ## Tip 2
 

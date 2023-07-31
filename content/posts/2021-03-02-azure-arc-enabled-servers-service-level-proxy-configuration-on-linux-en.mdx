@@ -7,11 +7,14 @@ header:
 language: en-US
 namespace: azure-arc-enabled-servers-service-level-proxy-configuration-on-linux
 tags:
-- Azure
-- Azure Arc
-- Linux
-title: 'Azure Arc enabled Servers: Service-level proxy configuration on Linux'
+  - Azure
+  - Azure Arc
+  - Linux
+title: "Azure Arc enabled Servers: Service-level proxy configuration on Linux"
 ---
+
+import { Message } from "theme-ui";
+
 Sometimes customers ask for help to configure proxy for internet services in some specific services, and this is no different with Azure Arc
 
 In this post, I'll guide you on how to configure this for Linux, without configuring system-wide. [more]
@@ -65,7 +68,7 @@ Environment=https_proxy=http://vmlx01:3128
 sudo systemctl daemon-reexec
 sudo systemctl restart extd.service himdsd.service gcad.service
 ```
-  
+
 - Also is necessary to add the proxy to the `azcmagent` wrapper, to make the command `azcmagent connect` work properly in the system. This is achieved y adding a line `export https_proxy=<proxyserver>` right below the commented message that a specific line should not be removed in the file located at `/opt/azcmagent/bin/azcmagent`, as the sample below:
 
 ```bash
@@ -77,7 +80,7 @@ export https_proxy=http://vmlx01:3128
 [...]
 ```
 
-After making these changes, you should see the following line on your logs, which is proof that the service is using the correct proxy configuration inside the  `/var/opt/azcmagent/log/himds.log`
+After making these changes, you should see the following line on your logs, which is proof that the service is using the correct proxy configuration inside the `/var/opt/azcmagent/log/himds.log`
 
 ```plaintext
 time="yyyy-MM-dd02T17:34:07Z" level=debug msg="Using Https Proxy: http://vmlx01:3128"
@@ -91,8 +94,9 @@ To simplify configuration, I've created one script inspired on `azcmagent_proxy`
 
 This could be useful to you not only to define proxy settings for Azure Arc enabled Linux Servers but also for any service unities you run in your workloads :smile:
 
-:warning: **Alert**:
-As these changes are not global, other services installed by using Azure Extensions (Native or Custom ones) might require additional changes to make them work with the default proxy or to also make the same configuration to their services.
-{: .notice--warning}
+<Message>
+  :warning: **Alert**:
+  As these changes are not global, other services installed by using Azure Extensions (Native or Custom ones) might require additional changes to make them work with the default proxy or to also make the same configuration to their services.
+</Message>
 
 HTH!

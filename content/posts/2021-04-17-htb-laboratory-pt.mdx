@@ -14,6 +14,8 @@ tags:
 title: 'Walktrough: HTB Laboratory'
 ---
 
+import { Link } from 'gatsby';
+
 Olá pessoal!
 
 A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268).  [more]
@@ -285,17 +287,17 @@ $ tree -a -I '.git'
 .
 ├── create_gitlab.sh
 ├── dexter
-│   ├── recipe.url
-│   ├── .ssh
-│   │   ├── authorized_keys
-│   │   └── id_rsa
-│   └── todo.txt
+│   ├── recipe.url
+│   ├── .ssh
+│   │   ├── authorized_keys
+│   │   └── id_rsa
+│   └── todo.txt
 └── README.md
 
 2 directories, 6 files
 ```
 
-Assim como na máquina [Luanne]({% post_url 2021-03-27-htb-luanne %}), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
+Assim como na máquina <Link to='/walkthrough/htb-laboratory'>**Luanne**</Link>, realizado a conversão da chave para RSA, utilizando os comandos abaixo:
 
 ```bash
 $ chmod 600 id_rsa
