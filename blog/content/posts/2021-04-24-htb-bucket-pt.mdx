@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Bucket'
 
 Olá pessoal!
 
-A máquina desta semana será **Bucket**, outra máquina classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [MrR3boot](https://app.hackthebox.eu/users/13531).<!--more-->
+A máquina desta semana será **Bucket**, outra máquina classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [MrR3boot](https://app.hackthebox.eu/users/13531). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Bucket](https://i.imgur.com/KEhyzUW.png){: .align-center}
+
+![HTB Bucket](https://i.imgur.com/KEhyzUW.png)
 
 Particularmente achei essa máquina bem legal, onde tive a oportunidade de "brincar" um pouco com os serviços de armazenamento da AWS, mesmo que em uma instância local para desenvolvedores.
 
@@ -129,11 +129,11 @@ Como a última chamada (`curl -L http://s3.bucket.htb/shell/`) retornou o conte�
 
 Pesquisando um pouco pude chegar à conclusão de que estávamos utilizando um emulador de storage da AWS, possivelmente uma instancia do [Localstack](https://github.com/localstack/localstack), muito popular entre desenvolvedores.
 
-![DynamoDB Web Shell - Bucket HTB](https://i.imgur.com/VXFAvpG.png){: .align-center}
+![DynamoDB Web Shell - Bucket HTB](https://i.imgur.com/VXFAvpG.png)
 
 Brincando com alguns dos exemplos da página, consegui listar algumas informações da instancia (ListTables e DescribeTable), conforme abaixo, onde podemos listar algumas informações como a região do serviço (`us-east-1`) e uma tabela chamada `users` no DynamoDB, assim como o seu respectivo resource name `arn:aws:dynamodb:us-east-1:000000000000:table/users`.
 
-![DynamoDB Web Shell - List - Bucket HTB](https://i.imgur.com/IkavRee.png){: .align-center}
+![DynamoDB Web Shell - List - Bucket HTB](https://i.imgur.com/IkavRee.png)
 
 Considerando que estamos falando de uma instância do LocalStack, descobri que é possível utilizar o [awscli](https://aws.amazon.com/cli), utilitário de linha de comando da AWS, para se conectar à esta instância local, conforme post [Local Development with AWS on LocalStack (reflectoring.io)](https://reflectoring.io/aws-localstack/).
 
@@ -427,7 +427,7 @@ drwxr-x---+ 4 root root 4096 Feb 10 12:29 ..
 -rw-r--r--  1 root root 1870 Feb 26 18:51 result.pdf
 ```
 
-![Bucket HTB - PoC](https://i.imgur.com/BQIYPiy.png){: .align-center}
+![Bucket HTB - PoC](https://i.imgur.com/BQIYPiy.png)
 
 Uma vez que conseguimos renderizar o conteúdo desejado, precisamos encontrar uma forma de incluir arquivos na página renderizada e que resulta no PDF, de modo a dar continuidade na exploração.
 

@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Tenet'
 
 Hello guys!
 
-This week's machine will be **Tenet**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [egotisticalSW](https://app.hackthebox.eu/users/94858).<!--more-->
+This week's machine will be **Tenet**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [egotisticalSW](https://app.hackthebox.eu/users/94858). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Tenet](https://i.imgur.com/vouXrOD.png){: .align-center}
+
+![HTB Tenet](https://i.imgur.com/vouXrOD.png)
 
 Before starting the resolution of this box, the image above called my attention, where I searched about TENET on the Internet and found about the Sator Square, where we have a palindrome made up of the 5 Latin words: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, forming a square being TENET in the center lines. Is highly probable that these words will appear during its resolution :smile:.
 
@@ -87,13 +87,13 @@ Accessing the page again, checking that it was properly rendered now, and then u
 
 As accessing the webpage again from the URL `http://10.10.10.223/wordpress` errors are shown, as the image below, accessed the address seen in source code (`http://tenet.htb`) full blog is displayed.
 
-![HTB Tenet - 80/TCP](https://i.imgur.com/7fwmYW7.png){: .align-center}
+![HTB Tenet - 80/TCP](https://i.imgur.com/7fwmYW7.png)
 
 In the WordPress instance available at `http://tenet.htb/wordpress`, noticed some posts where one of them was mentioning an application called **Rotas**, which could contain some item we could abuse to get an initial foothold in this box.
 
 > This Is Where Our Worlds Collide
-> We’re looking for beta testers of our new time-management software, ‘Rotas’
-> ‘Rotas’ will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
+> We're looking for beta testers of our new time-management software, ‘Rotas'
+> ‘Rotas' will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
 
 Things get more interesting in an older post, where user **neil** comments the content below:
 
@@ -101,7 +101,7 @@ Things get more interesting in an older post, where user **neil** comments the c
 
 Trying to access the file `sator.php` from the directory published under the DNS name hasn't returned anything, but I've succeeded using the machine IP address, getting the output below:
 
-![HTB Tenet - sator.php](https://i.imgur.com/46AX0aF.png){: .align-center}
+![HTB Tenet - sator.php](https://i.imgur.com/46AX0aF.png)
 
 As we have a backup of this file somewhere and backups are often renamed as `old` or `bak`, after a few attempts I have found the file `sator.php.bak` in the same directory as the previous, with the following content:
 

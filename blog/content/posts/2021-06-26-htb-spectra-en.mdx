@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Spectra'
 
 Hello guys!
 
-This week's machine will be **Spectra**, another easy-rated box from [Hack The Box](https://www.hackthebox.eu), created by [egre55](https://app.hackthebox.eu/users/1190).<!--more-->
+This week's machine will be **Spectra**, another easy-rated box from [Hack The Box](https://www.hackthebox.eu), created by [egre55](https://app.hackthebox.eu/users/1190). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Spectra](https://i.imgur.com/OqO1ZZh.png){: .align-center}
+
+![HTB Spectra](https://i.imgur.com/OqO1ZZh.png)
 
 ## Enumeration
 
@@ -58,7 +58,7 @@ After first access to this service, we notice a quite simple HTML page containin
 
 While inspecting the source code of this page, we can see that both links refer to assets located at `spectra.htb` domain, which was later added to the local hosts file to correct name resolution.
 
-![Spectra HTB - Issue Tracking page](https://i.imgur.com/ady30IK.png){: .align-center}
+![Spectra HTB - Issue Tracking page](https://i.imgur.com/ady30IK.png)
 
 ```html
 <h1>Issue Tracking</h1>
@@ -71,9 +71,9 @@ While inspecting the source code of this page, we can see that both links refer 
 
 Accessing both links, I have noticed that these were WordPress websites but only the first (*Software Issue Tracker*) was working properly while the second (*Test*), was displaying a database connection error.
 
-![HTB Spectra - Software Issue Tracker](https://i.imgur.com/QRXqNtu.png){: .align-center}
+![HTB Spectra - Software Issue Tracker](https://i.imgur.com/QRXqNtu.png)
 
-![HTB Spectra - Testing](https://i.imgur.com/lqTri7v.png){: .align-center}
+![HTB Spectra - Testing](https://i.imgur.com/lqTri7v.png)
 
 #### WPScan
 
@@ -90,7 +90,7 @@ The following information was identified for the `main` (*Software Issue Trackin
 
 Proceeding with a manual enumeration, also noticed that for *Testing* website there's no redirect to `index.php`, allowing us to list the directory content, allowing us to spot an interesting file: **`wp-config.php.save`**.
 
-![image-20210515144447118](https://i.imgur.com/0pPowA4.png){: .align-center}
+![image-20210515144447118](https://i.imgur.com/0pPowA4.png)
 
 As this file isn't with the `*.php` extension, it won't be interpreted by the webserver, allowing us to download it, as the command line below.
 
@@ -135,7 +135,7 @@ ERROR 1130 (HY000): Host '10.10.10.10' is not allowed to connect to this MySQL s
 
 As credential reuse is a common thing, tried to authenticate to WordPress with the password found for the username `administrator` and had success in it!
 
-![HTB Spectra - Wordpress](https://i.imgur.com/7k3nxVN.png){: .align-center}
+![HTB Spectra - Wordpress](https://i.imgur.com/7k3nxVN.png)
 
 ## Initial Access
 
@@ -185,7 +185,7 @@ $ zip evilplugin.zip evilplugin.php exploit.php
   
 - Once created, accessed the WordPress portal, authenticated with the administrative account and, from the left side, selected the options *Plugins* > *Add New* and, at the top of the page, hit the button *Upload Plugin*
 
-![HTB Spectra - Upload evilplugin.zip](https://i.imgur.com/UlBkZNE.png){: .align-center}
+![HTB Spectra - Upload evilplugin.zip](https://i.imgur.com/UlBkZNE.png)
 
 - Initialize the listener according to the configured payload. In our case, I've started a `netcat` listener using the command line below
 
@@ -195,7 +195,7 @@ nc -lnvp 4443
 
 - Selected the zip file and hit the button *Install Now*
 
-![HTB Spectra - Installed evilplugin.zip](https://i.imgur.com/sNlvuWi.png){: .align-center}
+![HTB Spectra - Installed evilplugin.zip](https://i.imgur.com/sNlvuWi.png)
 
 - As soon as the install request is processed, is important to issue the request to the file location under the WordPress folder structure. The command line below uses `curl` to make the request, but you could use your browser as well.
 
@@ -220,7 +220,7 @@ nginx@spectra / $
 ```
 
 :bulb: **Tip:** There are several ways to achieve the same outcome not using the Metasploit framework. You could inject code into a Theme file or even use other scripts/tools available like [n00py/WPForce: WordPress Attack Suite (github.com)](https://github.com/n00py/WPForce), which automates this and other tasks frequently used while compromising WordPress sites.
-{: .notice--info}
+
 
 ## User flag
 

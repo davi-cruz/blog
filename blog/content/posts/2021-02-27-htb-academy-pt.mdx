@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Academy'
 
 Olá pessoal!
 
-A máquina desta semana será **Academy**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [egre55](https://app.hackthebox.eu/users/1190) e [mrb3n](https://app.hackthebox.eu/users/2984).<!--more-->
+A máquina desta semana será **Academy**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [egre55](https://app.hackthebox.eu/users/1190) e [mrb3n](https://app.hackthebox.eu/users/2984). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-{: .notice--info}
 
-![HTB Academy](https://i.imgur.com/aTyV5W3.png){: .align-center}
+
+![HTB Academy](https://i.imgur.com/aTyV5W3.png)
 
 ## Enumeração
 
@@ -53,7 +53,7 @@ Nmap done: 1 IP address (1 host up) scanned in 34.43 seconds
 
 Verificando este serviço do scan do `nmap`, notei que a página contém um redirect para o host **academy.htb**, que é provavelmente o nome pelo qual esta máquina responde e que minha máquina não conseguiu resolver. Após adicioná-lo no meu arquivo `/etc/hosts`, foi possível navegar para a página abaixo, que contém dois links: um para registro e outro para login na página do serviço HTB Academy.
 
-![HTB Academy - 80/TCP](https://i.imgur.com/j4KASf9.png){: .align-center}
+![HTB Academy - 80/TCP](https://i.imgur.com/j4KASf9.png)
 
 Como o código fonte da página não continha nada oculto, segui com a criação de uma conta para testes (`dummy:P@ssword`) para obter algum acesso no serviço. Durante a criação da conta notei algo interessante enviado no POST request, onde um campo oculto do formulário enviava o parametro **roleid**, definindo seu valor para **0**.
 
@@ -80,7 +80,7 @@ Vamos dar continuidade com os valores padrão por enquanto embora já saibamos d
 
 Depois de acessar o serviço com a credencial recentemente criada, notei que o usuário é capaz de ver o catálogo de serviços, com alguns créditos pré-carregados, porém nenhuma operação (unlock) foi possível uma vez que a API estava indisponível (`http://academy.htb/api/modules/unlock`), retornando erro HTTP 404.
 
-![HTB Academy - Logged in](https://i.imgur.com/udKQN3c.png){: .align-center}
+![HTB Academy - Logged in](https://i.imgur.com/udKQN3c.png)
 
 ### Gobuster
 
@@ -118,13 +118,13 @@ Progress: 48339 / 220561 (21.92%)in.php (Status: 200)
 
 Acessando `admin.php` notei que a tela de logon se parece bastante com a tela de login anterior, porém nossas credenciais de testes não funcionaram. Lembrando que temos uma oportunidade de adulterar detalhes da criação do usuário, decidi por criar uma nova conta, desta vez alterando o parametro **roleid** substituindo o valor 0 no request por 1. Com esta nova conta, cujo roleid=**1**, consegui acessar a área restrita, onde o conteúdo abaixo doi exibido:
 
-![HTB Academy - Admin Page](https://i.imgur.com/fCI3aBZ.png){: .align-center}
+![HTB Academy - Admin Page](https://i.imgur.com/fCI3aBZ.png)
 
 Embora não possua nenhuma informação oculta no fonte, o que chamou atenção foi o host **dev-staging-01.academy.htb**, que possivelmente também encontra-se em execução nesta máquina.
 
 Após adicionar este host no arquivo hosts sob o mesmo endereço IP da máquina, o conteúdo abaixo foi exibido, que é um framework para tratativa de erros no PHP que permite aos desenvolvedores debugar seu código, mas neste caso estava aberto e vazando uma série de informações como credenciais e variáveis de ambiente.
 
-![HTB Academy - DevStaging](https://i.imgur.com/qzcJmuV.png){: .align-center}
+![HTB Academy - DevStaging](https://i.imgur.com/qzcJmuV.png)
 
 O que mais chamou a atenção dentre os dados vazados foram as credenciais de MySQL e App_key do Laravel, que podem nos levar a um acesso inicial nesta máquina.
 

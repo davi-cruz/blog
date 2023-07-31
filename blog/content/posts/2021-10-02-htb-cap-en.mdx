@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Cap'
 
 Hello guys!
 
-This week's machine will be **Cap**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [InfoSecJack](https://app.hackthebox.eu/users/52045).<!--more-->
+This week's machine will be **Cap**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [InfoSecJack](https://app.hackthebox.eu/users/52045). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Cap](https://i.imgur.com/EP6oOn2.png){: .align-center}
+
+![HTB Cap](https://i.imgur.com/EP6oOn2.png)
 
 This box was very easy and demonstrates why we have to always secure communication while accessing services, which was the way we could get the credentials to escalate privileges to root.
 
@@ -150,27 +150,27 @@ Nmap done: 1 IP address (1 host up) scanned in 137.56 seconds
 
 Observing the published page, we can see a monitoring dashboard with some options on the left.
 
-![HTB Cap - Security Dashboard](https://i.imgur.com/EVJpbpL.png){: .align-center}
+![HTB Cap - Security Dashboard](https://i.imgur.com/EVJpbpL.png)
 
 Inspecting the options provided in the left pane, the only interesting feature was the *Security Snapshot (5 Second PCAP + Analysis)*, which summarizes the package count received in the last interval. The panel option redirects us to `http://10.10.10.245/capture` and right after the 5-second interval, we're redirected to the summarized data, as seen in the address bar `http://10.10.10.245/data/1`. On this page, you can also download the `pcap` file generated during the capture, which can be analyzed by yourself using a command line or graphical tools like Wireshark.
 
-![HTB Cap - Security Snapshot](https://i.imgur.com/YaUXZ83.png){: .align-center}
+![HTB Cap - Security Snapshot](https://i.imgur.com/YaUXZ83.png)
 
 An interesting point is that when I have requested another capture, the redirected URL provided was sequential (`http://10.10.10.245/data/2`), which implies that we could be able to see previous captures as well.
 
 Considering that the counter is incrementing, we might have capture registered at "0" so manually changed the URL in the address bar and the stats below were displayed, indicating that we had some conversation and possibly, if communication is unencrypted, we would be able to obtain sensitive data from it.
 
-![HTB Cap - Security Snapshot "zero"](https://i.imgur.com/WWyXVKE.png){: .align-center}
+![HTB Cap - Security Snapshot "zero"](https://i.imgur.com/WWyXVKE.png)
 
 Analyzing its content using Wireshark, started analyzing the conversation statistics (*Statistics* > *Conversations*), we can see below, having 3 HTTP conversations (80/TCP) and one FTP (21/TCP)
 
-![HTB Cap - PCAP Statistics](https://i.imgur.com/XR922yh.png){: .align-center}
+![HTB Cap - PCAP Statistics](https://i.imgur.com/XR922yh.png)
 
 Analyzing each TCP Stream the most interesting one was the last (stream 3) which, in this FTP communication, we can see the credentials provided for user **nathan** and the retrieved file `notes.txt`, that could contain important information to us during this box resolution
 
 > nathan:Buck3tH4TF0RM3!
 
-![HTB Cap - PCAP FTP Stream](https://i.imgur.com/DQHsTTw.png){: .align-center}
+![HTB Cap - PCAP FTP Stream](https://i.imgur.com/DQHsTTw.png)
 
 ## Initial access and User flag
 

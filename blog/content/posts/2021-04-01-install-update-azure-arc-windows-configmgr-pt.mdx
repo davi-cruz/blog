@@ -19,12 +19,12 @@ tags:
 title: "Azure Arc enabled Servers: Instala\xE7\xE3o e Atualiza\xE7\xE3o via Configuration\
   \ Manager"
 ---
-Neste post compartilho o procedimento de como realizar o deploy e atualização do Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM).<!--more-->
+Neste post compartilho o procedimento de como realizar o deploy e atualização do Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM). [more]
 
 O processo é bastante simples, porém algumas pequenas dicas são compartilhadas para que possa obter o máximo do ConfigMgr para esta atividade :smile:.
 
 :information_source: **Nota**: Os scripts compartilhados neste post também poderão ser utilizado a partir de outras ferramentas de gestão de configuração, porém ajustes podem ser necessários para que funcionem adequadamente de acordo com o método utilizado.
-{: .notice--info}
+
 
 ## Azure Arc enabled Servers
 
@@ -90,15 +90,15 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
 
 - Seguir com a criação do application no console do MECM acessando *Software Library* > *Application Management* > *Applications* e selecionar a opção *Create Application* no ribbon ou no menu de contexto de *Application*.
 
-![Creating an Application on MECM](https://i.imgur.com/MDPQyn8.png){: .align-center}
+![Creating an Application on MECM](https://i.imgur.com/MDPQyn8.png)
 
 - Selecione o arquivo caminho do `*.msi` no File Share onde foi armazenado, de acordo com o pré-estabelecido em seu ambiente.
 
-![Create Application Wizard - General](https://i.imgur.com/n67kQcj.png){: .align-center}
+![Create Application Wizard - General](https://i.imgur.com/n67kQcj.png)
 
 - Clique em *Next* para avançar após validar os dados do aplicativo a ser instalado.
 
-![Create Application Wizard - Important Information](https://i.imgur.com/Gq3fUSM.png){: .align-center}
+![Create Application Wizard - Important Information](https://i.imgur.com/Gq3fUSM.png)
 
 - Em *General Information*, substitua a linha de comando pré-configurada com a linha de comando abaixo para que a instalação ocorra a partir do script PowerShell baixado e clique em *Next*.
 
@@ -109,31 +109,31 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
   :bulb: **Dica**: Complemente nesta janela também as informações solicitadas para enriquecer os dados de catálogo para este aplicativo e simplificar sua gestão posterior.
   {: .notice--primary}
 
-![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png){: .align-center}
+![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png)
 
 - Revise as informações configuradas e clique em *Next* para criar o application.
 
-![Create Application Wizard - Summary](https://i.imgur.com/KvqOlDK.png){: .align-center}
+![Create Application Wizard - Summary](https://i.imgur.com/KvqOlDK.png)
 
 - Após concluída a criação, a seguinte mensagem de sucesso será exibida. Clique em *Close* para fechá-la.
 
-![Create Application Wizard - Completion](https://i.imgur.com/yGclbOg.png){: .align-center}
+![Create Application Wizard - Completion](https://i.imgur.com/yGclbOg.png)
 
 Após criar o application, precisaremos ajudar alguns outros detalhes para que funcione de forma mais adequada, conforme abaixo:
 
 - Acesse as propriedades do deployment type selecionando o aplicativo > clique na aba *Deployment Types* > clique com o botão direito no deployment existente e selecione a opção *Properties*.
 
-![ConfigMgr Console - Deployment Type Properties](https://i.imgur.com/P0pcl1v.png){: .align-center}
+![ConfigMgr Console - Deployment Type Properties](https://i.imgur.com/P0pcl1v.png)
 
 - Na aba *Detection Method*, selecione a opção *Use a custom script to detect the presence of this deployment type* e clique no botão *Edit*.
 
-![Deployment Type Properties - Detection Method](https://i.imgur.com/DhCdDpp.png){: .align-center}
+![Deployment Type Properties - Detection Method](https://i.imgur.com/DhCdDpp.png)
 
 - Selecione a opção *Powershell* e cole o snippet abaixo, clicando em *OK* para concluir.
 
   - Este script de detecção verificará não apenas se o agente está devidamente instalado, mas se também estará conectado ao Azure Arc ao término do processo de instalação.
 
-![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png){: .align-center}
+![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png)
 
   :warning: **Alerta**: É importante que o script apenas retorne algum output se o aplicativo estiver instalado. Qualquer output retornado o ConfigMgr interpreta como instalado.
   {: .notice--warning}
@@ -156,7 +156,7 @@ catch{
 
 - Na aba *Requirements* é importante também configurarmos as versões de Sistema Operacional que desejamos que este pacote seja instalado. Isso também evita que deployments acidentais venham instalar o produto em desktops Windows, o que não é suportado.
 
-![Deployment Type Properties - Requirements - Create Requirement](https://i.imgur.com/GblkiT8.png){: .align-center}
+![Deployment Type Properties - Requirements - Create Requirement](https://i.imgur.com/GblkiT8.png)
 
 - Após ajustes, clicar em *OK* para finalizar a configuração.
 

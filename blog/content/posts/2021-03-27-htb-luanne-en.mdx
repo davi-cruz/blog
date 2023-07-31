@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Luanne'
 
 Hello everyone!
 
-The box of this week will be **Luanne**, another easy-rated Linux box from  [Hack The Box](https://www.hackthebox.eu), created by [polarbearer](https://app.hackthebox.eu/users/159204).<!--more-->
+The box of this week will be **Luanne**, another easy-rated Linux box from  [Hack The Box](https://www.hackthebox.eu), created by [polarbearer](https://app.hackthebox.eu/users/159204). [more]
 
 :information_source: **Info**: Write-ups for Hack The Box are always posted as soon as machines get retired.
-{: .notice--info}
 
-![HTB Luanne](https://i.imgur.com/kvz2jtO.png){: .align-center}
+
+![HTB Luanne](https://i.imgur.com/kvz2jtO.png)
 
 ## Enumeration
 
@@ -64,7 +64,7 @@ Nmap done: 1 IP address (1 host up) scanned in 208.02 seconds
 
 Accessing the root page of this webservice an authentication was requested, to which we still don't have any credentials to try. Something that called attention is a link to 3000/TCP on localhost, once we're accessing this website on 80/TCP, which shows us that this page is being published using some kind of proxy.
 
-![HTB Luanne - 3000/TCP](https://i.imgur.com/aw7AA3G.png){: .align-center}
+![HTB Luanne - 3000/TCP](https://i.imgur.com/aw7AA3G.png)
 
 According to `nmap` scan, there's an entry on `robots.txt`. Validating its contents, we found some interesting information about a virtual directory called `/weather`.
 
@@ -117,7 +117,7 @@ Besides being possible to query all the information in this API, I couldn't iden
 
 Searching for `Medusa httpd 1.12 (Supervisor process manager)` I have found that this service could be an application called  [**Supervisor**](https://github.com/Supervisor/supervisor). Searching for its default credentials on the project page, I have found **user:123**, which allowed me to access the portal as below:
 
-![HTB Luanne - Supervisor](https://i.imgur.com/dG7oBjW.png){: .align-center}
+![HTB Luanne - Supervisor](https://i.imgur.com/dG7oBjW.png)
 
 At first sight, we can identify the running version, which is **4.2.0**, and that, unfortunately, has no known vulnerability/working PoC disclosed.
 
@@ -134,7 +134,7 @@ As I could understand, the API we were using being published on 80/TCP is an app
 Once we're aware that this API was developed in LUA, after some research I came across [this article](https://www.syhunt.com/en/index.php?n=Articles.LuaVulnerabilities), which describes some ways to abuse applications written in LUA using code injection and, after a few tests, I have found something that could lead us to initial access on this machine.
 
 :bulb: **Note**: The secret is in the content encoding sent on the requests. The easier way I have found was to use `curl` with `--data-urlencode`, simplifying the character escaping on the request.
-{: .notice--info}
+
 
 The final injection, which later allowed me to get an RCE is listed below:
 

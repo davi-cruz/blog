@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Knife'
 
 Hello guys!
 
-This week's machine will be **Knife**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrKN16H](https://app.hackthebox.eu/users/98767).<!--more-->
+This week's machine will be **Knife**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrKN16H](https://app.hackthebox.eu/users/98767). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Knife](https://i.imgur.com/3IO9vBj.png){: .align-center}
+
+![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
 This was a pretty straightforward box where you must pay attention to the details (in the case of the vulnerable web server) and always go for the low-hanging fruits first like abusing the `sudo` permissions user already have.
 
@@ -57,7 +57,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.42 seconds
 
 Accessing the website we can see a simple institutional page from a health company, as below:
 
-![HTB Knife - HTTP Service](https://i.imgur.com/oAbssxJ.png){: .align-center}
+![HTB Knife - HTTP Service](https://i.imgur.com/oAbssxJ.png)
 
 After accessing the website, gathered some information about the page, its components, and the server from which it was published using `whatweb,` and what called attention was the `X-Powered-By` header pointing to a **dev** version of **PHP 8.1.0**.
 

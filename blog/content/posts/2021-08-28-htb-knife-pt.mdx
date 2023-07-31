@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Knife'
 
 Olá!
 
-A máquina desta semana será **Knife**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [MrKN16H](https://app.hackthebox.eu/users/98767).<!--more-->
+A máquina desta semana será **Knife**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [MrKN16H](https://app.hackthebox.eu/users/98767). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Knife](https://i.imgur.com/3IO9vBj.png){: .align-center}
+
+![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
 Esta máquina foi bem simples, onde você deve prestar atenção aos detalhes (no caso do webserver vulnerável) e sempre ir pelo caminho mais simples como abusar das permissões de `sudo` que o usuário já possui.
 
@@ -57,7 +57,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.42 seconds
 
 Acessando o website podemos ver uma simples página institucional de uma companhia do setor de saúde, conforme abaixo:
 
-![HTB Knife - HTTP Service](https://i.imgur.com/oAbssxJ.png){: .align-center}
+![HTB Knife - HTTP Service](https://i.imgur.com/oAbssxJ.png)
 
 Após acessar a página, obtido algumas informações adicionais, os componentes utilizados e qual o webserver em execução com ajuda do `whatweb` e o que chamou a atenção foi o cabeçalho `X-Powered-By` que aponta para uma versão de desenvolvimento do **PHP 8.1.0**.
 

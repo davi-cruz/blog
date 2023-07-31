@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Luanne'
 
 Olá pessoal!
 
-A máquina desta semana será **Luanne**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), , criada por [polarbearer](https://app.hackthebox.eu/users/159204).<!--more-->
+A máquina desta semana será **Luanne**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), , criada por [polarbearer](https://app.hackthebox.eu/users/159204). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-{: .notice--info}
 
-![HTB Luanne](https://i.imgur.com/kvz2jtO.png){: .align-center}
+
+![HTB Luanne](https://i.imgur.com/kvz2jtO.png)
 
 ## Enumeração
 
@@ -64,7 +64,7 @@ Nmap done: 1 IP address (1 host up) scanned in 208.02 seconds
 
 Ao acessar a página inicial do serviço foi solicitada autenticação, para a qual não temos nenhum tipo de credencial até o momento. Um ponto que chama a atenção é o link para a porta 3000/TCP do localhost, sendo que estamos acessando de uma porta 80/TCP, provavelmente através de um proxy.
 
-![HTB Luanne - 3000/TCP](https://i.imgur.com/aw7AA3G.png){: .align-center}
+![HTB Luanne - 3000/TCP](https://i.imgur.com/aw7AA3G.png)
 
 De acordo com o scan do `nmap`, existe uma entrada no arquivo `robots.txt`. Ao validá-lo integralmente encontramos uma informação importante sobre um diretório virtual `/weather`
 
@@ -117,7 +117,7 @@ Embora seja possível consultar as informações nesta API, não consegui identi
 
 Buscando por `Medusa httpd 1.12 (Supervisor process manager)` encontrei que o serviço provavelmente se trata da aplicação [**Supervisor**](https://github.com/Supervisor/supervisor). Buscando pelas credenciais padrão na página do projeto encontrei **user:123**, as quais permitiram o acesso no portal e exibiu a página abaixo:
 
-![HTB Luanne - Supervisor](https://i.imgur.com/dG7oBjW.png){: .align-center}
+![HTB Luanne - Supervisor](https://i.imgur.com/dG7oBjW.png)
 
 Com isso podemos observar que a versão do supervisor em execução é  a **4.2.0**, que em uma busca rápida não retornou nenhuma vulnerabilidade conhecida.
 
@@ -134,7 +134,7 @@ Pelo que pudemos identificar a API que estivemos consultando a pouco publicada n
 Uma vez que sabemos que a API é desenvolvida em LUA, após algumas pesquisas, encontrei [este artigo](https://www.syhunt.com/en/index.php?n=Articles.LuaVulnerabilities) que descreve algumas formas de explorar aplicações escritas em LUA a partir de code injection e, após alguns testes, consegui algo que poderia nos levar a um acesso inicial nesta máquina.
 
 :bulb: **Note**: O segredo está na codificação do conteúdo passado nos requests, logo, a forma mais simples encontrada foi utilizar o próprio `curl` com alguns parâmetros conforme listado abaixo, simplificando o processo de *escaping* dos caracteres utilizados no payload.:
-{: .notice--info}
+
 
 A injeção final, que permitiu execução remota de código na máquina foi o resultado abaixo:
 

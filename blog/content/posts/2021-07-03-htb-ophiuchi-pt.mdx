@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Ophiuchi'
 
 Olá pessoal!
 
-A máquina desta semana será **Ophiuchi**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [felamos](https://app.hackthebox.eu/users/27390).<!--more-->
+A máquina desta semana será **Ophiuchi**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [felamos](https://app.hackthebox.eu/users/27390). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![htb-ophiuchi](https://i.imgur.com/RgW95kn.png){: .align-center}
+
+![htb-ophiuchi](https://i.imgur.com/RgW95kn.png)
 
 Recentemente tenho iniciado os trabalhos nas máquinas do HTB por pesquisar sobre seu nome, pois ele ou a imagem podem "dar dicas" sobre como realizar a exploração.
 
@@ -56,7 +56,7 @@ Nmap done: 1 IP address (1 host up) scanned in 11.18 seconds
 
 Acessando a página tomcat em `http://10.10.10.227:8080` vemos uma página para parsing de YAML, conforme podemos ver abaixo:
 
-![Ophiuchi - Parse YAML](https://i.imgur.com/oDXT0S9.png){: .align-center}
+![Ophiuchi - Parse YAML](https://i.imgur.com/oDXT0S9.png)
 
 Ao enviar um valor YAML simples (`teste: true`), a seguinte mensagem é retornada:
 
@@ -148,7 +148,7 @@ Com estas informações, realizado consulta do arquivo `/opt/tomcat/conf/tomcat-
 
 Uma vez que temos as credenciais de administração do Tomcat, foi possível acessar a console de gerenciamento confirmando que a credencial encontrada era válida.
 
-![Ophiuchi - Tomcat Manager](https://i.imgur.com/x7m50Ah.png){: .align-center}
+![Ophiuchi - Tomcat Manager](https://i.imgur.com/x7m50Ah.png)
 
 Como temos uma conta no Linux chamada `admin`, ao tentar reutilizar a mesma credencial via ssh, tivemos êxito ao reutilizar a senha que possuíamos, obtendo assim a flag de usuário.
 

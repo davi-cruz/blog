@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Delivery'
 
 Hello guys!
 
-This week’s machine will be **Delivery**, another easy-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [ippsec](https://app.hackthebox.eu/users/3769).<!--more-->
+This week's machine will be **Delivery**, another easy-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [ippsec](https://app.hackthebox.eu/users/3769). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Delivery](https://i.imgur.com/Xbew4pD.png){: .align-center}
+
+![HTB Delivery](https://i.imgur.com/Xbew4pD.png)
 
 This box's resolution was pretty interesting, where I had the opportunity to learn how to crack passwords using a dictionary variation using `hashcat`, besides the several pivoting, until get to the user credentials, and then, getting root.
 
@@ -55,7 +55,7 @@ Nmap done: 1 IP address (1 host up) scanned in 32.54 seconds
 
 Accessing the page and inspecting the source code, identified that there's a link to **helpdesk.delivery.htb**. Added this DNS entry to `/etc/hosts`, as well as `delivery.htb`, to make easier access and enumeration to this page.
 
-![HTB Delivery - Website](https://i.imgur.com/rTmIQOQ.png){: .align-center}
+![HTB Delivery - Website](https://i.imgur.com/rTmIQOQ.png)
 
 After clicking to *Contact us* link, the following information was shown, informing us that as soon as we get a delivery.htb e-mail we could access the **MatterMost** server, which works at TCP 8065, according to enumeration.
 
@@ -67,19 +67,19 @@ While looking for a way to get an e-mail address with HelpDesk, raised a support
 
 After submitting the request, received the information below, something crucial to obtain access to Mattermost: a **@delivery.htb** e-mail address!
 
-![HTB Delivery - Helpdesk Website](https://i.imgur.com/QwpDN17.png){: .align-center}
+![HTB Delivery - Helpdesk Website](https://i.imgur.com/QwpDN17.png)
 
 Accessing the Mattermost platform, created an account using the osTicket provided e-mail. This way, in case we need to receive any kind of confirmation in a delivery.htb account, data will supposedly be sent to the incident history we have just created :smile:.
 
-![HTB Delivery - Mattermost](https://i.imgur.com/cGEvxzs.png){: .align-center}
+![HTB Delivery - Mattermost](https://i.imgur.com/cGEvxzs.png)
 
 As expected, once reviewing the request history, we can see the account activation details from Mattermost, sent to **8024065@delivery.htb**.
 
-![HTB Delivery - Email comment](https://i.imgur.com/FHqvoAx.png){: .align-center}
+![HTB Delivery - Email comment](https://i.imgur.com/FHqvoAx.png)
 
 After verifying the account, we were able to access the portal with the created credentials and had access to a public team called **Internal**.
 
-![HTB Delivery - Mattermost - Account Confirmed](https://i.imgur.com/gNX7WRp.png){: .align-center}
+![HTB Delivery - Mattermost - Account Confirmed](https://i.imgur.com/gNX7WRp.png)
 
 Among the messages available on this channel, some called attention, but some information was gathered that might be useful for machine resolution:
 
@@ -87,15 +87,15 @@ Among the messages available on this channel, some called attention, but some in
 - Devs were using *variants of **PleaseSubscribe!*** as passwords everywhere and should stop using it.
   - These variants could be easily cracked using **`hashcat` rules**, which is a great tip on how to obtain the root password or something in its path.
 
-![HTB Delivery - Mattermost Internal Channel](https://i.imgur.com/ppwdFSl.png){: .align-center}
+![HTB Delivery - Mattermost Internal Channel](https://i.imgur.com/ppwdFSl.png)
 
 Searching in the osTicket administration page, made logoff of *Guest User*, from the left upper-corner and, during the sign-in process, selected the option **I'm an agent - sign in here**, which took me to `http://helpdesk.delivery.htb/scp/login.php`, where the incidents are managed.
 
-![HTB Delivery - OsTicket Admin Portal](https://i.imgur.com/EskmQsK.png){: .align-center}
+![HTB Delivery - OsTicket Admin Portal](https://i.imgur.com/EskmQsK.png)
 
 Once logged in as **maildeliverer**, was able to confirm the osTicket version, which is **1.15.1**, where we're going to look for some existing exploit o weakness that could get us initial access.
 
-![HTB Delivery - OsTicket Version](https://i.imgur.com/aurdYjo.png){: .align-center}
+![HTB Delivery - OsTicket Version](https://i.imgur.com/aurdYjo.png)
 
 Browsing in the console, found an API, which mentions task execution through a scheduler using `cron`. Inspecting its documentation available at [this link](https://docs.osticket.com/en/latest/Developer%20Documentation/API/Tasks.html?highlight=cron) it mentions the file `scripts\rcron.php` which is used to orchestrate the calls.
 

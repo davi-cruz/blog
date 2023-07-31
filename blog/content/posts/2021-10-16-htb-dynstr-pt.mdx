@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Dynstr'
 
 Olá pessoal!
 
-A máquina desta semana será **Dynstr**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [jkr](https://app.hackthebox.eu/users/77141).<!--more-->
+A máquina desta semana será **Dynstr**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [jkr](https://app.hackthebox.eu/users/77141). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Dynstr](https://i.imgur.com/kqW8fwk.png){: .align-center}
+
+![HTB Dynstr](https://i.imgur.com/kqW8fwk.png)
 
 Tive a oportunidade de aprender muito com esta máquina! Primeiro enquanto brincava com alguns dicionários de code injection e depois para entender o funcionamento do utilitário `nsupdate`. Após obter execução de código e um shell reverso, encontrei uma chave privada RSA a ser utilizada em uma conexão SSH porém precisei contornar algumas restrições presentes no arquivo `authorized_keys` e, a partir desta outra conta, pude obter a credencial de `root` utilizando de globbing durante a escalação de privilégio.
 
@@ -61,11 +61,11 @@ Validando o scan inicial, podemos ver um serviço de DNS, assim como um website 
 
 Acessando o website, como mencionado no título da página, temos a Dyna DNS company, uma empresa similar ao [No-IP](https://no-ip.com) que permite o registro de entradas em DNS público e sua atualização, simplificando o processo quando não se tem um endereço IP público estático.
 
-![HTB Dynstr - Dyna DNS](https://i.imgur.com/gtdmYDI.jpg){: .align-center}
+![HTB Dynstr - Dyna DNS](https://i.imgur.com/gtdmYDI.jpg)
 
 Embora seja um website que consiste apenas em um single page application, este site foi especialmente útil por conter informações muito interessantes na seção *Our Services*, que foram imprescindíveis durante a resolução desta máquina, além do domínio `dynadns.htb`, utilizado como endereço de e-mail no contato presente no rodapé:
 
-![HTB Dynstr - Dyna DNS Services](https://i.imgur.com/QZvDDXJ.png){: .align-center}
+![HTB Dynstr - Dyna DNS Services](https://i.imgur.com/QZvDDXJ.png)
 
 - Provê uma aplicação para registro de DNS que utiliza da mesma API que `no-ip.com`, conforme disponível na documentação pública em [Integrate with No-IP DDNS - API Information (noip.com)](https://www.noip.com/integrate/request).
 - Os domínios possíveis de se utilizar com o serviço encontram-se listados, os quais foram incluídos no arquivo hosts local.
@@ -170,7 +170,7 @@ Uma vez que este menciona que o `nsupdate` falhou com o payload enviado (neste c
 
 Para provar que isso está correto, fiz um teste simples, encapsulando os comandos que desejava utilizar dentro da estrutura `$()` e validei a entrada de DNS utilizando `dig`, o que retornou sucesso.
 
-![HTB Dynstr - OS Code injection payload](https://i.imgur.com/r5qrIOo.png){: .align-center}
+![HTB Dynstr - OS Code injection payload](https://i.imgur.com/r5qrIOo.png)
 
 ```bash
 $ dig @10.10.10.244 mytestsubdomain.no-ip.htb

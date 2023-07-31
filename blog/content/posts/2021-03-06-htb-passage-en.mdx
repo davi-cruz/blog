@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Passage'
 
 Hello everyone!
 
-The box of this week will be Passage, a medium-rated Linux box from Hack The Box created by [ChefByzen](https://www.hackthebox.eu/home/users/profile/140851).<!--more-->
+The box of this week will be Passage, a medium-rated Linux box from Hack The Box created by [ChefByzen](https://www.hackthebox.eu/home/users/profile/140851). [more]
 
 :information_source: **Info**: Write-ups for Hack The Box are always posted as soon as machines get retired.
-{: .notice--info}
 
-![HTB Passage](https://i.imgur.com/tX69Xey.png){: .align-center}
+
+![HTB Passage](https://i.imgur.com/tX69Xey.png)
 
 ## Enumeration
 
@@ -53,7 +53,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.65 seconds
 
 Accessing the web page noticed that it is a blog built using **[CuteNews](http://cutephp.com/)** and the first post is very interesting, mentioning that Fail2Ban was recently implemented. This will prevent us from using any kind of brute force enumeration (`dirbuster` and related tools/techniques).
 
-![HTB Passage - News](https://i.imgur.com/0ntc8kQ.png){: .align-center}
+![HTB Passage - News](https://i.imgur.com/0ntc8kQ.png)
 
 Inspecting the source code of the page, while searching for interesting links, found some e-mail addresses, besides the **passage.htb** domain, which was added to the local hosts file.
 
@@ -74,7 +74,7 @@ href="mailto:sid@example.com"
 
 After some research about the product, found the administration page at `http://passage.htb/CuteNews` where I could identify the running version, which is **2.1.2**.
 
-![HTB Passage - CuteNews Admin](https://i.imgur.com/YeUquDS.png){: .align-center}
+![HTB Passage - CuteNews Admin](https://i.imgur.com/YeUquDS.png)
 
 ## Initial Foothold
 

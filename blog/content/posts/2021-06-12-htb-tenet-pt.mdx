@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Tenet'
 
 Olá pessoal!
 
-A máquina desta semana será **Tenet**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858).<!--more-->
+A máquina desta semana será **Tenet**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Tenet](https://i.imgur.com/vouXrOD.png){: .align-center}
+
+![HTB Tenet](https://i.imgur.com/vouXrOD.png)
 
 Antes de iniciar a resolução desta máquina, me chamou atenção a ilustração, a qual busquei e acabei encontrando sobre o quadrado Sator, onde temos um palíndromo com cinco palavras latinas: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, que em um conjunto formam um quadrado com as mesmas palavras sendo TENET a central. Muito possivelmente estas palavras poderão estar presentes em algum ponto da resolução desta máquina :smile:.
 
@@ -87,13 +87,13 @@ Após ajustado o dns, executado scan utilizando o `wpscan`, onde foi possível e
 
 Como ao acessar a página pela url `http://10.10.10.223/wordpress` informa uma mensagem de erro, conforme imagem abaixo. Acessando a partir do dns configurado e conforme visto no codigo fonte (`http://tenet.htb`) para visualizar o site wordpress corretamente.
 
-![HTB Tenet - 80/TCP](https://i.imgur.com/7fwmYW7.png){: .align-center}
+![HTB Tenet - 80/TCP](https://i.imgur.com/7fwmYW7.png)
 
 Analisando as postagens ao acessar o wordpress pelo DNS, notei que os posts mencionam um sistema chamado **Rotas**, que possivelmente possa conter algum item a ser explorado e conseguir um acesso inicial
 
 > This Is Where Our Worlds Collide
-> We’re looking for beta testers of our new time-management software, ‘Rotas’
-> ‘Rotas’ will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
+> We're looking for beta testers of our new time-management software, ‘Rotas'
+> ‘Rotas' will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
 
 As coisas ficam mais interessantes em um post mais antigo, onde o usuário `neil` comenta o seguinte na postagem:
 
@@ -101,7 +101,7 @@ As coisas ficam mais interessantes em um post mais antigo, onde o usuário `neil
 
 Buscando por `sator.php` no hostname `tenet.htb` não retornou nada, mas acessando diretamente ao IP do servidor, conforme acessado inicialmente, recebi a página abaixo:
 
-![HTB Tenet - sator.php](https://i.imgur.com/46AX0aF.png){: .align-center}
+![HTB Tenet - sator.php](https://i.imgur.com/46AX0aF.png)
 
 Uma vez que backups são criados com sufixos `old` ou `bak`, acabei encontrando o arquivo `sator.php.bak` no mesmo diretório, onde pude listar o conteúdo abaixo:
 

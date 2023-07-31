@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Bucket'
 
 Hello guys!
 
-This week's machine will be **Bucket**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531).<!--more-->
+This week's machine will be **Bucket**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531). [more]
 
 :information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
-{: .notice--info}
 
-![HTB Bucket](https://i.imgur.com/KEhyzUW.png){: .align-center}
+
+![HTB Bucket](https://i.imgur.com/KEhyzUW.png)
 
 Solving this box was pretty cool, where I had the opportunity to "play" a little with AWS storage services, even being in a local instance normally used by developers.
 
@@ -129,11 +129,11 @@ As the last request (`curl -L http://s3.bucket.htb/shell/`) returned an HTML pag
 
 Researching a little about this service I could determine it is a storage emulator for AWS, possibly a [Localstack](https://github.com/localstack/localstack), very popular among developers.
 
-![DynamoDB Web Shell - Bucket HTB](https://i.imgur.com/VXFAvpG.png){: .align-center}
+![DynamoDB Web Shell - Bucket HTB](https://i.imgur.com/VXFAvpG.png)
 
 Playing with some samples on the page, I was able to get some information about the existing tables (ListTables e DescribeTable), as below, where I could identify some information like the region (`us-east-1`) and a table called `users`, as well as its respective resource name `arn:aws:dynamodb:us-east-1:000000000000:table/users`.
 
-![DynamoDB Web Shell - List - Bucket HTB](https://i.imgur.com/IkavRee.png){: .align-center}
+![DynamoDB Web Shell - List - Bucket HTB](https://i.imgur.com/IkavRee.png)
 
 Considering we're talking about a LocalStack instance, I have found that would be possible to use [AWS CLI](https://aws.amazon.com/cli), AWS command-line interface utility, to connect to this service, as described in the following post [Local Development with AWS on LocalStack (reflectoring.io)](https://reflectoring.io/aws-localstack/).
 
@@ -427,7 +427,7 @@ drwxr-x---+ 4 root root 4096 Feb 10 12:29 ..
 -rw-r--r--  1 root root 1870 Feb 26 18:51 result.pdf
 ```
 
-![Bucket HTB - PoC](https://i.imgur.com/BQIYPiy.png){: .align-center}
+![Bucket HTB - PoC](https://i.imgur.com/BQIYPiy.png)
 
 Once we have been able to make the request work, the second step is finding a way to get sensitive data into the PDF file.
 

@@ -14,12 +14,12 @@ title: 'Walktrough: HTB Schooled'
 ---
 Hello guys!
 
-This week's machine will be **Schooled**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053).<!--more-->
+This week's machine will be **Schooled**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Schooled](https://i.imgur.com/qw8zycI.png){: .align-center}
+
+![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
 To solve this box, I was required to exploit two CVEs for a vulnerable Moodle Version, which was the hardest part once the PoC available didn't work and spent some time understanding the required steps and then getting the initial foothold. After that, all went fine, obtaining creds from Moodle database and then abusing over-permissive `sudo` configurations.
 
@@ -118,7 +118,7 @@ Nmap done: 1 IP address (1 host up) scanned in 18.96 seconds
 
 Accessing this initial page, we can see an institutional page of a School, which also mentions that all content is delivered using **Moodle**, that we might need to find it to dig a little further on it.
 
-![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png){: .align-center}
+![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png)
 
 Also, by running `whatweb` I have found an e-mail address **admissions@schooled.htb** where `schooled.htb` might be the domain name for this machine, which was later added to the hosts file.
 
@@ -152,7 +152,7 @@ Found: student.schooled.htb
 
 The subdomain `student.schooled.htb` was redirecting to the main page while `moodle.schooled.htb` was redirecting to the page below, a Moodle site that could allow us to gather some additional information, allowing us to have an initial foothold or even an RCE based on existing vulnerabilities.
 
-![HTB Schooled - Moodle](https://i.imgur.com/Sx32BwP.png){: .align-center}
+![HTB Schooled - Moodle](https://i.imgur.com/Sx32BwP.png)
 
 Starting with Moodle site enumeration, ran [moodlescan](https://github.com/inc0d3/moodlescan), a script that helps us to enumerate Moodle version, which returned **3.9.0-beta** as output below.
 
@@ -231,7 +231,7 @@ $ sudo php -S 0.0.0.0:80 -t .
 
 Now aware of this Session parameter, changed it in browser and we can now see in the upper right corner that I'm connected as Manuel Philips
 
-![HTB Schooled - Moodle as Manuel Philips](https://i.imgur.com/n3plh19.png){: .align-center}
+![HTB Schooled - Moodle as Manuel Philips](https://i.imgur.com/n3plh19.png)
 
 Now that I have a more privileged access as a teacher, we need to check if current permissions (Teacher) are enough to get an RCE.
 
@@ -259,15 +259,15 @@ Connection: close
 
 * Now as a course administrator, accessing a user's profile, we can see the "Log in as" link, which permitted us to impersonate Lianne Carter.
 
-  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png){: .align-center}
+  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
 * Now as Lianne, we were supposed to be able to upload the plugin directly but, as this option isn't enabled in their tenant, we needed to first edit the Role permissions to allow this. Navigated to Site Administration pane > Users and then, under Permissions, selected Define roles.
 
   ![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
 * Selected the **Manager** role and, after clicking in the "Edit" Button, intercepted the request, and appended the payload for full permissions, as shared also in the previously used script repo.
 
-  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png){: .align-center}
+  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
 
-  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png){: .align-center}
+  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
 * Now, navigating to Site Administration > Plugins we can see the Install Plugins option, where the rce.zip also available in the portal was available, which was uploaded with success, and allowed us to obtain RCE by calling the URL below, later changed to get a reverse shell
 
 ```bash

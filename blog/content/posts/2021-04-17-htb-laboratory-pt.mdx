@@ -16,12 +16,12 @@ title: 'Walktrough: HTB Laboratory'
 
 Olá pessoal!
 
-A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268). <!--more-->
+A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268).  [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-{: .notice--info}
 
-![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png){: .align-center}
+
+![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
 ## Enumeração
 
@@ -72,7 +72,7 @@ Ao enumerar os serviços HTTPS em ambos os DNS, pudemos notar algumas diferença
 
 Ao navegar para a página `https://laboratory.htb`, temos um site institucional relacionado a uma empresa de segurança com Dexter, Dee Dee e Anonymous como funcionários, porém nenhum link interessante para dar continuidade na exploração.
 
-![laboratory htb](https://i.imgur.com/dlEIkOK.png){: .align-center}
+![laboratory htb](https://i.imgur.com/dlEIkOK.png)
 
 #### Gobuster
 
@@ -105,7 +105,7 @@ Progress: 38301 / 220561 (17.37%)
 
 Uma vez acessado o serviço, notado que se tratava de um servidor [GitLab](https://about.gitlab.com/), conforme podemos ver na imagem abaixo.
 
-![gitab laboratory htb](https://i.imgur.com/CNEzXqQ.png){: .align-center}
+![gitab laboratory htb](https://i.imgur.com/CNEzXqQ.png)
 
 Após algumas pesquisas, notei que na API V3 seria possivel realizar algumas enumerações não autenticadas, o que não foi possível neste caso, já que neste caso temos uma API V4.
 
@@ -121,13 +121,13 @@ Já que a enumeração via métodos encontrados em outros artigos também não f
 
 Uma vez logado com a conta recém-criada, segui para a exploração dos repositórios públicos, onde encontrei um repositório chamado **SecureWebSite**.
 
-![gitlab projects](https://i.imgur.com/DXQzBKY.png){: .align-center}
+![gitlab projects](https://i.imgur.com/DXQzBKY.png)
 
 Ao navegar no repositório, pude notar de que se tratava do site publicado na URL `https://laboratory.htb`, de onde poderíamos obter alguma informação interessante, porém conforme já era esperado se trata apenas de um single page application sem funcionalidades que pudéssemos explorar.
 
 Entretanto, uma vez logado no portal, ao acessar o menu *Help > Help* podemos identificar a versão do GitLab em execução, que é a 12.8.1 Community
 
-![gitlab version](https://i.imgur.com/L1Oaxuy.png){: .align-center}
+![gitlab version](https://i.imgur.com/L1Oaxuy.png)
 
 Buscando no `searchsploit` encontradas algumas vulnerabilidades que poderiam ser exploradas, identificadas como **Arbitrary File Read**.
 
@@ -259,7 +259,7 @@ irb(main):005:0>
 
 Após alterada a senha, foi possível visualizar para a conta `dexter` um repositório privado adicional chamado **SecureDocker**.
 
-![gitlab dexter projects](https://i.imgur.com/sxEzY97.png){: .align-center}
+![gitlab dexter projects](https://i.imgur.com/sxEzY97.png)
 
 Já que temos acesso ao código-fonte do repositório, notado que existem alguns scripts e **chave SSH** do usuário dexter, conforme mencionado na descrição do repositório.
 

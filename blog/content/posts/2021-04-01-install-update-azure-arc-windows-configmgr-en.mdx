@@ -18,12 +18,12 @@ tags:
 - ConfigMgr
 title: 'Azure Arc enabled Servers: Deployment and Update using Configuration Manager'
 ---
-In this post I'll be guiding you through the process of deploying and updating Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM).<!--more-->
+In this post I'll be guiding you through the process of deploying and updating Azure Arc for Servers (Windows) via Microsoft Endpoint Manager Configuration Manager - MECM (aka SCCM). [more]
 
 The process is pretty simple, but some small tips are shared to help you to make the most of this powerful configuration management solution for this task :smile:.
 
 :information_source: **Note**: The scripts shared in this post can also be used from other configuration management tools, but they might require some changes to work.
-{: .notice--info}
+
 
 ## Azure Arc enabled Servers
 
@@ -89,15 +89,15 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
 
 - Create the Application from MECM console accessing *Software Library* > *Application Management* > *Applications* and selecting the option *Create Application* in the ribbon or on the context menu from *Application*.
 
-![Creating an Application on MECM](https://i.imgur.com/MDPQyn8.png){: .align-center}
+![Creating an Application on MECM](https://i.imgur.com/MDPQyn8.png)
 
 - Select the UNC path for the downloaded `*.msi` and click *Next*.
 
-![Create Application Wizard - General](https://i.imgur.com/n67kQcj.png){: .align-center}
+![Create Application Wizard - General](https://i.imgur.com/n67kQcj.png)
 
 - Click *Next* to proceed after validating the information shown about the installer used.
 
-![Create Application Wizard - Important Information](https://i.imgur.com/Gq3fUSM.png){: .align-center}
+![Create Application Wizard - Important Information](https://i.imgur.com/Gq3fUSM.png)
 
 - In *General, Information*, replace the preconfigured command line with the one provided below, so the install process will happen from PowerShell and hit *Next*.
 
@@ -108,31 +108,31 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
 :bulb: **Tip**: Fill in the other requested information for this application, which will enrich the application catalog and make it easier to administer it later.
 {: .notice--primary}
 
-![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png){: .align-center}
+![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png)
 
 - Review all the provided information and click *Next* to create the resource.
 
-![Create Application Wizard - Summary](https://i.imgur.com/KvqOlDK.png){: .align-center}
+![Create Application Wizard - Summary](https://i.imgur.com/KvqOlDK.png)
 
 - After completion, the select *Close* for this success message.
 
-![Create Application Wizard - Completion](https://i.imgur.com/yGclbOg.png){: .align-center}
+![Create Application Wizard - Completion](https://i.imgur.com/yGclbOg.png)
 
 After creating this application, we need to adjust a few details so it can work more nicely:
 
 - Access the deployment type settings by navigating to the application > *Deployment Types* tab > right-click the existing deployment and select *Properties*.
 
-![ConfigMgr Console - Deployment Type Properties](https://i.imgur.com/P0pcl1v.png){: .align-center}
+![ConfigMgr Console - Deployment Type Properties](https://i.imgur.com/P0pcl1v.png)
 
 - Under the *Detection Method* tab, select the option *Use a custom script to detect the presence of this deployment type* and click *Edit*.
 
-![Deployment Type Properties - Detection Method](https://i.imgur.com/DhCdDpp.png){: .align-center}
+![Deployment Type Properties - Detection Method](https://i.imgur.com/DhCdDpp.png)
 
 - Select the PowerShell script type and paste the snipped provided below, hitting *OK* to confirm.
 
   - This detection script will check not only if the agent is installed but also if it's connected to Arc before and after the install process.
 
-![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png){: .align-center}
+![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png)
 
   :warning: **Alert**: Is important that this script only return an output if the software is installed. Any output is interpreted by ConfigMgr as installed.
   {: .notice--warning}
@@ -155,7 +155,7 @@ catch{
 
 - On the *Requirements* tab, we need also to define the supported Operating System versions we're targeting. This also avoids accidental deployments installing Arc Agent on unsupported devices, like Windows Clients.
 
-![Deployment Type Properties - Requirements - Create Requirement](https://i.imgur.com/GblkiT8.png){: .align-center}
+![Deployment Type Properties - Requirements - Create Requirement](https://i.imgur.com/GblkiT8.png)
 
 - After these final adjustments, click *OK* to finish the configuration.
 

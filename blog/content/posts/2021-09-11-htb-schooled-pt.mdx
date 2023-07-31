@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Schooled'
 
 Olá pessoal!
 
-A máquina desta semana será **Schooled**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [TheCyberGeek](https://app.hackthebox.eu/users/114053).<!--more-->
+A máquina desta semana será **Schooled**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [TheCyberGeek](https://app.hackthebox.eu/users/114053). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Schooled](https://i.imgur.com/qw8zycI.png){: .align-center}
+
+![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
 Para resolver esta máquina, precisei explorar dois CVEs de uma versão vulnerável do Moodle, que foi a parte mais difícil do processo, uma vez que a PoC das vulnerabilidades não funcionaram corretamente e demorei um pouco para entender exatamente os passos necessários e executá-los manualmente para obter o acesso inicial. Após isso, tudo foi bem tranquilo, onde as credenciais do banco de dados foram obtidas e, na sequencia, abusei de instruções super permissivas de `sudo`.
 
@@ -119,7 +119,7 @@ Nmap done: 1 IP address (1 host up) scanned in 18.96 seconds
 
 Acessando a página inicial, podemos ver um site institucional de uma escola, que também menciona que todo o seu conteúdo é entregue através da plataforma **Moodle**, que eventualmente teremos acesso e precisaremos buscar por ela eventualmente.
 
-![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png){: .align-center}
+![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png)
 
 Também, executando o `whatweb`, encontrei a conta de e-mail **admissions@schooled.htb** onde o dominicio `schooled.htb` deve ser o utilizado pela organização, o qual foi adicionado ao arquivo hosts local.
 
@@ -153,7 +153,7 @@ Found: student.schooled.htb
 
 O subdomínio `student.schooled.htb` estava redirecionando para a página principal, porém o subdomínio `moodle.schooled.htb` nos redirecionou para a página abaixo, que consiste em um site Moodle que vimos sendo mencionado anteriormente e através do qual poderemos obter algum tipo de acesso se este possuir alguma vulnerabilidade não corrigida.
 
-![HTB Schooled - Moodle](https://i.imgur.com/Sx32BwP.png){: .align-center}
+![HTB Schooled - Moodle](https://i.imgur.com/Sx32BwP.png)
 
 Iniciando a enumeração do site Moodle, utilizei o script [moodlescan](https://github.com/inc0d3/moodlescan) que simplifica este processo, onde pude obter a versão em execução da plataforma que é **3.9.0-beta**, segundo output abaixo:
 
@@ -232,7 +232,7 @@ $ sudo php -S 0.0.0.0:80 -t .
 
 Agora sabendo quais os parametros da sessão do professor, alterei o valor do cookie no meu navegador e, após atualizar a página, pude observar que a conta agora é listada como a do professor Manuel Philips.
 
-![HTB Schooled - Moodle as Manuel Philips](https://i.imgur.com/n3plh19.png){: .align-center}
+![HTB Schooled - Moodle as Manuel Philips](https://i.imgur.com/n3plh19.png)
 
 Agora que temos acesso a outra conta, necessitamos validar se as permissões possuidas por este usuário são suficientes para dar continuidade na exploração, vindo a obter um RCE.
 
@@ -262,7 +262,7 @@ Connection: close
 
 * Agora como um Administrador do curso, acessando um perfil de usuário podemos utilizar a função "Log in as", que nos permitiu acessar a plataforma como o usuário Lianne Carter.
 
-  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png){: .align-center}
+  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
   
 * Agora como Lianne, deveríamos ter privilégios de realizar o upload do plugin diretamente, uma vez que a opção "Site Administration" é exibida à esquerda, porém tais privilégios não são habilitados por padrão. Para tal atividade, precisamos editar a role acessando o menu "Site Administration" > "Users" e, na aba "Permissions", selecionei "Define Roles".
 
@@ -270,9 +270,9 @@ Connection: close
   
 * Selecionei a role **Manager** e, clicando no botão "Edit", interceptei a requisição e substitui o dado enviado pelo encontrado no repositório, qeu me concederia privilégios totais na aplicação.
 
-  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png){: .align-center}
+  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
 
-  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png){: .align-center}
+  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
   
 * Agora, navegando em "Site Administration" > "Plugins" podemos ver a opção para instalação, para o qual o arquivo `rce.zip`, também disponibilizado no portal, foi carregado, nos permitindo executar comandos remotamente e obter um shell reverso a partir de chamadas na URL do plugin, conforme abaixo:
 

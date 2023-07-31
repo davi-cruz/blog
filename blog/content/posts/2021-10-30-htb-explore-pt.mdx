@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Explore'
 
 Olá pessoal!
 
-A máquina desta semana será **Explore**, uma máquina Android classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [bertolis](https://app.hackthebox.eu/users/27897).<!--more-->
+A máquina desta semana será **Explore**, uma máquina Android classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [bertolis](https://app.hackthebox.eu/users/27897). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Explore](https://i.imgur.com/0cwBArJ.png){: .align-center}
+
+![HTB Explore](https://i.imgur.com/0cwBArJ.png)
 
 Esta foi minha primeira máquina Android do HTB e, mesmo nao tendo acesso ao ADB diretamente, consegui acesso via SSH a partir de informação obtida via um aplicativo vulnerável.
 
@@ -200,7 +200,7 @@ curl --header "Content-Type: application/json" http://10.10.10.247:59777/storage
 
 Abrindo a imagem em um visualizador, notei que existiam algumas credenciais na mesma: **kristi:Kr1sT!5h@Rp3xPl0r3!**
 
-![HTB Explore - creds.jpg](https://i.imgur.com/senu2Y7.png){: .align-center}
+![HTB Explore - creds.jpg](https://i.imgur.com/senu2Y7.png)
 
 Estas credenciais permitiram que me conectasse via SSH na porta 2222/TCP, conforme previamente enumerado. Encontrei a flag de usuário ao acessar o arquivo `/sdcard/user.txt`:
 

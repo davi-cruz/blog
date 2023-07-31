@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Pit'
 
 Olá pessoal!
 
-A máquina desta semana será **Pit**, outra máquina Linux classificada como mediana [Hack The Box](https://www.hackthebox.eu/), criada por [polarbearer](https://app.hackthebox.eu/users/159204) e [GibParadox](https://app.hackthebox.eu/users/125033).<!--more-->
+A máquina desta semana será **Pit**, outra máquina Linux classificada como mediana [Hack The Box](https://www.hackthebox.eu/), criada por [polarbearer](https://app.hackthebox.eu/users/159204) e [GibParadox](https://app.hackthebox.eu/users/125033). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-{: .notice--info}
 
-![HTB Pit](https://i.imgur.com/pFwxqgv.png){: .align-center}
+
+![HTB Pit](https://i.imgur.com/pFwxqgv.png)
 
 Esta máquina foi diferente das demais pois demandou enumeração UDP, não frequentemente necessário porém sempre útil quando não tem muita saída:smile:. SNMP foi chave para enumerar e escalar privilégios nesta máquina, que tinha uma complexidade maior uma vez que possuía SELinux habilitado e não permitiu um shell interativo, até que conseguíssemos credenciais válidas do sistema, conectar via SSH e escalar privilégios.
 
@@ -138,7 +138,7 @@ Com base no resultado do scan, notado que existe um DNS `dms-pit.htb` configurad
 
 Acessando as páginas, podemos ver na URI `http://10.10.10.241:80` a página padrão do `nginx` enquanto para `https://10.10.10.241:9090` vemos a página de login do [Cockpit Project — Cockpit Project (cockpit-project.org)](https://cockpit-project.org/).
 
-![HTB Pit - Cockpit login page](https://i.imgur.com/ldyoAq7.png){: .align-center}
+![HTB Pit - Cockpit login page](https://i.imgur.com/ldyoAq7.png)
 
 Cockpit é uma interface web para administração Linux e, como o nome da máquina é parte do nome da solução, devo estar no caminho correto :smile:.  O domínio `pit.htb` é mencionado como nome da máquina, também incluído no arquivo hosts local.
 
@@ -302,7 +302,7 @@ iso.3.6.1.4.1.2021.9.1.7.1 = INTEGER: 374736
 
 Retornei para o browser e tentei algumas combinações de dominios com o caminho virtual provável, onde obtive acesso ao  endereço `http://dms-pit.htb/seeddms51x/seeddms` onde o portal do **SeedDMS** se encontrava disponível.
 
-![HTB Pit - SeedDMS](https://i.imgur.com/PsX5dm0.png){: .align-center}
+![HTB Pit - SeedDMS](https://i.imgur.com/PsX5dm0.png)
 
 ## Acesso inicial
 

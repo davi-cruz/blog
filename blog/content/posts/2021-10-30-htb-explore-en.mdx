@@ -15,12 +15,12 @@ title: 'Walktrough: HTB Explore'
 
 Hello guys!
 
-This week's machine will be **Explore**, an easy-rated Android box from [Hack The Box](https://www.hackthebox.eu/), created by [bertolis](https://app.hackthebox.eu/users/27897).<!--more-->
+This week's machine will be **Explore**, an easy-rated Android box from [Hack The Box](https://www.hackthebox.eu/), created by [bertolis](https://app.hackthebox.eu/users/27897). [more]
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-{: .notice--info}
+:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 
-![HTB Explore](https://i.imgur.com/0cwBArJ.png){: .align-center}
+
+![HTB Explore](https://i.imgur.com/0cwBArJ.png)
 
 This was my first Android machine in HTB and, besides not having ADB access directly, I was able to get SSH access from information obtained through a vulnerable app.
 
@@ -200,7 +200,7 @@ curl --header "Content-Type: application/json" http://10.10.10.247:59777/storage
 
 Opening the image in a viewer, noticed that we had some credentials on it: **kristi:Kr1sT!5h@Rp3xPl0r3!**
 
-![HTB Explore - creds.jpg](https://i.imgur.com/senu2Y7.png){: .align-center}
+![HTB Explore - creds.jpg](https://i.imgur.com/senu2Y7.png)
 
 These credentials allowed me to connect through SSH on port 2222, as previously enumerated. The first flag was found at `/sdcard/user.txt` file:
 
