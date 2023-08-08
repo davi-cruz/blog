@@ -1,17 +1,15 @@
 ---
 category: Walkthrough
 date: 2021-03-06 16:00:00
-header:
-  og_image: https://i.imgur.com/47HPk8O.png
-  teaser: https://i.imgur.com/47HPk8O.png
+featuredImage: https://i.imgur.com/47HPk8O.png
 language: pt-BR
 namespace: htb-passage
 redirect_from: /writeup/2021/03/htb-passage
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-title: 'Walktrough: HTB Passage'
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+title: "Walktrough: HTB Passage"
 ---
 
 Olá pessoal!
@@ -19,7 +17,6 @@ Olá pessoal!
 A máquina desta semana será Passage, outra máquina Linux classificada como mediana do Hack The Box criada por [ChefByzen](https://www.hackthebox.eu/home/users/profile/140851). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-
 
 ![HTB Passage](https://i.imgur.com/tX69Xey.png)
 
@@ -100,17 +97,17 @@ $ python3 48800.py
 
 
 
-           _____     __      _  __                     ___   ___  ___ 
+           _____     __      _  __                     ___   ___  ___
           / ___/_ __/ /____ / |/ /__ _    _____       |_  | <  / |_  |
-         / /__/ // / __/ -_)    / -_) |/|/ (_-<      / __/_ / / / __/ 
-         \___/\_,_/\__/\__/_/|_/\__/|__,__/___/     /____(_)_(_)____/ 
-                                ___  _________                        
-                               / _ \/ ___/ __/                        
-                              / , _/ /__/ _/                          
-                             /_/|_|\___/___/                          
-                                                                      
+         / /__/ // / __/ -_)    / -_) |/|/ (_-<      / __/_ / / / __/
+         \___/\_,_/\__/\__/_/|_/\__/|__,__/___/     /____(_)_(_)____/
+                                ___  _________
+                               / _ \/ ___/ __/
+                              / , _/ /__/ _/
+                             /_/|_|\___/___/
 
-                                                                                                                                                   
+
+
 
 [->] Usage python3 expoit.py
 
@@ -140,7 +137,7 @@ logged in user: T6iejum4p0
 Dropping to a SHELL
 ============================
 
-command > 
+command >
 ```
 
 Crackeando os hashes utilizando John, encontrei a senha **atlanta1**, que pertence ao usuário **paul**, o qual foi identificado após a edição do script Python conforme abaixo.
@@ -218,7 +215,7 @@ paul@passage:~$
 
 ## Root flag
 
-Ao obter a conta do usuário *paul*, foi testada novamente a exploração do USB-Creator, porém falhou do mesmo modo que o usuário www-data devido a privilégios insuficientes.
+Ao obter a conta do usuário _paul_, foi testada novamente a exploração do USB-Creator, porém falhou do mesmo modo que o usuário www-data devido a privilégios insuficientes.
 
 Analisando o diretório raiz do usuário, encontado um par de chaves RSA, a qual está inclusa no arquivo `authorized_keys` para conexão ssh sem credenciais.
 

