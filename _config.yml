@@ -116,7 +116,7 @@ analytics:
 author:
   name: *name
   avatar: "/assets/images/bio-photo.jpg"
-  bio: "Just another Cybersecurity professional"
+  bio: "Security Technical Specialist @ Microsoft"
   location: "São Paulo, BR"
   email:
   links:
@@ -124,7 +124,7 @@ author:
       icon: "fab fa-fw fab fa-linkedin"
       url: "https://linkedin.com/in/davicruz"
     - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
+      icon: "fab fa-fw fa-square-x-twitter"
       url: "https://twitter.com/zerahzurc"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
@@ -137,7 +137,7 @@ footer:
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/davicruz"
     - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
+      icon: "fab fa-fw fa-square-x-twitter"
       url: "https://twitter.com/zerahzurc"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
