@@ -3,7 +3,7 @@
  */
 module.exports = {
   siteMetadata: {
-    siteUrl: `https://davicruz.com`,
+    siteUrl: `https://brave-desert-0d6363e0f.3.azurestaticapps.net`,
     title: `Davi Cruz`,
     defaultLocale: `pt-BR`,
   },
