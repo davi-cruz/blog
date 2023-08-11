@@ -11,6 +11,7 @@ module.exports = {
     "gatsby-plugin-image",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
+    "gatsby-transformer-yaml",
     "gatsby-plugin-theme-ui",
     {
       resolve: "gatsby-source-filesystem",
@@ -23,11 +24,19 @@ module.exports = {
     {
       resolve: "gatsby-source-filesystem",
       options: {
-        name: "pages",
-        path: `${__dirname}/content/pages`,
+        name: `languages`,
+        path: `${__dirname}/content/languages`,
       },
-      __key: "pages",
+      __key: "languages",
     },
+    // {
+    //   resolve: "gatsby-source-filesystem",
+    //   options: {
+    //     name: "pages",
+    //     path: `${__dirname}/content/pages`,
+    //   },
+    //   __key: "pages",
+    // },
     {
       resolve: "gatsby-plugin-manifest",
       options: {
