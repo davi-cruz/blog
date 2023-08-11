@@ -1,4 +1,6 @@
 import * as React from "react";
+import { MDXProvider } from "@mdx-js/react";
+import { Message } from "theme-ui";
 import { Link, useStaticQuery, graphql } from "gatsby";
 import {
   container,
@@ -8,6 +10,9 @@ import {
   navLinkText,
   siteTitle,
 } from "./layout.module.css";
+import { MdxFieldPlugin } from "tinacms";
+
+const shortcodes = { Message, Link };
 
 const Layout = ({ pageTitle, children }) => {
   const data = useStaticQuery(graphql`
@@ -43,7 +48,7 @@ const Layout = ({ pageTitle, children }) => {
       </nav>
       <main>
         <h1 className={heading}>{pageTitle}</h1>
-        {children}
+        <MDXProvider components={shortcodes}>{children}</MDXProvider>
       </main>
     </div>
   );
