@@ -224,7 +224,7 @@ No rsyslog, o primeiro arquivo a ser processado é o `rsyslog.conf`, que normalm
 
 Na configuração abaixo, vamos considerar que estamos encaminhando mensagens no formato CEF de um appliance que são enviadas com o facility `local4.info`:
 
-<img src="https://i.imgur.com/8HW60a9.png" alt="processing - initial configuration" style="zoom:80%;" />
+![processing - initial configuration](https://i.imgur.com/8HW60a9.png)
 
 - Se nenhuma alteração for realizada no `rsyslog.conf` ou `50-default.conf` para prevenir o registro de mensagens de um host remoto, estas mensagens serão registradas no arquivo `/var/log/syslog`.
 - Também, se houver algum match no arquivo `95-omsagent.conf` esta mensagem será enviada para a workspace de Log Analytics como Syslog puro.
@@ -249,7 +249,7 @@ if ($rawmsg contains "CEF:") or ($rawmsg contains "ASA-") then {
 }
 ```
 
-<img src="https://i.imgur.com/fTZellZ.png" alt="processing - reordering" style="zoom:80%;" />
+![processing - reordering](https://i.imgur.com/fTZellZ.png)
 
 ### Ajustando o `95-omsagent.conf`
 
@@ -291,7 +291,7 @@ Se você ainda estiver notando a ingestão de eventos desnecessários em sua wor
 
 Uma forma fácil de configurar esta filtragem é criando um arquivo a ser processando antes do `60-cef.conf` e `95-omsagent.conf`, neste exemplo chamado de `59-filter-out.conf`, mas poderia utilizar qualquer nome que desejar, desde seja processado na ordem correta.
 
-<img src="https://i.imgur.com/gxTHSWA.png" alt="filtering out messages" style="zoom:80%;" />
+![filtering out messages](https://i.imgur.com/gxTHSWA.png)
 
 Neste arquivo vamos utilizar novamente a instrução `stop`, removendo as mensagens que não gostaríamos que fossem encaminhadas seja como Syslog ou CEF. Neste exemplo qualquer mensagem que contenha a palavra "test" e tenha algum dos facilities/severidades mencionados serão removidas.
 

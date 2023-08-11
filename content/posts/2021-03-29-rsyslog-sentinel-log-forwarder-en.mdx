@@ -224,7 +224,7 @@ At rsyslog, the first file to be processed is `rsyslog.conf`, which normally con
 
 In the configuration below, let's consider that we're forwarding messages in CEF format from an appliance that comes with facility `local4.info`:
 
-<img src="https://i.imgur.com/8HW60a9.png" alt="processing - initial configuration" style="zoom:80%;" />
+![processing - initial configuration](https://i.imgur.com/8HW60a9.png)
 
 - If no changes were made to `rsyslog.conf` or `50-default.conf` to prevent logging from remote hosts, these messages will be stored in the `/var/log/syslog` file.
 - Also, if I there's a match in `95-omsagent.conf` this message will be sent to Log Analytics workspace as raw Syslog.
@@ -249,7 +249,7 @@ if ($rawmsg contains "CEF:") or ($rawmsg contains "ASA-") then {
 }
 ```
 
-<img src="https://i.imgur.com/fTZellZ.png" alt="processing - reordering" style="zoom:80%;" />
+![processing - reordering](https://i.imgur.com/fTZellZ.png)
 
 ### Adjusting `95-omsagent.conf`
 
@@ -291,7 +291,7 @@ If you're still noticing ingestion of unnecessary events into your workspace, yo
 
 An uncomplicated way to implement this is creating a file to be processed before the files `60-cef.conf` and `95-omsagent.conf`, in this example named `59-filter-out.conf` but you can use whatever name you want but need to ensure they'll be processed in the right order.
 
-<img src="https://i.imgur.com/gxTHSWA.png" alt="filtering out messages" style="zoom:80%;" />
+![filtering out messages](https://i.imgur.com/gxTHSWA.png)
 
 In this file we'll make use again of the instruction `stop`, dropping the messages we don't want to be forwarded either to Syslog or CEF. The sample below drops any messages containing "test" and matching one of the severities/facilities will be dropped.
 
