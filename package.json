@@ -35,5 +35,8 @@
     "react-dom": "^18.2.0",
     "theme-ui": "^0.16.0",
     "tinacms": "^1.5.18"
+  },
+  "devDependencies": {
+    "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.31"
   }
 }
