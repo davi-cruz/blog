@@ -54,8 +54,10 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
+        mdxOptions: {
+          remarkPlugins: [require(`remark-gfm`), require(`remark-gemoji`)],
+        },
         gatsbyRemarkPlugins: [
-          "gatsby-remark-emoji",
           {
             resolve: `gatsby-remark-images`,
             options: {
@@ -68,6 +70,7 @@ module.exports = {
               showLineNumbers: true,
             },
           },
+          `@fec/remark-a11y-emoji/gatsby`,
         ],
       },
     },
