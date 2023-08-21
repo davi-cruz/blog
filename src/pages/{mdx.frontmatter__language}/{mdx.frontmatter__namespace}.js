@@ -9,7 +9,7 @@ const BlogPost = ({ data, children }) => {
     data.mdx.featuredImage.childImageSharp.gatsbyImageData
   );
   return (
-    <Layout pageTitle={data.mdx.frontmatter.title}>
+    <Layout>
       <p>Posted: {data.mdx.frontmatter.date}</p>
       <GatsbyImage image={image} alt={data.mdx.frontmatter.title} />
       {children}

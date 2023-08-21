@@ -1,6 +1,7 @@
 import * as React from "react";
 // import { Link, graphql } from "gatsby";
 // import { StaticImage } from "gatsby-plugin-image";
+// import { container } from "../css/layout.module.css";
 
 const Footer = () => {
   // const data = useStaticQuery(graphql`
