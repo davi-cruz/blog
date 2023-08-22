@@ -7,6 +7,8 @@ module.exports = {
     title: `Davi Cruz`,
     description: `Just another security professional's blog.`,
     defaultLocale: `pt-BR`,
+    image: `/images/og.png`,
+    twitterUsername: `zerahzurc`,
   },
   plugins: [
     "gatsby-plugin-image",

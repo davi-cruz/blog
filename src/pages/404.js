@@ -1,6 +1,7 @@
 import * as React from "react";
 import Layout from "../components/Layout";
 import Link from "../components/Link";
+import Seo from "../components/Seo"
 
 const NotFoundPage = () => {
   return (
@@ -13,4 +14,4 @@ const NotFoundPage = () => {
 
 export default NotFoundPage;
 
-export const Head = () => <title>Not found</title>;
+export const Head = () => <Seo title="Not found" />;

@@ -11,7 +11,7 @@ import {
 import { styled, alpha } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import Link from "@mui/material/Link";
+import Link from "./Link";
 
 const Header = () => {
   const Search = styled("div")(({ theme }) => ({
@@ -59,7 +59,7 @@ const Header = () => {
   const sections = [
     { title: "Categories", url: "#" },
     { title: "Tags", url: "#" },
-    { title: "About", url: "#" },
+    { title: "About", url: "/about" },
   ];
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -76,14 +76,17 @@ const Header = () => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography
-            variant="h6"
+          <Link
             noWrap
+            href="/"
             component="div"
+            variant="h6"
+            color="inherit"
+            underline="none"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
             Davi Cruz
-          </Typography>
+          </Link>
           {sections.map((section) => (
             <Link
               color="inherit"
