@@ -14,8 +14,8 @@ tags:
   - Log Collector
   - Log Forwarder
 header:
-   teaser: https://i.imgur.com/xsbyF4T.png
-   og_image: https://i.imgur.com/xsbyF4T.png
+  teaser: https://i.imgur.com/xsbyF4T.png
+  og_image: https://i.imgur.com/xsbyF4T.png
 date: 2021-03-29 12:00:00 -03
 last_modified_at: 2021-11-06 16:00:00 -03
 toc: true
@@ -25,12 +25,11 @@ Often I help customers on deploying CEF/Syslog forwarders in their environments 
 
 Besides having plenty of documentation on how to do this deployment, as well as other community resources like Tech Community and Webinars, I have compiled all the resources I normally review with my customers in their environments.
 
-<Message>
-:newspaper: **Edits**:
+<Message>**Edits**:
 
 - **18/12/2021** - Added [Rsyslog RuleSet](#ruleset-usage) as alternative to editing default rsyslog files and added recommendation to keep [generated timestamp](#keep-generated-timestamp).
 - **30/04/2021** - Added section [Repeated message reduction](#repeated-message-reduction)
-</Message>
+  </Message>
 
 ## Requirements
 
@@ -75,7 +74,6 @@ Before deploying/reviewing your forwarder infrastructure there are some question
 The initial installation can be easily achieved by running the `cef_installer.py` from [Official Github Repository](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF/cef_installer.py) using the command line below, which can be obtained for your environment by accessing the **Common Event Format (CEF)** connector page in Sentinel or simply by replacing the `<workspace id>` and `<workspace secret>` with yours.
 
 :bulb: **Note**: If you don't have python 2.7 in your system you might need to replace `python` with `python3` before executing the line below.
-
 
 ```bash
 sudo wget -O cef_installer.py https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/DataConnectors/CEF/cef_installer.py && sudo python cef_installer.py <workspace id> <workspace secret>
@@ -148,7 +146,7 @@ module(load="imuxsock") # provides support for local system logging
 
 # provides UDP syslog reception
 module(load="imudp")
-input(type="imudp" port="514") 
+input(type="imudp" port="514")
 
 # provides TCP syslog reception
 module(load="imtcp")
@@ -190,7 +188,6 @@ This happens because the default definitions on the service, listed below, get s
 
 :bulb: **Note**: The location you can find in this default configuration varies depending on your Linux distribution. For Ubuntu there's a file named `/etc/rsyslog.d/50-default.conf` while for RHEL based distributions (RHEL, CentOS, Fedora) it is in the main `/etc/rsyslog.conf`.
 
-
 ```ini
 #Extracted from Ubuntu /etc/rsyslog.d/50-default.conf
 
@@ -223,11 +220,11 @@ Another advantage mentioned is **performance**. Since, depending on the implemen
 
 This is basically achieved by 2 changes:
 
-- **Bind listeners to a RuleSet**: This will prevent received logs from being processed from existing files and, depending on the ruleset configuration, dedicate a separated queue for messaging processing. In the example below we're binding TCP and UDP inputs to a ruleset called *NewQueue*
+- **Bind listeners to a RuleSet**: This will prevent received logs from being processed from existing files and, depending on the ruleset configuration, dedicate a separated queue for messaging processing. In the example below we're binding TCP and UDP inputs to a ruleset called _NewQueue_
 
 ```ini
 module(load="imudp")
-input(type="imudp" port="514" ruleset="NewQueue") 
+input(type="imudp" port="514" ruleset="NewQueue")
 
 module(load="imtcp")
 input(type="imtcp" port="514" ruleset="NewQueue")
@@ -242,7 +239,6 @@ ruleset(name="NewQueue"){
 ```
 
 :bulb: **Note**: For simplicity legacy syslogd syntax was used. You can benefit from a better performance by using a dedicated queue on this ruleset processing, according to rsyslog reference at [RSyslog Documentation - rsyslog](https://www.rsyslog.com/doc/v8-stable/concepts/queues.html), which is also used by Microsoft CEF-VMSS configuration available on [GitHub](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF-VMSS/security-config-omsagent.conf)
-
 
 Considering you have both Syslog and CEF reception in the same infrastructure you can choose between one of the following scenarios:
 
@@ -306,12 +302,11 @@ In the configuration below, let's consider that we're forwarding messages in CEF
 
 This will not only result in a full disk but also in double charging for this event, which will be stored twice in Log Analytics.
 
-To prevent this behavior, as Ofer Shezaf shared in one of the [Security Community Webinars](https://aka.ms/securitywebinars) (*Log Forwarder deep dive \| Filtering CEF and Syslog events*), we'll rename the file `security-config-omsagent.conf` to `60-cef.conf` so it can be processed **before** `95-omsagent.conf` file.
+To prevent this behavior, as Ofer Shezaf shared in one of the [Security Community Webinars](https://aka.ms/securitywebinars) (_Log Forwarder deep dive \| Filtering CEF and Syslog events_), we'll rename the file `security-config-omsagent.conf` to `60-cef.conf` so it can be processed **before** `95-omsagent.conf` file.
 
 Also, we need to ensure that once the messages are forwarded to the CEF listener at TCP/25226 we'll discard them, which can be done by the instruction `stop`. **Stop** drops the messages and they are no longer processed in the message flow.
 
 :bulb: **Note**: You may find some variations of the stop instruction as a tilde (`~`). This came from the legacy syslogd syntax
-
 
 The configuration will look like this:
 
@@ -353,10 +348,16 @@ sudo su omsagent -c 'python /opt/microsoft/omsconfig/Scripts/OMS_MetaConfigHelpe
 
 The only thing that cannot be changed at `95-omsagent.conf` file is the forwarding instruction to `@127.0.0.1:25224`.
 
-:bulb: **Note**: In syslogd syntax, a single at-sign (`@`) means UDP while double at sign (`@@`) means TCP.
+<Message>**Note**: In syslogd syntax, a single at-sign (`@`) means UDP while double at
+  sign (`@@`) means TCP.
+</Message>
 
-<Message>
-:warning: **Warning**: In the previously mentioned Deep Dive CEF webinar, Ofer also recommends you change the omsagent configuration to accept messages using TCP. If you follow his recommendation, you also need to adjust any forwarding instruction to double at signs in your `95-omsagent.conf` file, otherwise, the messages won't be sent to Log Analytics.
+<Message severity="warning">
+  **Warning**: In the previously mentioned Deep Dive CEF webinar, Ofer also
+  recommends you change the omsagent configuration to accept messages using TCP.
+  If you follow his recommendation, you also need to adjust any forwarding
+  instruction to double at signs in your `95-omsagent.conf` file, otherwise, the
+  messages won't be sent to Log Analytics.
 </Message>
 
 ### Keep Generated Timestamp

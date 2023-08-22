@@ -58,12 +58,7 @@ module.exports = {
               maxWidth: 800,
             },
           },
-          {
-            resolve: "gatsby-remark-prismjs",
-            options: {
-              showLineNumbers: true,
-            },
-          },
+          `gatsby-remark-prismjs`,
           `@fec/remark-a11y-emoji/gatsby`,
         ],
       },

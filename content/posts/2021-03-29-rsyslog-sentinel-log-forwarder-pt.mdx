@@ -281,9 +281,7 @@ A única coisa que não pode ser alterada no arquivo `95-omsagent.conf` é a ins
 
 :bulb: **Nota**: Na sintaxe do syslogd uma arroba (`@`) significa UDP enquanto duas arrobas (`@@`) significam TCP.
 
-<Message>
-:warning: **Atenção**: No webinar citado anteriormente sobre um Dep Dive a respeito de CEF forwarder, Ofer também recomendou alterar as configurações do omsagent para aceitar as comunicações também via TCP para Syslog. Se seguir esta recomendação você deverá também ajustar qualquer instrução de encaminhamento para dois arrobas no arquivo `95-omsagent.conf`, caso contrário suas mensagens poderão não ser enviadas ao Log Analytics.
-</Message>
+<Message severity="warning">**Atenção**: No webinar citado anteriormente sobre um Dep Dive a respeito de CEF forwarder, Ofer também recomendou alterar as configurações do omsagent para aceitar as comunicações também via TCP para Syslog. Se seguir esta recomendação você deverá também ajustar qualquer instrução de encaminhamento para dois arrobas no arquivo `95-omsagent.conf`, caso contrário suas mensagens poderão não ser enviadas ao Log Analytics.</Message>
 
 ### Filtrando eventos
 

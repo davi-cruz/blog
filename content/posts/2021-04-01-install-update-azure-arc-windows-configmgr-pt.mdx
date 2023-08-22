@@ -105,9 +105,7 @@ $proxyUrl = "" # Format: http[s]://server.fqdn:port
 %windir%\System32\WindowsPowerShell\v1.0\powershell.exe -File .\Install-AzureArcMECM.ps1
 ```
 
-<Message>
-:bulb: **Dica**: Complemente nesta janela também as informações solicitadas para enriquecer os dados de catálogo para este aplicativo e simplificar sua gestão posterior.
-</Message>
+<Message>**Dica**: Complemente nesta janela também as informações solicitadas para enriquecer os dados de catálogo para este aplicativo e simplificar sua gestão posterior.</Message>
 
 ![Create Application Wizard - General Information](https://i.imgur.com/wwlLAUl.png)
 
@@ -135,9 +133,7 @@ Após criar o application, precisaremos ajudar alguns outros detalhes para que f
 
 ![Detection Method - Script Editor](https://i.imgur.com/VZuRYPP.png)
 
-<Message>
-:warning: **Alerta**: É importante que o script apenas retorne algum output se o aplicativo estiver instalado. Qualquer output retornado o ConfigMgr interpreta como instalado.
-</Message>
+<Message severity="warning">**Alerta**: É importante que o script apenas retorne algum output se o aplicativo estiver instalado. Qualquer output retornado o ConfigMgr interpreta como instalado.</Message>
 
 ```powershell
 # Detection Method: Returns the installed version if properly installed

@@ -1,29 +1,37 @@
-
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Gatsby develop",
-        "type": "node",
-        "request": "launch",
-        "protocol": "inspector",
-        "program": "${workspaceRoot}/gatsby/node_modules/gatsby/dist/bin/gatsby",
-        "args": ["develop"],
-        "stopOnEntry": false,
-        "runtimeArgs": ["--nolazy"],
-        "sourceMaps": false
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Gatsby develop",
+      "type": "pwa-node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/.bin/gatsby",
+      "windows": {
+        "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby"
       },
-      {
-        "name": "Gatsby build",
-        "type": "node",
-        "request": "launch",
-        "protocol": "inspector",
-        "program": "${workspaceRoot}/gatsby/node_modules/gatsby/dist/bin/gatsby",
-        "args": ["build"],
-        "stopOnEntry": false,
-        "runtimeArgs": ["--nolazy"],
-        "sourceMaps": false
-      }
-    ]
-  }
-  view rawlaunch.json hosted with ❤ by GitHub
+      "args": ["develop"],
+      "env": {
+        "PARCEL_WORKERS": "0",
+        "GATSBY_CPU_COUNT": "1",
+      },
+      "runtimeArgs": ["--nolazy"],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Gatsby build",
+      "type": "pwa-node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/.bin/gatsby",
+      "windows": {
+        "program": "${workspaceRoot}/node_modules/gatsby/dist/bin/gatsby"
+      },
+      "args": ["build"],
+      "env": {
+        "PARCEL_WORKERS": "0",
+        "GATSBY_CPU_COUNT": "1",
+      },
+      "runtimeArgs": ["--nolazy"],
+      "console": "integratedTerminal"
+    }
+  ]
+}

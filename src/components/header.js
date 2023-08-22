@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StaticImage } from "gatsby-plugin-image";
+// import { StaticImage } from "gatsby-plugin-image";
 import {
   Toolbar,
   Box,
@@ -77,7 +77,7 @@ const Header = () => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <StaticImage src="../images/logo.png" alt="logo" />
+          {/* <StaticImage src="../images/logo.png" alt="logo" /> */}
           <Link
             noWrap
             href="/"

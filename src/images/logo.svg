@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="63.499992mm"
+   height="63.499954mm"
+   viewBox="0 0 63.499992 63.499954"
+   version="1.1"
+   id="svg1558"
+   inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="Logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1552">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter1499-6"
+       x="-0.00016740755"
+       width="1.0003349"
+       y="-0.00078123517"
+       height="1.0015625">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.0051675452"
+         id="feGaussianBlur1501-3" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="609.60914"
+     inkscape:cy="676.77889"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="2400"
+     inkscape:window-height="1321"
+     inkscape:window-x="2391"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata1555">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline"
+     transform="translate(-66.708994,-132.25438)">
+    <rect
+       style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:0.264583;stroke-opacity:1;filter:url(#filter1499-6)"
+       id="rect128-6"
+       width="74.083336"
+       height="15.875"
+       x="32.448406"
+       y="89.615875"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       transform="matrix(0.8568559,0,0,3.9937568,38.916011,-225.6001)" />
+    <path
+       d="m 80.96278,153.74456 8.748125,5.1299 v 10.2598 l -8.748044,5.12999 z"
+       style="fill:#003a81;fill-rule:evenodd;stroke-width:0.890811"
+       id="path6-7"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 115.95495,153.74448 8.74812,-5.12987 v 30.77942 l -8.74796,-5.12987 z"
+       style="fill:#003a81;fill-rule:evenodd;stroke-width:0.890811"
+       id="path8-6"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 98.45903,164.00438 8.74805,-5.12988 -8.74805,-5.12994 z"
+       style="fill:#dede49;fill-rule:evenodd;stroke-width:0.890811"
+       id="path10-7"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 98.45903,164.00445 v 10.25959 l 8.74805,-5.12967 V 158.8745 Z"
+       style="fill:#9edbf4;fill-rule:evenodd;stroke-width:0.890811"
+       id="path12-4"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 98.45894,164.00445 9e-5,10.25959 -8.748125,-5.12967 V 158.8745 Z"
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.890811"
+       id="path14-0"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 115.95511,153.74456 98.45903,143.48474 v 10.25982 l 8.74805,5.1299 z"
+       style="fill:#0076be;fill-rule:evenodd;stroke-width:0.890811"
+       id="path16-0"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 115.95511,153.74448 -8.74803,5.12998 v 10.25975 l 8.74803,5.12995 z"
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.890811"
+       id="path18-2"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 80.96294,153.74468 -8.748122,-5.12999 v 30.77946 l 8.747962,-5.1299 z"
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.890811"
+       id="path20-3"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 80.962861,174.26404 17.496169,10.25998 v -10.25986 l -8.748125,-5.12995 z"
+       style="fill:#009035;fill-rule:evenodd;stroke-width:0.890811"
+       id="path22-2"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 115.95511,174.26404 -17.49608,10.25998 v -10.25986 l 8.74805,-5.12995 z"
+       style="fill:#003a81;fill-rule:evenodd;stroke-width:0.890811"
+       id="path24-2"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 72.214818,148.61469 98.45903,133.22492 v 10.25982 l -17.496169,10.25982 z"
+       style="fill:#003a81;fill-rule:evenodd;stroke-width:0.890811"
+       id="path26-5"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 124.70316,148.61489 98.45903,133.2252 v 10.25974 l 17.49608,10.25982 z"
+       style="fill:#9edbf4;fill-rule:evenodd;stroke-width:0.890811"
+       id="path28-2"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 72.214818,179.39403 98.45903,194.7838 V 184.52402 L 80.962861,174.26416 Z"
+       style="fill:#003a81;fill-rule:evenodd;stroke-width:0.890811"
+       id="path30-8"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 124.70316,179.39403 98.45903,194.7838 v -10.25978 l 17.49608,-10.25986 z"
+       style="fill:#dede49;fill-rule:evenodd;stroke-width:0.890811"
+       id="path32-0"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="m 89.710905,158.87446 8.748035,5.12992 h 9e-5 v -10.25982 z"
+       style="fill:#009035;fill-rule:evenodd;stroke-width:0.890811"
+       id="path34-1"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       d="M 80.962861,153.74456 98.45903,143.48474 v 10.25982 l -8.748125,5.1299 z"
+       style="fill:#000000;fill-rule:evenodd;stroke-width:0.890811"
+       id="path40-9"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>

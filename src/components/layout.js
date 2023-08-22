@@ -5,9 +5,9 @@ import theme from "../theme";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
+import Message from "./Message";
 import Link from "../components/Link";
 import { MDXProvider } from "@mdx-js/react";
-import {ProTip as Message} from "./ProTip";
 const shortcodes = { Link, Message};
 
 const Layout = ({ title, children }) => {
