@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Box, Container, Typography, Paper } from "@mui/material";
+import { StaticImage } from "gatsby-plugin-image";
+import { Box, Container, Typography, Paper, Image} from "@mui/material";
 import MuiLink from "@mui/material/Link";
 
 const Footer = () => {
@@ -7,8 +8,6 @@ const Footer = () => {
     <Paper
       sx={{
         marginTop: "calc(10% + 60px)",
-        width: "100%",
-        position: "fixed",
         bottom: 0,
       }}
       component="footer"
@@ -25,13 +24,7 @@ const Footer = () => {
           }}
         >
           <div>
-            {/* <Image
-              priority
-              src="../images/logo.png"
-              width={75}
-              height={30}
-              alt="Logo"
-            /> */}
+            <StaticImage src="../images/logo.png" alt="Logo" />
           </div>
         </Box>
 

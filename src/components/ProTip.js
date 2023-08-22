@@ -1,7 +1,5 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
-import SvgIcon from "@mui/material/SvgIcon";
-import Typography from "@mui/material/Typography";
+import { Paper, Typography, SvgIcon } from "@mui/material";
 
 function LightBulbIcon(props) {
   return (
@@ -11,15 +9,16 @@ function LightBulbIcon(props) {
   );
 }
 
-export default function ProTip() {
+export default function ProTip({ children }) {
   return (
-    <Typography sx={{ mt: 6, mb: 3 }} color="text.secondary">
-      <LightBulbIcon sx={{ mr: 1, verticalAlign: "middle" }} />
-      Pro tip: See more{" "}
-      <Link href="https://mui.com/material-ui/getting-started/templates/">
-        templates
-      </Link>{" "}
-      in the MUI documentation.
-    </Typography>
+    <Paper sx={{ p: 2, mb: 4 }}>
+      <Typography sx={{ mt: 6, mb: 3 }} color="text.secondary">
+        <LightBulbIcon sx={{ mr: 1, verticalAlign: "middle" }} />
+        Pro tip:{" "}
+      </Typography>
+      <Typography sx={{ mb: 3 }} color="text.secondary">
+        {children}
+      </Typography>
+    </Paper>
   );
 }
