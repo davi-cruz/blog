@@ -2,8 +2,8 @@ import * as React from "react";
 import { graphql } from "gatsby";
 // import { GatsbyImage, getImage } from "gatsby-plugin-image";
 // import {Paper} from "@mui/material";
-import { Layout } from "../../components/Layout";
-import { Seo } from "../../components/Seo";
+import Layout from "../../components/Layout";
+import Seo from "../../components/Seo";
 
 const BlogPost = ({ data, children }) => {
   // const image = getImage(
