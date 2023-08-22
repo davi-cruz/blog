@@ -1,25 +1,43 @@
 import * as React from "react";
+import { CssBaseline, Grid, Container, Typography } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+import Footer from "./Footer";
+import Link from "../components/Link";
 import { MDXProvider } from "@mdx-js/react";
-import { Message } from "theme-ui";
-import { Link } from "gatsby";
-import Header from "./header";
-import SideBar from "./sidebar";
-import Footer from "./footer";
+const shortcodes = { Link };
 
-const shortcodes = { Message, Link };
-
-const Layout = ({ children }) => {
+const Layout = ({ title, children }) => {
   return (
-    <>
-    <Header />
-    <div>
-      <SideBar />
-      <main class="content">
-      <MDXProvider components={shortcodes}>{children}</MDXProvider>
-      </main>
-    </div>
-    <Footer />
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Header title="Blog" />
+        <main>
+          <Grid container spacing={5} sx={{ mt: 3 }}>
+            <Grid
+              item
+              xs={12}
+              md={8}
+              sx={{
+                "& .markdown": {
+                  py: 3,
+                },
+              }}
+            >
+              <Typography variant="h4" component="h1" gutterBottom>
+                {title}
+              </Typography>
+              <MDXProvider components={shortcodes}>{children}</MDXProvider>
+            </Grid>
+            <Sidebar />
+          </Grid>
+        </main>
+      </Container>
+      <Footer />
+    </ThemeProvider>
   );
 };
 

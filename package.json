@@ -1,8 +1,8 @@
 {
-  "name": "davi-cruz-blog",
+  "name": "davi-cruz",
   "version": "1.0.0",
   "private": true,
-  "description": "davi-cruz-blog",
+  "description": "davi-cruz",
   "author": "Davi Cruz",
   "keywords": [
     "gatsby"
@@ -21,27 +21,22 @@
     "@mdx-js/react": "^2.3.0",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.5",
-    "@tinacms/cli": "^1.5.27",
+    "@tinacms/cli": "^1.5.28",
     "gatsby": "^5.11.0",
-    "gatsby-plugin-google-gtag": "^5.11.0",
     "gatsby-plugin-image": "^3.11.0",
     "gatsby-plugin-manifest": "^5.11.0",
     "gatsby-plugin-mdx": "^5.11.0",
     "gatsby-plugin-sharp": "^5.11.0",
-    "gatsby-plugin-sitemap": "^6.11.0",
     "gatsby-remark-images": "^7.11.0",
     "gatsby-remark-prismjs": "^7.11.0",
     "gatsby-source-filesystem": "^5.11.0",
-    "gatsby-transformer-remark": "^6.11.0",
     "gatsby-transformer-sharp": "^5.11.0",
     "gatsby-transformer-yaml": "^5.11.0",
-    "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "remark": "^14.0.3",
-    "remark-external-links": "^9.0.1",
-    "remark-gemoji": "^7.0.1",
-    "remark-gfm": "^3.0.1",
-    "tinacms": "^1.5.18"
+    "remark-gemoji": "^6.0.0",
+    "remark-gfm": "^1.0.0",
+    "sharp": "^0.32.5",
+    "tinacms": "^1.5.19"
   }
 }

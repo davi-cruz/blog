@@ -5,6 +5,7 @@ module.exports = {
   siteMetadata: {
     siteUrl: `https://brave-desert-0d6363e0f.3.azurestaticapps.net`,
     title: `Davi Cruz`,
+    description: `Just another security professional's blog.`,
     defaultLocale: `pt-BR`,
   },
   plugins: [
@@ -12,7 +13,6 @@ module.exports = {
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     "gatsby-transformer-yaml",
-    "gatsby-plugin-theme-ui",
     {
       resolve: "gatsby-source-filesystem",
       options: {
@@ -29,18 +29,10 @@ module.exports = {
       },
       __key: "languages",
     },
-    // {
-    //   resolve: "gatsby-source-filesystem",
-    //   options: {
-    //     name: "pages",
-    //     path: `${__dirname}/content/pages`,
-    //   },
-    //   __key: "pages",
-    // },
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        icon: "src/images/icon.png",
+        icon: "src/images/logo.png",
       },
     },
     {
