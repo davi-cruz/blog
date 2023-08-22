@@ -1,5 +1,5 @@
 import * as React from "react";
-// import { StaticImage } from "gatsby-plugin-image";
+import Logo from "./Logo";
 import { Box, Container, Typography, Paper, Image} from "@mui/material";
 import MuiLink from "@mui/material/Link";
 
@@ -24,7 +24,7 @@ const Footer = () => {
           }}
         >
           <div>
-            {/* <StaticImage src="../images/logo.png" alt="Logo" /> */}
+            <Logo/>
           </div>
         </Box>
 
