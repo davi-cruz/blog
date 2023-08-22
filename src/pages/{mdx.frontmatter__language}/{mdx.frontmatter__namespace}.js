@@ -1,15 +1,15 @@
 import * as React from "react";
 import { graphql } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
-import Layout from "../../components/layout";
-import Seo from "../../components/seo";
+import Layout from "../../components/Layout";
+import Seo from "../../components/Seo";
 
 const BlogPost = ({ data, children }) => {
   const image = getImage(
     data.mdx.featuredImage.childImageSharp.gatsbyImageData
   );
   return (
-    <Layout>
+    <Layout title={data.mdx.frontmatter.title}>
       <p>Posted: {data.mdx.frontmatter.date}</p>
       <GatsbyImage image={image} alt={data.mdx.frontmatter.title} />
       {children}

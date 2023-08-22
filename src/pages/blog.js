@@ -1,7 +1,8 @@
 import * as React from "react";
-import { Link, graphql } from "gatsby";
-import Layout from "../components/layout";
-import Seo from "../components/seo";
+import { graphql } from "gatsby";
+import Layout from "../components/Layout";
+import Seo from "../components/Seo";
+import Link from "../components/Link";
 
 const BlogPage = ({ data }) => {
   return (
@@ -9,7 +10,11 @@ const BlogPage = ({ data }) => {
       {data.allMdx.nodes.map((node) => (
         <article key={node.id}>
           <h2>
-            <Link to={`/${node.frontmatter.language.toLowerCase()}/${node.frontmatter.namespace}`}>
+            <Link
+              to={`/${node.frontmatter.language.toLowerCase()}/${
+                node.frontmatter.namespace
+              }`}
+            >
               {node.frontmatter.title}
             </Link>
           </h2>
