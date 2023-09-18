@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: "18.x"
+  NODE_VERSION: "18.17.x"
 
 jobs:
   build_and_deploy_job:
