@@ -3,9 +3,9 @@ import { Icon } from "@mui/material";
 
 const Logo = () => {
   return (
-  <Icon>
-    <img src="../images/logo.svg" alt="Davi Cruz" width="100" height="100" />
-  </Icon>
+    <Icon>
+      <img src="../images/logo.svg" alt="Davi Cruz" width="100" height="100" />
+    </Icon>
   );
 };
 

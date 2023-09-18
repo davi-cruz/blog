@@ -1,6 +1,6 @@
 import * as React from "react";
 import Logo from "./Logo";
-import { Box, Container, Typography, Paper} from "@mui/material";
+import { Box, Container, Typography, Paper } from "@mui/material";
 import MuiLink from "@mui/material/Link";
 
 const Footer = () => {
@@ -24,7 +24,7 @@ const Footer = () => {
           }}
         >
           <div>
-            <Logo/>
+            <Logo />
           </div>
         </Box>
 

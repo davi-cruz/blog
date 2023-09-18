@@ -26,7 +26,9 @@ const Seo = ({ title, pathname, children }) => {
 
   return (
     <>
-      <title>{seo.title} | {data.site.siteMetadata.title}</title>
+      <title>
+        {seo.title} | {data.site.siteMetadata.title}
+      </title>
       <meta name="description" content={seo.description} />
       <meta name="image" content={seo.image} />
       <meta name="twitter:card" content="summary_large_image" />

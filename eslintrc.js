@@ -268,4 +268,4 @@ module.exports = {
       version: `18.2.0`,
     },
   },
-}
+};
