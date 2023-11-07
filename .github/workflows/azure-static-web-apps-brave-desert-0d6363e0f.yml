@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       - name: Setup Blog
-        run: npm build 
+        run: npm run build 
       - name: Verify Build
         run: ls -la public
       - name: Build And Deploy
