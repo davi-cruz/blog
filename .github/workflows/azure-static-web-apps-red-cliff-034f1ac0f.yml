@@ -21,12 +21,13 @@ jobs:
           lfs: false
       - name: Build Gatsby Blog
         run: |
-          pwd
-          whereis npm
-          which npm
-          ls -la .
+          echo $PWD
+          echo $(which npm)
+          echo $(whereis npm)
+          echo $(ls -la .)
           npm install
-          npm run build          
+          npm install --save gatsby-cli
+          npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
