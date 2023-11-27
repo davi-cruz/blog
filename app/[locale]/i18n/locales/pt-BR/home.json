@@ -1,0 +1,27 @@
+{
+  "greeting": "Posts recentes",
+  "description": "Apenas mais um blog de um profissional de Cybersecurity",
+  "more": "Leia mais",
+  "all": "Todos os posts",
+
+  "moreaboutme": "Mais sobre mim",
+  "featured": "Destaque",
+  "morefeatured": "Mais posts em destaque",
+  "morerecent": "Mais posts recentes",
+
+  "search": "Buscar artigos",
+  "comment": "Carregar Comentários",
+  "pub": "Publicado em",
+  "authors": "Autores",
+  "name": "Nome",
+  "nexta": "Próximo artigo",
+  "preva": "Artigo anterior",
+  "nextp": "Próximo",
+  "prevp": "Anterior",
+  "of": "de",
+  "back": "Retornar ao blog",
+  "twitter": "Discutir no Twitter",
+  "github": "Ver no GitHub",
+  "draft": "Em construção",
+  "noposts": "Nenhum post encontrado"
+}

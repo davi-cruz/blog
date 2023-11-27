@@ -1,0 +1,34 @@
+{
+  "nestedroutes": {
+    "en-US": "nested-route/introducing-multi-part-posts-with-nested-routing",
+    "pt-BR": "route-imbriquee/presentation-publications-en-plusieurs-parties-routage-imbrique"
+  },
+  "install-update-azure-arc-windows-configmgr": {
+    "en-US": "2021-04-01-install-update-azure-arc-windows-configmgr-en",
+    "pt-BR": "2021-04-01-install-update-azure-arc-windows-configmgr-pt"
+  },
+  "rsyslog-sentinel-log-forwarder": {
+    "en-US": "2021-03-29-rsyslog-sentinel-log-forwarder-en",
+    "pt-BR": "2021-03-29-rsyslog-sentinel-log-forwarder-pt"
+  },
+  "htb-luanne": {
+    "en-US": "2021-03-27-htb-luanne-en",
+    "pt-BR": "2021-03-27-htb-luanne-pt"
+  },
+  "htb-passage": {
+    "en-US": "2021-03-06-htb-passage-en",
+    "pt-BR": "2021-03-06-htb-passage-pt"
+  },
+  "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
+    "en-US": "2021-03-02-azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-en",
+    "pt-BR": "2021-03-02-azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-pt"
+  },
+  "htb-academy": {
+    "en-US": "2021-02-27-htb-academy-en",
+    "pt-BR": "2021-02-27-htb-academy-pt"
+  },
+  "htb-doctor": {
+    "en-US": "2021-02-06-htb-doctor-en",
+    "pt-BR": "2021-02-06-htb-doctor-pt"
+  }
+}
