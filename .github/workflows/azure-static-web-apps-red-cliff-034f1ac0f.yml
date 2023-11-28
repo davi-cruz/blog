@@ -19,15 +19,6 @@ jobs:
         with:
           submodules: true
           lfs: false
-      - name: Build Gatsby Blog
-        run: |
-          echo $PWD
-          echo $(which npm)
-          echo $(whereis npm)
-          echo $(ls -la .)
-          npm install
-          npm install --save gatsby-cli
-          npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -37,8 +28,8 @@ jobs:
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/public" # App source code path
-          skip_app_build: true
+          app_location: "/" # App source code path
+          output_location: "out"
           ###### End of Repository/Build Configurations ######
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
