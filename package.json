@@ -24,7 +24,7 @@
     "i18next-resources-to-backend": "^1.1.4",
     "image-size": "1.0.0",
     "next": "14.0.3",
-    "next-contentlayer": "patch:next-contentlayer@npm%3A0.3.4#~/.yarn/patches/next-contentlayer-npm-0.3.4-4aeef19c76.patch",
+    "next-contentlayer": "^0.3.4",
     "next-themes": "^0.2.1",
     "pliny": "0.1.6",
     "postcss": "^8.4.24",
