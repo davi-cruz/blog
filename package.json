@@ -68,8 +68,7 @@
     "@opentelemetry/resources": "1.13.0",
     "@opentelemetry/sdk-trace-base": "1.13.0",
     "@opentelemetry/sdk-trace-node": "1.13.0",
-    "@opentelemetry/semantic-conventions": "1.13.0",
-    "next-contentlayer@npm:^0.3.4": "patch:next-contentlayer@npm%3A0.3.4#~/.yarn/patches/next-contentlayer-npm-0.3.4-4aeef19c76.patch"
+    "@opentelemetry/semantic-conventions": "1.13.0"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [
