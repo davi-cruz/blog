@@ -1,0 +1,21 @@
+diff --git a/package.json b/package.json
+index 2cee2ce243cd642448c692420d668a4b61c6f001..9f16acbb5a711fcdec96e4b951aaa14df9b6eff8 100644
+--- a/package.json
++++ b/package.json
+@@ -43,14 +43,14 @@
+   },
+   "peerDependencies": {
+     "contentlayer": "0.3.4",
+-    "next": "^12 || ^13",
++    "next": "^14",
+     "react": "*",
+     "react-dom": "*"
+   },
+   "devDependencies": {
+     "@types/react": "^18.2.14",
+     "@types/react-dom": "^18.2.6",
+-    "next": "^13.4.7",
++    "next": "^14",
+     "typescript": "^5.1.6",
+     "webpack": "^5.88.1"
+   },

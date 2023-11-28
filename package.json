@@ -23,10 +23,10 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-resources-to-backend": "^1.1.4",
     "image-size": "1.0.0",
-    "next": "^13.0.0",
-    "next-contentlayer": "^0.3.4",
+    "next": "^14.0.0",
+    "next-contentlayer": "patch:next-contentlayer@npm%3A0.3.4#~/.yarn/patches/next-contentlayer-npm-0.3.4-4aeef19c76.patch",
     "next-themes": "^0.2.1",
-    "pliny": "0.1.6",
+    "pliny": "patch:pliny@npm%3A0.1.6#~/.yarn/patches/pliny-npm-0.1.6-205b48b279.patch",
     "postcss": "^8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -68,7 +68,8 @@
     "@opentelemetry/resources": "1.13.0",
     "@opentelemetry/sdk-trace-base": "1.13.0",
     "@opentelemetry/sdk-trace-node": "1.13.0",
-    "@opentelemetry/semantic-conventions": "1.13.0"
+    "@opentelemetry/semantic-conventions": "1.13.0",
+    "next-contentlayer@npm:^0.3.4": "patch:next-contentlayer@npm%3A0.3.4#~/.yarn/patches/next-contentlayer-npm-0.3.4-4aeef19c76.patch"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [

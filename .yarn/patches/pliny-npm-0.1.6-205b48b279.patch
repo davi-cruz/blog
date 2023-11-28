@@ -1,0 +1,20 @@
+diff --git a/package.json b/package.json
+index 1b4e25d7e7c375f2a34c098430d785bd5a1a0a93..7e4e74862938402349f73ce2ab493888edda76a5 100644
+--- a/package.json
++++ b/package.json
+@@ -40,12 +40,12 @@
+   },
+   "peerDependencies": {
+     "next": ">=13.0.0",
+-    "react": "^17.0.2 || ^18.0.0",
+-    "react-dom": "^17.0.2 || ^18.0.0"
++    "react": "^18.0.0",
++    "react-dom": "^18.0.0"
+   },
+   "devDependencies": {
+     "@types/copyfiles": "^2",
+-    "next": "13.4.10",
++    "next": ">=13.0.0",
+     "react": "18.2.0",
+     "react-dom": "18.2.0",
+     "rimraf": "^3.0.2",
