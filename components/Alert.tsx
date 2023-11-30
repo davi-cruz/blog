@@ -1,5 +1,5 @@
 import React from 'react'
-import { SuccessIcon, InfoIcon, WarningIcon, ErrorIcon } from './social-icons/icons'
+import { SuccessIcon, WarningIcon, ErrorIcon, InfoIcon } from './social-icons/icons'
 
 const Alert = ({ type, title, message }) => {
   const alertStyles = {

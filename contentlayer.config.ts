@@ -6,6 +6,7 @@ import path from 'path'
 // Remark packages
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
+import remarkGemoji from 'remark-gemoji'
 import {
   remarkExtractFrontmatter,
   remarkCodeTitles,
@@ -171,6 +172,7 @@ export default makeSource({
       remarkCodeTitles,
       remarkMath,
       remarkImgToJsx,
+      remarkGemoji,
     ],
     rehypePlugins: [
       rehypeSlug,
