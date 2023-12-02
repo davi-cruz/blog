@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog } from 'contentlayer/generated'
-import Comments from '@/components/Comments'
+import Comments from '@/components/comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
@@ -17,6 +17,7 @@ interface LayoutProps {
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
   params: { locale: LocaleTypes }
+  localeid?: string
 }
 
 export default async function PostLayout({
@@ -25,6 +26,7 @@ export default async function PostLayout({
   prev,
   children,
   params: { locale },
+  localeid,
 }: LayoutProps) {
   const { path, slug, date, title, language } = content
   const { t } = await createTranslation(locale, 'home')
@@ -54,7 +56,7 @@ export default async function PostLayout({
             </div>
             {siteMetadata.comments && (
               <div className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300" id="comment">
-                <Comments slug={slug} />
+                <Comments slug={localeid} />
               </div>
             )}
             <footer>

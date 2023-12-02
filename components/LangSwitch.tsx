@@ -7,7 +7,7 @@ import slugMap from 'app/[locale]/localeid-map.json'
 import Link from 'next/link'
 
 const LangSwitch = () => {
-  const pathname = usePathname()
+  const pathname = usePathname() || '/'
   const urlSegments = useSelectedLayoutSegments()
   const locale = useParams()?.locale as LocaleTypes
 

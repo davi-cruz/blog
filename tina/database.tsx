@@ -21,7 +21,7 @@ export default isLocal
       databaseAdapter: new MongodbLevel({
         collectionName: 'tinacms',
         dbName: 'tinacms',
-        mongoUri: process.env.MONGODB_URI,
+        mongoUri: process.env.MONGODB_URI || '',
       }),
       namespace: branch,
     })

@@ -4,13 +4,12 @@ import { defineConfig, LocalAuthProvider } from 'tinacms'
 
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
 
-export default defineConfig({
+const tinaClientConfig = defineConfig({
   authProvider: isLocal ? new LocalAuthProvider() : new UsernamePasswordAuthJSProvider(),
   contentApiUrlOverride: '/api/tina/gql',
   build: {
     publicFolder: 'public',
     outputFolder: 'admin',
-    basePath: '/',
   },
   media: {
     tina: {
@@ -23,3 +22,5 @@ export default defineConfig({
     collections: [TinaUserCollection, PostCollection],
   },
 })
+
+export default tinaClientConfig

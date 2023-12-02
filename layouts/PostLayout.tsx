@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Authors } from 'contentlayer/generated'
-import Comments from '@/components/Comments'
+import Comments from '@/components/comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
@@ -36,6 +36,7 @@ export default async function PostLayout({
   prev,
   children,
   params: { locale },
+  localeid,
 }: LayoutProps) {
   const { filePath, path, slug, date, title, tags, language } = content
   const basePath = path.split('/')[0]
@@ -106,7 +107,7 @@ export default async function PostLayout({
                   className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
                   id="comment"
                 >
-                  <Comments slug={slug} />
+                  <Comments slug={localeid} />
                 </div>
               )}
             </div>

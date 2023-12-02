@@ -132,6 +132,7 @@ export default async function Page({ params: { slug, locale } }: PageProps) {
         next={next}
         prev={prev}
         params={{ locale: locale }}
+        localeid={post.localeid}
       >
         <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
       </Layout>

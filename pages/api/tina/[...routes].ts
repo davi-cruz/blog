@@ -11,13 +11,15 @@ const handler = TinaNodeBackend({
     : AuthJsBackendAuthProvider({
         authOptions: TinaAuthJSOptions({
           databaseClient: databaseClient,
-          secret: process.env.NEXTAUTH_SECRET,
+          secret: process.env.NEXTAUTH_SECRET || '',
         }),
       }),
   databaseClient,
 })
 
-export default (req, res) => {
+const handleRequest = (req, res) => {
   // Modify the request here if you need to
   return handler(req, res)
 }
+
+export default handleRequest

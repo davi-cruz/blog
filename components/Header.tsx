@@ -16,7 +16,7 @@ const Header = () => {
   const locale = useParams()?.locale as LocaleTypes
   const { t } = useTranslation(locale, '')
   // Get current page path
-  const pathname = usePathname()
+  const pathname = usePathname() || '/'
 
   return (
     <header>

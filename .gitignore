@@ -49,3 +49,7 @@ yarn-error.log*
 
 node_modules
 .env
+
+# Internationalization
+app/[locale]/localeid-map.json
+app/[locale]/tag-data.json
