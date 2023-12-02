@@ -17,6 +17,7 @@ interface LayoutProps {
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
   params: { locale: LocaleTypes }
+  localeid: string
 }
 
 export default function PostMinimal({

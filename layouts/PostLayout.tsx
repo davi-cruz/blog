@@ -27,6 +27,7 @@ interface LayoutProps {
   prev?: { path: string; title: string }
   children: ReactNode
   params: { locale: LocaleTypes }
+  localeid: string
 }
 
 export default async function PostLayout({

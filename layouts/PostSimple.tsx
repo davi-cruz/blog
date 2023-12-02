@@ -17,7 +17,7 @@ interface LayoutProps {
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
   params: { locale: LocaleTypes }
-  localeid?: string
+  localeid: string
 }
 
 export default async function PostLayout({
