@@ -9,6 +9,12 @@ const owner = (process.env.GITHUB_OWNER || process.env.VERCEL_GIT_REPO_OWNER) as
 const repo = (process.env.GITHUB_REPO || process.env.VERCEL_GIT_REPO_SLUG) as string
 const branch = (process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || 'main') as string
 
+if (!branch) {
+  throw new Error(
+    'No branch found. Make sure that you have set the GITHUB_BRANCH or process.env.VERCEL_GIT_COMMIT_REF environment variable.'
+  )
+}
+
 export default isLocal
   ? createLocalDatabase()
   : createDatabase({
@@ -18,10 +24,10 @@ export default isLocal
         repo,
         token,
       }),
-      databaseAdapter: new MongodbLevel({
+      databaseAdapter: new MongodbLevel<string, Record<string, any>>({
         collectionName: 'tinacms',
         dbName: 'tinacms',
-        mongoUri: process.env.MONGODB_URI || '',
+        mongoUri: process.env.MONGODB_URI as string,
       }),
       namespace: branch,
     })
