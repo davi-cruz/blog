@@ -70,6 +70,11 @@ const siteMetadata = {
     //   indexName: 'docsearch',
     // },
   },
+  // formspree support :
+  //if set to false, simple "mailto"
+  // if set to true, get a free account there : https://formspree.io/
+  // and fill the NEXT_FORMSPREE_KEY env variable with the key they provide to you
+  formspree: false,
 }
 
 module.exports = siteMetadata

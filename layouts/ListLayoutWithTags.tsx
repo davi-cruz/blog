@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
 import { slug } from 'github-slugger'
 import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
@@ -26,9 +27,24 @@ interface ListLayoutProps {
   pagination?: PaginationProps
 }
 
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+}
+
+const item = {
+  hidden: { opacity: 0, x: -25, y: 0 },
+  show: { opacity: 1, x: 0, y: 0 },
+}
+
 function Pagination({ totalPages, currentPage, params: { locale } }: PaginationProps) {
   const { t } = useTranslation(locale, 'home')
-  const pathname = usePathname() || '/'
+  const pathname = usePathname()
   const basePath =
     locale === fallbackLng ? pathname.split('/')[1] : pathname.split('/').slice(1, 3).join('/')
   const prevPage = currentPage - 1 > 0
@@ -76,7 +92,7 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const { t } = useTranslation(locale, 'home')
-  const pathname = usePathname() || '/'
+  const pathname = usePathname()
 
   const tagCountMap = tagData[locale] // Get tag counts based on locale
 
@@ -91,7 +107,7 @@ export default function ListLayoutWithTags({
           <Link
             href={`/${locale}/tags/${slug(postTag)}`}
             className="px-3 py-2 text-sm font-medium uppercase text-gray-500 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
-            aria-label={`View posts tagged ${postTag}`}
+            aria-labelledby={`${t('poststagged')} ${postTag}`}
           >
             {postTag} ({tagCountMap[postTag]})
           </Link>
@@ -119,6 +135,7 @@ export default function ListLayoutWithTags({
                 <Link
                   href={`/${locale}/blog`}
                   className="font-bold uppercase text-gray-700 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-500"
+                  aria-labelledby={t('all')}
                 >
                   {t('all')}
                 </Link>
@@ -127,12 +144,12 @@ export default function ListLayoutWithTags({
             </div>
           </div>
           <div>
-            <ul>
+            <motion.ul variants={container} initial="hidden" animate="show">
               {displayPosts.map((post) => {
                 const { path, date, title, summary, tags, language } = post
                 if (language === locale) {
                   return (
-                    <li key={path} className="py-5">
+                    <motion.li variants={item} key={path} className="py-5">
                       <article className="flex flex-col space-y-2 xl:space-y-0">
                         <dl>
                           <dt className="sr-only">{t('pub')}</dt>
@@ -146,6 +163,7 @@ export default function ListLayoutWithTags({
                               <Link
                                 href={`/${locale}/${path}`}
                                 className="text-gray-900 dark:text-gray-100"
+                                aria-labelledby={title}
                               >
                                 {title}
                               </Link>
@@ -161,11 +179,11 @@ export default function ListLayoutWithTags({
                           </div>
                         </div>
                       </article>
-                    </li>
+                    </motion.li>
                   )
                 }
               })}
-            </ul>
+            </motion.ul>
             {pagination && pagination.totalPages > 1 && (
               <Pagination
                 currentPage={pagination.currentPage}

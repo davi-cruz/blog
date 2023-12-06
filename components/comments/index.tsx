@@ -3,7 +3,6 @@
 import { Utterances } from './Utterances'
 import { useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
-
 import { useParams } from 'next/navigation'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
 import { useTranslation } from 'app/[locale]/i18n/client'
@@ -28,6 +27,7 @@ export default function Comments({ slug }: Props) {
     <>
       {!loadComments && <button onClick={() => setLoadComments(true)}> {t('comment')}</button>}
       {siteMetadata.comments && loadComments && (
+        // <CommentsComponent commentsConfig={siteMetadata.comments} slug={slug} />
         <Utterances
           theme={utterancesConfig.theme}
           darkTheme={utterancesConfig.darkTheme}

@@ -28,7 +28,7 @@ export default async function PostLayout({
   params: { locale },
   localeid,
 }: LayoutProps) {
-  const { path, slug, date, title, language } = content
+  const { slug, date, title, language } = content
   const { t } = await createTranslation(locale, 'home')
   return (
     <SectionContainer>

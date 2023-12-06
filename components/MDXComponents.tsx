@@ -5,14 +5,16 @@ import type { MDXComponents } from 'mdx/types'
 import Image from './Image'
 import CustomLink from './Link'
 import TableWrapper from './TableWrapper'
+import Audioplayer from './Audioplayer'
 import Alert from './Alert'
 
 export const components: MDXComponents = {
-  Alert,
   Image,
   TOCInline,
   a: CustomLink,
   pre: Pre,
   table: TableWrapper,
   BlogNewsletterForm,
+  Audioplayer,
+  Alert,
 }

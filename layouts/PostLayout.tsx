@@ -11,7 +11,10 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { createTranslation } from 'app/[locale]/i18n/server'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
-import SocialSharingButtons from '@/components/SocialSharingButtons'
+
+// const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
+// const discussUrl = (path) =>
+//   `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -102,6 +105,13 @@ export default async function PostLayout({
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
+              {/* <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
+                <Link href={discussUrl(path)} rel="nofollow">
+                  {t('twitter')}
+                </Link>
+                {` • `}
+                <Link href={editUrl(filePath)}>{t('github')}</Link>
+              </div> */}
               <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
               {siteMetadata.comments && (
                 <div

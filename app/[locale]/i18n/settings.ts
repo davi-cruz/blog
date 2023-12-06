@@ -8,7 +8,7 @@ export const defaultNS = 'common'
 export function getOptions(locale = fallbackLng, ns = defaultNS): InitOptions {
   return {
     debug: true,
-    load: 'currentOnly',
+    //load: 'currentOnly',
     supportedLngs: locales,
     fallbackLng,
     lng: locale,
