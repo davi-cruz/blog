@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import { useTheme } from 'next-themes'
 
 export interface UtterancesConfig {
@@ -26,7 +26,10 @@ export const Utterances = ({ theme, darkTheme, repo, label, issueTerm }: Utteran
     script.async = true
 
     const comments = document.getElementById(COMMENTS_ID)
-    if (comments) comments.appendChild(script)
+    if (comments) {
+      comments.innerHTML = '' // Reset contents before appending a new Utterances script
+      comments.appendChild(script)
+    }
 
     return () => {
       const comments = document.getElementById(COMMENTS_ID)

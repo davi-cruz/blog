@@ -5,6 +5,23 @@ import { LocaleTypes, locales } from 'app/[locale]/i18n/settings'
 import { allBlogs } from '.contentlayer/generated'
 import slugMap from 'app/[locale]/localeid-map.json'
 import Link from 'next/link'
+import { UsaFlag, BrazilFlag } from './social-icons/icons'
+
+const components = {
+  'en-US': UsaFlag,
+  'pt-BR': BrazilFlag,
+}
+
+type FlagProps = {
+  kind: string
+  size?: number
+}
+
+const Flag = ({ kind, size = 8 }: FlagProps) => {
+  const FlagSvg = components[kind]
+
+  return <FlagSvg className={`h-${size} w-${(size * 3) / 4}`} />
+}
 
 const LangSwitch = () => {
   const pathname = usePathname() || '/'
@@ -54,7 +71,7 @@ const LangSwitch = () => {
           aria-expanded={isMenuOpen}
           onClick={toggleMenu}
         >
-          {locale}
+          <Flag kind={locale} size={4} />
         </button>
       </div>
       {isMenuOpen && (
@@ -73,7 +90,7 @@ const LangSwitch = () => {
                   role="menuitem"
                   onClick={closeMenu}
                 >
-                  {newLocale}
+                  <Flag kind={newLocale} size={4} />
                 </p>
               </Link>
             ))}

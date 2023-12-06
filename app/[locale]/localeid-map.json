@@ -1,11 +1,15 @@
 {
-  "install-update-azure-arc-windows-configmgr": {
-    "en-US": "2021/04/install-update-azure-arc-windows-configmgr-en",
-    "pt-BR": "2021/04/install-update-azure-arc-windows-configmgr-pt"
+  "htb-academy": {
+    "en-US": "2021/02/htb-academy-en",
+    "pt-BR": "2021/02/htb-academy-pt"
   },
-  "rsyslog-sentinel-log-forwarder": {
-    "en-US": "2021/03/rsyslog-sentinel-log-forwarder-en",
-    "pt-BR": "2021/03/rsyslog-sentinel-log-forwarder-pt"
+  "htb-doctor": {
+    "en-US": "2021/02/htb-doctor-en",
+    "pt-BR": "2021/02/htb-doctor-pt"
+  },
+  "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
+    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-en",
+    "pt-BR": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-pt"
   },
   "htb-luanne": {
     "en-US": "2021/03/htb-luanne-en",
@@ -15,16 +19,12 @@
     "en-US": "2021/03/htb-passage-en",
     "pt-BR": "2021/03/htb-passage-pt"
   },
-  "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
-    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-en",
-    "pt-BR": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-pt"
+  "rsyslog-sentinel-log-forwarder": {
+    "en-US": "2021/03/rsyslog-sentinel-log-forwarder-en",
+    "pt-BR": "2021/03/rsyslog-sentinel-log-forwarder-pt"
   },
-  "htb-academy": {
-    "en-US": "2021/02/htb-academy-en",
-    "pt-BR": "2021/02/htb-academy-pt"
-  },
-  "htb-doctor": {
-    "en-US": "2021/02/htb-doctor-en",
-    "pt-BR": "2021/02/htb-doctor-pt"
+  "install-update-azure-arc-windows-configmgr": {
+    "en-US": "2021/04/install-update-azure-arc-windows-configmgr-en",
+    "pt-BR": "2021/04/install-update-azure-arc-windows-configmgr-pt"
   }
 }
