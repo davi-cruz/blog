@@ -11,6 +11,7 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { createTranslation } from 'app/[locale]/i18n/server'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
+import SocialSharingButtons from '@/components/SocialSharingButtons'
 
 // const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 // const discussUrl = (path) =>
