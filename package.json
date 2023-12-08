@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "next dev",
-    "dev": "next dev",
-    "build": "next build && node ./scripts/postbuild.mjs",
+    "dev": "TINA_PUBLIC_IS_LOCAL=true tinacms dev -c \"next dev\"",
+    "build": "tinacms build && next build && node ./scripts/postbuild.mjs",
     "serve": "next start",
     "analyze": "ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts"
@@ -61,7 +61,7 @@
     "@svgr/webpack": "^8.0.1",
     "@tinacms/cli": "^1.5.37",
     "@types/mdx": "^2.0.5",
-    "@types/node": "^20.10.1",
+    "@types/node": "^20.10.4",
     "@types/react": "^18.2.14",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
