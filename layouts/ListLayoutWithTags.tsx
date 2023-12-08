@@ -44,7 +44,7 @@ const item = {
 
 function Pagination({ totalPages, currentPage, params: { locale } }: PaginationProps) {
   const { t } = useTranslation(locale, 'home')
-  const pathname = usePathname()
+  const pathname = usePathname() || '/'
   const basePath =
     locale === fallbackLng ? pathname.split('/')[1] : pathname.split('/').slice(1, 3).join('/')
   const prevPage = currentPage - 1 > 0
@@ -92,7 +92,7 @@ export default function ListLayoutWithTags({
   pagination,
 }: ListLayoutProps) {
   const { t } = useTranslation(locale, 'home')
-  const pathname = usePathname()
+  const pathname = usePathname() || '/'
 
   const tagCountMap = tagData[locale] // Get tag counts based on locale
 

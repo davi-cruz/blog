@@ -25,7 +25,7 @@ interface ListLayoutProps {
 }
 
 function Pagination({ totalPages, currentPage, params: { locale } }: PaginationProps) {
-  const pathname = usePathname()
+  const pathname = usePathname() || '/'
   const basePath =
     locale === fallbackLng ? pathname.split('/')[1] : pathname.split('/').slice(1, 3).join('/')
   const prevPage = currentPage - 1 > 0
