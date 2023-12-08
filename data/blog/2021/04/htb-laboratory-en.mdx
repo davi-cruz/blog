@@ -1,24 +1,26 @@
 ---
-date: 2021-04-17 16:00:00
-images: 
-- https://i.imgur.com/kUCyV6R.png
+title: 'Walktrough: HTB Laboratory'
 language: en-US
 localeid: htb-laboratory
+date: 2021-04-17T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Laboratory'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/kUCyV6R.png'
+authors:
+  - default
 ---
 
 Hello everyone!
 
-The machine of this week will be **Laboratory**, another Linux box easy rated from [Hack The Box](https://www.hackthebox.eu), created by [0xc45](https://app.hackthebox.eu/users/73268). 
+The machine of this week will be **Laboratory**, another Linux box easy rated from [Hack The Box](https://www.hackthebox.eu), created by [0xc45](https://app.hackthebox.eu/users/73268).
 
-:information_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
+\[info]
 
 ![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
@@ -231,8 +233,8 @@ uid=998(git) gid=998(git) groups=998(git)
 
 With access to the machine, started enumerating using `linpeas.sh` from [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md). This helped me a lot once I could learn the possibilities while exploiting a GitLab server. The script detects that the service is installed and returned some interesting information about the machine itself:
 
-- GitLab accounts, where **dexter** (admin@example.com) is an administrator.
-- We are running from a docker container, where we might be required to escape it to exploit the machine itself.
+* GitLab accounts, where **dexter** ([admin@example.com](mailto\:admin@example.com)) is an administrator.
+* We are running from a docker container, where we might be required to escape it to exploit the machine itself.
 
 One of the possibilities listed by `linpeas.sh` is that we could change the password from any user, which was successfully done for dexter after running the commands below:
 
@@ -386,4 +388,4 @@ cat /root/root.txt
 
 I hope you guys have enjoyed this box resolution.
 
-See you in the next post soon! :smiley:
+See you in the next post soon! \:smiley:

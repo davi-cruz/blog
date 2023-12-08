@@ -1,24 +1,26 @@
 ---
-date: 2021-05-15 16:00:00
-images: 
-- https://i.imgur.com/0eaJMfD.png
+title: 'Walktrough: HTB Ready'
 language: pt-BR
 localeid: htb-ready
+date: 2021-05-15T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Ready'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/0eaJMfD.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Ready**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu), criada por [bertolis](https://app.hackthebox.eu/users/27897).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\[info]
 
 ![HTB Ready](https://i.imgur.com/QV6d376.png)
 
@@ -104,15 +106,13 @@ Após ajustes, obtido shell com a conta **git** no diretório `~/gitlab-rails/wo
 
 Após shell inicial, iniciada enumeração fazendo uso do `linenum.sh`, onde os seguintes pontos chamaram atenção:
 
-- Execução dentro de container docker, possivelmente sendo necessário futuramente escapar deste para o host.
+* Execução dentro de container docker, possivelmente sendo necessário futuramente escapar deste para o host.
+* Existe usuário local `dude` (id=1000), no qual o arquivo `user.txt` encontra-se em seu home directory.
+* Obtido hash de contas do GitLab Server, onde o usuário `root` é o único privilegiado, possuindo o seguinte hash de senha:
 
-- Existe usuário local `dude` (id=1000), no qual o arquivo `user.txt` encontra-se em seu home directory.
-
-- Obtido hash de contas do GitLab Server, onde o usuário `root` é o único privilegiado, possuindo o seguinte hash de senha:
-
-| username | e-mail            | admin | hash                                                         |
-| -------- | ----------------- | ----- | ------------------------------------------------------------ |
-| root     | admin@example.com | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
+| username | e-mail                                         | admin | hash                                                         |
+| -------- | ---------------------------------------------- | ----- | ------------------------------------------------------------ |
+| root     | [admin@example.com](mailto\:admin@example.com) | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
 Com base nas informações acima, ao validar os privilégios necessários para ler o arquivo `user.txt`, identificado que o usuário corrente (`git`), possuía acesso, logo obtivemos a flag de usuário.
 
@@ -136,8 +136,8 @@ O próximo passo seria obter a flag de root. Tendo o hash de senha, conforme obs
 
 Durante a enumeração do LinEnum, o seguinte texto é listado junto da listagem das contas:
 
-> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find_by(email: "youruser@example.com"); user.admin = TRUE; user.save!'
-> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find_by(email: "admin@example.com"); user.password = "pass_peass_pass"; user.password_confirmation = "pass_peass_pass"; user.save!'
+> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "[youruser@example.com](mailto\:youruser@example.com)"); user.admin = TRUE; user.save!'
+> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "[admin@example.com](mailto\:admin@example.com)"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
 
 Com base nesta informação, segui para o reset da senha do usuário root conforme recomendado, porém nenhum repositório privado ou informação adicional foi encontrada, que pudesse auxiliar na obtenção das credenciais de root.
 
@@ -171,7 +171,7 @@ root@gitlab:/opt/backup#
 
 ### Escapando do container
 
-Uma vez que temos privilégios de root, se o container estiver rodando sob circunstâncias especificas, podemos escapar do mesmo para o host, conforme encontrei a partir de uma pesquisa e extremamente bem documentado no blog [Understanding Docker container escapes \| Trail of Bits Blog](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/).
+Uma vez que temos privilégios de root, se o container estiver rodando sob circunstâncias especificas, podemos escapar do mesmo para o host, conforme encontrei a partir de uma pesquisa e extremamente bem documentado no blog [Understanding Docker container escapes | Trail of Bits Blog](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/).
 
 Seguindo o passo-a-passo descrito neste blog, criado um listener na porta 4443 TCP na máquina atacante e realizados os seguintes procedimentos com o usuário `root` no container, obtendo assim um shell reverso.
 
@@ -208,4 +208,4 @@ CONTAINER ID        IMAGE                          COMMAND             CREATED  
 
 Espero que tenham gostado.
 
-Vejo vocês no próximo post! :smile:
+Vejo vocês no próximo post! \:smile:

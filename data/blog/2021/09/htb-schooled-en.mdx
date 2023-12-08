@@ -1,23 +1,26 @@
 ---
-date: 2021-09-11
-images: 
-- https://i.imgur.com/ksBoJIQ.png
+title: 'Walktrough: HTB Schooled'
 language: en-US
 localeid: htb-schooled
+date: 2021-09-11T00:00:00.000Z
 tags:
-- HTB Linux
-- HTB Medium
-- HackTheBox
-- Walktrough
-title: 'Walktrough: HTB Schooled'
-authors: ['default']
+  - HTB Linux
+  - HTB Medium
+  - HackTheBox
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/ksBoJIQ.png'
+authors:
+  - default
 ---
+
 Hello guys!
 
 This week's machine will be **Schooled**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
@@ -120,7 +123,7 @@ Accessing this initial page, we can see an institutional page of a School, which
 
 ![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png)
 
-Also, by running `whatweb` I have found an e-mail address **admissions@schooled.htb** where `schooled.htb` might be the domain name for this machine, which was later added to the hosts file.
+Also, by running `whatweb` I have found an e-mail address **[admissions@schooled.htb](mailto\:admissions@schooled.htb)** where `schooled.htb` might be the domain name for this machine, which was later added to the hosts file.
 
 ```bash
 $ whatweb --color=never -a 3 10.10.10.234
@@ -194,13 +197,7 @@ Besides the e-mail domain requirement, e-mail validation wasn't required and wit
 > Reminder for joining students
 > by Manuel Phillips - Wednesday, 23 December 2020, 12:01 AM
 > Number of replies: 0
-> This is a self enrollment course. For students who wish to attend my lectures be sure that you have your MoodleNet profile set.
->
-> Students who do not set their MoodleNet profiles will be removed from the course before the course is due to start and I will be checking all students who are enrolled on this course.
->
-> Look forward to seeing you all soon.
->
-> Manuel Phillips
+> This is a self enrollment course. For students who wish to attend my lectures be sure that you have your MoodleNet profile set.Students who do not set their MoodleNet profiles will be removed from the course before the course is due to start and I will be checking all students who are enrolled on this course.Look forward to seeing you all soon.Manuel Phillips
 
 This means that teacher Manuel Philips will check all MoodleNet profiles for all enrolled students and, in case we can store an XSS on it, we might be able to steal the teacher's session and enumerate further the platform while searching for an RCE opportunity.
 
@@ -235,7 +232,7 @@ Now aware of this Session parameter, changed it in browser and we can now see in
 
 Now that I have a more privileged access as a teacher, we need to check if current permissions (Teacher) are enough to get an RCE.
 
-Searching about Moodle Exploitation on [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce) page, found out that I need to be a manager to upload a plugin, which can host malicious code to our purpose. Besides not having the appropriate permission noticed that version **is also vulnerable to a** [**Privilege Escalation Vulnerability**](https://moodle.org/mod/forum/discuss.php?d=407393), which could allow me to get manager permission in the course abusing the enrollment process and, if a student is the Site Manager, I could impersonate him and upload the malicious plugin, obtaining RCE. The same author of the other CVE has also [a repository in Github](https://github.com/HoangKien1020/CVE-2020-14321) containing a PoC that could help us to escalate those privileges and get RCE.
+Searching about Moodle Exploitation on [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce) page, found out that I need to be a manager to upload a plugin, which can host malicious code to our purpose. Besides not having the appropriate permission noticed that version **is also vulnerable to a** **[Privilege Escalation Vulnerability](https://moodle.org/mod/forum/discuss.php?d=407393)**, which could allow me to get manager permission in the course abusing the enrollment process and, if a student is the Site Manager, I could impersonate him and upload the malicious plugin, obtaining RCE. The same author of the other CVE has also [a repository in Github](https://github.com/HoangKien1020/CVE-2020-14321) containing a PoC that could help us to escalate those privileges and get RCE.
 
 Besides not working well in our scenario, understanding the steps required used in the exploit, the following steps were executed to be able to get RCE:
 
@@ -339,7 +336,7 @@ phillips_manuel@staff.schooled.htb      phillips_manuel $2y$10$ZwxEs65Q0gO8rN8zp
 carter_lianne@staff.schooled.htb        carter_lianne   $2y$10$jw.KgN/SIpG2MAKvW8qdiub67JD7STqIER1VeRvAH4fs/DPF57JZe
 ```
 
-Based on the hashes, created a file in the format username:hash and then ran `john`, where was obtained the password for account `jamie` as below
+Based on the hashes, created a file in the format username\:hash and then ran `john`, where was obtained the password for account `jamie` as below
 
 ```bash
 $ john --wordlist=/usr/share/wordlists/rockyou.txt accounts.txt                                                                 Using default input encoding: UTF-8
@@ -352,7 +349,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session aborted
 ```
 
-With these creds, connected through SSH and obtained the `user.txt` flag :smile:
+With these creds, connected through SSH and obtained the `user.txt` flag \:smile:
 
 ```bash
 jamie@Schooled:~ $ id && hostname && cat user.txt
@@ -422,4 +419,4 @@ connect to [10.10.10.10] from (UNKNOWN) [10.10.10.234] 16349
 
 I hope you guys have enjoyed it!
 
-See you at the next post :smile:
+See you at the next post \:smile:

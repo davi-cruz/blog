@@ -1,23 +1,25 @@
 ---
-date: 2021-04-24 12:00:00
-images:
-- https://i.imgur.com/CjKnqww.png
+title: 'Walktrough: HTB Bucket'
 language: en-US
 localeid: htb-bucket
+date: 2021-04-24T12:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walkthrough
-title: 'Walktrough: HTB Bucket'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walkthrough
+summary: ''
+images:
+  - 'https://i.imgur.com/CjKnqww.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Bucket**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu/), created by [MrR3boot](https://app.hackthebox.eu/users/13531).
 
-info :information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired. fechainfo
+info \:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired. fechainfo
 
 ![HTB Bucket](https://i.imgur.com/KEhyzUW.png)
 
@@ -262,11 +264,9 @@ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb cp ./exploit.php
 
 Now with a reverse shell to the machine, ran `linpeas.sh` to make it easier the enumeration, where the following points were identified:
 
-- Local user `roy` has console access and, enumerating his home directory found the file `user.txt` and folder `project`, access to both denied using `www-data` credentials.
-
-  - This user has no running processes that could allow us to hijack them so we would need to obtain his credentials to proceed with this machine.
-
-- Other services are running in this box, listening in ports 4566, 8000, and 38443, which could be used to escalate privileges later.
+* Local user `roy` has console access and, enumerating his home directory found the file `user.txt` and folder `project`, access to both denied using `www-data` credentials.
+  * This user has no running processes that could allow us to hijack them so we would need to obtain his credentials to proceed with this machine.
+* Other services are running in this box, listening in ports 4566, 8000, and 38443, which could be used to escalate privileges later.
 
 ```plaintext
 [+] Active Ports                                                                                         
@@ -280,9 +280,8 @@ tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      
 tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -                     
 ```
 
-- This box has also containers in execution (`ctr`, `runc`), probably from localstack, being also a possibility when checking for privesc paths.
-
-- There's a directory `/var/www/bucket-app` that could be used by one of the apps previously identified, but also doesn't allow us to read it with `www-data` credentials.
+* This box has also containers in execution (`ctr`, `runc`), probably from localstack, being also a possibility when checking for privesc paths.
+* There's a directory `/var/www/bucket-app` that could be used by one of the apps previously identified, but also doesn't allow us to read it with `www-data` credentials.
 
 From the points discussed, what called more attention to me was the other services, so started by checking apache configurations (`/etc/apache2/sites-enabled`) where we had the file `000-default.conf` listed below, but nothing about 38443, but was able to get insights about 4566 and 8000, which published the content from `/var/www/bucket-app` folder.
 
@@ -386,8 +385,8 @@ For the initial test, as described in AWS documentation in [this link](https://d
 
 To make it easier this process, which is being executed from the attacker machine, executed the following processes:
 
-- From the attacker machine, created an RSA key (`ssh-keygen`) and associated it with `roy`'s account to prevent asking for a password during the process.
-- In the attacker machine was also made a port forwarding using SSH, allowing us to call port 8000 locally and this request would be routed to 8000 to bucket, as below
+* From the attacker machine, created an RSA key (`ssh-keygen`) and associated it with `roy`'s account to prevent asking for a password during the process.
+* In the attacker machine was also made a port forwarding using SSH, allowing us to call port 8000 locally and this request would be routed to 8000 to bucket, as below
 
 ```bash
 ssh roy@10.10.10.212 -L 8000:127.0.0.1:8000 
@@ -461,4 +460,4 @@ root@bucket:~# cat /root/root.txt
 
 I hope you guys have enjoyed this post.
 
-See you again soon! :smiley:
+See you again soon! \:smiley:

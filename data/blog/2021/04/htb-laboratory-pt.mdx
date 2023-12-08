@@ -1,24 +1,26 @@
 ---
-date: 2021-04-17 16:00:00
-images: 
-- https://i.imgur.com/kUCyV6R.png
+title: 'Walktrough: HTB Laboratory'
 language: pt-BR
 localeid: htb-laboratory
+date: 2021-04-17T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Laboratory'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/kUCyV6R.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
-A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268). 
+A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\[info]
 
 ![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
@@ -231,8 +233,8 @@ uid=998(git) gid=998(git) groups=998(git)
 
 Com acesso à máquina iniciada enumeração utilizando o `linpeas.sh` do [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md) que me ajudou muito a entender as possibilidades de exploração do GitLab, uma vez que não conheço bem a implementação do serviço. O Script detecta o serviço instalado e trouxe algumas informações interessantes sobre a máquina em questão:
 
-- Enumeração das contas, onde pudemos notar que o usuário **dexter** (admin@example.com) é administrador.
-- Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
+* Enumeração das contas, onde pudemos notar que o usuário **dexter** ([admin@example.com](mailto\:admin@example.com)) é administrador.
+* Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
 
 Um dos pontos colocados pelo `linpeas.sh` durante a enumeração é a possibilidade de alterar a senha de qualquer usuário, o que tivemos sucesso a partir da execução dos comandos abaixo:
 
@@ -386,4 +388,4 @@ cat /root/root.txt
 
 Espero que tenham gostado!
 
-Vejo vocês novamente em breve! :smiley:
+Vejo vocês novamente em breve! \:smiley:

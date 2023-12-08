@@ -1,28 +1,30 @@
 ---
-date: 2021-06-12 16:00:00
-images: 
-- https://i.imgur.com/Ya8KoOZ.png
+title: 'Walktrough: HTB Tenet'
 language: pt-BR
 localeid: htb-tenet
+date: 2021-06-12T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Tenet'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/Ya8KoOZ.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Tenet**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
+\[info]
 
 ![HTB Tenet](https://i.imgur.com/vouXrOD.png)
 
-Antes de iniciar a resolução desta máquina, me chamou atenção a ilustração, a qual busquei e acabei encontrando sobre o quadrado Sator, onde temos um palíndromo com cinco palavras latinas: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, que em um conjunto formam um quadrado com as mesmas palavras sendo TENET a central. Muito possivelmente estas palavras poderão estar presentes em algum ponto da resolução desta máquina :smile:.
+Antes de iniciar a resolução desta máquina, me chamou atenção a ilustração, a qual busquei e acabei encontrando sobre o quadrado Sator, onde temos um palíndromo com cinco palavras latinas: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, que em um conjunto formam um quadrado com as mesmas palavras sendo TENET a central. Muito possivelmente estas palavras poderão estar presentes em algum ponto da resolução desta máquina \:smile:.
 
 ## Enumeração
 
@@ -287,7 +289,7 @@ while true; do
 done
 ```
 
-Com o script acima em execução, executado o comando para habilitar o SSH para o usuário `root` e logo na sequência, o comando ssh para se conectar com a chave privada em nossa posse, onde obtivemos sucesso para conectar nesta máquina utilizando o SSH e obter a flag de root :smiley:
+Com o script acima em execução, executado o comando para habilitar o SSH para o usuário `root` e logo na sequência, o comando ssh para se conectar com a chave privada em nossa posse, onde obtivemos sucesso para conectar nesta máquina utilizando o SSH e obter a flag de root \:smiley:
 
 ```bash
 neil@tenet:/tmp$ sudo  /usr/local/bin/enableSSH.sh
@@ -303,4 +305,4 @@ b05e57e997cda49b47757cd3f0f9ac43
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo post! :smile:
+Vejo vocês no próximo post! \:smile:

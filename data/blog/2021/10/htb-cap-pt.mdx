@@ -1,24 +1,26 @@
 ---
-date: 2021-10-02 16:00:00
-images: 
-- https://i.imgur.com/JkBtXmO.png
+title: 'Walktrough: HTB Cap'
 language: pt-BR
 localeid: htb-cap
+date: 2021-10-02T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Cap'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/JkBtXmO.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Cap**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por  [InfoSecJack](https://app.hackthebox.eu/users/52045).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+\[info]
 
 ![HTB Cap](https://i.imgur.com/EP6oOn2.png)
 
@@ -168,7 +170,7 @@ Analizando o conteúdo utilizando o Wireshark, iniciei por verificar as estatís
 
 Passando por cada um dos TCP streams, o mais interessante foi o último, em que durante a comunicação FTP podemos ver as credenciais informadas pelo usuário **nathan** que baixou o arquivo `notes.txt`, que poderia conter algum tipo de informação relevante para a resoluçào da máquina.
 
-> nathan:Buck3tH4TF0RM3!
+> nathan\:Buck3tH4TF0RM3!
 
 ![HTB Cap - PCAP FTP Stream](https://i.imgur.com/DQHsTTw.png)
 
@@ -263,7 +265,7 @@ Files with capabilities (limited to 50):
 /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
 ```
 
-Dos arquivos listados o mais promissor é o `/usr/bin/python3.8` que possui o capability `cap_setuid` configurado, que, de acordo com o [python \| GTFOBins](https://gtfobins.github.io/gtfobins/python/#capabilities) poderia nos permitir iniciar uma nova instancia do `/bin/sh` e, a partir desta, ler o conteúdo do arquivo flag do usuário `root`.
+Dos arquivos listados o mais promissor é o `/usr/bin/python3.8` que possui o capability `cap_setuid` configurado, que, de acordo com o [python | GTFOBins](https://gtfobins.github.io/gtfobins/python/#capabilities) poderia nos permitir iniciar uma nova instancia do `/bin/sh` e, a partir desta, ler o conteúdo do arquivo flag do usuário `root`.
 
 ```bash
 nathan@cap:~$ /usr/bin/python3.8 -c 'import os; os.setuid(0); os.system("/bin/sh")'
@@ -275,4 +277,4 @@ cap
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo post :smile:
+Vejo vocês no próximo post \:smile:

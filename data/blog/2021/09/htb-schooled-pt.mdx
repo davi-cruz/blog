@@ -1,24 +1,26 @@
 ---
-date: 2021-09-11
-images: 
-- https://i.imgur.com/ksBoJIQ.png
+title: 'Walktrough: HTB Schooled'
 language: pt-BR
 localeid: htb-schooled
+date: 2021-09-11T00:00:00.000Z
 tags:
-- HTB Linux
-- HTB Medium
-- HackTheBox
-- Walktrough
-title: 'Walktrough: HTB Schooled'
-authors: ['default']
+  - HTB Linux
+  - HTB Medium
+  - HackTheBox
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/ksBoJIQ.png'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Schooled**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [TheCyberGeek](https://app.hackthebox.eu/users/114053).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+\[info]
 
 ![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
@@ -121,7 +123,7 @@ Acessando a página inicial, podemos ver um site institucional de uma escola, qu
 
 ![HTB Schooled - Institutional Page](https://i.imgur.com/hy0QFcA.png)
 
-Também, executando o `whatweb`, encontrei a conta de e-mail **admissions@schooled.htb** onde o dominicio `schooled.htb` deve ser o utilizado pela organização, o qual foi adicionado ao arquivo hosts local.
+Também, executando o `whatweb`, encontrei a conta de e-mail **[admissions@schooled.htb](mailto\:admissions@schooled.htb)** onde o dominicio `schooled.htb` deve ser o utilizado pela organização, o qual foi adicionado ao arquivo hosts local.
 
 ```bash
 $ whatweb --color=never -a 3 10.10.10.234
@@ -195,13 +197,7 @@ Mesmo havendo o requisito, nenhum tipo de validação foi necessária e, ao nave
 > Reminder for joining students
 > by Manuel Phillips - Wednesday, 23 December 2020, 12:01 AM
 > Number of replies: 0
-> This is a self enrollment course. For students who wish to attend my lectures be sure that you have your MoodleNet profile set.
->
-> Students who do not set their MoodleNet profiles will be removed from the course before the course is due to start and I will be checking all students who are enrolled on this course.
->
-> Look forward to seeing you all soon.
->
-> Manuel Phillips
+> This is a self enrollment course. For students who wish to attend my lectures be sure that you have your MoodleNet profile set.Students who do not set their MoodleNet profiles will be removed from the course before the course is due to start and I will be checking all students who are enrolled on this course.Look forward to seeing you all soon.Manuel Phillips
 
 Isso significa que o professor Manuel Philips verificará todos os perfis MoodleNet dos alunos que se inscreveram na matéria e, caso possamos armazenar um XSS neste atributo, poderemos utilizar deste artifício para roubar a sessão do professor a partir dos atributos do cabeçalho da requisição. Com acesso na plataforma, dependendo dos privilégios do professor, podemos buscar por uma oportunidade de RCE.
 
@@ -236,14 +232,12 @@ Agora sabendo quais os parametros da sessão do professor, alterei o valor do co
 
 Agora que temos acesso a outra conta, necessitamos validar se as permissões possuidas por este usuário são suficientes para dar continuidade na exploração, vindo a obter um RCE.
 
-Pesquisando sobre explorações em Moodle em [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce), encontrei qeu é necessário o privilégio de *manager* para realizar o upload de um plugin, método mais eficiente para obter execução de código via aplicação. Mesmo não tendo esta permissão com o usuário do professor, observado que esta versão em execução **também é vulnerável à** [**Escalação de privilégio**](https://moodle.org/mod/forum/discuss.php?d=407393), que poderia nos permitir obter o acesso de manager a partir do curso abusando o processo de inscrição e, se um dos estudantes for um dos *site managers*, este privilégio poderia ser explorado para a finalidade desejada, que é realizar o upload de um plugin malicioso. O mesmo autor da PoC do outro CVE também possui [um repositório no Github](https://github.com/HoangKien1020/CVE-2020-14321) contendo uma PoC que poderia nos auxiliar nesta tarefa.
+Pesquisando sobre explorações em Moodle em [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce), encontrei qeu é necessário o privilégio de *manager* para realizar o upload de um plugin, método mais eficiente para obter execução de código via aplicação. Mesmo não tendo esta permissão com o usuário do professor, observado que esta versão em execução **também é vulnerável à** **[Escalação de privilégio](https://moodle.org/mod/forum/discuss.php?d=407393)**, que poderia nos permitir obter o acesso de manager a partir do curso abusando o processo de inscrição e, se um dos estudantes for um dos *site managers*, este privilégio poderia ser explorado para a finalidade desejada, que é realizar o upload de um plugin malicioso. O mesmo autor da PoC do outro CVE também possui [um repositório no Github](https://github.com/HoangKien1020/CVE-2020-14321) contendo uma PoC que poderia nos auxiliar nesta tarefa.
 
 Mesmo não funcionando adequadamente a PoC em nosso cenário, após entender exatamente os passos necessários, foi possível obter execução de código na máquina, conforme passos abaixo:
 
 * Primeiro foi necessário identificar qual usuário na plataforma poderia ter o privilégio de manager. Com base nas informações obtidas a partire de reconhecimento do site institucional, **Lianne Carter** é a gerente da escola e provavelmente possui os privilégios dos quais precisamos.
-
 * Também tomei nota sobre o Profile ID do usuário **Manuel Philips**, que foi obtido ao navegar à sua página no link  `http://moodle.schooled.htb/moodle/user/profile.php?id=24`.
-
 * A exploração iniciou-se por fazer a inscrição da gerente da escola na turma de matemática e, interceptando a requisição utilizando o Burp Suite, enviei a mesma ao Repeater e, além da requisição inicial, fiz uma nova para nos conceder o priviégio de Manager no curso, por atribuir o valor `roleid=1` e substituir o ID do usuário pelo identificado previamente, conforme visto no video no repositório.
 
 ```http
@@ -263,17 +257,14 @@ Connection: close
 * Agora como um Administrador do curso, acessando um perfil de usuário podemos utilizar a função "Log in as", que nos permitiu acessar a plataforma como o usuário Lianne Carter.
 
   ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
-  
 * Agora como Lianne, deveríamos ter privilégios de realizar o upload do plugin diretamente, uma vez que a opção "Site Administration" é exibida à esquerda, porém tais privilégios não são habilitados por padrão. Para tal atividade, precisamos editar a role acessando o menu "Site Administration" > "Users" e, na aba "Permissions", selecionei "Define Roles".
 
   ![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
-  
 * Selecionei a role **Manager** e, clicando no botão "Edit", interceptei a requisição e substitui o dado enviado pelo encontrado no repositório, qeu me concederia privilégios totais na aplicação.
 
   ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
 
   ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
-  
 * Agora, navegando em "Site Administration" > "Plugins" podemos ver a opção para instalação, para o qual o arquivo `rce.zip`, também disponibilizado no portal, foi carregado, nos permitindo executar comandos remotamente e obter um shell reverso a partir de chamadas na URL do plugin, conforme abaixo:
 
 ```bash
@@ -358,7 +349,7 @@ Use the "--show" option to display all of the cracked passwords reliably
 Session aborted
 ```
 
-Com estas credenciais, consegui me logar via SSH e obter a flag no arquivo `user.txt` :smile:
+Com estas credenciais, consegui me logar via SSH e obter a flag no arquivo `user.txt` \:smile:
 
 ```bash
 jamie@Schooled:~ $ id && hostname && cat user.txt
@@ -428,4 +419,4 @@ connect to [10.10.10.10] from (UNKNOWN) [10.10.10.234] 16349
 
 Espero que tenham gostado!
 
-Vejo vocês no próximo post :smile:
+Vejo vocês no próximo post \:smile:

