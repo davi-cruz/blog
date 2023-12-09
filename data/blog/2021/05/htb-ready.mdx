@@ -112,7 +112,7 @@ Após shell inicial, iniciada enumeração fazendo uso do `linenum.sh`, onde os 
 
 | username | e-mail                                         | admin | hash                                                         |
 | -------- | ---------------------------------------------- | ----- | ------------------------------------------------------------ |
-| root     | [admin@example.com](mailto\:admin@example.com) | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
+| root     | `admin@example.com` | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
 Com base nas informações acima, ao validar os privilégios necessários para ler o arquivo `user.txt`, identificado que o usuário corrente (`git`), possuía acesso, logo obtivemos a flag de usuário.
 
@@ -136,8 +136,8 @@ O próximo passo seria obter a flag de root. Tendo o hash de senha, conforme obs
 
 Durante a enumeração do LinEnum, o seguinte texto é listado junto da listagem das contas:
 
-> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "[youruser@example.com](mailto\:youruser@example.com)"); user.admin = TRUE; user.save!'
-> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "[admin@example.com](mailto\:admin@example.com)"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
+> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "`youruser@example.com`"); user.admin = TRUE; user.save!'
+> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "`admin@example.com`"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
 
 Com base nesta informação, segui para o reset da senha do usuário root conforme recomendado, porém nenhum repositório privado ou informação adicional foi encontrada, que pudesse auxiliar na obtenção das credenciais de root.
 

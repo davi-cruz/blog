@@ -233,7 +233,7 @@ uid=998(git) gid=998(git) groups=998(git)
 
 Com acesso à máquina iniciada enumeração utilizando o `linpeas.sh` do [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md) que me ajudou muito a entender as possibilidades de exploração do GitLab, uma vez que não conheço bem a implementação do serviço. O Script detecta o serviço instalado e trouxe algumas informações interessantes sobre a máquina em questão:
 
-* Enumeração das contas, onde pudemos notar que o usuário **dexter** ([admin@example.com](mailto\:admin@example.com)) é administrador.
+* Enumeração das contas, onde pudemos notar que o usuário **dexter** (`admin@example.com`) é administrador.
 * Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
 
 Um dos pontos colocados pelo `linpeas.sh` durante a enumeração é a possibilidade de alterar a senha de qualquer usuário, o que tivemos sucesso a partir da execução dos comandos abaixo:

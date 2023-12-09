@@ -233,7 +233,7 @@ uid=998(git) gid=998(git) groups=998(git)
 
 With access to the machine, started enumerating using `linpeas.sh` from [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md). This helped me a lot once I could learn the possibilities while exploiting a GitLab server. The script detects that the service is installed and returned some interesting information about the machine itself:
 
-* GitLab accounts, where **dexter** ([admin@example.com](mailto\:admin@example.com)) is an administrator.
+* GitLab accounts, where **dexter** (`admin@example.com`) is an administrator.
 * We are running from a docker container, where we might be required to escape it to exploit the machine itself.
 
 One of the possibilities listed by `linpeas.sh` is that we could change the password from any user, which was successfully done for dexter after running the commands below:

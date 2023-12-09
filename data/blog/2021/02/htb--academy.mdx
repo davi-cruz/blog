@@ -4,10 +4,10 @@ language: en-US
 localeid: htb-academy
 authors: ['default']
 tags:
-- Walkthrough
-- HackTheBox
-- HTB Easy
-- HTB Linux
+  - Walkthrough
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
 title: 'Walktrough: HTB Academy'
 ---
 
@@ -15,8 +15,9 @@ Hello everyone!
 
 The box of this week will be **Academy**, another easy-rated Linux box from [Hack the Box](https://www.hackthebox.eu) created by [egre55](https://app.hackthebox.eu/users/1190) and [mrb3n](https://app.hackthebox.eu/users/2984).
 
-:information_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
-
+`<Alert kind="info" title="Info">`
+  Write-ups for Hack the Box are always posted as soon as machines get retired.
+`</Alert>`
 
 ![HTB Academy](https://i.imgur.com/aTyV5W3.png)
 
@@ -33,7 +34,7 @@ Host is up (0.15s latency).
 Not shown: 998 closed ports
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 c0:90:a3:d8:35:25:6f:fa:33:06:cf:80:13:a0:a5:53 (RSA)
 |   256 2a:d5:4b:d0:46:f0:ed:c9:3c:8d:f6:5d:ab:ae:77:96 (ECDSA)
 |_  256 e1:64:14:c3:cc:51:b2:3b:a6:28:a7:b1:ae:5f:45:35 (ED25519)
@@ -43,7 +44,7 @@ PORT   STATE SERVICE VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 34.43 seconds                                  
+Nmap done: 1 IP address (1 host up) scanned in 34.43 seconds
 ```
 
 ### 80 TCP - HTTP Service
@@ -140,7 +141,7 @@ python3 ./pwn_laravel.py http://dev-staging-01.academy.htb dBLUaMuZz7Iq06XtL/Xnz
 After upgrading the reverse shell, first thing to check was the content of the previously enumerated file **config.php**, listed below:
 
 ```bash
-www-data@academy:/var/www/html$ cat ./academy/public/config.php 
+www-data@academy:/var/www/html$ cat ./academy/public/config.php
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -190,7 +191,7 @@ www-data@academy:/home$ find /home -type f 2>/dev/null | grep user.txt
 On the first try using `mySup3rP4s5w0rd!!` we were able to log in as cry0l1t3 and get the user flag
 
 ```bash
-cry0l1t3@academy:~$ cat user.txt 
+cry0l1t3@academy:~$ cat user.txt
 <redacted>
 ```
 
@@ -200,7 +201,7 @@ Now running as cry0l1t3, we can enumerate further this box. The first thing to d
 
 ```bash
 cry0l1t3@academy:~$ sudo -l
-[sudo] password for cry0l1t3: 
+[sudo] password for cry0l1t3:
 Sorry, user cry0l1t3 may not run sudo on academy.
 cry0l1t3@academy:~$ id
 uid=1002(cry0l1t3) gid=1002(cry0l1t3) groups=1002(cry0l1t3),4(adm)
@@ -239,14 +240,14 @@ vim /tmp/test
 
 - Type `Esc` to enter em command mode and enter the command `:% !xxd`. This will convert the existing content into HEX
 
-- Now pressing `i` we'll enter in *Insert Mode* and paste the HEX content we want to convert, right after `00000000:`.
+- Now pressing `i` we'll enter in _Insert Mode_ and paste the HEX content we want to convert, right after `00000000:`.
 
 - Press `Esc` again to return to `command mode` and type `:% !xxd -r` to return to the actual content to ASCII.
 
-- You can later save and exit by entering the command `:wq!`  but you might have also seen the actual content of this HEX value. Below is the output of the file I've created to do this conversion:
+- You can later save and exit by entering the command `:wq!` but you might have also seen the actual content of this HEX value. Below is the output of the file I've created to do this conversion:
 
 ```bash
-cat /tmp/test                    
+cat /tmp/test
 mrb3n_Ac@d3my!
 ```
 
@@ -258,7 +259,7 @@ Enumerating his permissions, noticed that he's not member of any special group b
 mrb3n@academy:~$ id
 uid=1001(mrb3n) gid=1001(mrb3n) groups=1001(mrb3n)
 mrb3n@academy:~$ sudo -l
-[sudo] password for mrb3n: 
+[sudo] password for mrb3n:
 Matching Defaults entries for mrb3n on academy:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
 
@@ -281,7 +282,7 @@ As **root**, finally obtained the flag under `/root/root.txt`
 ```bash
 root@academy:~# id
 uid=0(root) gid=0(root) groups=0(root)
-root@academy:~# cat root.txt 
+root@academy:~# cat root.txt
 <redacted>
 root@academy:~#
 ```

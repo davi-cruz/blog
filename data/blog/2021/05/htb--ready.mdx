@@ -112,7 +112,7 @@ After initial shell, started enumeration using `linenum.sh`, where the following
 
 | username | e-mail                                         | admin | hash                                                         |
 | -------- | ---------------------------------------------- | ----- | ------------------------------------------------------------ |
-| root     | [admin@example.com](mailto\:admin@example.com) | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
+| root     | `admin@example.com` | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
 Based on the information above, first thing tried was to check the required privileges to read `user.txt`, where we identified that `git` user had access, so we've collected it.
 
@@ -136,8 +136,8 @@ Next step would be obtaining the root credential to read the `root.txt` flag. As
 
 During the enumeration, the information was also shared along with the credential dump:
 
-> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "[youruser@example.com](mailto\:youruser@example.com)"); user.admin = TRUE; user.save!'
-> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "[admin@example.com](mailto\:admin@example.com)"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
+> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "`youruser@example.com`"); user.admin = TRUE; user.save!'
+> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "`admin@example.com`"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
 
 Based on that, proceeded with the root account password reset as recommended, but no private repository or additional information was found, that could help us succeed on obtaining root's credentials.
 
