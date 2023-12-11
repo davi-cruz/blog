@@ -12,38 +12,32 @@ type ProjectsData = {
 const projectsData: ProjectsData = {
   'en-US': [
     {
-      title: 'A Search Engine',
-      description: `What if you could look up any information in the world? Webpages, images, videos
-        and more. Google has many features to help you find exactly what you're looking
-        for.`,
-      imgSrc: '/static/images/google.png',
-      href: 'https://www.google.com',
+      title: 'General Security Repository',
+      description: `Here you'll find several scripts and snippets you may find helpful for supporting you while
+        implementing and maintaining security solutions, mostly Microsoft's.`,
+      imgSrc: 'https://i.imgur.com/crOtXdV.jpg',
+      href: 'https://github.com/davi-cruz/Security',
     },
     {
-      title: 'The Time Machine',
-      description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-        to the desired date and press "Go". No more worrying about lost keys or
-        forgotten headphones with this simple yet affordable solution.`,
-      imgSrc: '/static/images/time-machine.jpg',
-      href: '/blog/the-time-machine',
+      title: 'MDC Shield',
+      description: `A Security project to support easy remediation for Multicloud Environment from Microsoft Defender for Cloud.`,
+      imgSrc: 'https://i.imgur.com/wwsAHil.png',
+      href: 'https://github.com/davi-cruz/Security/tree/main/MDC/MDC-Shield',
     },
   ],
 
   'pt-BR': [
     {
-      title: 'Un moteur de recherche',
-      description: `Et si vous pouviez rechercher n'importe quelle information dans le monde ? Pages Web, images, vidéos
-        et plus. Google propose de nombreuses fonctionnalités pour vous aider à trouver exactement ce que vous cherchez.`,
-      imgSrc: '/static/images/google.png',
-      href: 'https://www.google.com',
+      title: 'Repositório de Segurança Geral',
+      description: `Aqui você encontrará vários scripts e trechos que podem ser úteis para ajudá-lo a implementar e manter soluções de segurança, principalmente da Microsoft.`,
+      imgSrc: 'https://i.imgur.com/crOtXdV.jpg',
+      href: 'https://github.com/davi-cruz/Security',
     },
     {
-      title: 'La Machine à remonter le temps',
-      description: `Imaginez pouvoir voyager dans le temps ou vers le futur. Tournez simplement le bouton
-        à la date souhaitée et appuyez sur "Go". Ne vous inquiétez plus des clés perdues ou
-        écouteurs oubliés avec cette solution simple mais abordable.`,
-      imgSrc: '/static/images/time-machine.jpg',
-      href: '/blog/la-machine-a-remonter-le-temps',
+      title: 'MDC Shield',
+      description: `Um projeto de segurança para suportar a remediação fácil para Ambiente Multicloud a partir do Microsoft Defender for Cloud.`,
+      imgSrc: 'https://i.imgur.com/wwsAHil.png',
+      href: 'https://github.com/davi-cruz/Security/tree/main/MDC/MDC-Shield',
     },
   ],
 }

@@ -1,94 +1,94 @@
 {
   "htb-academy": {
-    "en-US": "2021/02/htb-academy-en",
-    "pt-BR": "2021/02/htb-academy-pt"
+    "en-US": "2021/02/htb--academy",
+    "pt-BR": "2021/02/htb-academy"
   },
   "htb-doctor": {
-    "en-US": "2021/02/htb-doctor-en",
-    "pt-BR": "2021/02/htb-doctor-pt"
+    "en-US": "2021/02/htb--doctor",
+    "pt-BR": "2021/02/htb-doctor"
   },
   "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
-    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-en",
-    "pt-BR": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux-pt"
-  },
-  "htb-luanne": {
-    "en-US": "2021/03/htb-luanne-en",
-    "pt-BR": "2021/03/htb-luanne-pt"
-  },
-  "htb-passage": {
-    "en-US": "2021/03/htb-passage-en",
-    "pt-BR": "2021/03/htb-passage-pt"
+    "pt-BR": "2021/03/azure-arc-enabled-servers-configuracao-de-proxy-a-nivel-de-servico-em-linux",
+    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux"
   },
   "rsyslog-sentinel-log-forwarder": {
-    "en-US": "2021/03/rsyslog-sentinel-log-forwarder-en",
-    "pt-BR": "2021/03/rsyslog-sentinel-log-forwarder-pt"
+    "pt-BR": "2021/03/azure-sentinel-configuracao-do-log-forwarder",
+    "en-US": "2021/03/rsyslog-sentinel-log-forwarder"
+  },
+  "htb-luanne": {
+    "en-US": "2021/03/htb--luanne",
+    "pt-BR": "2021/03/htb-luanne"
+  },
+  "htb-passage": {
+    "en-US": "2021/03/htb--passage",
+    "pt-BR": "2021/03/htb-passage"
   },
   "htb-bucket": {
-    "en-US": "2021/04/htb-bucket-en",
-    "pt-BR": "2021/04/htb-bucket-pt"
+    "en-US": "2021/04/htb--bucket",
+    "pt-BR": "2021/04/htb-bucket"
   },
   "htb-laboratory": {
-    "en-US": "2021/04/htb-laboratory-en",
-    "pt-BR": "2021/04/htb-laboratory-pt"
+    "en-US": "2021/04/htb--laboratory",
+    "pt-BR": "2021/04/htb-laboratory"
   },
   "htb-time": {
-    "en-US": "2021/04/htb-time-en",
-    "pt-BR": "2021/04/htb-time-pt"
+    "en-US": "2021/04/htb--time",
+    "pt-BR": "2021/04/htb-time"
   },
   "install-update-azure-arc-windows-configmgr": {
-    "en-US": "2021/04/install-update-azure-arc-windows-configmgr-en",
-    "pt-BR": "2021/04/install-update-azure-arc-windows-configmgr-pt"
+    "pt-BR": "2021/04/instalacao-e-atualizacao-azure-arc-windows-configmgr",
+    "en-US": "2021/04/install-update-azure-arc-windows-configmgr"
   },
   "htb-delivery": {
-    "en-US": "2021/05/htb-delivery-en",
-    "pt-BR": "2021/05/htb-delivery-pt"
+    "en-US": "2021/05/htb--delivery",
+    "pt-BR": "2021/05/htb-delivery"
   },
   "htb-ready": {
-    "en-US": "2021/05/htb-ready-en",
-    "pt-BR": "2021/05/htb-ready-pt"
+    "en-US": "2021/05/htb--ready",
+    "pt-BR": "2021/05/htb-ready"
   },
   "htb-scriptkiddie": {
-    "en-US": "2021/06/htb-scriptkiddie-en",
-    "pt-BR": "2021/06/htb-scriptkiddie-pt"
+    "en-US": "2021/06/htb--scriptkiddie",
+    "pt-BR": "2021/06/htb-scriptkiddie"
   },
   "htb-spectra": {
-    "en-US": "2021/06/htb-spectra-en",
-    "pt-BR": "2021/06/htb-spectra-pt"
+    "en-US": "2021/06/htb--spectra",
+    "pt-BR": "2021/06/htb-spectra"
   },
   "htb-tenet": {
-    "en-US": "2021/06/htb-tenet-en",
-    "pt-BR": "2021/06/htb-tenet-pt"
+    "en-US": "2021/06/htb--tenet",
+    "pt-BR": "2021/06/htb-tenet"
   },
   "htb-ophiuchi": {
-    "en-US": "2021/07/htb-ophiuchi-en",
-    "pt-BR": "2021/07/htb-ophiuchi-pt"
+    "en-US": "2021/07/htb--ophiuchi",
+    "pt-BR": "2021/07/htb-ophiuchi"
   },
   "htb-thenotebook": {
-    "en-US": "2021/07/htb-thenotebook-en",
-    "pt-BR": "2021/07/htb-thenotebook-pt"
+    "en-US": "2021/07/htb--thenotebook",
+    "pt-BR": "2021/07/htb-thenotebook"
   },
   "htb-knife": {
-    "en-US": "2021/08/htb-knife-en",
-    "pt-BR": "2021/08/htb-knife-pt"
+    "en-US": "2021/08/htb--knife",
+    "pt-BR": "2021/08/htb-knife"
   },
   "htb-pit": {
-    "en-US": "2021/09/htb-pit-en",
-    "pt-BR": "2021/09/htb-pit-pt"
+    "en-US": "2021/09/htb--pit",
+    "pt-BR": "2021/09/htb-pit"
   },
   "htb-schooled": {
-    "en-US": "2021/09/htb-schooled-en",
-    "pt-BR": "2021/09/htb-schooled-pt"
+    "en-US": "2021/09/htb--schooled",
+    "pt-BR": "2021/09/htb-schooled"
   },
   "htb-cap": {
-    "en-US": "2021/10/htb-cap-en",
-    "pt-BR": "2021/10/htb-cap-pt"
+    "en-US": "2021/10/htb--cap",
+    "pt-BR": "2021/10/htb-cap"
   },
   "htb-dynstr": {
-    "en-US": "2021/10/htb-dynstr-en",
-    "pt-BR": "2021/10/htb-dynstr-pt"
+    "en-US": "2021/10/htb--dynstr",
+    "pt-BR": "2021/10/htb-dynstr"
   },
   "htb-explore": {
-    "en-US": "2021/10/htb-explore-en",
-    "pt-BR": "2021/10/htb-explore-pt"
+    "en-US": "2021/10/htb--explore",
+    "pt-BR": "2021/10/htb-explore"
   }
 }

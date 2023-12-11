@@ -9,12 +9,12 @@ const isDevEnvironment = process.env.NODE_ENV === 'development'
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.jsdelivr.net utteranc.es ${
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es ${
     isDevEnvironment ? 'localhost:4001' : ''
   };
-  style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src *.s3.amazonaws.com;
+  media-src i.imgur.com;
   connect-src *;
   font-src 'self' data:;
   frame-src utteranc.es ${isDevEnvironment ? 'localhost:3000' : ''}
@@ -70,7 +70,14 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     images: {
-      domains: ['', 'localhost', 'tailwind-nextjs-starter-blog-i18n.vercel.app/', 'picsum.photos'],
+      domains: [
+        '',
+        'localhost',
+        'davicruz-blog.vercel.app',
+        'davicruz.com',
+        'picsum.photos',
+        'i.imgur.com',
+      ],
     },
     async headers() {
       return [
