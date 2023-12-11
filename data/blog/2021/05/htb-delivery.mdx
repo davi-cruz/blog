@@ -19,8 +19,10 @@ Olá pessoal!
 
 A máquina desta semana será **Delivery**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [ippsec](https://app.hackthebox.eu/users/3769).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas
+</Alert>
 
 ![HTB Delivery](https://i.imgur.com/Xbew4pD.png)
 
@@ -39,7 +41,7 @@ Host is up (0.16s latency).
 Not shown: 998 closed ports
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   2048 9c:40:fa:85:9b:01:ac:ac:0e:bc:0c:19:51:8a:ee:27 (RSA)
 |   256 5a:0c:c0:3b:9b:76:55:2e:6e:c4:f4:b9:5d:76:17:09 (ECDSA)
 |_  256 b7:9d:f7:48:9d:a2:f2:76:30:fd:42:d3:35:3a:80:8c (ED25519)
@@ -58,11 +60,11 @@ Acessando a página e inspecionando o código-fonte, identifiquei que existe um 
 
 ![HTB Delivery - Website](https://i.imgur.com/rTmIQOQ.png)
 
-Ao clicar no link *Contact us*, a seguinte informação é exibida, informando que assim que tivermos um e-mail delivery.htb, poderemos acessar a plataforma **MatterMost**, que, conforme links enumerados, funciona na porta TCP 8065.
+Ao clicar no link _Contact us_, a seguinte informação é exibida, informando que assim que tivermos um e-mail delivery.htb, poderemos acessar a plataforma **MatterMost**, que, conforme links enumerados, funciona na porta TCP 8065.
 
 > CONTACT USFor unregistered users, please use our HelpDesk to get in touch with our team. Once you have an @delivery.htb email address, you'll be able to have access to our MatterMost server.
 
-Seguindo com a tentativa de conseguir um e-mail com o HelpDesk, aberto um ticket com conteúdo de mentira enquanto inspecionava as requisições via *BurpSuite*.
+Seguindo com a tentativa de conseguir um e-mail com o HelpDesk, aberto um ticket com conteúdo de mentira enquanto inspecionava as requisições via _BurpSuite_.
 
 Após concluída a abertura do ticket, recebida seguinte informação, algo que foi crucial para obter acesso ao MatterMost: um endereço de e-mail do domínio **@delivery.htb**!
 
@@ -82,13 +84,13 @@ Após verificada a conta, pudemos acessar o portal com as credenciais previament
 
 Dentre as mensagens neste time, algumas chamaram atenção, que continham informações importantes para a resolução desta máquina:
 
-* Credenciais para o osTicket são **maildeliverer\:Youve\_G0t\_Mail!**.
-* Desenvolvedores utilizavam com frequência *variações de **PleaseSubscribe!*** e deveriam deixar de fazê-lo.
-  * Estas variações poderiam ser facilmente craqueadas utilizando **`hashcat` rules**, que foi uma dica bastante valiosa em como quebrar a senha de root ou algo em seu caminho.
+- Credenciais para o osTicket são **maildeliverer\:Youve_G0t_Mail!**.
+- Desenvolvedores utilizavam com frequência \*variações de **PleaseSubscribe!\*** e deveriam deixar de fazê-lo.
+  - Estas variações poderiam ser facilmente craqueadas utilizando **`hashcat` rules**, que foi uma dica bastante valiosa em como quebrar a senha de root ou algo em seu caminho.
 
 ![HTB Delivery - Mattermost Internal Channel](https://i.imgur.com/ppwdFSl.png)
 
-Buscando a página de administração do osTicket, fiz logoff da conta *Guest User*, do lado esquerdo superior e, durante o processo de sign-in, selecionei a opção **I'm an agent - sign in here**, que me levou à URL `http://helpdesk.delivery.htb/scp/login.php`, de onde é feita a administração dos incidentes gerados na plataforma.
+Buscando a página de administração do osTicket, fiz logoff da conta _Guest User_, do lado esquerdo superior e, durante o processo de sign-in, selecionei a opção **I'm an agent - sign in here**, que me levou à URL `http://helpdesk.delivery.htb/scp/login.php`, de onde é feita a administração dos incidentes gerados na plataforma.
 
 ![HTB Delivery - OsTicket Admin Portal](https://i.imgur.com/EskmQsK.png)
 
@@ -102,10 +104,10 @@ Segui então com a criação de uma API key para o endereço IP da minha máquin
 
 ## Acesso inicial e User flag
 
-Embora tenha analisado algumas possibilidades via osTicket API, acabei voltando atrás e pensando simples, me perguntando: Será que a conta **maildeliverer** é um usuário desta máquina? Ao tentar conectar via SSH usando as mesmas credenciais do osTicket consegui o acesso inicial com esta conta \:man\_facepalming:. De quebra, dentro do diretório deste usuário havia o arquivo `user.txt` o qual permitiu a leitura da flag.
+Embora tenha analisado algumas possibilidades via osTicket API, acabei voltando atrás e pensando simples, me perguntando: Será que a conta **maildeliverer** é um usuário desta máquina? Ao tentar conectar via SSH usando as mesmas credenciais do osTicket consegui o acesso inicial com esta conta \:man_facepalming:. De quebra, dentro do diretório deste usuário havia o arquivo `user.txt` o qual permitiu a leitura da flag.
 
 ```bash
-$ ssh maildeliverer@10.10.10.222                                                                                                 
+$ ssh maildeliverer@10.10.10.222
 The authenticity of host '10.10.10.222 (10.10.10.222)' can't be established.
 ECDSA key fingerprint is SHA256:LKngIDlEjP2k8M7IAUkAoFgY/MbVVbMqvrFA6CUrHoM.
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
@@ -138,13 +140,13 @@ maildeliverer@Delivery:~$ cat user.txt
 
 Iniciado com a execução do `linpeas.sh` para que pudesse realizar a enumeração mais rapidamente, onde os seguintes pontos chamaram atenção:
 
-* Processo `python3 /root/py-smtp.py` em execução pelo usuário **root**. Pode eventualmente permitir algum tipo de path hijack dependendo de quais binários são chamados por este script, caso tenhamos acesso leitura no mesmo.
-* Também é executado por **root** um script em `/root/mail.sh`, podendo ser eventualmente explorado conforme item anterior.
-* Serviço MySQL em execução na máquina na porta padrão (3306/TCP).
+- Processo `python3 /root/py-smtp.py` em execução pelo usuário **root**. Pode eventualmente permitir algum tipo de path hijack dependendo de quais binários são chamados por este script, caso tenhamos acesso leitura no mesmo.
+- Também é executado por **root** um script em `/root/mail.sh`, podendo ser eventualmente explorado conforme item anterior.
+- Serviço MySQL em execução na máquina na porta padrão (3306/TCP).
 
 ### osTicket
 
-Embora pudessem ser caminhos promissores, não foi possível ler os arquivos citados, logo parti pra outra abordagem que seria buscar por credencias para conexão no MySQL. Analisando os arquivos do osTicket, encontrei em `/var/www/osticket/upload/include/ost-config.php` as credenciais para o usuário **ost\_user**:
+Embora pudessem ser caminhos promissores, não foi possível ler os arquivos citados, logo parti pra outra abordagem que seria buscar por credencias para conexão no MySQL. Analisando os arquivos do osTicket, encontrei em `/var/www/osticket/upload/include/ost-config.php` as credenciais para o usuário **ost_user**:
 
 ```ini
 define('SECRET_SALT','nP8uygzdkzXRLJzYUmdmLDEqDSq5bGk3');
@@ -182,7 +184,7 @@ De acordo com os processos em execução, a aplicação é executada a partir do
     }
 ```
 
-Utilizando as credenciais **mmuser\:Crack\_The\_MM\_Admin\_PW** acessei o database **mattermost** e na tabela users, encontrei os seguintes usuários e hashes, onde temos o usuário **root** com privilégios de **system\_admin**
+Utilizando as credenciais **mmuser\:Crack_The_MM_Admin_PW** acessei o database **mattermost** e na tabela users, encontrei os seguintes usuários e hashes, onde temos o usuário **root** com privilégios de **system_admin**
 
 ```plaintext
 MariaDB [mattermost]> select Username,Password,Roles from Users;
@@ -202,8 +204,8 @@ MariaDB [mattermost]> select Username,Password,Roles from Users;
 
 Uma vez que no Mattermost o usuário root disse que a senha não estaria no dicionário, mas que poderia ser uma variação de `PleaseSubscribe!`, pesquisando sobre algumas formas de fazer o cracking desta senha encontrei a seguinte forma usando o `hashcat`:
 
-* `basicpwd.txt` contém a senha `PleaseSubscribe!` conforme mencionado no Mattermost;
-* O arquivo `best64.rule` contém algumas das mais populares formas de variação de senha.
+- `basicpwd.txt` contém a senha `PleaseSubscribe!` conforme mencionado no Mattermost;
+- O arquivo `best64.rule` contém algumas das mais populares formas de variação de senha.
 
 Executando selecionando o tipo de hash correto (3200 - bcrypt), encontramos a senha **PleaseSubscribe!21**
 
@@ -262,7 +264,7 @@ root@Delivery:~#
 
 Além do root flag, no arquivo `note.txt` ippsec deixa uma mensagem:
 
-> I hope you enjoyed this box, the attack may seem silly but it demonstrates a pretty high risk vulnerability I've seen several times.  The inspiration for the box is here:- `https://medium.com/intigriti/how-i-hacked-hundreds-of-companies-through-their-helpdesk-b7680ddc2d4c`Keep on hacking! And please don't forget to subscribe to all the security streamers out there.- ippsec
+> I hope you enjoyed this box, the attack may seem silly but it demonstrates a pretty high risk vulnerability I've seen several times. The inspiration for the box is here:- `https://medium.com/intigriti/how-i-hacked-hundreds-of-companies-through-their-helpdesk-b7680ddc2d4c`Keep on hacking! And please don't forget to subscribe to all the security streamers out there.- ippsec
 
 Espero que tenham gostado!
 

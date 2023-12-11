@@ -3,18 +3,22 @@ date: 2021-03-27 12:00:00
 language: en-US
 localeid: htb-luanne
 tags:
-- Walkthrough
-- HackTheBox
-- HTB Easy
-- HTB Linux
-title: "Walktrough: HTB Luanne"
-authors: ['default']
+  - Walkthrough
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+title: 'Walktrough: HTB Luanne'
+authors:
+  - default
 ---
+
 Hello everyone!
 
 The box of this week will be **Luanne**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu), created by [polarbearer](https://app.hackthebox.eu/users/159204).
 
-:information_source: **Info**: Write-ups for Hack The Box are always posted as soon as machines get retired.
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box are always posted as soon as machines get retired.
+</Alert>
 
 ![HTB Luanne](https://i.imgur.com/kvz2jtO.png)
 
@@ -128,7 +132,10 @@ As I could understand, the API we were using being published on 80/TCP is an app
 
 Once we're aware that this API was developed in LUA, after some research I came across [this article](https://www.syhunt.com/en/index.php?n=Articles.LuaVulnerabilities), which describes some ways to abuse applications written in LUA using code injection and, after a few tests, I have found something that could lead us to initial access on this machine.
 
-:bulb: **Note**: The secret is in the content encoding sent on the requests. The easier way I have found was to use `curl` with `--data-urlencode`, simplifying the character escaping on the request.
+<Alert kind="tip" title="Note">
+  The secret is in the content encoding sent on the requests. The easier way I have found was to use
+  `curl` with `--data-urlencode`, simplifying the character escaping on the request.
+</Alert>
 
 The final injection, which later allowed me to get an RCE is listed below:
 

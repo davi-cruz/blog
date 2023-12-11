@@ -7,15 +7,19 @@ tags:
   - HTB Easy
   - HTB Linux
   - Walkthrough
-title: "Walktrough: HTB Luanne"
-authors: ['default']
+title: 'Walktrough: HTB Luanne'
+authors:
+  - default
 ---
 
 Olá pessoal!
 
 A máquina desta semana será **Luanne**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), , criada por [polarbearer](https://app.hackthebox.eu/users/159204).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas
+</Alert>
 
 ![HTB Luanne](https://i.imgur.com/kvz2jtO.png)
 
@@ -129,7 +133,11 @@ Pelo que pudemos identificar a API que estivemos consultando a pouco publicada n
 
 Uma vez que sabemos que a API é desenvolvida em LUA, após algumas pesquisas, encontrei [este artigo](https://www.syhunt.com/en/index.php?n=Articles.LuaVulnerabilities) que descreve algumas formas de explorar aplicações escritas em LUA a partir de code injection e, após alguns testes, consegui algo que poderia nos levar a um acesso inicial nesta máquina.
 
-:bulb: **Note**: O segredo está na codificação do conteúdo passado nos requests, logo, a forma mais simples encontrada foi utilizar o próprio `curl` com alguns parâmetros conforme listado abaixo, simplificando o processo de _escaping_ dos caracteres utilizados no payload.:
+<Alert kind="tip" title="Note">
+  O segredo está na codificação do conteúdo passado nos requests, logo, a forma mais simples
+  encontrada foi utilizar o próprio `curl` com alguns parâmetros conforme listado abaixo,
+  simplificando o processo de _escaping_ dos caracteres utilizados no payload.
+</Alert>
 
 A injeção final, que permitiu execução remota de código na máquina foi o resultado abaixo:
 

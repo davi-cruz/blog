@@ -2,11 +2,12 @@
 date: 2021-03-02 18:00:00+00:00
 language: pt-BR
 localeid: azure-arc-enabled-servers-service-level-proxy-configuration-on-linux
-authors: ['default']
+authors:
+  - default
 tags:
-- Azure
-- Azure Arc
-- Linux
+  - Azure
+  - Azure Arc
+  - Linux
 title: "Azure Arc enabled Servers: Configura\xE7\xE3o de proxy a n\xEDvel de servi\xE7\
   o em Linux"
 ---
@@ -42,7 +43,7 @@ O primeiro deles, o `/lib/systemd/system.conf.d/proxy.conf`, que define o proxy 
 
 ## Alterando o proxy apenas para o Azure Arc
 
-A fim de configurar os serviços para que tenham a conectividade necessária, sem ativar o proxy de forma global ao systemd é necessário editar cada um dos arquivos de unidade(*unity files*), conforme descrito abaixo:
+A fim de configurar os serviços para que tenham a conectividade necessária, sem ativar o proxy de forma global ao systemd é necessário editar cada um dos arquivos de unidade(_unity files_), conforme descrito abaixo:
 
 - Se o proxy foi configurado utilizando o `azcmagent_proxy` e deseja remover as configurações feitas por ele, é necessário executar a linha de comando abaixo com o parâmetro **remove**
 
@@ -64,7 +65,7 @@ Environment=https_proxy=http://vmlx01:3128
 sudo systemctl daemon-reexec
 sudo systemctl restart extd.service himdsd.service gcad.service
 ```
-  
+
 - Adicionalmente é necessário incluir o proxy no wrapper `azcmagent` para que o commando `azcmagent connect` funcione corretamente na máquina. Esta ação se dá a partir da inclusão da linha `export https_proxy=<proxyserver>` logo abaixo do comentário de que não se deve apagar a linha no arquivo `/opt/azcmagent/bin/azcmagent`, conforme exemplo abaixo:
 
 ```bash
@@ -86,10 +87,14 @@ A partir deste ponto você estará preparando para gerenciar este endpoint com o
 
 ### Script
 
-Para simplificar a configuração, criei um script inspirado no `azcmagent_proxy` para automatizar esta configuração para distribuições Linux que utilizem o **systemd**, disponível em  [Security/azcmagent_proxydaemon.sh at main · davi-cruz/Security (github.com)](https://github.com/davi-cruz/Security/blob/main/AzureArc/azcmagent_proxydaemon.sh).
+Para simplificar a configuração, criei um script inspirado no `azcmagent_proxy` para automatizar esta configuração para distribuições Linux que utilizem o **systemd**, disponível em [Security/azcmagent_proxydaemon.sh at main · davi-cruz/Security (github.com)](https://github.com/davi-cruz/Security/blob/main/AzureArc/azcmagent_proxydaemon.sh).
 
 Este script pode ser útil não apenas para definir as configurações de proxy para os servidores Linux habilitados com Azure Arc mas também para outros service unities em seus workloads. :smile:
 
-[Alert type="warning"]**Atenção**: Como estas alterações não são globais, outros serviços instalados a partir de Azure Extensions (Nativas ou Customizadas) podem requerer alterações adicionais para que funcionem com o proxy padrão ou a mesma configuração deverá ser reproduzida para estes serviços[/Alert]
+<Alert kind="warning" title="Atenção">
+  Como estas alterações não são globais, outros serviços instalados a partir de Azure Extensions (Nativas
+  ou Customizadas) podem requerer alterações adicionais para que funcionem com o proxy padrão ou a mesma
+  configuração deverá ser reproduzida para estes serviços.
+</Alert>
 
 Espero que ajude!

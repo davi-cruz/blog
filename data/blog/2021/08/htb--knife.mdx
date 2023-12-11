@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **Knife**, another easy-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [MrKN16H](https://app.hackthebox.eu/users/98767).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
@@ -101,7 +102,7 @@ Matching Defaults entries for james on knife:
    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
 
 User james may run the following commands on knife:
-   (root) NOPASSWD: /usr/bin/knife              
+   (root) NOPASSWD: /usr/bin/knife
 ```
 
 Doing a quick search on this binary, found out that it's related to [Chef's Configuration Management Solution](https://www.chef.io/) and, according to [knife | GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo) page, could be easily used to privesc to root, as below, allowing us to get the final flag \:smiley:

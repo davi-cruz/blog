@@ -19,8 +19,9 @@ Olá!
 
 A máquina desta semana será **Knife**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [MrKN16H](https://app.hackthebox.eu/users/98767).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB Knife](https://i.imgur.com/3IO9vBj.png)
 
@@ -69,7 +70,7 @@ http://10.10.10.242 [200 OK] Apache[2.4.41], Country[RESERVED][ZZ], HTML5, HTTPS
 
 ## Acesso inicial e User flag
 
-Como versões de desenvolvimento frequentemente contém vulnerabilidades, decidi buscar a respeito da mesma com `searchsploit` e encontrei uma vulnerabilidade de execução remota de código (RCE - *Remote Code Execution*) conforme listado abaixo:
+Como versões de desenvolvimento frequentemente contém vulnerabilidades, decidi buscar a respeito da mesma com `searchsploit` e encontrei uma vulnerabilidade de execução remota de código (RCE - _Remote Code Execution_) conforme listado abaixo:
 
 ```bash
 $ searchsploit "8.1.0-dev"
@@ -101,7 +102,7 @@ Matching Defaults entries for james on knife:
    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
 
 User james may run the following commands on knife:
-   (root) NOPASSWD: /usr/bin/knife              
+   (root) NOPASSWD: /usr/bin/knife
 ```
 
 Realizando uma busca rápida a respeito do binário, encontrei que se trata de parte da solução de gestão de configuração [Chef](https://www.chef.io/) e, de acordo com a página [knife | GTFOBins](https://gtfobins.github.io/gtfobins/knife/#sudo), poderia ser utilizada facilmente para escalar privilégio como root, conforme abaixo, nos permitindo obter a última flag \:smiley:

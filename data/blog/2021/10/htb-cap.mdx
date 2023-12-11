@@ -17,10 +17,11 @@ authors:
 
 Olá pessoal!
 
-A máquina desta semana será **Cap**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por  [InfoSecJack](https://app.hackthebox.eu/users/52045).
+A máquina desta semana será **Cap**, outra máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu/), criada por [InfoSecJack](https://app.hackthebox.eu/users/52045).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB Cap](https://i.imgur.com/EP6oOn2.png)
 
@@ -154,11 +155,11 @@ Observando a página publicada, podemos ver um painel de monitoramento, com algu
 
 ![HTB Cap - Security Dashboard](https://i.imgur.com/EVJpbpL.png)
 
-Inspecionando as opções disponíveis no painel da esquerda, a única funcionalidade interessante foi o *Security Snapshot (5 Second PCAP + Analysis)*, que sumariza o resultado da coleta de pacotes de comunicação de rede por 5 segundos. Ao selecionar esta opção somos redirecionados para `http://10.10.10.245/capture` e logo após 5 segundos, para uma página que exibe os resultados da coleta, neste caso `http://10.10.10.245/data/1`. Nesta página também podemos baixar o arquivo `pcap` gerado, que poderia ser analizado via linha de comando ou via Wireshark.
+Inspecionando as opções disponíveis no painel da esquerda, a única funcionalidade interessante foi o _Security Snapshot (5 Second PCAP + Analysis)_, que sumariza o resultado da coleta de pacotes de comunicação de rede por 5 segundos. Ao selecionar esta opção somos redirecionados para `http://10.10.10.245/capture` e logo após 5 segundos, para uma página que exibe os resultados da coleta, neste caso `http://10.10.10.245/data/1`. Nesta página também podemos baixar o arquivo `pcap` gerado, que poderia ser analizado via linha de comando ou via Wireshark.
 
 ![HTB Cap - Security Snapshot](https://i.imgur.com/YaUXZ83.png)
 
-Um ponto interessante é que quando solicitei uma nova captura, a URL de resultado apresentou um número sequencial  (`http://10.10.10.245/data/2`), que significa que poderíamos ver outras capturas geradas por terceiros em outro momento.
+Um ponto interessante é que quando solicitei uma nova captura, a URL de resultado apresentou um número sequencial (`http://10.10.10.245/data/2`), que significa que poderíamos ver outras capturas geradas por terceiros em outro momento.
 
 Considerando que o contador está incrementando, devemos ter algo registrado na entrada "0", a qual foi confirmada alterando manualmente o endereço na URL onde os status mostram que houve comunicação dado a quantidade de pacotes, podendo existir algum tipo de dado sensível caso a comunicação não tenha ocorrido de forma segura.
 

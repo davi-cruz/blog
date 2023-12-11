@@ -4,19 +4,20 @@ language: pt-BR
 lastmod: 2021-04-30 16:00:00-03:00
 localeid: rsyslog-sentinel-log-forwarder
 tags:
-- Sentinel
-- Syslog
-- CEF
-- Rsyslog
-- Linux
-- Syslog Forwarder
-- Log Collector
-- Log Forwarder
+  - Sentinel
+  - Syslog
+  - CEF
+  - Rsyslog
+  - Linux
+  - Syslog Forwarder
+  - Log Collector
+  - Log Forwarder
 title: "Azure Sentinel: Configura\xE7\xE3o do Log Forwarder"
-authors: ['default']
+authors:
+  - default
 ---
 
-Frequentemente apoio clientes no deployment de *forwarders* (encaminhadores) de logs CEF/Syslog em seus ambientes para coletar informações de appliances de rede e/ou servidores e serviços para o Log Analytics, que consequentemente os disponibiliza para o Azure Sentinel.
+Frequentemente apoio clientes no deployment de _forwarders_ (encaminhadores) de logs CEF/Syslog em seus ambientes para coletar informações de appliances de rede e/ou servidores e serviços para o Log Analytics, que consequentemente os disponibiliza para o Azure Sentinel.
 
 Embora tenhamos uma diversidade de documentações em como fazer este deployment, assim como recursos de comunidade como o Tech Community e Webinars, compilei todos os pontos que normalmente reviso com meus clientes nestes engajamentos de deployment e revisão neste post para ajudar àqueles que estejam enfrentando algum desafio em seu ambiente.
 
@@ -62,8 +63,10 @@ Antes de realizar o deploy/revisar a infraestrutura do seu forwarder, existem al
 
 A instalação inicial pode ser facilmente realizada executando o script `cef_installer.py`, disponível no [repositório oficial do Github](https://github.com/Azure/Azure-Sentinel/blob/master/DataConnectors/CEF/cef_installer.py) utilizando a linha de comando abaixo, que pode ser obtida para seu ambiente acessando a página do conector **Common Event Format (CEF)** no Sentinel ou simplesmente substituir os dados `<workspace id>` e `<workspace secret>` pelos de sua workspace.
 
-:bulb: **Nota**: Se não tiver o python 2.7 na máquina deverá substituir a instrução `python` por `python3` antes de executar a linha abaixo.
-
+<Alert kind="tip" title="Nota">
+  Se não tiver o python 2.7 na máquina deverá substituir a instrução `python` por `python3` antes de
+  executar a linha abaixo.
+</Alert>
 
 ```bash
 sudo wget -O cef_installer.py https://raw.githubusercontent.com/Azure/Azure-Sentinel/master/DataConnectors/CEF/cef_installer.py && sudo python cef_installer.py <workspace id> <workspace secret>
@@ -136,7 +139,7 @@ module(load="imuxsock") # provides support for local system logging
 
 # provides UDP syslog reception
 module(load="imudp")
-input(type="imudp" port="514") 
+input(type="imudp" port="514")
 
 # provides TCP syslog reception
 module(load="imtcp")
@@ -176,8 +179,11 @@ Um ponto que é sempre questionado pelos clientes é que após configurar máqui
 
 Isso ocorre porque as definições padrão do rsyslog, listadas abaixo, enviam alguns facilities e severidades para arquivos locais sem validar a fonte destes eventos (comentários e linhas em branco removidas por simplicidade).
 
-:bulb: **Nota**: O caminho onde encontrar estas configurações padrão variam de acordo com a distribuição Linux. Para Ubuntu existe um arquivo chamado `/etc/rsyslog.d/50-default.conf` enquanto para distribuições baseadas em RHEL (RHEL, CentOS, Fedora) está na configuração principal do `/etc/rsyslog.conf`.
-
+<Alert kind="tip" title="Nota">
+  O caminho onde encontrar estas configurações padrão variam de acordo com a distribuição Linux.
+  Para Ubuntu existe um arquivo chamado `/etc/rsyslog.d/50-default.conf` enquanto para distribuições
+  baseadas em RHEL (RHEL, CentOS, Fedora) está na configuração principal do `/etc/rsyslog.conf`.
+</Alert>
 
 ```ini
 #Extracted from Ubuntu /etc/rsyslog.d/50-default.conf
@@ -229,12 +235,14 @@ Na configuração abaixo, vamos considerar que estamos encaminhando mensagens no
 
 Isso não apenas resultará no disco cheio, mas também em cobrança duplicada para este mesmo evento, que será armazenado duas vezes no Log Analytics.
 
-Para evitar este comportamento, como Ofer Shezaf compartilhou em um dos [Webinars da Comunidade de Segurança](https://aka.ms/securitywebinars) (*Log Forwarder deep dive \| Filtering CEF and Syslog events*), vamos renomear o arquivo `security-config-omsagent.conf` para `60-cef.conf` de forma que ele seja processado **antes** do `95-omsagent.conf`.
+Para evitar este comportamento, como Ofer Shezaf compartilhou em um dos [Webinars da Comunidade de Segurança](https://aka.ms/securitywebinars) (_Log Forwarder deep dive \| Filtering CEF and Syslog events_), vamos renomear o arquivo `security-config-omsagent.conf` para `60-cef.conf` de forma que ele seja processado **antes** do `95-omsagent.conf`.
 
 Adicionalmente, precisamos garantir que uma vez que as mensagens sejam encaminhadas para o TCP/25226 e tratadas como CEF sejam descartadas, o que é alcançado pelo uso da instrução `stop`. O **Stop** remove as mensagens do processamento do rsyslog.
 
-:bulb: **Nota**: Você poderá encontrar outras instruções que utilizem o stop como um til (`~`). Esta notação veio da syntax legado do syslogd
-
+<Alert kind="tip" title="Nota">
+  Você poderá encontrar outras instruções que utilizem o stop como um til (`~`). Esta notação veio
+  da syntax legado do syslogd
+</Alert>
 
 Esta configuração ficaria da seguinte forma:
 
@@ -276,9 +284,17 @@ sudo su omsagent -c 'python /opt/microsoft/omsconfig/Scripts/OMS_MetaConfigHelpe
 
 A única coisa que não pode ser alterada no arquivo `95-omsagent.conf` é a instrução de encaminhamento para `@127.0.0.1:25224`.
 
-:bulb: **Nota**: Na sintaxe do syslogd uma arroba (`@`) significa UDP enquanto duas arrobas (`@@`) significam TCP.
+<Alert kind="tip" title="Nota">
+  Na sintaxe do syslogd uma arroba (`@`) significa UDP enquanto duas arrobas (`@@`) significam TCP.
+</Alert>
 
-[Alert type="warning"]**Atenção**: No webinar citado anteriormente sobre um Dep Dive a respeito de CEF forwarder, Ofer também recomendou alterar as configurações do omsagent para aceitar as comunicações também via TCP para Syslog. Se seguir esta recomendação você deverá também ajustar qualquer instrução de encaminhamento para dois arrobas no arquivo `95-omsagent.conf`, caso contrário suas mensagens poderão não ser enviadas ao Log Analytics.[/Alert]
+<Alert kind="warning" title="Atenção">
+  No webinar citado anteriormente sobre um Dep Dive a respeito de CEF forwarder, Ofer também
+  recomendou alterar as configurações do omsagent para aceitar as comunicações também via TCP para
+  Syslog. Se seguir esta recomendação você deverá também ajustar qualquer instrução de
+  encaminhamento para dois arrobas no arquivo `95-omsagent.conf`, caso contrário suas mensagens
+  poderão não ser enviadas ao Log Analytics.
+</Alert>
 
 ### Filtrando eventos
 

