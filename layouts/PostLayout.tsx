@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Blog, Authors } from 'contentlayer/generated'
+import { Blog, Authors } from 'contentlayer/generated'
 import Comments from '@/components/comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
@@ -76,28 +76,47 @@ export default async function PostLayout({
                   {authorDetails.map((author) => (
                     <li className="flex items-center space-x-2" key={author.name}>
                       {author.avatar && (
-                        <Image
-                          src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full"
-                        />
+                        <Link href={`/${locale}/about`}>
+                          <Image
+                            src={author.avatar}
+                            width={38}
+                            height={38}
+                            alt="avatar"
+                            className="h-10 w-10 rounded-full"
+                          />
+                        </Link>
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">{t('name')}</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        <dt className="sr-only">Twitter</dt>
-                        <dd>
-                          {author.twitter && (
-                            <Link
-                              href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            >
-                              {author.twitter.replace('https://twitter.com/', '@')}
-                            </Link>
-                          )}
-                        </dd>
+                        <Link href={`/${locale}/about`}>
+                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                        </Link>
+                        {author.linkedin && (
+                          <>
+                            <dt className="sr-only">LinkedIn</dt>
+                            <dd>
+                              <Link
+                                href={author.linkedin}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              >
+                                {author.linkedin.replace('https://linkedin.com/', '')}
+                              </Link>
+                            </dd>
+                          </>
+                        )}
+                        {author.twitter && (
+                          <>
+                            <dt className="sr-only">Twitter</dt>
+                            <dd>
+                              <Link
+                                href={author.twitter}
+                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              >
+                                {author.twitter.replace('https://twitter.com/', '@')}
+                              </Link>
+                            </dd>
+                          </>
+                        )}
                       </dl>
                     </li>
                   ))}

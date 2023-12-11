@@ -1,27 +1,55 @@
 {
-  "htb-academy": {
-    "en-US": "2021/02/htb--academy",
-    "pt-BR": "2021/02/htb-academy"
+  "htb-explore": {
+    "en-US": "2021/10/htb--explore",
+    "pt-BR": "2021/10/htb-explore"
   },
-  "htb-doctor": {
-    "en-US": "2021/02/htb--doctor",
-    "pt-BR": "2021/02/htb-doctor"
+  "htb-dynstr": {
+    "en-US": "2021/10/htb--dynstr",
+    "pt-BR": "2021/10/htb-dynstr"
   },
-  "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
-    "pt-BR": "2021/03/azure-arc-enabled-servers-configuracao-de-proxy-a-nivel-de-servico-em-linux",
-    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux"
+  "htb-cap": {
+    "en-US": "2021/10/htb--cap",
+    "pt-BR": "2021/10/htb-cap"
   },
-  "rsyslog-sentinel-log-forwarder": {
-    "pt-BR": "2021/03/azure-sentinel-configuracao-do-log-forwarder",
-    "en-US": "2021/03/rsyslog-sentinel-log-forwarder"
+  "htb-pit": {
+    "en-US": "2021/09/htb--pit",
+    "pt-BR": "2021/09/htb-pit"
   },
-  "htb-luanne": {
-    "en-US": "2021/03/htb--luanne",
-    "pt-BR": "2021/03/htb-luanne"
+  "htb-schooled": {
+    "en-US": "2021/09/htb--schooled",
+    "pt-BR": "2021/09/htb-schooled"
   },
-  "htb-passage": {
-    "en-US": "2021/03/htb--passage",
-    "pt-BR": "2021/03/htb-passage"
+  "htb-knife": {
+    "en-US": "2021/08/htb--knife",
+    "pt-BR": "2021/08/htb-knife"
+  },
+  "htb-thenotebook": {
+    "en-US": "2021/07/htb--thenotebook",
+    "pt-BR": "2021/07/htb-thenotebook"
+  },
+  "htb-ophiuchi": {
+    "en-US": "2021/07/htb--ophiuchi",
+    "pt-BR": "2021/07/htb-ophiuchi"
+  },
+  "htb-spectra": {
+    "en-US": "2021/06/htb--spectra",
+    "pt-BR": "2021/06/htb-spectra"
+  },
+  "htb-tenet": {
+    "en-US": "2021/06/htb--tenet",
+    "pt-BR": "2021/06/htb-tenet"
+  },
+  "htb-scriptkiddie": {
+    "en-US": "2021/06/htb--scriptkiddie",
+    "pt-BR": "2021/06/htb-scriptkiddie"
+  },
+  "htb-delivery": {
+    "en-US": "2021/05/htb--delivery",
+    "pt-BR": "2021/05/htb-delivery"
+  },
+  "htb-ready": {
+    "en-US": "2021/05/htb--ready",
+    "pt-BR": "2021/05/htb-ready"
   },
   "htb-bucket": {
     "en-US": "2021/04/htb--bucket",
@@ -39,56 +67,28 @@
     "pt-BR": "2021/04/instalacao-e-atualizacao-azure-arc-windows-configmgr",
     "en-US": "2021/04/install-update-azure-arc-windows-configmgr"
   },
-  "htb-delivery": {
-    "en-US": "2021/05/htb--delivery",
-    "pt-BR": "2021/05/htb-delivery"
+  "rsyslog-sentinel-log-forwarder": {
+    "pt-BR": "2021/03/azure-sentinel-configuracao-do-log-forwarder",
+    "en-US": "2021/03/rsyslog-sentinel-log-forwarder"
   },
-  "htb-ready": {
-    "en-US": "2021/05/htb--ready",
-    "pt-BR": "2021/05/htb-ready"
+  "htb-luanne": {
+    "en-US": "2021/03/htb--luanne",
+    "pt-BR": "2021/03/htb-luanne"
   },
-  "htb-scriptkiddie": {
-    "en-US": "2021/06/htb--scriptkiddie",
-    "pt-BR": "2021/06/htb-scriptkiddie"
+  "htb-passage": {
+    "en-US": "2021/03/htb--passage",
+    "pt-BR": "2021/03/htb-passage"
   },
-  "htb-spectra": {
-    "en-US": "2021/06/htb--spectra",
-    "pt-BR": "2021/06/htb-spectra"
+  "azure-arc-enabled-servers-service-level-proxy-configuration-on-linux": {
+    "pt-BR": "2021/03/azure-arc-enabled-servers-configuracao-de-proxy-a-nivel-de-servico-em-linux",
+    "en-US": "2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux"
   },
-  "htb-tenet": {
-    "en-US": "2021/06/htb--tenet",
-    "pt-BR": "2021/06/htb-tenet"
+  "htb-academy": {
+    "en-US": "2021/02/htb--academy",
+    "pt-BR": "2021/02/htb-academy"
   },
-  "htb-ophiuchi": {
-    "en-US": "2021/07/htb--ophiuchi",
-    "pt-BR": "2021/07/htb-ophiuchi"
-  },
-  "htb-thenotebook": {
-    "en-US": "2021/07/htb--thenotebook",
-    "pt-BR": "2021/07/htb-thenotebook"
-  },
-  "htb-knife": {
-    "en-US": "2021/08/htb--knife",
-    "pt-BR": "2021/08/htb-knife"
-  },
-  "htb-pit": {
-    "en-US": "2021/09/htb--pit",
-    "pt-BR": "2021/09/htb-pit"
-  },
-  "htb-schooled": {
-    "en-US": "2021/09/htb--schooled",
-    "pt-BR": "2021/09/htb-schooled"
-  },
-  "htb-cap": {
-    "en-US": "2021/10/htb--cap",
-    "pt-BR": "2021/10/htb-cap"
-  },
-  "htb-dynstr": {
-    "en-US": "2021/10/htb--dynstr",
-    "pt-BR": "2021/10/htb-dynstr"
-  },
-  "htb-explore": {
-    "en-US": "2021/10/htb--explore",
-    "pt-BR": "2021/10/htb-explore"
+  "htb-doctor": {
+    "en-US": "2021/02/htb--doctor",
+    "pt-BR": "2021/02/htb-doctor"
   }
 }
