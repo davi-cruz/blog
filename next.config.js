@@ -9,7 +9,7 @@ const isDevEnvironment = process.env.NODE_ENV === 'development'
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es ${
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es www.googletagmanager.com www.clarity.ms ${
     isDevEnvironment ? 'localhost:4001' : ''
   };
   style-src 'self' 'unsafe-inline';
@@ -17,7 +17,7 @@ const ContentSecurityPolicy = `
   media-src 'self' i.imgur.com;
   connect-src *;
   font-src 'self' data:;
-  frame-src utteranc.es ${isDevEnvironment ? 'localhost:3000' : ''}
+  frame-src utteranc.es www.googletagmanager.com ${isDevEnvironment ? 'localhost:3000' : ''}
 `
 
 const securityHeaders = [

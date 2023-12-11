@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@formspree/react": "^2.5.1",
+    "@magicul/next-google-tag-manager": "^2.0.0",
     "@next/bundle-analyzer": "14.0.3",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/typography": "^0.5.9",

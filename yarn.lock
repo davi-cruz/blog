@@ -3973,6 +3973,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@magicul/next-google-tag-manager@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@magicul/next-google-tag-manager@npm:2.0.0"
+  peerDependencies:
+    next: ">=13.0.0"
+    react: ">=17.0.2"
+  checksum: 1bf8304578563c18eb2fb5b973ff8c478eb729d164e2d1d7c368e70831f8dbb43607c35bab29c0067ae97465d7de3a60db08f7e1b28843868ce8efc3a046bdd4
+  languageName: node
+  linkType: hard
+
 "@mailchimp/mailchimp_marketing@npm:^3.0.80":
   version: 3.0.80
   resolution: "@mailchimp/mailchimp_marketing@npm:3.0.80"
@@ -18982,6 +18992,7 @@ __metadata:
   resolution: "tailwind-nextjs-starter-blog-i18n@workspace:."
   dependencies:
     "@formspree/react": "npm:^2.5.1"
+    "@magicul/next-google-tag-manager": "npm:^2.0.0"
     "@next/bundle-analyzer": "npm:14.0.3"
     "@svgr/webpack": "npm:^8.0.1"
     "@tailwindcss/forms": "npm:^0.5.4"

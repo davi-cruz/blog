@@ -14,6 +14,7 @@ import { Metadata } from 'next'
 import { dir } from 'i18next'
 import { LocaleTypes, locales } from './i18n/settings'
 import TwSizeIndicator from '@/components/helper/TwSizeIndicator'
+import GoogleTagManager from '@magicul/next-google-tag-manager'
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -93,6 +94,7 @@ export default function RootLayout({
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <TwSizeIndicator />
         <ThemeProviders>
+          <GoogleTagManager id={process.env.GTM_ID} />
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
