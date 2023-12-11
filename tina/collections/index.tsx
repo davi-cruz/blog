@@ -1,4 +1,4 @@
 import { PostCollection } from './post'
-// import { TinaUserCollection } from './user'
+import { TinaUserCollection } from './user'
 
-export { PostCollection } //, TinaUserCollection }
+export { PostCollection, TinaUserCollection }

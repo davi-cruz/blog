@@ -8,35 +8,73 @@ export const PostCollection: Collection = {
   fields: [
     {
       type: 'string',
-      name: 'header',
-      label: 'Header',
+      label: 'Title',
+      name: 'title',
     },
     {
-      type: 'object',
-      name: 'logo',
-      label: 'Logo',
-      fields: [
-        { type: 'image', name: 'url', label: 'URL' },
-        { type: 'string', name: 'alt', label: 'Alt Text' },
+      type: 'string',
+      label: 'Language',
+      name: 'language',
+      options: [
+        { value: 'en-US', label: 'English' },
+        { value: 'pt-BR', label: 'Portuguese' },
       ],
     },
     {
-      type: 'object',
+      type: 'string',
+      label: 'UniqueID',
+      name: 'localeid',
+    },
+    {
+      type: 'datetime',
+      label: 'Date Posted',
+      name: 'date',
+    },
+    {
+      type: 'datetime',
+      label: 'Last Modified',
+      name: 'lastmod',
+    },
+    {
+      type: 'string',
+      label: 'Tags',
+      name: 'tags',
       list: true,
-      name: 'links',
-      label: 'Links',
-      ui: {
-        itemProps: (item) => {
-          return {
-            label: item?.header,
-          }
-        },
-      },
-      fields: [
-        { type: 'string', name: 'header' },
-        { type: 'string', name: 'description' },
-        { type: 'string', name: 'url' },
-      ],
+    },
+    {
+      type: 'boolean',
+      label: 'Draft',
+      name: 'draft',
+    },
+    {
+      type: 'rich-text',
+      label: 'Summary',
+      name: 'summary',
+    },
+    {
+      type: 'image',
+      label: 'Images',
+      name: 'images',
+      list: true,
+    },
+    {
+      type: 'string',
+      label: 'Autores',
+      name: 'authors',
+      list: true,
+      options: [{ value: 'default', label: 'Davi Cruz' }],
+    },
+    {
+      type: 'string',
+      label: 'Layout',
+      name: 'layout',
+      options: [{ value: 'PostLayout', label: 'Default' }],
+    },
+    {
+      type: 'rich-text',
+      label: 'Post Body',
+      name: 'body',
+      isBody: true,
     },
   ],
 }

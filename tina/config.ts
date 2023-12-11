@@ -1,7 +1,16 @@
-import { defineConfig } from 'tinacms'
+import { UsernamePasswordAuthJSProvider } from 'tinacms-authjs/dist/tinacms'
+import { PostCollection, TinaUserCollection } from './collections'
+import { defineConfig, LocalAuthProvider } from 'tinacms'
+
+const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === 'true'
 
 // Your hosting provider likely exposes this as an environment variable
 const tinaClientConfig = defineConfig({
+  contentApiUrlOverride: '/api/tina/gql',
+  authProvider: isLocal
+    ? new LocalAuthProvider()
+    : new // Your hosting provider likely exposes this as an environment variable
+      UsernamePasswordAuthJSProvider(),
   branch: 'main',
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   token: process.env.TINA_TOKEN,
@@ -17,86 +26,7 @@ const tinaClientConfig = defineConfig({
     },
   },
   schema: {
-    collections: [
-      {
-        name: 'post',
-        label: 'Post',
-        path: 'data/blog',
-        format: 'mdx',
-        fields: [
-          {
-            type: 'string',
-            label: 'Title',
-            name: 'title',
-          },
-          {
-            type: 'string',
-            label: 'Language',
-            name: 'language',
-            options: [
-              { value: 'en-US', label: 'English' },
-              { value: 'pt-BR', label: 'Portuguese' },
-            ],
-          },
-          {
-            type: 'string',
-            label: 'UniqueID',
-            name: 'localeid',
-          },
-          {
-            type: 'datetime',
-            label: 'Date Posted',
-            name: 'date',
-          },
-          {
-            type: 'datetime',
-            label: 'Last Modified',
-            name: 'lastmod',
-          },
-          {
-            type: 'string',
-            label: 'Tags',
-            name: 'tags',
-            list: true,
-          },
-          {
-            type: 'boolean',
-            label: 'Draft',
-            name: 'draft',
-          },
-          {
-            type: 'rich-text',
-            label: 'Summary',
-            name: 'summary',
-          },
-          {
-            type: 'image',
-            label: 'Images',
-            name: 'images',
-            list: true,
-          },
-          {
-            type: 'string',
-            label: 'Autores',
-            name: 'authors',
-            list: true,
-            options: [{ value: 'default', label: 'Davi Cruz' }],
-          },
-          {
-            type: 'string',
-            label: 'Layout',
-            name: 'layout',
-            options: [{ value: 'PostLayout', label: 'Default' }],
-          },
-          {
-            type: 'rich-text',
-            label: 'Post Body',
-            name: 'body',
-            isBody: true,
-          },
-        ],
-      },
-    ],
+    collections: [TinaUserCollection, PostCollection],
   },
 })
 

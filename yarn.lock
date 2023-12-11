@@ -6350,7 +6350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tinacms/datalayer@npm:1.2.32, @tinacms/datalayer@npm:^1.2.31":
+"@tinacms/datalayer@npm:1.2.32, @tinacms/datalayer@npm:^1.2.32":
   version: 1.2.32
   resolution: "@tinacms/datalayer@npm:1.2.32"
   dependencies:
@@ -6517,6 +6517,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@types/cookie@npm:0.4.1"
+  checksum: 427c9220217d3d74f3e5d53d68cd39502f3bbebdb1af4ecf0d05076bcbe9ddab299ad6369fe0f517389296ba4ca49ddf9a8c22f68e5e9eb8ae6d0076cfab90b2
+  languageName: node
+  linkType: hard
+
 "@types/debug@npm:^4.0.0":
   version: 4.1.12
   resolution: "@types/debug@npm:4.1.12"
@@ -6653,6 +6660,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^16.10.2":
+  version: 16.18.68
+  resolution: "@types/node@npm:16.18.68"
+  checksum: a7df7d5761ec339aff812929fa7ab3f1b3951b2372fda7eeedf8bba134c52cbea9fb721ae99f3f1427f782094bffa0d85509b15bfe426858dd04f12c71d55988
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^20.10.4":
   version: 20.10.4
   resolution: "@types/node@npm:20.10.4"
@@ -6779,6 +6793,15 @@ __metadata:
   version: 7.0.3
   resolution: "@types/webidl-conversions@npm:7.0.3"
   checksum: 535ead9de4d3d6c8e4f4fa14e9db780d2a31e8020debc062f337e1420a41c3265e223e4f4b628f97a11ecf3b96390962cd88a9ffe34f44e159dec583ff49aa34
+  languageName: node
+  linkType: hard
+
+"@types/whatwg-url@npm:^11.0.2":
+  version: 11.0.3
+  resolution: "@types/whatwg-url@npm:11.0.3"
+  dependencies:
+    "@types/webidl-conversions": "npm:*"
+  checksum: 400ae723edb3132e7e8fd49a526d108832c1b5a09245511d5175d56a5dc9ae567dd7bbd058bcc799364fed84fbff324736493557913fe9ef3fffb1ad4cff3044
   languageName: node
   linkType: hard
 
@@ -8613,6 +8636,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bson@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "bson@npm:6.2.0"
+  checksum: 6e079d1cafabda340a34ed2f496e20770abdee96e076ff23de810b36531dc75ac41fbe9a7d4644a9fbeae3dfd32bf2973465058fcdbe8601c7783b4b42c5ba61
+  languageName: node
+  linkType: hard
+
 "buffer-from@npm:^1.0.0":
   version: 1.1.2
   resolution: "buffer-from@npm:1.1.2"
@@ -9291,10 +9321,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:^0.4.0":
+  version: 0.4.2
+  resolution: "cookie@npm:0.4.2"
+  checksum: 2e1de9fdedca54881eab3c0477aeb067f281f3155d9cfee9d28dfb252210d09e85e9d175c0a60689661feb9e35e588515352f2456bc1f8e8db4267e05fd70137
+  languageName: node
+  linkType: hard
+
 "cookiejar@npm:^2.1.0":
   version: 2.1.4
   resolution: "cookiejar@npm:2.1.4"
   checksum: 4a184f5a0591df8b07d22a43ea5d020eacb4572c383e853a33361a99710437eaa0971716c688684075bbf695b484f5872e9e3f562382e46858716cb7fc8ce3f4
+  languageName: node
+  linkType: hard
+
+"cookies-next@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "cookies-next@npm:4.1.0"
+  dependencies:
+    "@types/cookie": "npm:^0.4.1"
+    "@types/node": "npm:^16.10.2"
+    cookie: "npm:^0.4.0"
+  checksum: 876bdc3b89bb749d4201cafd406cc54f637c72dcb156aaaad7b12d30c93c106135bbed501873690951947100b8a1563a9059ebc3ba98b4f5b03fe01e245f2f4a
   languageName: node
   linkType: hard
 
@@ -15005,14 +15053,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb-level@npm:^0.0.3":
-  version: 0.0.3
-  resolution: "mongodb-level@npm:0.0.3"
+"mongodb-connection-string-url@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "mongodb-connection-string-url@npm:3.0.0"
+  dependencies:
+    "@types/whatwg-url": "npm:^11.0.2"
+    whatwg-url: "npm:^13.0.0"
+  checksum: 85a8b51c0c2814bdf3a13709e8c2bacbaefae73f9c38fb20709cb64138948682c17d12eb88168085519535dbb6faede6125eb8061aa1d74e95a0d8883241938d
+  languageName: node
+  linkType: hard
+
+"mongodb-level@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "mongodb-level@npm:0.0.4"
   dependencies:
     abstract-level: "npm:^1.0.3"
     module-error: "npm:^1.0.2"
     mongodb: "npm:^4.12.1"
-  checksum: 55aa8d38805721d57e1ce90eea074f50e52f820ab16554600b82fb3ff2e0dd96544d46fae87bfd6fbeb47d4c4ac8b1ec3e55d56723336aa2e96b48bad6135e41
+  peerDependencies:
+    mongodb: ^4.12.1
+  checksum: ac2b720ab5b46dc06071c554cc5ee0f8c72faaa9f976ae6b9baaba886482384c52acb0bd0bc24f8291dd8fa28e6beed698fc475eb72b16d4f28271b02549347c
   languageName: node
   linkType: hard
 
@@ -15031,6 +15091,40 @@ __metadata:
     "@mongodb-js/saslprep":
       optional: true
   checksum: e9f252c13a12b6339b5b4912c32d40f447eaeae77f0b0d0e36b7fbaa6800eae69ae68c6e6f005f97e90c90ad2a9f56369a0924963b83f959c83a4c1398093642
+  languageName: node
+  linkType: hard
+
+"mongodb@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "mongodb@npm:6.3.0"
+  dependencies:
+    "@mongodb-js/saslprep": "npm:^1.1.0"
+    bson: "npm:^6.2.0"
+    mongodb-connection-string-url: "npm:^3.0.0"
+  peerDependencies:
+    "@aws-sdk/credential-providers": ^3.188.0
+    "@mongodb-js/zstd": ^1.1.0
+    gcp-metadata: ^5.2.0
+    kerberos: ^2.0.1
+    mongodb-client-encryption: ">=6.0.0 <7"
+    snappy: ^7.2.2
+    socks: ^2.7.1
+  peerDependenciesMeta:
+    "@aws-sdk/credential-providers":
+      optional: true
+    "@mongodb-js/zstd":
+      optional: true
+    gcp-metadata:
+      optional: true
+    kerberos:
+      optional: true
+    mongodb-client-encryption:
+      optional: true
+    snappy:
+      optional: true
+    socks:
+      optional: true
+  checksum: 3b52734e6439c87098976d10a4ca342b60b66dd295877dce47355114efa88ea7322b853a398ef529be3693b37b73acda29886b2428d69649823128ab3fb995ab
   languageName: node
   linkType: hard
 
@@ -16478,7 +16572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"punycode@npm:^2.1.0, punycode@npm:^2.1.1":
+"punycode@npm:^2.1.0, punycode@npm:^2.1.1, punycode@npm:^2.3.0":
   version: 2.3.1
   resolution: "punycode@npm:2.3.1"
   checksum: febdc4362bead22f9e2608ff0171713230b57aff9dddc1c273aa2a651fbd366f94b7d6a71d78342a7c0819906750351ca7f2edd26ea41b626d87d6a13d1bd059
@@ -18893,7 +18987,7 @@ __metadata:
     "@tailwindcss/forms": "npm:^0.5.4"
     "@tailwindcss/typography": "npm:^0.5.9"
     "@tinacms/cli": "npm:^1.5.37"
-    "@tinacms/datalayer": "npm:^1.2.31"
+    "@tinacms/datalayer": "npm:^1.2.32"
     "@types/mdx": "npm:^2.0.5"
     "@types/node": "npm:^20.10.4"
     "@types/react": "npm:^18.2.14"
@@ -18901,6 +18995,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.1.0"
     autoprefixer: "npm:^10.4.13"
     contentlayer: "npm:0.3.4"
+    cookies-next: "npm:^4.1.0"
     cross-env: "npm:^7.0.3"
     esbuild: "npm:0.18.11"
     eslint: "npm:^8.45.0"
@@ -18916,7 +19011,8 @@ __metadata:
     i18next-resources-to-backend: "npm:^1.1.4"
     image-size: "npm:1.0.0"
     lint-staged: "npm:^13.0.0"
-    mongodb-level: "npm:^0.0.3"
+    mongodb: "npm:^6.3.0"
+    mongodb-level: "npm:^0.0.4"
     next: "npm:14.0.3"
     next-auth: "npm:^4.24.5"
     next-contentlayer: "npm:0.3.4"
@@ -18944,8 +19040,8 @@ __metadata:
     remark-math: "npm:^5.1.1"
     tailwindcss: "npm:^3.3.3"
     tinacms: "npm:^1.5.27"
-    tinacms-authjs: "npm:^1.0.4"
-    tinacms-gitprovider-github: "npm:^1.0.2"
+    tinacms-authjs: "npm:^1.0.5"
+    tinacms-gitprovider-github: "npm:^1.0.3"
     typescript: "npm:^5.1.3"
     unist-util-visit: "npm:^4.1.0"
     zustand: "npm:^4.4.7"
@@ -19106,7 +19202,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinacms-authjs@npm:^1.0.4":
+"tinacms-authjs@npm:^1.0.5":
   version: 1.0.5
   resolution: "tinacms-authjs@npm:1.0.5"
   dependencies:
@@ -19121,7 +19217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinacms-gitprovider-github@npm:^1.0.2":
+"tinacms-gitprovider-github@npm:^1.0.3":
   version: 1.0.3
   resolution: "tinacms-gitprovider-github@npm:1.0.3"
   dependencies:
@@ -19298,6 +19394,15 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.1"
   checksum: b09a15886cbfaee419a3469081223489051ce9dca3374dd9500d2378adedbee84a3c73f83bfdd6bb13d53657753fc0d4e20a46bfcd3f1b9057ef528426ad7ce4
+  languageName: node
+  linkType: hard
+
+"tr46@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "tr46@npm:4.1.1"
+  dependencies:
+    punycode: "npm:^2.3.0"
+  checksum: ca811409c46de84618e4e7f90469184b50d16618b2f027a5ebeccb0d83ee7f51eca229e71f5b15cdec008ca247ad2ccabfdd3daf861604fcc7e341d0c35c30ca
   languageName: node
   linkType: hard
 
@@ -20313,6 +20418,16 @@ __metadata:
     tr46: "npm:^3.0.0"
     webidl-conversions: "npm:^7.0.0"
   checksum: dfcd51c6f4bfb54685528fb10927f3fd3d7c809b5671beef4a8cdd7b1408a7abf3343a35bc71dab83a1424f1c1e92cc2700d7930d95d231df0fac361de0c7648
+  languageName: node
+  linkType: hard
+
+"whatwg-url@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "whatwg-url@npm:13.0.0"
+  dependencies:
+    tr46: "npm:^4.1.1"
+    webidl-conversions: "npm:^7.0.0"
+  checksum: 1675f5b786bbc2809de8bde5e0c99790cd50c36227942c851b1c2445cc1860a26fd15a4d6eca2cd996882bfde93b66fbc88864cd9b84f2c725427afd81e0f024
   languageName: node
   linkType: hard
 
