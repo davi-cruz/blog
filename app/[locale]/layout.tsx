@@ -94,7 +94,7 @@ export default function RootLayout({
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <TwSizeIndicator />
         <ThemeProviders>
-          <GoogleTagManager id={process.env.GTM_ID} />
+          <GoogleTagManager id={process.env.GTM_ID || ''} />
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <div className="flex h-screen flex-col justify-between font-sans">
