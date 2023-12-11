@@ -16,7 +16,7 @@ const ContentSecurityPolicy = `
   img-src * blob: data:;
   media-src 'self' i.imgur.com;
   connect-src *;
-  font-src 'self';
+  font-src 'self' data:;
   frame-src utteranc.es ${isDevEnvironment ? 'localhost:3000' : ''}
 `
 
