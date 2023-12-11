@@ -14,9 +14,9 @@ const ContentSecurityPolicy = `
   };
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
-  media-src i.imgur.com;
+  media-src 'self' i.imgur.com;
   connect-src *;
-  font-src 'self' data:;
+  font-src 'self';
   frame-src utteranc.es ${isDevEnvironment ? 'localhost:3000' : ''}
 `
 
@@ -70,14 +70,7 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     images: {
-      domains: [
-        '',
-        'localhost',
-        'davicruz-blog.vercel.app',
-        'davicruz.com',
-        'picsum.photos',
-        'i.imgur.com',
-      ],
+      domains: ['', 'localhost', 'davicruz-blog.vercel.app', 'davicruz.com', 'i.imgur.com'],
     },
     async headers() {
       return [

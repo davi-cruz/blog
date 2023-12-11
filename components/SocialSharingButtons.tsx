@@ -12,6 +12,7 @@ const SharingButton = (platform) => {
       rel="noopener"
       href={platform.url}
       aria-label={`Share on ${platform.name}`}
+      key={platform.name}
     >
       <svg
         aria-hidden="true"

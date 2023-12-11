@@ -1,20 +1,17 @@
 import { Metadata } from 'next'
-import { slug } from 'github-slugger'
-import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import siteMetadata from '@/data/siteMetadata'
-import ListLayout from '@/layouts/ListLayoutWithTags'
-import { allBlogs } from 'contentlayer/generated'
+import ClientTagPage from './client'
 import tagData from 'app/[locale]/tag-data.json'
 import { genPageMetadata } from 'app/[locale]/seo'
 import { maintitle } from '@/data/localeMetadata'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
 import { capitalizeFirstLetter } from '@/components/util/capitalizeFirstLetter'
 
-type Props = {
+type TagsProps = {
   params: { tag: string; locale: LocaleTypes }
 }
 
-export async function generateMetadata({ params: { tag, locale } }: Props): Promise<Metadata> {
+export async function generateMetadata({ params: { tag, locale } }: TagsProps): Promise<Metadata> {
   const dtag = decodeURI(tag)
   const capitalizedDtag = capitalizeFirstLetter(dtag)
   return genPageMetadata({
@@ -31,7 +28,7 @@ export async function generateMetadata({ params: { tag, locale } }: Props): Prom
   })
 }
 
-export const generateStaticParams = async ({ params: { locale } }: Props) => {
+export const generateStaticParams = async ({ params: { locale } }: TagsProps) => {
   const tagCounts = tagData[locale]
   const tagKeys = Object.keys(tagCounts)
   const paths = tagKeys.map((tag) => ({
@@ -40,19 +37,13 @@ export const generateStaticParams = async ({ params: { locale } }: Props) => {
   return paths
 }
 
-export default function TagPage({ params: { tag, locale } }: Props) {
-  const dtag = decodeURI(tag)
-  // Capitalize first letter and convert space to dash
-  const title = dtag[0].toUpperCase() + dtag.split(' ').join('-').slice(1)
-  const filteredPosts = allCoreContent(
-    sortPosts(
-      allBlogs.filter((post) => {
-        return post.language === locale
-      })
-    ).filter((post) => {
-      return post.tags && post.tags.map((t) => slug(t)).includes(dtag)
-    })
+export default function TagPage({ params: { tag, locale } }: TagsProps) {
+  return (
+    <ClientTagPage
+      params={{
+        tag: tag,
+        locale: locale,
+      }}
+    />
   )
-
-  return <ListLayout posts={filteredPosts} title={title} params={{ locale: locale }} />
 }
