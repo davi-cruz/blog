@@ -39,6 +39,14 @@
     "pt-BR": "2021/04/instalacao-e-atualizacao-azure-arc-windows-configmgr",
     "en-US": "2021/04/install-update-azure-arc-windows-configmgr"
   },
+  "htb-delivery": {
+    "en-US": "2021/05/htb--delivery",
+    "pt-BR": "2021/05/htb-delivery"
+  },
+  "htb-ready": {
+    "en-US": "2021/05/htb--ready",
+    "pt-BR": "2021/05/htb-ready"
+  },
   "htb-scriptkiddie": {
     "en-US": "2021/06/htb--scriptkiddie",
     "pt-BR": "2021/06/htb-scriptkiddie"
@@ -50,14 +58,6 @@
   "htb-tenet": {
     "en-US": "2021/06/htb--tenet",
     "pt-BR": "2021/06/htb-tenet"
-  },
-  "htb-delivery": {
-    "en-US": "2021/05/htb--delivery",
-    "pt-BR": "2021/05/htb-delivery"
-  },
-  "htb-ready": {
-    "en-US": "2021/05/htb--ready",
-    "pt-BR": "2021/05/htb-ready"
   },
   "htb-ophiuchi": {
     "en-US": "2021/07/htb--ophiuchi",

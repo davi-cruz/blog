@@ -85,13 +85,13 @@ const LangSwitch = () => {
           <div className="py-1" role="none">
             {locales.map((newLocale: string) => (
               <Link key={newLocale} href={handleLocaleChange(newLocale)} locale={false}>
-                <p
+                <button
                   className="dark: block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
                   role="menuitem"
                   onClick={closeMenu}
                 >
                   <Flag kind={newLocale} size={4} />
-                </p>
+                </button>
               </Link>
             ))}
           </div>
