@@ -33,3 +33,9 @@ input:-webkit-autofill:focus {
 .katex-display {
   overflow: auto hidden;
 }
+
+.prose img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
