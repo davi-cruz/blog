@@ -88,6 +88,74 @@ module.exports = () => {
 
       return config
     },
+    async redirects() {
+      return [
+        {
+          source: '/writeup/:year/:month/:path*',
+          destination: '/blog/:year/:month/:path*',
+          permanent: true,
+        },
+        {
+          source: '/walkthrough/:year/:month/:path*',
+          destination: '/blog/:year/:month/:path*',
+          permanent: true,
+        },
+        {
+          source: '/en-US/writeup/:year/:month/:path*',
+          destination: '/en-US/blog/:year/:month/:path*',
+          permanent: true,
+        },
+        {
+          source: '/en-US/walkthrough/:year/:month/:path*',
+          destination: '/en-US/blog/:year/:month/:path*',
+          permanent: true,
+        },
+        {
+          source: '/microsoft-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
+          destination: '/blog/2021/03/azure-sentinel-configuracao-do-log-forwarder',
+          permanent: true,
+        },
+        {
+          source: '/en-US/microsoft-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
+          destination: '/en-US/blog/2021/03/rsyslog-sentinel-log-forwarder',
+          permanent: true,
+        },
+        {
+          source: '/azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
+          destination: '/blog/2021/03/azure-sentinel-configuracao-do-log-forwarder',
+          permanent: true,
+        },
+        {
+          source: '/en-US/azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
+          destination: '/en-US/blog/2021/03/rsyslog-sentinel-log-forwarder',
+          permanent: true,
+        },
+        {
+          source: '/azure-arc/2021/04/install-update-azure-arc-windows-configmgr',
+          destination: '/blog/2021/04/instalacao-e-atualizacao-azure-arc-windows-configmgr',
+          permanent: true,
+        },
+        {
+          source: '/en-US/azure-arc/2021/04/install-update-azure-arc-windows-configmgr',
+          destination: '/en-US/blog/2021/04/install-update-azure-arc-windows-configmgr',
+          permanent: true,
+        },
+        {
+          source:
+            '/azure-arc/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
+          destination:
+            '/blog/2021/03/azure-arc-enabled-servers-configuracao-de-proxy-a-nivel-de-servico-em-linux',
+          permanent: true,
+        },
+        {
+          source:
+            '/en-US/azure-arc/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
+          destination:
+            '/en-US/blog/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
+          permanent: true,
+        },
+      ]
+    },
     output: 'standalone',
   })
 }
