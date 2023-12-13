@@ -26,5 +26,7 @@
   "draft": "Under Construction",
   "noposts": "No posts found",
   "poststagged": "View posts tagged",
-  "share": "Share this article"
+  "share": "Share this article",
+  "oldPostMessage": "This article was published over a year ago and the information it contains may no longer be current or accurate.",
+  "oldPostTitle": "Potentially outdated content warning"
 }

@@ -26,5 +26,7 @@
   "draft": "Em construção",
   "noposts": "Nenhum post encontrado",
   "poststagged": "Ver postagens marcadas",
-  "share": "Compartilhe este post"
+  "share": "Compartilhe este post",
+  "oldPostMessage": "Este artigo foi publicado há mais de um ano e as informações podem não ser atuais ou precisas.",
+  "oldPostTitle": "Aviso de conteúdo potencialmente desatualizado"
 }
