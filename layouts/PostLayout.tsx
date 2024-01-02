@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
-import { Blog, Authors } from 'contentlayer/generated'
+import type { Blog, Authors } from 'contentlayer/generated'
 import Comments from '@/components/comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
@@ -11,12 +11,10 @@ import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { createTranslation } from 'app/[locale]/i18n/server'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
-import SocialSharingButtons from '@/components/SocialSharingButtons'
-import Alert from '@/components/Alert'
 
-// const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-// const discussUrl = (path) =>
-//   `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
+const discussUrl = (path) =>
+  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -32,7 +30,6 @@ interface LayoutProps {
   prev?: { path: string; title: string }
   children: ReactNode
   params: { locale: LocaleTypes }
-  localeid: string
 }
 
 export default async function PostLayout({
@@ -42,7 +39,6 @@ export default async function PostLayout({
   prev,
   children,
   params: { locale },
-  localeid,
 }: LayoutProps) {
   const { filePath, path, slug, date, title, tags, language } = content
   const basePath = path.split('/')[0]
@@ -77,47 +73,28 @@ export default async function PostLayout({
                   {authorDetails.map((author) => (
                     <li className="flex items-center space-x-2" key={author.name}>
                       {author.avatar && (
-                        <Link href={`/${locale}/about`}>
-                          <Image
-                            src={author.avatar}
-                            width={38}
-                            height={38}
-                            alt="avatar"
-                            className="h-10 w-10 rounded-full"
-                          />
-                        </Link>
+                        <Image
+                          src={author.avatar}
+                          width={38}
+                          height={38}
+                          alt="avatar"
+                          className="h-10 w-10 rounded-full"
+                        />
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">{t('name')}</dt>
-                        <Link href={`/${locale}/about`}>
-                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        </Link>
-                        {author.linkedin && (
-                          <>
-                            <dt className="sr-only">LinkedIn</dt>
-                            <dd>
-                              <Link
-                                href={author.linkedin}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                              >
-                                {author.linkedin.replace('https://linkedin.com/', '')}
-                              </Link>
-                            </dd>
-                          </>
-                        )}
-                        {author.twitter && (
-                          <>
-                            <dt className="sr-only">Twitter</dt>
-                            <dd>
-                              <Link
-                                href={author.twitter}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                              >
-                                {author.twitter.replace('https://twitter.com/', '@')}
-                              </Link>
-                            </dd>
-                          </>
-                        )}
+                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                        <dt className="sr-only">Twitter</dt>
+                        <dd>
+                          {author.twitter && (
+                            <Link
+                              href={author.twitter}
+                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            >
+                              {author.twitter.replace('https://twitter.com/', '@')}
+                            </Link>
+                          )}
+                        </dd>
                       </dl>
                     </li>
                   ))}
@@ -125,27 +102,20 @@ export default async function PostLayout({
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              {Date.parse(date) < new Date().setFullYear(new Date().getFullYear() - 1) &&
-              !tags.includes('Walkthrough') ? (
-                <Alert kind="notice" title={t('oldPostTitle')}>
-                  {t('oldPostMessage')}
-                </Alert>
-              ) : null}
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
-              {/* <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
+              <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
                 <Link href={discussUrl(path)} rel="nofollow">
                   {t('twitter')}
                 </Link>
                 {` • `}
                 <Link href={editUrl(filePath)}>{t('github')}</Link>
-              </div> */}
-              <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
+              </div>
               {siteMetadata.comments && (
                 <div
                   className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
                   id="comment"
                 >
-                  <Comments slug={localeid} />
+                  <Comments slug={slug} />
                 </div>
               )}
             </div>
