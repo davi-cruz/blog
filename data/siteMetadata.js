@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'Just another cybersecurity professional blog',
   language: 'en-US',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://davicruz.com/',
+  siteUrl: 'https://davicruz.com',
   siteRepo: 'https://github.com/davi-cruz/blog-private',
   siteLogo: '/static/images/logo.png',
   socialBanner: '/static/images/twitter-card.png',
