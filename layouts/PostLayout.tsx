@@ -132,20 +132,20 @@ export default async function PostLayout({
                 </Alert>
               ) : null}
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
-              <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
-                {/* <Link href={discussUrl(path)} rel="nofollow">
+              {/* <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
+                 <Link href={discussUrl(path)} rel="nofollow">
                   {t('twitter')}
                 </Link>
                 {` • `}
-                <Link href={editUrl(filePath)}>{t('github')}</Link> */}
+                <Link href={editUrl(filePath)}>{t('github')}</Link> 
+                </div> */}
                 <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
-              </div>
               {siteMetadata.comments && (
                 <div
                   className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
                   id="comment"
                 >
-                  <Comments slug={slug} />
+                  <Comments slug={localeid} />
                 </div>
               )}
             </div>
