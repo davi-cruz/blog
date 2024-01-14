@@ -139,7 +139,7 @@ export default async function PostLayout({
                 {` • `}
                 <Link href={editUrl(filePath)}>{t('github')}</Link> 
                 </div> */}
-                <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
+              <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
               {siteMetadata.comments && (
                 <div
                   className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
