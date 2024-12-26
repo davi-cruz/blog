@@ -1,4 +1,4 @@
-const { withContentlayer } = require('next-contentlayer')
+const { withContentlayer } = require('next-contentlayer2')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -9,16 +9,16 @@ const isDevEnvironment = process.env.NODE_ENV === 'development'
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es www.googletagmanager.com www.clarity.ms ${
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' utteranc.es www.googletagmanager.com www.clarity.ms giscus.app analytics.umami.is statichunt.com http://www.youtube.com ${
     isDevEnvironment ? 'localhost:4001' : ''
   };
   style-src 'self' 'unsafe-inline';
-  img-src * blob: data:;
-  media-src 'self' i.imgur.com;
-  connect-src *;
-  font-src 'self' data:;
-  frame-src utteranc.es www.googletagmanager.com ${isDevEnvironment ? 'localhost:3000' : ''}
-`
+  img-src * blob: data: statichunt.com;
+  media-src 'self' *.s3.amazonaws.com;
+  connect-src * statichunt.com;
+  font-src 'self';
+  frame-src utteranc.es www.googletagmanager.com giscus.app https://www.youtube.com/ https://www.youtube-nocookie.com/
+`;
 
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
@@ -32,11 +32,6 @@ const securityHeaders = [
     value: 'strict-origin-when-cross-origin',
   },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-  {
-    key: 'X-Frame-Options',
-    value: 'DENY',
-  },
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
   {
     key: 'X-Content-Type-Options',
     value: 'nosniff',
@@ -56,7 +51,7 @@ const securityHeaders = [
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
-]
+];
 
 /**
  * @type {import('next/dist/next-server/server/config').NextConfig}
@@ -70,7 +65,13 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     images: {
-      domains: ['', 'localhost', 'davicruz-blog.vercel.app', 'davicruz.com', 'i.imgur.com'],
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'picsum.photos',
+          pathname: '**',
+        },
+      ],
     },
     async headers() {
       return [
@@ -88,74 +89,7 @@ module.exports = () => {
 
       return config
     },
-    async redirects() {
-      return [
-        {
-          source: '/writeup/:year/:month/:path*',
-          destination: '/blog/:year/:month/:path*',
-          permanent: true,
-        },
-        {
-          source: '/walkthrough/:year/:month/:path*',
-          destination: '/blog/:year/:month/:path*',
-          permanent: true,
-        },
-        {
-          source: '/en-US/writeup/:year/:month/:path*',
-          destination: '/en-US/blog/:year/:month/:path*',
-          permanent: true,
-        },
-        {
-          source: '/en-US/walkthrough/:year/:month/:path*',
-          destination: '/en-US/blog/:year/:month/:path*',
-          permanent: true,
-        },
-        {
-          source: '/microsoft-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
-          destination: '/blog/2021/03/azure-sentinel-configuracao-do-log-forwarder',
-          permanent: true,
-        },
-        {
-          source: '/en-US/microsoft-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
-          destination: '/en-US/blog/2021/03/rsyslog-sentinel-log-forwarder',
-          permanent: true,
-        },
-        {
-          source: '/azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
-          destination: '/blog/2021/03/azure-sentinel-configuracao-do-log-forwarder',
-          permanent: true,
-        },
-        {
-          source: '/en-US/azure-sentinel/2021/03/rsyslog-sentinel-log-forwarder',
-          destination: '/en-US/blog/2021/03/rsyslog-sentinel-log-forwarder',
-          permanent: true,
-        },
-        {
-          source: '/azure-arc/2021/04/install-update-azure-arc-windows-configmgr',
-          destination: '/blog/2021/04/instalacao-e-atualizacao-azure-arc-windows-configmgr',
-          permanent: true,
-        },
-        {
-          source: '/en-US/azure-arc/2021/04/install-update-azure-arc-windows-configmgr',
-          destination: '/en-US/blog/2021/04/install-update-azure-arc-windows-configmgr',
-          permanent: true,
-        },
-        {
-          source:
-            '/azure-arc/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
-          destination:
-            '/blog/2021/03/azure-arc-enabled-servers-configuracao-de-proxy-a-nivel-de-servico-em-linux',
-          permanent: true,
-        },
-        {
-          source:
-            '/en-US/azure-arc/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
-          destination:
-            '/en-US/blog/2021/03/azure-arc-enabled-servers-service-level-proxy-configuration-on-linux',
-          permanent: true,
-        },
-      ]
-    },
+
     output: 'standalone',
   })
 }

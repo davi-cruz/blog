@@ -1,9 +1,9 @@
 {
   "greeting": "Latest",
-  "description": "",
+  "description": "A blog created with Next.js, i18n and Tailwind.css",
   "more": "Read more",
   "all": "All posts",
-
+  
   "moreaboutme": "More about me",
   "featured": "Featured",
   "morefeatured": "More featured posts",

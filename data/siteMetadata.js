@@ -13,19 +13,23 @@ const siteMetadata = {
   // mastodon: 'https://mastodon.social/@mastodonuser',
   // email: 'address@yoursite.com',
   github: 'https://github.com/davi-cruz',
-  twitter: 'https://twitter.com/zerahzurc',
+  x: 'https://twitter.com/zerahzurc',
+  // twitter: 'https://twitter.com/zerahzurc',
   // facebook: 'https://facebook.com',
   // youtube: 'https://youtube.com',
   linkedin: 'https://www.linkedin.com/in/davicruz',
+  //threads: 'https://www.threads.net',
+  //instagram: 'https://www.instagram.com',
   locale: 'en-US',
+  multiauthors: false,
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
     // supports Plausible, Simple Analytics, Umami, Posthog or Google Analytics.
-    // umamiAnalytics: {
-    //   // We use an env variable for this site to avoid other users cloning our analytics ID
-    //   umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
-    // },
+    /*umamiAnalytics: {
+      // We use an env variable for this site to avoid other users cloning our analytics ID
+      umamiWebsiteId: process.env.NEXT_UMAMI_ID, // e.g. 123e4567-e89b-12d3-a456-426614174000
+    },*/
     // plausibleAnalytics: {
     //   plausibleDataDomain: '', // e.g. tailwind-nextjs-starter-blog.vercel.app
     // },
@@ -42,6 +46,7 @@ const siteMetadata = {
   //   // Please add your .env file and modify it according to your selection
   //   provider: 'buttondown',
   // },
+  iscomments: true,
   comments: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.
@@ -72,9 +77,11 @@ const siteMetadata = {
   },
   // formspree support :
   //if set to false, simple "mailto"
-  // if set to true, get a free account there : https://formspree.io/
-  // and fill the NEXT_FORMSPREE_KEY env variable with the key they provide to you
+  // if set to true, get a free account there : https://formspree.io/ and go to read.me doc
   formspree: false,
+  // waline support
+  iswaline: false,
+  walineServer: '',
 }
 
 module.exports = siteMetadata

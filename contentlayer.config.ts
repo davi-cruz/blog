@@ -1,12 +1,19 @@
-import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer/source-files'
+import {
+  defineDocumentType,
+  ComputedFields,
+  makeSource,
+  defineNestedType,
+} from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import path from 'path'
+import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic'
 // Remark packages
 import remarkGfm from 'remark-gfm'
 import remarkMath from 'remark-math'
 import remarkGemoji from 'remark-gemoji'
+import { remarkAlert } from 'remark-github-blockquote-alert'
 import {
   remarkExtractFrontmatter,
   remarkCodeTitles,
@@ -23,16 +30,32 @@ import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import { fallbackLng, secondLng } from './app/[locale]/i18n/locales'
-import { allBlogs } from 'contentlayer/generated'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
+
+// heroicon mini link
+const icon = fromHtmlIsomorphic(
+  `
+  <span class="content-header-link">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 linkicon">
+  <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z" />
+  <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
+  </svg>
+  </span>
+`,
+  { fragment: true }
+)
 
 const computedFields: ComputedFields = {
   readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
   slug: {
     type: 'string',
-    resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
+    resolve: (doc) => {
+      // Split the flattenedPath by '/' and take the last part
+      const pathParts = doc._raw.flattenedPath.split('/');
+      return pathParts.slice(2).join('/')
+    },
   },
   path: {
     type: 'string',
@@ -43,26 +66,7 @@ const computedFields: ComputedFields = {
     resolve: (doc) => doc._raw.sourceFilePath,
   },
   toc: { type: 'string', resolve: (doc) => extractTocHeadings(doc.body.raw) },
-}
-
-async function generateSlugMap(allBlogs) {
-  const slugMap = {}
-
-  // Process each blog post
-  allBlogs.forEach((blog) => {
-    const { localeid, language, slug } = blog
-    const formattedLng = language === fallbackLng ? fallbackLng : secondLng
-
-    if (!slugMap[localeid]) {
-      slugMap[localeid] = {}
-    }
-
-    // Add the slug to the map for the specific language
-    slugMap[localeid][formattedLng] = slug
-  })
-
-  writeFileSync('./app/[locale]/localeid-map.json', JSON.stringify(slugMap, null, 2))
-}
+};
 
 /**
  * Count the occurrences of all tags across blog posts and write to json file
@@ -104,17 +108,32 @@ function createSearchIndex(allBlogs) {
   }
 }
 
+export const Series = defineNestedType(() => ({
+  name: 'Series',
+  fields: {
+    title: {
+      type: 'string',
+      required: true,
+    },
+    order: {
+      type: 'number',
+      required: true,
+    },
+  },
+}))
+
 export const Blog = defineDocumentType(() => ({
   name: 'Blog',
   filePathPattern: 'blog/**/*.mdx',
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
+    series: { type: 'nested', of: Series },
     date: { type: 'date', required: true },
     language: { type: 'string', required: true },
-    localeid: { type: 'string', required: true },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     lastmod: { type: 'date' },
+    featured: { type: 'boolean' },
     draft: { type: 'boolean' },
     summary: { type: 'string' },
     images: { type: 'json' },
@@ -136,7 +155,7 @@ export const Blog = defineDocumentType(() => ({
         dateModified: doc.lastmod || doc.date,
         description: doc.summary,
         image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
-        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+        url: `${siteMetadata.siteUrl}/${doc.language}/blog/${doc.slug}`,
       }),
     },
   },
@@ -149,6 +168,7 @@ export const Authors = defineDocumentType(() => ({
   fields: {
     name: { type: 'string', required: true },
     language: { type: 'string', required: true },
+    default: {type: 'boolean'},
     avatar: { type: 'string' },
     occupation: { type: 'string' },
     company: { type: 'string' },
@@ -174,10 +194,20 @@ export default makeSource({
       remarkMath,
       remarkImgToJsx,
       remarkGemoji,
+      remarkAlert,
     ],
     rehypePlugins: [
       rehypeSlug,
-      rehypeAutolinkHeadings,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: 'prepend',
+          headingProperties: {
+            className: ['content-header'],
+          },
+          content: icon,
+        },
+      ],
       rehypeKatex,
       [rehypeCitation, { path: path.join(root, 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
@@ -186,7 +216,6 @@ export default makeSource({
   },
   onSuccess: async (importData) => {
     const { allBlogs } = await importData()
-    generateSlugMap(allBlogs)
     createTagCount(allBlogs)
     createSearchIndex(allBlogs)
   },

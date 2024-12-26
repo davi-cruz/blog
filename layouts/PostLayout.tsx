@@ -1,22 +1,25 @@
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Authors } from 'contentlayer/generated'
-import Comments from '@/components/comments'
-import Link from '@/components/Link'
+import Comments from '@/components/comments/Comments'
+import WalineComments from '@/components/comments/walinecomponents/walineComments'
+import Link from '@/components/mdxcomponents/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
-import Image from '@/components/Image'
-import Tag from '@/components/Tag'
+import Image from '@/components/mdxcomponents/Image'
+import Tag from '@/components/tag'
 import siteMetadata from '@/data/siteMetadata'
-import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import ScrollTopAndComment from '@/components/scroll'
 import { createTranslation } from 'app/[locale]/i18n/server'
 import { LocaleTypes } from 'app/[locale]/i18n/settings'
-import SocialSharingButtons from '@/components/SocialSharingButtons'
-import Alert from '@/components/Alert'
+import { PostSeriesBox } from '@/components/seriescard'
+import Share from '@/components/share'
+import { Toc } from 'pliny/mdx-plugins'
+import Sidetoc from '@/components/sidetoc'
 
-// const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-// const discussUrl = (path) =>
-//   `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
+const discussUrl = (path) =>
+  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -28,11 +31,10 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
 interface LayoutProps {
   content: CoreContent<Blog>
   authorDetails: CoreContent<Authors>[]
-  next?: { path: string; title: string }
-  prev?: { path: string; title: string }
+  next?: { slug: string; title: string }
+  prev?: { slug: string; title: string }
   children: ReactNode
   params: { locale: LocaleTypes }
-  localeid: string
 }
 
 export default async function PostLayout({
@@ -42,14 +44,15 @@ export default async function PostLayout({
   prev,
   children,
   params: { locale },
-  localeid,
 }: LayoutProps) {
-  const { filePath, path, slug, date, title, tags, language } = content
+  const { filePath, path, slug, date, title, tags, language, series, toc } = content
   const basePath = path.split('/')[0]
   const { t } = await createTranslation(locale, 'home')
+  const tableOfContents: Toc = toc as unknown as Toc
   return (
-    <SectionContainer>
+    <>
       <ScrollTopAndComment />
+      <Sidetoc toc={tableOfContents} />
       <article>
         <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
           <header className="pt-6 xl:pb-6">
@@ -77,47 +80,31 @@ export default async function PostLayout({
                   {authorDetails.map((author) => (
                     <li className="flex items-center space-x-2" key={author.name}>
                       {author.avatar && (
-                        <Link href={`/${locale}/about`}>
+                        <Link href={`/${locale}/about/${author.slug}`}>
                           <Image
                             src={author.avatar}
                             width={38}
                             height={38}
                             alt="avatar"
+                            title="avatar"
                             className="h-10 w-10 rounded-full"
                           />
                         </Link>
                       )}
                       <dl className="whitespace-nowrap text-sm font-medium leading-5">
                         <dt className="sr-only">{t('name')}</dt>
-                        <Link href={`/${locale}/about`}>
-                          <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
-                        </Link>
-                        {author.linkedin && (
-                          <>
-                            <dt className="sr-only">LinkedIn</dt>
-                            <dd>
-                              <Link
-                                href={author.linkedin}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                              >
-                                {author.linkedin.replace('https://linkedin.com/', '')}
-                              </Link>
-                            </dd>
-                          </>
-                        )}
-                        {author.twitter && (
-                          <>
-                            <dt className="sr-only">Twitter</dt>
-                            <dd>
-                              <Link
-                                href={author.twitter}
-                                className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                              >
-                                {author.twitter.replace('https://twitter.com/', '@')}
-                              </Link>
-                            </dd>
-                          </>
-                        )}
+                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                        <dt className="sr-only">Twitter</dt>
+                        <dd>
+                          {author.twitter && (
+                            <Link
+                              href={author.twitter}
+                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            >
+                              {author.twitter.replace('https://twitter.com/', '@')}
+                            </Link>
+                          )}
+                        </dd>
                       </dl>
                     </li>
                   ))}
@@ -125,63 +112,63 @@ export default async function PostLayout({
               </dd>
             </dl>
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
-              {Date.parse(date) < new Date().setFullYear(new Date().getFullYear() - 1) &&
-              !tags.includes('Walkthrough') ? (
-                <Alert kind="notice" title={t('oldPostTitle')}>
-                  {t('oldPostMessage')}
-                </Alert>
-              ) : null}
+              {series && (
+                <div className="not-prose mt-4">
+                  <PostSeriesBox data={series} />
+                </div>
+              )}
               <div className="prose max-w-none pb-8 pt-10 dark:prose-invert">{children}</div>
-              {/* <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
-                 <Link href={discussUrl(path)} rel="nofollow">
+              <div className="pb-6 pt-6 text-sm text-gray-700 dark:text-gray-300">
+                <Link href={discussUrl(path)} rel="nofollow">
                   {t('twitter')}
                 </Link>
                 {` • `}
-                <Link href={editUrl(filePath)}>{t('github')}</Link> 
-                </div> */}
-              <SocialSharingButtons url={`${siteMetadata.siteUrl}${path}`} title={title} />
-              {siteMetadata.comments && (
-                <div
-                  className="pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
-                  id="comment"
-                >
-                  <Comments slug={localeid} />
-                </div>
-              )}
+                <Link href={editUrl(filePath)}>{t('github')}</Link>
+              </div>
+              <Share title={title} slug={slug} />
+              <div
+                className="mt-10 pb-6 pt-6 text-center text-gray-700 dark:text-gray-300"
+                id="comment"
+              >
+                {siteMetadata.iswaline === true && <WalineComments />}
+                {siteMetadata.comments && siteMetadata.iscomments === true && (
+                  <Comments slug={slug} />
+                )}
+              </div>
             </div>
             <footer>
               <div className="divide-gray-200 text-sm font-medium leading-5 dark:divide-gray-700 xl:col-start-1 xl:row-start-2 xl:divide-y">
                 {tags && (
                   <div className="py-4 xl:py-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                       Tags
-                    </h2>
+                    </p>
                     <div className="flex flex-wrap">
                       {tags.map((tag) => (
-                        <Tag key={tag} text={tag} params={{ locale: locale }} />
+                        <Tag key={tag} text={tag} />
                       ))}
                     </div>
                   </div>
                 )}
                 {(next || prev) && (
                   <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
-                    {prev && prev.path && (
+                    {prev && prev.slug && (
                       <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                           {t('preva')}
-                        </h2>
+                        </p>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${locale}/${prev.path}`}>{prev.title}</Link>
+                          <Link href={`/${locale}/blog/${prev.slug}`}>{prev.title}</Link>
                         </div>
                       </div>
                     )}
-                    {next && next.path && (
+                    {next && next.slug && (
                       <div>
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <p className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
                           {t('nexta')}
-                        </h2>
+                        </p>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
-                          <Link href={`/${locale}/${next.path}`}>{next.title}</Link>
+                          <Link href={`/${locale}/blog/${next.slug}`}>{next.title}</Link>
                         </div>
                       </div>
                     )}
@@ -201,6 +188,6 @@ export default async function PostLayout({
           </div>
         </div>
       </article>
-    </SectionContainer>
+    </>
   )
 }

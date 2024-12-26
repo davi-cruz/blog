@@ -4,19 +4,23 @@ import { genPageMetadata } from 'app/[locale]/seo'
 import { createTranslation } from '../i18n/server'
 import { LocaleTypes } from '../i18n/settings'
 
-type ProjectsProps = {
-  params: { locale: LocaleTypes }
+interface PageProps {
+  params: Promise<{
+    locale: LocaleTypes
+  }>
 }
 
-export async function generateMetadata({ params: { locale } }: ProjectsProps): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { locale } = await params
   const { t } = await createTranslation(locale, 'projects')
   return genPageMetadata({
     title: t('title'),
-    params: { locale: locale },
+    params: { locale },
   })
 }
 
-export default async function Projects({ params: { locale } }: ProjectsProps) {
+export default async function Projects({ params }: PageProps) {
+  const { locale } = await params
   const { t } = await createTranslation(locale, 'projects')
   return (
     <>

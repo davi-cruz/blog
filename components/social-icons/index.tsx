@@ -1,4 +1,18 @@
-import { Mail, Github, Facebook, Youtube, Linkedin, Twitter, Mastodon, Telegram } from './icons'
+import {
+  Mail,
+  Github,
+  Facebook,
+  Youtube,
+  Linkedin,
+  Twitter,
+  X,
+  Mastodon,
+  Whatsapp,
+  Telegram,
+  Threads,
+  Instagram,
+  Reddit,
+} from './icons'
 import siteMetadata from '@/data/siteMetadata'
 
 const components = {
@@ -8,8 +22,13 @@ const components = {
   youtube: Youtube,
   linkedin: Linkedin,
   twitter: Twitter,
+  x: X,
   mastodon: Mastodon,
+  whatsapp: Whatsapp,
   telegram: Telegram,
+  threads: Threads,
+  instagram: Instagram,
+  reddit: Reddit,
 }
 
 type SocialIconProps = {

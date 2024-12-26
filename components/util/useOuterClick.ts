@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react'
 
-export function useOuterClick(dom: RefObject<HTMLElement>, cb: () => void): void {
+export function useOuterClick(dom: RefObject<HTMLElement | null>, cb: () => void): void {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent): void {
       if (dom.current && !dom.current.contains(event.target as Node)) {
@@ -8,10 +8,8 @@ export function useOuterClick(dom: RefObject<HTMLElement>, cb: () => void): void
       }
     }
 
-    // Attach the event listener during component mount
     window.addEventListener('mousedown', handleClickOutside)
 
-    // Detach the event listener when the component unmounts
     return () => {
       window.removeEventListener('mousedown', handleClickOutside)
     }

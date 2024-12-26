@@ -1,14 +1,29 @@
 import { sortPosts, allCoreContent } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
-import Main from './Main'
+import FeaturedLayout from '@/layouts/FeaturedLayout'
+import HomeLayout from '@/layouts/HomeLayout'
 import { LocaleTypes } from './i18n/settings'
 
-type HomeProps = {
-  params: { locale: LocaleTypes }
+interface PageProps {
+  params: Promise<{
+    locale: LocaleTypes
+  }>
 }
 
-export default async function Page({ params: { locale } }: HomeProps) {
+export default async function Page({ params }: PageProps) {
+  const { locale } = await params
+
   const sortedPosts = sortPosts(allBlogs)
   const posts = allCoreContent(sortedPosts)
-  return <Main posts={posts} params={{ locale: locale }} />
+  const filteredPosts = posts.filter((p) => p.language === locale)
+  const hasFeaturedPosts = filteredPosts.filter((p) => p.featured === true)
+
+  return (
+    <>
+      {hasFeaturedPosts.length > 0 && (
+        <FeaturedLayout posts={hasFeaturedPosts} params={{ locale }} />
+      )}
+      <HomeLayout posts={filteredPosts} params={{ locale }} />
+    </>
+  )
 }
