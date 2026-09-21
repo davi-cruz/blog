@@ -111,6 +111,13 @@ if (customAlternates && customAlternates.length > 0) {
     { lang: 'es', url: `${siteUrl}/es/proyectos` },
     { lang: 'x-default', url: `${siteUrl}/projetos` },
   ];
+} else if (currentPath === '/privacidade' || currentPath === '/en/privacy' || currentPath === '/es/privacidad') {
+  hreflangEntries = [
+    { lang: 'pt-BR', url: `${siteUrl}/privacidade` },
+    { lang: 'en', url: `${siteUrl}/en/privacy` },
+    { lang: 'es', url: `${siteUrl}/es/privacidad` },
+    { lang: 'x-default', url: `${siteUrl}/privacidade` },
+  ];
 } else if (currentPath === '' || currentPath === '/' || currentPath === '/en' || currentPath === '/es') {
   hreflangEntries = [
     { lang: 'pt-BR', url: `${siteUrl}/` },

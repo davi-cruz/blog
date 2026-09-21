@@ -1,0 +1,491 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Lang } from '../i18n/ui';
+import { siteConfig } from '../data/siteConfig';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const siteUrl = siteConfig.siteUrl.replace(/\/+$/, '');
+
+const content = {
+  'pt-br': {
+    title: 'Política de Privacidade e Cookies',
+    description: 'Transparência sobre tratamento de dados, conformidade com a LGPD e GDPR, uso do Google Tag Manager, Google Analytics 4 e Microsoft Clarity.',
+    lastUpdated: 'Última atualização: Setembro de 2026',
+    manageTitle: 'Gerenciamento de Preferências',
+    manageDesc: 'Você pode alterar ou revogar seu consentimento para cookies de telemetria analítica e gravações de sessão a qualquer momento:',
+    manageBtn: 'Alterar Preferências de Cookies',
+    statusLabel: 'Status atual do consentimento:',
+    statusGranted: 'Permitido (Cookies analíticos e telemetria ativados)',
+    statusDenied: 'Negado (Apenas cookies técnicos essenciais)',
+    statusUnset: 'Não definido (Aguardando sua escolha)',
+    alternates: [
+      { lang: 'pt-br', url: `${siteUrl}/privacidade` },
+      { lang: 'en', url: `${siteUrl}/en/privacy` },
+      { lang: 'es', url: `${siteUrl}/es/privacidad` },
+      { lang: 'x-default', url: `${siteUrl}/privacidade` },
+    ],
+  },
+  en: {
+    title: 'Privacy Policy & Cookies',
+    description: 'Transparency regarding data processing, GDPR and LGPD compliance, usage of Google Tag Manager, Google Analytics 4, and Microsoft Clarity.',
+    lastUpdated: 'Last updated: September 2026',
+    manageTitle: 'Manage Your Preferences',
+    manageDesc: 'You can modify or withdraw your consent for analytics telemetry cookies and session recording at any time:',
+    manageBtn: 'Change Cookie Preferences',
+    statusLabel: 'Current consent status:',
+    statusGranted: 'Granted (Analytics cookies & telemetry enabled)',
+    statusDenied: 'Denied (Essential technical cookies only)',
+    statusUnset: 'Not set (Awaiting your choice)',
+    alternates: [
+      { lang: 'pt-br', url: `${siteUrl}/privacidade` },
+      { lang: 'en', url: `${siteUrl}/en/privacy` },
+      { lang: 'es', url: `${siteUrl}/es/privacidad` },
+      { lang: 'x-default', url: `${siteUrl}/privacidade` },
+    ],
+  },
+  es: {
+    title: 'Política de Privacidad y Cookies',
+    description: 'Transparencia sobre el tratamiento de datos, cumplimiento de LGPD y GDPR, uso de Google Tag Manager, Google Analytics 4 y Microsoft Clarity.',
+    lastUpdated: 'Última actualización: Septiembre de 2026',
+    manageTitle: 'Gestión de Preferencias',
+    manageDesc: 'Puede modificar o revocar su consentimiento para cookies de análisis y grabaciones de sesión en cualquier momento:',
+    manageBtn: 'Cambiar Preferencias de Cookies',
+    statusLabel: 'Estado actual del consentimiento:',
+    statusGranted: 'Permitido (Cookies analíticas y telemetría activadas)',
+    statusDenied: 'Denegado (Solo cookies técnicas esenciales)',
+    statusUnset: 'No definido (Esperando su elección)',
+    alternates: [
+      { lang: 'pt-br', url: `${siteUrl}/privacidade` },
+      { lang: 'en', url: `${siteUrl}/en/privacy` },
+      { lang: 'es', url: `${siteUrl}/es/privacidad` },
+      { lang: 'x-default', url: `${siteUrl}/privacidade` },
+    ],
+  },
+};
+
+const t = content[lang] || content['pt-br'];
+---
+
+<BaseLayout
+  title={`${t.title} | Davi Cruz`}
+  description={t.description}
+  lang={lang}
+  customAlternates={t.alternates}
+>
+  <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Header -->
+    <header class="mb-10 border-b border-gray-200 pb-8 dark:border-gray-800">
+      <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary-600 dark:text-primary-400 mb-2">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        Compliance & Legal
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
+        {t.title}
+      </h1>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        {t.lastUpdated}
+      </p>
+    </header>
+
+    <!-- Interactive Cookie Preference Center -->
+    <div class="mb-12 rounded-2xl border border-primary-200 bg-primary-50/50 p-6 dark:border-primary-900/60 dark:bg-primary-950/20 shadow-sm">
+      <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+        {t.manageTitle}
+      </h2>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        {t.manageDesc}
+      </p>
+
+      <div class="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-primary-200/60 pt-4 dark:border-primary-900/60">
+        <div class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">
+          <span class="text-gray-500 dark:text-gray-400">{t.statusLabel}</span>{' '}
+          <span id="privacy-consent-status" class="font-bold text-primary-600 dark:text-primary-400">
+            {t.statusUnset}
+          </span>
+        </div>
+        <button
+          type="button"
+          id="privacy-open-banner-btn"
+          class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 transition"
+        >
+          {t.manageBtn}
+        </button>
+      </div>
+    </div>
+
+    <!-- Legal Article Content -->
+    <article class="prose prose-slate max-w-none dark:prose-invert prose-headings:font-bold prose-a:text-primary-600 dark:prose-a:text-primary-400">
+      {lang === 'pt-br' && (
+        <>
+          <h2>1. Introdução e Controlador de Dados</h2>
+          <p>
+            Esta Política de Privacidade descreve de forma transparente e acessível como os seus dados pessoais são coletados, utilizados, armazenados e protegidos ao acessar o blog técnico <strong>davicruz.com</strong>, de titularidade de <strong>Davi Cruz</strong> ("Controlador"), com contato institucional através do e-mail <code>eu@davicruz.com</code>.
+          </p>
+          <p>
+            Este blog tem como único propósito a disseminação educacional de conhecimentos técnicos em Operações de Segurança, Threat Intelligence, Cibersegurança e Ciência de Dados. Não comercializamos dados pessoais de nossos visitantes sob nenhuma hipótese.
+          </p>
+
+          <h2>2. Legislações Aplicáveis</h2>
+          <p>Nossas práticas de privacidade foram concebidas em estrita conformidade com:</p>
+          <ul>
+            <li><strong>LGPD (Lei nº 13.709/2018 - Brasil):</strong> Lei Geral de Proteção de Dados Pessoais.</li>
+            <li><strong>GDPR (Regulamento UE 2016/679):</strong> Regulamento Geral sobre a Proteção de Dados da União Europeia.</li>
+            <li><strong>CCPA / CPRA (Califórnia, EUA):</strong> Reconhecimento e respeito ao sinal universal <em>Global Privacy Control (GPC)</em>.</li>
+          </ul>
+
+          <h2>3. Quais Dados Coletamos e Quais as Finalidades</h2>
+          <h3>A. Dados Técnicos de Acesso e Segurança (Logs de Servidor)</h3>
+          <p>
+            Ao navegar pelo blog, nosso servidor ou provedor de CDN pode registrar temporariamente informações técnicas como endereço IP anonimizado, carimbo de data/hora, código de status HTTP e User-Agent.
+          </p>
+          <p>
+            <strong>Base Legal:</strong> Legítimo Interesse (LGPD Art. 7º, IX e GDPR Art. 6º, 1, f) estritamente para segurança da rede, mitigação de ataques DDoS e garantia de integridade do serviço.
+          </p>
+
+          <h3>B. Telemetria e Métricas de Audiência (Google Analytics 4 via Google Tag Manager)</h3>
+          <p>
+            Utilizamos o <strong>Google Analytics 4</strong> para compreender de forma agregada quais artigos técnicos são mais relevantes, tempo de permanência e dispositivos utilizados. Implementamos o <strong>Google Consent Mode v2</strong>, o que significa que:
+          </p>
+          <ul>
+            <li>Antes do seu consentimento explícito, nenhum cookie identificador é gravado em seu navegador.</li>
+            <li>O endereço IP é automaticamente mascarado e truncado pela infraestrutura do Google antes do armazenamento.</li>
+            <li>O período de retenção de eventos analíticos está configurado para o limite máximo de 14 meses.</li>
+          </ul>
+          <p>
+            <strong>Base Legal:</strong> Consentimento livre, informado e inequívoco (LGPD Art. 7º, I e GDPR Art. 6º, 1, a).
+          </p>
+
+          <h3>C. Gravação de Sessão e Mapas de Calor (Microsoft Clarity)</h3>
+          <p>
+            Podemos utilizar o <strong>Microsoft Clarity</strong> para capturar dados visuais de rolagem e cliques, permitindo identificar falhas de diagramação e usabilidade nos write-ups técnicos.
+          </p>
+          <p>
+            Em cumprimento às diretrizes de privacidade, o Microsoft Clarity permanece <strong>completamente bloqueado por padrão</strong> e só é carregado se você clicar expressamente em <em>"Aceitar todos"</em>. Além disso, utilizamos a configuração de <strong>Máscara Estrita (Strict Masking)</strong>, garantindo que textos ou caracteres não sejam transmitidos nem gravados.
+          </p>
+          <p>
+            <strong>Base Legal:</strong> Consentimento expresso (LGPD Art. 7º, I e GDPR Art. 6º, 1, a).
+          </p>
+
+          <h2>4. Inventário de Cookies Utilizados</h2>
+          <div class="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Nome do Cookie / Armazenamento</th>
+                  <th>Provedor</th>
+                  <th>Finalidade</th>
+                  <th>Duração</th>
+                  <th>Categoria</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>theme</code></td>
+                  <td>davicruz.com (Local)</td>
+                  <td>Salva preferência de tema visual (Escuro/Claro).</td>
+                  <td>Permanente</td>
+                  <td>Essencial</td>
+                </tr>
+                <tr>
+                  <td><code>davi_privacy_consent</code></td>
+                  <td>davicruz.com (Local)</td>
+                  <td>Armazena a sua escolha sobre cookies analíticos.</td>
+                  <td>12 meses</td>
+                  <td>Essencial</td>
+                </tr>
+                <tr>
+                  <td><code>_ga</code>, <code>_ga_*</code></td>
+                  <td>Google LLC</td>
+                  <td>Distingue visitantes anônimos e calcula métricas de sessão no GA4.</td>
+                  <td>14 meses</td>
+                  <td>Analítico (Opt-in)</td>
+                </tr>
+                <tr>
+                  <td><code>_clck</code>, <code>_clsk</code></td>
+                  <td>Microsoft Corp</td>
+                  <td>Armazena ID único do visitante e consolida a gravação da sessão no Clarity.</td>
+                  <td>1 ano / 24h</td>
+                  <td>Analítico (Opt-in)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>5. Seus Direitos como Titular de Dados</h2>
+          <p>Tanto a LGPD quanto o GDPR conferem a você plenos direitos em relação aos seus dados, incluindo:</p>
+          <ul>
+            <li><strong>Confirmação e Acesso:</strong> Saber se tratamos seus dados e quais categorias foram acessadas.</li>
+            <li><strong>Revogação do Consentimento:</strong> Você pode revogar a autorização de cookies e rastreamento a qualquer segundo através do botão no topo desta página ou no rodapé do blog.</li>
+            <li><strong>Eliminação e Oposição:</strong> Solicitar a eliminação de dados tratados com base no seu consentimento prévio.</li>
+            <li><strong>Global Privacy Control (GPC):</strong> Se o seu navegador enviar o cabeçalho <code>Sec-GPC: 1</code> ou ativar o GPC, nosso sistema desativa automaticamente todos os cookies analíticos sem necessidade de ação manual.</li>
+          </ul>
+
+          <h2>6. Contato com o Encarregado / DPO</h2>
+          <p>
+            Para exercer qualquer um de seus direitos ou esclarecer dúvidas sobre esta política, envie uma mensagem direta para:
+          </p>
+          <p>
+            <strong>E-mail:</strong> <a href="mailto:eu@davicruz.com">eu@davicruz.com</a><br />
+            <strong>Titular:</strong> Davi Cruz (São Paulo, Brasil)
+          </p>
+        </>
+      )}
+
+      {lang === 'en' && (
+        <>
+          <h2>1. Introduction and Data Controller</h2>
+          <p>
+            This Privacy Policy explains in a transparent manner how your data is collected, used, and protected when visiting the technical blog <strong>davicruz.com</strong>, owned and operated by <strong>Davi Cruz</strong> ("Data Controller"), reachable at <code>eu@davicruz.com</code>.
+          </p>
+          <p>
+            This site exists solely for educational publication and research in Security Operations, Threat Intelligence, Penetration Testing, and Data Science. We do not sell or monetize personal data under any circumstances.
+          </p>
+
+          <h2>2. Applicable Legal Frameworks</h2>
+          <p>Our privacy and architecture practices adhere strictly to:</p>
+          <ul>
+            <li><strong>GDPR (EU Regulation 2016/679):</strong> European General Data Protection Regulation.</li>
+            <li><strong>LGPD (Brazilian Law 13,709/2018):</strong> Lei Geral de Proteção de Dados.</li>
+            <li><strong>CCPA / CPRA (California, USA):</strong> Explicit honor and enforcement of the <em>Global Privacy Control (GPC)</em> signal.</li>
+          </ul>
+
+          <h2>3. Data Collected & Purposes</h2>
+          <h3>A. Technical Server Logs</h3>
+          <p>
+            When you browse this site, the host or CDN may record standard web request headers, including masked IP addresses, timestamps, and browser User-Agent strings.
+          </p>
+          <p>
+            <strong>Legal Basis:</strong> Legitimate Interest (GDPR Art. 6(1)(f) and LGPD Art. 7(IX)) exclusively to secure the infrastructure, prevent abuse, and mitigate DDoS attacks.
+          </p>
+
+          <h3>B. Audience Analytics (Google Analytics 4 via Google Tag Manager)</h3>
+          <p>
+            We use <strong>Google Analytics 4</strong> to understand aggregate reader trends, popular write-ups, and device viewports. We run <strong>Google Consent Mode v2</strong>, which ensures:
+          </p>
+          <ul>
+            <li>No persistent analytics cookies are placed before affirmative user consent.</li>
+            <li>IP addresses are automatically truncated and anonymized by Google.</li>
+            <li>Data retention is bounded at 14 months.</li>
+          </ul>
+          <p>
+            <strong>Legal Basis:</strong> Explicit Consent (GDPR Art. 6(1)(a) and LGPD Art. 7(I)).
+          </p>
+
+          <h3>C. Session Recording & Heatmaps (Microsoft Clarity)</h3>
+          <p>
+            We may use <strong>Microsoft Clarity</strong> to analyze scroll depth and user interaction with code walkthroughs.
+          </p>
+          <p>
+            In accordance with EU and Brazilian requirements, Microsoft Clarity is <strong>blocked by default</strong> and will never execute unless you affirmatively click <em>"Accept all"</em>. Furthermore, <strong>Strict Masking</strong> is turned on so that text inputs and sensitive content are never captured.
+          </p>
+          <p>
+            <strong>Legal Basis:</strong> Explicit Consent (GDPR Art. 6(1)(a)).
+          </p>
+
+          <h2>4. Cookie Inventory</h2>
+          <div class="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cookie / Storage Key</th>
+                  <th>Provider</th>
+                  <th>Purpose</th>
+                  <th>Duration</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>theme</code></td>
+                  <td>davicruz.com (Local)</td>
+                  <td>Saves Dark/Light visual color scheme.</td>
+                  <td>Persistent</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td><code>davi_privacy_consent</code></td>
+                  <td>davicruz.com (Local)</td>
+                  <td>Records your analytics consent selection.</td>
+                  <td>12 months</td>
+                  <td>Essential</td>
+                </tr>
+                <tr>
+                  <td><code>_ga</code>, <code>_ga_*</code></td>
+                  <td>Google LLC</td>
+                  <td>Aggregated page performance and anonymous session stats.</td>
+                  <td>14 months</td>
+                  <td>Analytics (Opt-in)</td>
+                </tr>
+                <tr>
+                  <td><code>_clck</code>, <code>_clsk</code></td>
+                  <td>Microsoft Corp</td>
+                  <td>Session replay telemetry and click heatmap aggregation.</td>
+                  <td>1 year / 24h</td>
+                  <td>Analytics (Opt-in)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>5. Your Rights as a Data Subject</h2>
+          <p>You have full statutory rights over your personal data under GDPR, LGPD, and California regulations, including:</p>
+          <ul>
+            <li><strong>Right of Access & Portability:</strong> Obtain confirmation on whether data is processed.</li>
+            <li><strong>Right to Withdraw Consent:</strong> Revoke consent easily at any time using the preferences button above or in the site footer.</li>
+            <li><strong>Global Privacy Control:</strong> If your browser broadcasts <code>Sec-GPC: 1</code>, our site immediately respects it and defaults to all telemetry off.</li>
+          </ul>
+
+          <h2>6. Contact the Controller</h2>
+          <p>
+            For privacy inquiries or to exercise your rights, please reach out directly:
+          </p>
+          <p>
+            <strong>Email:</strong> <a href="mailto:eu@davicruz.com">eu@davicruz.com</a><br />
+            <strong>Controller:</strong> Davi Cruz
+          </p>
+        </>
+      )}
+
+      {lang === 'es' && (
+        <>
+          <h2>1. Introducción y Responsable del Tratamiento</h2>
+          <p>
+            Esta Política de Privacidad describe de manera clara y transparente cómo se recopilan, tratan y protegen sus datos al visitar el blog técnico <strong>davicruz.com</strong>, de titularidad de <strong>Davi Cruz</strong> ("Responsable"), accesible en <code>eu@davicruz.com</code>.
+          </p>
+          <p>
+            Este blog tiene como único fin la divulgación educativa de investigaciones en Operaciones de Seguridad, Inteligencia de Amenazas y Ciencia de Datos. Bajo ninguna circunstancia comercializamos datos personales.
+          </p>
+
+          <h2>2. Legislación Aplicable</h2>
+          <p>Nuestras prácticas de privacidad se rigen por:</p>
+          <ul>
+            <li><strong>GDPR (Reglamento UE 2016/679):</strong> Reglamento General de Protección de Datos.</li>
+            <li><strong>LGPD (Ley 13.709/2018 - Brasil):</strong> Ley General de Protección de Datos Personales.</li>
+            <li><strong>CCPA / CPRA (California, EE.UU.):</strong> Reconocimiento pleno de la señal <em>Global Privacy Control (GPC)</em>.</li>
+          </ul>
+
+          <h2>3. Datos Tratados y Finalidades</h2>
+          <h3>A. Registros Técnicos de Servidor</h3>
+          <p>
+            Al navegar por el blog, el servidor o CDN puede registrar direcciones IP ofuscadas, fecha/hora y cabeceras User-Agent con fines de mitigación de ataques y seguridad perimetral.
+          </p>
+          <p>
+            <strong>Base Legal:</strong> Interés Legítimo (GDPR Art. 6.1.f y LGPD Art. 7.IX).
+          </p>
+
+          <h3>B. Analítica Web (Google Analytics 4 vía Google Tag Manager)</h3>
+          <p>
+            Utilizamos <strong>Google Analytics 4</strong> con <strong>Google Consent Mode v2</strong>. No se almacenan cookies analíticas antes de su consentimiento expreso, y las direcciones IP se anonimizan automáticamente.
+          </p>
+          <p>
+            <strong>Base Legal:</strong> Consentimiento informado (GDPR Art. 6.1.a y LGPD Art. 7.I).
+          </p>
+
+          <h3>C. Grabación de Sesiones y Mapas de Calor (Microsoft Clarity)</h3>
+          <p>
+            Microsoft Clarity permanece <strong>bloqueado por defecto</strong> hasta que el usuario hace clic en <em>"Aceptar todos"</em>. Asimismo, se activa el <strong>Enmascaramiento Estricto (Strict Masking)</strong> para proteger cualquier entrada de datos.
+          </p>
+          <p>
+            <strong>Base Legal:</strong> Consentimiento informado (GDPR Art. 6.1.a).
+          </p>
+
+          <h2>4. Inventario de Cookies</h2>
+          <div class="overflow-x-auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cookie / Almacenamiento</th>
+                  <th>Proveedor</th>
+                  <th>Finalidad</th>
+                  <th>Duración</th>
+                  <th>Categoría</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>theme</code></td>
+                  <td>davicruz.com</td>
+                  <td>Preferencia de tema visual (Claro/Oscuro).</td>
+                  <td>Permanente</td>
+                  <td>Esencial</td>
+                </tr>
+                <tr>
+                  <td><code>davi_privacy_consent</code></td>
+                  <td>davicruz.com</td>
+                  <td>Preferencia de consentimiento de cookies.</td>
+                  <td>12 meses</td>
+                  <td>Esencial</td>
+                </tr>
+                <tr>
+                  <td><code>_ga</code>, <code>_ga_*</code></td>
+                  <td>Google LLC</td>
+                  <td>Estadísticas anónimas de visitas en GA4.</td>
+                  <td>14 meses</td>
+                  <td>Analítica (Opt-in)</td>
+                </tr>
+                <tr>
+                  <td><code>_clck</code>, <code>_clsk</code></td>
+                  <td>Microsoft Corp</td>
+                  <td>Grabación de sesión y mapa de clics en Clarity.</td>
+                  <td>1 año / 24h</td>
+                  <td>Analítica (Opt-in)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>5. Sus Derechos</h2>
+          <p>Puede revocar su consentimiento en cualquier momento utilizando el botón superior o el enlace en el pie de página.</p>
+
+          <h2>6. Contacto</h2>
+          <p>
+            <strong>Correo electrónico:</strong> <a href="mailto:eu@davicruz.com">eu@davicruz.com</a><br />
+            <strong>Responsable:</strong> Davi Cruz
+          </p>
+        </>
+      )}
+    </article>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ statusGranted: t.statusGranted, statusDenied: t.statusDenied, statusUnset: t.statusUnset }}>
+  function updateConsentDisplay() {
+    var statusEl = document.getElementById('privacy-consent-status');
+    if (!statusEl) return;
+
+    var val = null;
+    try {
+      val = localStorage.getItem('davi_privacy_consent');
+    } catch (e) {}
+
+    if (val === 'granted') {
+      statusEl.textContent = statusGranted;
+      statusEl.className = 'font-bold text-emerald-600 dark:text-emerald-400';
+    } else if (val === 'denied') {
+      statusEl.textContent = statusDenied;
+      statusEl.className = 'font-bold text-amber-600 dark:text-amber-400';
+    } else {
+      statusEl.textContent = statusUnset;
+      statusEl.className = 'font-bold text-gray-500 dark:text-gray-400';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', updateConsentDisplay);
+  updateConsentDisplay();
+
+  document.getElementById('privacy-open-banner-btn')?.addEventListener('click', function () {
+    window.dispatchEvent(new CustomEvent('open-cookie-banner'));
+  });
+
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'davi_privacy_consent') {
+      updateConsentDisplay();
+    }
+  });
+</script>
