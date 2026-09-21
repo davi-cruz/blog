@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { languages, supportedLangs, type Lang } from '../i18n/ui';
+import Icon from './Icon.astro';
 
 interface Props {
   currentLang: Lang;
@@ -78,9 +79,7 @@ if (customAlternates && customAlternates.length > 0) {
   >
     <span>{languages[currentLang]?.flag}</span>
     <span class="uppercase tracking-wider font-mono">{currentLang}</span>
-    <svg class="h-3.5 w-3.5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-    </svg>
+    <Icon name="chevron-down" class="h-3.5 w-3.5 text-gray-500" />
   </button>
 
   <div
@@ -106,9 +105,7 @@ if (customAlternates && customAlternates.length > 0) {
           <span>{languages[lang].flag}</span>
           <span>{languages[lang].name}</span>
           {isCurrent && (
-            <svg class="ml-auto h-3.5 w-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-            </svg>
+            <Icon name="check" class="ml-auto h-3.5 w-3.5 text-primary-500" />
           )}
         </a>
       );

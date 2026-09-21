@@ -4,6 +4,8 @@ import TableOfContents from '../components/TableOfContents.astro';
 import SocialShare from '../components/SocialShare.astro';
 import Comments from '../components/Comments.astro';
 import Alert from '../components/Alert.astro';
+import Icon from '../components/Icon.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 import { getEntry, type CollectionEntry } from 'astro:content';
 import { languages, useTranslations, type Lang } from '../i18n/ui';
 import { getReadingTime } from '../utils/readingTime';
@@ -135,9 +137,7 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
       <aside class="mb-10 rounded-2xl border border-blue-200 bg-blue-50/70 p-5 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/30 not-prose" aria-label="Aviso de idioma">
         <div class="flex items-start gap-4">
           <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/60 dark:text-blue-300">
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
-            </svg>
+            <Icon name="translate" size="md" />
           </div>
           <div class="flex-1 min-w-0">
             <h2 class="text-base font-semibold text-blue-900 dark:text-blue-100">
@@ -172,6 +172,7 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
           class="h-full w-full object-cover"
           loading="eager"
           fetchpriority="high"
+          data-zoomable
         />
       </div>
     )}
@@ -179,8 +180,8 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
     <!-- Main Content Area with Sticky TOC -->
     <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-10 items-start">
       <article class="min-w-0 prose max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-img:rounded-xl prose-img:shadow-md prose-headings:font-bold prose-pre:my-6">
-        <!-- Mobile TOC Accordion -->
-        <TableOfContents headings={headings} lang={lang} />
+        <!-- Mobile TOC Accordion (kept in head for < lg views) -->
+        <TableOfContents headings={headings} lang={lang} variant="mobile" />
 
         <!-- Render MDX with global Alert component -->
         <Content components={{ Alert }} />
@@ -225,10 +226,13 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
         <Comments translationId={post.data.translationId} lang={lang} />
       </article>
 
-      <!-- Desktop Sticky TOC Sidebar -->
-      <aside class="hidden lg:block">
-        <TableOfContents headings={headings} lang={lang} />
+      <!-- Desktop Floating Sticky TOC Sidebar -->
+      <aside class="hidden lg:block sticky top-24 self-start">
+        <TableOfContents headings={headings} lang={lang} variant="desktop" />
       </aside>
     </div>
   </div>
+
+  <!-- Image Pop-up Lightbox for Hero & Post Images -->
+  <ImageLightbox />
 </BaseLayout>

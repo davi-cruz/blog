@@ -1,5 +1,6 @@
 ---
 import { useTranslations, type Lang } from '../i18n/ui';
+import Icon from './Icon.astro';
 
 interface Heading {
   depth: number;
@@ -10,29 +11,28 @@ interface Heading {
 interface Props {
   headings: Heading[];
   lang: Lang;
+  variant?: 'mobile' | 'desktop';
 }
 
-const { headings, lang } = Astro.props;
+const { headings, lang, variant } = Astro.props;
 const t = useTranslations(lang);
 
 // Filter h2 and h3
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const showMobile = !variant || variant === 'mobile';
+const showDesktop = !variant || variant === 'desktop';
 ---
 
-{toc.length > 0 && (
-  <nav class="my-6">
-    <!-- Mobile Accordion -->
-    <details class="lg:hidden rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900/50">
+{toc.length > 0 && showMobile && (
+  <nav class="my-6 lg:hidden" aria-label={t('blog.toc')}>
+    <!-- Mobile Accordion in Head -->
+    <details class="rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900/50 group">
       <summary class="cursor-pointer font-semibold text-sm text-gray-800 dark:text-gray-200 select-none flex items-center justify-between">
         <span class="flex items-center gap-2">
-          <svg class="h-4 w-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-          </svg>
+          <Icon name="toc" size="sm" class="text-primary-500" />
           {t('blog.toc')}
         </span>
-        <svg class="h-4 w-4 text-gray-500 transition-transform details-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
+        <Icon name="chevron-down" size="sm" class="text-gray-500 transition-transform duration-200 group-open:rotate-180 details-arrow" />
       </summary>
       <ul class="mt-3 space-y-1.5 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
         {toc.map((heading) => (
@@ -47,21 +47,29 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
         ))}
       </ul>
     </details>
+  </nav>
+)}
 
-    <!-- Desktop Sticky TOC -->
-    <div class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-xl border border-gray-200 bg-gray-50/60 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+{toc.length > 0 && showDesktop && (
+  <nav aria-label={t('blog.toc')}>
+    <!-- Desktop Floating Sticky TOC -->
+    <div
+      id="desktop-toc-container"
+      class="max-h-[calc(100vh-7rem)] overflow-y-auto rounded-xl border border-gray-200 bg-gray-50/60 p-4 shadow-sm backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/40"
+    >
       <p class="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
-        <svg class="h-4 w-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-        </svg>
+        <Icon name="toc" size="sm" class="text-primary-500" />
         {t('blog.toc')}
       </p>
-      <ul class="space-y-1.5 text-xs">
+      <ul class="space-y-1 text-xs border-l border-gray-200 dark:border-gray-800">
         {toc.map((heading) => (
-          <li class={`${heading.depth === 3 ? 'ml-3' : ''}`}>
+          <li>
             <a
               href={`#${heading.slug}`}
-              class="block py-1 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors leading-relaxed"
+              data-toc-link={heading.slug}
+              class={`toc-desktop-link block border-l-2 border-transparent py-1 pr-2 transition-colors leading-relaxed text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 ${
+                heading.depth === 3 ? 'pl-6' : 'pl-3'
+              }`}
             >
               {heading.text}
             </a>
@@ -71,4 +79,91 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     </div>
   </nav>
 )}
+
+{toc.length > 0 && showDesktop && (
+  <script>
+    function setupTocScrollSpy() {
+      const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-desktop-link'));
+      const tocContainer = document.getElementById('desktop-toc-container');
+      if (tocLinks.length === 0) return;
+
+      const linkMap = new Map<string, HTMLAnchorElement>();
+      const headingElements: HTMLElement[] = [];
+
+      tocLinks.forEach((link) => {
+        const slug = link.getAttribute('data-toc-link');
+        if (slug) {
+          linkMap.set(slug, link);
+          const el = document.getElementById(slug);
+          if (el) headingElements.push(el);
+        }
+      });
+
+      if (headingElements.length === 0) return;
+
+      function setActiveLink(activeSlug: string) {
+        tocLinks.forEach((link) => {
+          const isCurrent = link.getAttribute('data-toc-link') === activeSlug;
+          if (isCurrent) {
+            link.classList.add(
+              'border-primary-500',
+              'text-primary-600',
+              'dark:text-primary-400',
+              'font-semibold',
+              'bg-primary-50/50',
+              'dark:bg-primary-950/30'
+            );
+            link.classList.remove('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+
+            // Keep active TOC item visible inside the scrollable TOC container
+            if (tocContainer) {
+              const linkTop = link.offsetTop;
+              const linkHeight = link.offsetHeight;
+              const containerScroll = tocContainer.scrollTop;
+              const containerHeight = tocContainer.clientHeight;
+              if (linkTop < containerScroll + 24 || linkTop + linkHeight > containerScroll + containerHeight - 24) {
+                tocContainer.scrollTo({
+                  top: Math.max(0, linkTop - containerHeight / 2 + linkHeight / 2),
+                  behavior: 'smooth',
+                });
+              }
+            }
+          } else {
+            link.classList.remove(
+              'border-primary-500',
+              'text-primary-600',
+              'dark:text-primary-400',
+              'font-semibold',
+              'bg-primary-50/50',
+              'dark:bg-primary-950/30'
+            );
+            link.classList.add('border-transparent', 'text-gray-600', 'dark:text-gray-400');
+          }
+        });
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visible.length > 0) {
+            setActiveLink(visible[0].target.id);
+          }
+        },
+        {
+          rootMargin: '-88px 0px -65% 0px',
+          threshold: [0, 1],
+        }
+      );
+
+      headingElements.forEach((el) => observer.observe(el));
+    }
+
+    setupTocScrollSpy();
+    document.addEventListener('astro:after-swap', setupTocScrollSpy);
+  </script>
+)}
+
 
