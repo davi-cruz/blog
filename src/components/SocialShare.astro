@@ -19,7 +19,7 @@ const whatsAppUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${enco
 const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`;
 ---
 
-<div class="my-8 rounded-xl border border-gray-200 bg-gray-50/70 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+<div class="my-8 rounded-xl border border-gray-200 bg-gray-50/70 p-4 dark:border-gray-800 dark:bg-gray-900/40 not-prose">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
       {t('share.title')}
