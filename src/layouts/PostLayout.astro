@@ -128,18 +128,6 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
       </div>
     </header>
 
-    {post.data.heroImage && (
-      <div class="mb-10 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm aspect-video md:aspect-[2/1]">
-        <img
-          src={post.data.heroImage}
-          alt={post.data.title}
-          class="h-full w-full object-cover"
-          loading="eager"
-          fetchpriority="high"
-        />
-      </div>
-    )}
-
     {fallbackInfo && (
       <aside class="mb-10 rounded-2xl border border-blue-200 bg-blue-50/70 p-5 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/30 not-prose" aria-label="Aviso de idioma">
         <div class="flex items-start gap-4">
@@ -171,6 +159,18 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
           </div>
         </div>
       </aside>
+    )}
+
+    {post.data.heroImage && (
+      <div class="mb-10 overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm aspect-video md:aspect-[2/1]">
+        <img
+          src={post.data.heroImage}
+          alt={post.data.title}
+          class="h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
     )}
 
     <!-- Main Content Area with Sticky TOC -->
