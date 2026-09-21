@@ -1,77 +1,80 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PostCard from '../../../components/PostCard.astro';
+import TimelinePostItem from '../../../components/TimelinePostItem.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { useTranslations, type Lang } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ slug, data }) => {
-    return (slug.startsWith('en/') || slug.startsWith('es/')) && !data.draft;
-  });
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 
-  const tagMap: Record<string, { rawTag: string; posts: CollectionEntry<'blog'>[] }> = {};
+  const paths = [];
 
-  for (const post of posts) {
-    const [lang] = post.slug.split('/');
-    for (const tag of post.data.tags || []) {
-      const key = `${lang}:${tag.toLowerCase()}`;
-      if (!tagMap[key]) {
-        tagMap[key] = { rawTag: tag, posts: [] };
+  for (const l of ['en', 'es'] as Lang[]) {
+    const langPosts = allPosts.filter((p) => p.slug.startsWith(`${l}/`));
+    const tagMap: Record<string, { rawTag: string; posts: CollectionEntry<'blog'>[] }> = {};
+
+    for (const post of langPosts) {
+      for (const tag of post.data.tags || []) {
+        const lower = tag.toLowerCase();
+        if (!tagMap[lower]) {
+          tagMap[lower] = { rawTag: tag, posts: [] };
+        }
+        tagMap[lower].posts.push(post);
       }
-      tagMap[key].posts.push(post);
+    }
+
+    for (const [tagKey, data] of Object.entries(tagMap)) {
+      paths.push({
+        params: { lang: l, tag: tagKey },
+        props: {
+          lang: l,
+          rawTag: data.rawTag,
+          posts: data.posts.sort(
+            (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+          ),
+        },
+      });
     }
   }
 
-  return Object.entries(tagMap).map(([key, data]) => {
-    const [lang, tagKey] = key.split(':');
-    return {
-      params: { lang, tag: tagKey },
-      props: {
-        rawTag: data.rawTag,
-        posts: data.posts.sort(
-          (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-        ),
-      },
-    };
-  });
+  return paths;
 }
 
 interface Props {
+  lang: Lang;
   rawTag: string;
   posts: CollectionEntry<'blog'>[];
 }
 
-const { rawTag, posts } = Astro.props;
-const { lang } = Astro.params as { lang: Lang };
+const { lang, rawTag, posts } = Astro.props;
 const t = useTranslations(lang);
 ---
 
 <BaseLayout
-  title={`Tag #${rawTag} | Davi Cruz`}
-  description={`Posts and walkthroughs tagged with #${rawTag}.`}
+  title={`#${rawTag} | Davi Cruz`}
+  description={`Posts tagged with #${rawTag}.`}
   lang={lang}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-    <div class="mb-10">
+    <div class="border-b border-neutral-200 pb-8 dark:border-neutral-800">
       <a
         href={`/${lang}/tags/`}
         class="inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-primary-500 transition-colors mb-4"
       >
-        ← {lang === 'es' ? 'Todas las etiquetas' : 'All tags'}
+        ← {t('nav.tags')}
       </a>
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
         {t('blog.postsTaggedWith')} <span class="text-primary-500">#{rawTag}</span>
       </h1>
       <p class="mt-2 text-neutral-600 dark:text-neutral-400">
-        {posts.length} {lang === 'es' ? (posts.length === 1 ? 'artículo encontrado' : 'artículos encontrados') : (posts.length === 1 ? 'post found' : 'posts found')}.
+        {posts.length} {posts.length === 1 ? 'post found' : 'posts found'}.
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">
       {posts.map((post) => (
-        <PostCard post={post} lang={lang} />
+        <TimelinePostItem post={post} lang={lang} />
       ))}
-    </div>
+    </ul>
   </div>
 </BaseLayout>
-

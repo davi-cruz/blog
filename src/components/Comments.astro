@@ -1,0 +1,76 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  translationId: string;
+  lang?: Lang;
+}
+
+const { translationId, lang = 'pt-br' } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="mt-14 pt-8 border-t border-neutral-200 dark:border-neutral-800" id="comments">
+  <div class="mb-6 flex items-center gap-2">
+    <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+    </svg>
+    <h2 class="text-xl font-bold tracking-tight text-neutral-900 dark:text-white">
+      {t('comments.title')}
+    </h2>
+  </div>
+
+  <div id="utterances-container" class="min-h-[220px]" data-translation-id={translationId}></div>
+</section>
+
+<script>
+  function initUtterances() {
+    const container = document.getElementById('utterances-container');
+    if (!container) return;
+
+    // Clear existing iframe if re-initializing
+    container.innerHTML = '';
+
+    const translationId = container.dataset.translationId || '';
+    const isDark = document.documentElement.classList.contains('dark');
+    const theme = isDark ? 'github-dark' : 'github-light';
+
+    const script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.setAttribute('repo', 'davi-cruz/blog-comments');
+    script.setAttribute('issue-term', translationId);
+    script.setAttribute('label', 'comments');
+    script.setAttribute('theme', theme);
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  // Sync theme changes in real-time
+  function setupThemeObserver() {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark');
+      const theme = isDark ? 'github-dark' : 'github-light';
+      const iframe = document.querySelector<HTMLIFrameElement>('.utterances-frame');
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          { type: 'set-theme', theme },
+          'https://utteranc.es'
+        );
+      }
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+
+  initUtterances();
+  setupThemeObserver();
+  document.addEventListener('astro:after-swap', () => {
+    initUtterances();
+  });
+</script>
+

@@ -12,6 +12,7 @@ interface Props {
   translationId?: string;
   image?: string;
   article?: boolean;
+  customAlternates?: { lang: string; url: string }[];
 }
 
 const {
@@ -21,6 +22,7 @@ const {
   translationId,
   image = '/images/twitter-card.png',
   article = false,
+  customAlternates,
 } = Astro.props;
 
 // Read site URL from env or fallback
@@ -39,7 +41,11 @@ const hreflangLinks: Record<Lang | 'x-default', string> = {
   'x-default': `${siteUrl}/`,
 };
 
-if (translationId) {
+if (customAlternates && customAlternates.length > 0) {
+  for (const alt of customAlternates) {
+    hreflangLinks[alt.lang as Lang | 'x-default'] = alt.url;
+  }
+} else if (translationId) {
   const allPosts = await getCollection('blog');
   for (const l of supportedLangs) {
     const match = allPosts.find((p) => {
@@ -57,6 +63,16 @@ if (translationId) {
     }
   }
   hreflangLinks['x-default'] = hreflangLinks['pt-br'];
+} else if (currentPath === '/sobre' || currentPath === '/en/about' || currentPath === '/es/acerca-de') {
+  hreflangLinks['pt-br'] = `${siteUrl}/sobre`;
+  hreflangLinks['en'] = `${siteUrl}/en/about`;
+  hreflangLinks['es'] = `${siteUrl}/es/acerca-de`;
+  hreflangLinks['x-default'] = `${siteUrl}/sobre`;
+} else if (currentPath === '/projetos' || currentPath === '/en/projects' || currentPath === '/es/proyectos') {
+  hreflangLinks['pt-br'] = `${siteUrl}/projetos`;
+  hreflangLinks['en'] = `${siteUrl}/en/projects`;
+  hreflangLinks['es'] = `${siteUrl}/es/proyectos`;
+  hreflangLinks['x-default'] = `${siteUrl}/projetos`;
 } else if (currentPath.includes('/tags/')) {
   // Localized tag page hreflangs
   const tagPart = currentPath.split('/tags/')[1] || '';
@@ -90,47 +106,53 @@ const ogLocale = ogLocaleMap[lang] || 'pt_BR';
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Hreflang Alternates for Multilingual SEO -->
-    <link rel="alternate" hreflang="pt-br" href={hreflangLinks['pt-br']} />
-    <link rel="alternate" hreflang="en" href={hreflangLinks['en']} />
-    <link rel="alternate" hreflang="es" href={hreflangLinks['es']} />
-    <link rel="alternate" hreflang="x-default" href={hreflangLinks['x-default']} />
-
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={article ? 'article' : 'website'} />
     <meta property="og:url" content={canonicalUrl} />
-    <meta property="og:site_name" content="Davi Cruz" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:locale" content={ogLocale} />
+    <meta property="og:site_name" content="Davi Cruz" />
 
-    <!-- Twitter Card -->
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:site" content="@zerahzurc" />
     <meta name="twitter:creator" content="@zerahzurc" />
 
-    <!-- Prevent FOUC Theme Script -->
+    <!-- Hreflang Tags for Multi-language SEO -->
+    <link rel="alternate" hreflang="pt-br" href={hreflangLinks['pt-br']} />
+    <link rel="alternate" hreflang="en" href={hreflangLinks['en']} />
+    <link rel="alternate" hreflang="es" href={hreflangLinks['es']} />
+    <link rel="alternate" hreflang="x-default" href={hreflangLinks['x-default']} />
+
+    <!-- Dark Mode Initializer to Prevent Flash of Unstyled Content (FOUC) -->
     <script is:inline>
-      const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+
+      if (theme === 'dark') {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
     </script>
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-primary-500 selection:text-white">
-    <Header currentLang={lang} translationId={translationId} />
-    <main class="flex-1">
+  <body class="min-h-screen bg-white text-neutral-900 selection:bg-pink-500 selection:text-white dark:bg-neutral-950 dark:text-neutral-100 flex flex-col antialiased">
+    <Header currentLang={lang} translationId={translationId} customAlternates={customAlternates} />
+    <main class="flex-grow">
       <slot />
     </main>
-    <Footer currentLang={lang} />
+    <Footer lang={lang} />
   </body>
 </html>
-

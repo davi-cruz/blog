@@ -4,7 +4,7 @@ const blog = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    description: z.string().default(''),
+    description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
@@ -14,5 +14,18 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const authors = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    avatar: z.string().optional(),
+    occupation: z.string().optional(),
+    company: z.string().optional(),
+    email: z.string().optional(),
+    twitter: z.string().optional(),
+    linkedin: z.string().optional(),
+    github: z.string().optional(),
+  }),
+});
 
+export const collections = { blog, authors };

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
+import FeaturedPostCard from '../../components/FeaturedPostCard.astro';
+import TimelinePostItem from '../../components/TimelinePostItem.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, type Lang } from '../../i18n/ui';
 
@@ -23,6 +24,9 @@ const sortedPosts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
+const featuredPost = sortedPosts[0];
+const archivePosts = sortedPosts.slice(1);
+
 // Collect popular tags
 const tagCountMap: Record<string, number> = {};
 for (const post of sortedPosts) {
@@ -32,7 +36,7 @@ for (const post of sortedPosts) {
 }
 const popularTags = Object.entries(tagCountMap)
   .sort((a, b) => b[1] - a[1])
-  .slice(0, 10);
+  .slice(0, 8);
 
 const titles: Record<Lang, string> = {
   'pt-br': 'Davi Cruz | Cibersegurança & Infraestrutura',
@@ -51,6 +55,18 @@ const heroIntros: Record<Lang, string> = {
   en: "Welcome to my technical blog. Here I share detailed Hack The Box walkthroughs, security research, cloud computing guides (Azure Arc & Sentinel), and automation scripts.",
   es: "Bienvenido a mi blog técnico. Aquí comparto write-ups detallados de Hack The Box, investigaciones de seguridad, computación en la nube (Azure Arc y Sentinel) y scripts de automatización.",
 };
+
+const greetings: Record<Lang, string> = {
+  'pt-br': 'Olá, sou',
+  en: "Hi, I'm",
+  es: 'Hola, soy',
+};
+
+const tagSectionLabel: Record<Lang, string> = {
+  'pt-br': 'Tópicos:',
+  en: 'Topics:',
+  es: 'Temas:',
+};
 ---
 
 <BaseLayout
@@ -59,24 +75,22 @@ const heroIntros: Record<Lang, string> = {
   lang={lang}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Hero Section -->
+    <!-- Hero Greeting Section -->
     <section class="mb-14 rounded-3xl bg-gradient-to-br from-neutral-50 via-pink-50/30 to-neutral-100/50 p-8 sm:p-12 border border-neutral-200/80 dark:from-neutral-900/60 dark:via-pink-950/20 dark:to-neutral-900/40 dark:border-neutral-800">
       <div class="max-w-2xl">
         <span class="inline-flex items-center gap-1.5 rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-950/60 dark:text-pink-300">
           🔒 Cybersecurity & SysAdmin
         </span>
         <h1 class="mt-4 text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-tight">
-          {lang === 'es' ? 'Hola, soy' : 'Hi, I am'} <span class="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Davi Cruz</span>
+          {greetings[lang]} <span class="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Davi Cruz</span>
         </h1>
         <p class="mt-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
-          {heroIntros[lang] || heroIntros.en}
+          {heroIntros[lang]}
         </p>
 
         {popularTags.length > 0 && (
           <div class="mt-6 flex flex-wrap items-center gap-2">
-            <span class="text-xs font-semibold text-neutral-500 dark:text-neutral-400">
-              {lang === 'es' ? 'Temas populares:' : 'Popular topics:'}
-            </span>
+            <span class="text-xs font-semibold text-neutral-500 dark:text-neutral-400">{tagSectionLabel[lang]}</span>
             {popularTags.map(([tag, count]) => (
               <a
                 href={`/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`}
@@ -90,25 +104,32 @@ const heroIntros: Record<Lang, string> = {
       </div>
     </section>
 
-    <!-- Post Archive -->
+    <!-- Highlighted Latest Post (Option C) -->
+    {featuredPost && (
+      <section class="mb-14">
+        <FeaturedPostCard post={featuredPost} lang={lang} />
+      </section>
+    )}
+
+    <!-- Classic Timeline Archive -->
     <section>
-      <div class="mb-8 flex items-center justify-between">
+      <div class="border-b border-neutral-200 pb-4 dark:border-neutral-800 flex items-center justify-between">
         <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-          {t('blog.latestPosts')}
+          {t('blog.allPosts')}
         </h2>
-        <span class="text-sm text-neutral-500 dark:text-neutral-400">
+        <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
           {sortedPosts.length} {lang === 'es' ? 'artículos' : 'posts'}
         </span>
       </div>
 
-      {sortedPosts.length === 0 ? (
-        <p class="text-neutral-500 dark:text-neutral-400">{t('blog.noPosts')}</p>
+      {archivePosts.length === 0 && !featuredPost ? (
+        <p class="py-10 text-neutral-500 dark:text-neutral-400">{t('blog.noPosts')}</p>
       ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {sortedPosts.map((post) => (
-            <PostCard post={post} lang={lang} />
+        <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">
+          {archivePosts.map((post) => (
+            <TimelinePostItem post={post} lang={lang} />
           ))}
-        </div>
+        </ul>
       )}
     </section>
   </div>

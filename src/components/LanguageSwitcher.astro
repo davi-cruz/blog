@@ -5,18 +5,28 @@ import { languages, supportedLangs, type Lang } from '../i18n/ui';
 interface Props {
   currentLang: Lang;
   translationId?: string;
+  customAlternates?: { lang: string; url: string }[];
 }
 
-const { currentLang, translationId } = Astro.props;
+const { currentLang, translationId, customAlternates } = Astro.props;
 
-// Prepare URLs for all supported languages
+// Prepare default URLs for all supported languages
 const targetUrls: Record<Lang, string> = {
   'pt-br': '/',
   en: '/en/',
   es: '/es/',
 };
 
-if (translationId) {
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+if (customAlternates && customAlternates.length > 0) {
+  for (const alt of customAlternates) {
+    if (alt.lang in targetUrls) {
+      const pathOnly = alt.url.replace(/^https?:\/\/[^\/]+/, '') || '/';
+      targetUrls[alt.lang as Lang] = pathOnly;
+    }
+  }
+} else if (translationId) {
   const allPosts = await getCollection('blog');
   for (const lang of supportedLangs) {
     const postMatch = allPosts.find((p) => {
@@ -33,6 +43,19 @@ if (translationId) {
       }
     }
   }
+} else if (pathname === '/sobre' || pathname === '/en/about' || pathname === '/es/acerca-de') {
+  targetUrls['pt-br'] = '/sobre';
+  targetUrls.en = '/en/about';
+  targetUrls.es = '/es/acerca-de';
+} else if (pathname === '/projetos' || pathname === '/en/projects' || pathname === '/es/proyectos') {
+  targetUrls['pt-br'] = '/projetos';
+  targetUrls.en = '/en/projects';
+  targetUrls.es = '/es/proyectos';
+} else if (pathname.includes('/tags/')) {
+  const tagPart = pathname.split('/tags/')[1] || '';
+  targetUrls['pt-br'] = `/tags/${tagPart}`;
+  targetUrls.en = `/en/tags/${tagPart}`;
+  targetUrls.es = `/es/tags/${tagPart}`;
 }
 ---
 
@@ -60,22 +83,24 @@ if (translationId) {
     tabindex="-1"
   >
     {supportedLangs.map((lang) => {
-      const isActive = lang === currentLang;
-      const url = targetUrls[lang];
+      const isCurrent = lang === currentLang;
       return (
         <a
-          href={url}
-          class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
-            isActive
+          href={targetUrls[lang]}
+          class:list={[
+            'flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors',
+            isCurrent
               ? 'bg-primary-50 text-primary-600 dark:bg-primary-950/60 dark:text-primary-400 font-semibold'
-              : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800'
-          }`}
+              : 'text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white',
+          ]}
           role="menuitem"
         >
           <span>{languages[lang].flag}</span>
           <span>{languages[lang].name}</span>
-          {isActive && (
-            <span class="ml-auto text-primary-500">✓</span>
+          {isCurrent && (
+            <svg class="ml-auto h-3.5 w-3.5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+            </svg>
           )}
         </a>
       );
@@ -84,34 +109,27 @@ if (translationId) {
 </div>
 
 <script>
-  function setupLangMenu() {
-    const btn = document.getElementById('lang-menu-button');
+  function setupLangDropdown() {
+    const button = document.getElementById('lang-menu-button');
     const dropdown = document.getElementById('lang-menu-dropdown');
-    if (!btn || !dropdown) return;
 
-    btn.addEventListener('click', (e) => {
+    if (!button || !dropdown) return;
+
+    button.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isHidden = dropdown.classList.contains('hidden');
-      dropdown.classList.toggle('hidden', !isHidden);
-      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!isExpanded));
+      dropdown.classList.toggle('hidden');
     });
 
     document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target as Node) && e.target !== btn) {
+      if (!dropdown.contains(e.target as Node) && !button.contains(e.target as Node)) {
         dropdown.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        dropdown.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
+        button.setAttribute('aria-expanded', 'false');
       }
     });
   }
 
-  setupLangMenu();
-  document.addEventListener('astro:after-swap', setupLangMenu);
+  setupLangDropdown();
+  document.addEventListener('astro:after-swap', setupLangDropdown);
 </script>
-

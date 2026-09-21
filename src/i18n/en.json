@@ -2,24 +2,41 @@
   "nav": {
     "home": "Home",
     "blog": "Blog",
-    "tags": "Tags",
-    "projects": "Projects"
+    "projects": "Projects",
+    "about": "About",
+    "tags": "Tags"
   },
   "blog": {
     "allPosts": "All Posts",
     "latestPosts": "Latest Posts",
+    "featured": "Featured Article",
+    "readMore": "Read more →",
     "readTime": "min read",
     "publishedAt": "Published on",
     "updatedAt": "Updated on",
     "tags": "Tags",
     "backToBlog": "← Back to Blog",
     "noPosts": "No posts found.",
-    "toc": "On This Page",
+    "toc": "On this page",
     "viewAll": "View all",
-    "postsTaggedWith": "Posts tagged with"
+    "postsTaggedWith": "Posts tagged with",
+    "prevPost": "← Previous post",
+    "nextPost": "Next post →"
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Open source security tools and projects I have developed or contributed to.",
+    "learnMore": "View on GitHub →"
+  },
+  "about": {
+    "title": "About",
+    "description": "Learn more about my professional background, certifications, and focus areas."
+  },
+  "comments": {
+    "title": "Comments"
   },
   "share": {
-    "title": "Share this post",
+    "title": "Share post",
     "native": "Share",
     "linkedin": "LinkedIn",
     "whatsapp": "WhatsApp",
@@ -43,4 +60,3 @@
     "es": "Español"
   }
 }
-

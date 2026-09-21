@@ -1,0 +1,93 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { getReadingTime } from '../utils/readingTime';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const slugPart = post.slug.split('/').slice(1).join('/');
+const postUrl = lang === 'pt-br' ? `/${slugPart}` : `/${lang}/${slugPart}`;
+
+const readingMinutes = getReadingTime(post.body);
+
+const formattedDate = new Intl.DateTimeFormat(
+  lang === 'pt-br' ? 'pt-BR' : lang === 'es' ? 'es-ES' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+).format(post.data.pubDate);
+---
+
+<li class="py-10">
+  <article class="space-y-3 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+    <dl>
+      <dt class="sr-only">{t('blog.publishedAt')}</dt>
+      <dd class="text-sm font-medium leading-6 text-neutral-500 dark:text-neutral-400">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formattedDate}
+        </time>
+        <span class="block text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">
+          {readingMinutes} {t('blog.readTime')}
+        </span>
+      </dd>
+    </dl>
+
+    <div class="space-y-4 xl:col-span-3">
+      <div class="space-y-3">
+        <!-- Tags -->
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5">
+            {post.data.tags.map((tag) => {
+              const tagUrl = lang === 'pt-br' ? `/tags/${encodeURIComponent(tag.toLowerCase())}` : `/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`;
+              return (
+                <a
+                  href={tagUrl}
+                  class="rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary-600 transition hover:bg-primary-50 dark:bg-neutral-850 dark:text-primary-400 dark:hover:bg-primary-950/60"
+                >
+                  {tag}
+                </a>
+              );
+            })}
+          </div>
+        )}
+
+        <!-- Title -->
+        <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+          <a
+            href={postUrl}
+            class="text-neutral-900 hover:text-primary-600 dark:text-neutral-100 dark:hover:text-primary-400 transition-colors"
+          >
+            {post.data.title}
+          </a>
+        </h2>
+
+        <!-- Description -->
+        {post.data.description && (
+          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed text-base line-clamp-3">
+            {post.data.description}
+          </p>
+        )}
+      </div>
+
+      <!-- Read more link -->
+      <div class="text-sm font-semibold">
+        <a
+          href={postUrl}
+          class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+          aria-label={`Read "${post.data.title}"`}
+        >
+          <span>{t('blog.readMore')}</span>
+        </a>
+      </div>
+    </div>
+  </article>
+</li>
+

@@ -1,0 +1,135 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  author: CollectionEntry<'authors'>;
+  lang: Lang;
+}
+
+const { author, lang } = Astro.props;
+const { Content } = await author.render();
+const t = useTranslations(lang);
+
+// Alternates for the About page
+const alternates = [
+  { lang: 'pt-br', url: 'https://davicruz.com/sobre' },
+  { lang: 'en', url: 'https://davicruz.com/en/about' },
+  { lang: 'es', url: 'https://davicruz.com/es/acerca-de' },
+  { lang: 'x-default', url: 'https://davicruz.com/sobre' },
+];
+---
+
+<BaseLayout
+  title={`${author.data.name} - ${t('about.title')} | Davi Cruz`}
+  description={t('about.description')}
+  lang={lang}
+  customAlternates={alternates}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="divide-y divide-neutral-200 dark:divide-neutral-800">
+      <header class="pb-8 space-y-2 md:space-y-4">
+        <h1 class="text-3xl font-extrabold tracking-tight text-neutral-900 dark:text-white sm:text-4xl md:text-5xl">
+          {t('about.title')}
+        </h1>
+        <p class="text-base text-neutral-500 dark:text-neutral-400">
+          {t('about.description')}
+        </p>
+      </header>
+
+      <div class="items-start space-y-10 pt-10 xl:grid xl:grid-cols-3 xl:gap-x-10 xl:space-y-0">
+        <!-- Author Profile Sidebar -->
+        <aside class="flex flex-col items-center text-center p-6 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800">
+          <div class="relative mb-5">
+            <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-pink-500 to-rose-400 opacity-60 blur-sm"></div>
+            <img
+              src={author.data.avatar || '/images/avatar.png'}
+              alt={author.data.name}
+              class="relative h-44 w-44 rounded-full object-cover shadow-md ring-4 ring-white dark:ring-neutral-900"
+            />
+          </div>
+
+          <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
+            {author.data.name}
+          </h2>
+
+          {author.data.occupation && (
+            <p class="mt-1 text-sm font-medium text-neutral-600 dark:text-neutral-300">
+              {author.data.occupation}
+            </p>
+          )}
+
+          {author.data.company && (
+            <p class="text-xs text-primary-600 dark:text-primary-400 font-semibold mt-0.5">
+              @ {author.data.company}
+            </p>
+          )}
+
+          <!-- Social Links -->
+          <div class="mt-6 flex items-center gap-3">
+            {author.data.github && (
+              <a
+                href={author.data.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-lg p-2 text-neutral-500 hover:bg-neutral-200 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white transition"
+                aria-label="GitHub"
+              >
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+                </svg>
+              </a>
+            )}
+
+            {author.data.linkedin && (
+              <a
+                href={author.data.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-lg p-2 text-neutral-500 hover:bg-neutral-200 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white transition"
+                aria-label="LinkedIn"
+              >
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+              </a>
+            )}
+
+            {author.data.twitter && (
+              <a
+                href={author.data.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-lg p-2 text-neutral-500 hover:bg-neutral-200 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white transition"
+                aria-label="Twitter / X"
+              >
+                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                </svg>
+              </a>
+            )}
+
+            {author.data.email && (
+              <a
+                href={`mailto:${author.data.email}`}
+                class="rounded-lg p-2 text-neutral-500 hover:bg-neutral-200 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white transition"
+                aria-label="Email"
+              >
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </a>
+            )}
+          </div>
+        </aside>
+
+        <!-- Biography & Details Column -->
+        <main class="min-w-0 prose prose-neutral max-w-none dark:prose-invert xl:col-span-2">
+          <Content />
+        </main>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+

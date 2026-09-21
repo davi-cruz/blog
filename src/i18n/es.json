@@ -2,21 +2,38 @@
   "nav": {
     "home": "Inicio",
     "blog": "Blog",
-    "tags": "Etiquetas",
-    "projects": "Proyectos"
+    "projects": "Proyectos",
+    "about": "Acerca de",
+    "tags": "Etiquetas"
   },
   "blog": {
     "allPosts": "Todos los Artículos",
     "latestPosts": "Últimos Artículos",
+    "featured": "Artículo Destacado",
+    "readMore": "Leer más →",
     "readTime": "min de lectura",
     "publishedAt": "Publicado el",
     "updatedAt": "Actualizado el",
     "tags": "Etiquetas",
     "backToBlog": "← Volver al Blog",
     "noPosts": "No se encontraron artículos.",
-    "toc": "En Esta Página",
+    "toc": "En esta página",
     "viewAll": "Ver todos",
-    "postsTaggedWith": "Artículos con la etiqueta"
+    "postsTaggedWith": "Artículos con la etiqueta",
+    "prevPost": "← Artículo anterior",
+    "nextPost": "Siguiente artículo →"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "description": "Proyectos de código abierto y herramientas de ciberseguridad que he desarrollado o mantengo.",
+    "learnMore": "Ver en GitHub →"
+  },
+  "about": {
+    "title": "Acerca de",
+    "description": "Conoce más sobre mi trayectoria profesional, certificaciones y áreas de especialidad."
+  },
+  "comments": {
+    "title": "Comentarios"
   },
   "share": {
     "title": "Compartir artículo",
@@ -32,7 +49,7 @@
     "rss": "Feed RSS"
   },
   "theme": {
-    "toggle": "Cambiar tema",
+    "toggle": "Alternar tema",
     "dark": "Oscuro",
     "light": "Claro"
   },
@@ -43,4 +60,3 @@
     "es": "Español"
   }
 }
-

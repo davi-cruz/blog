@@ -7,22 +7,29 @@ export async function getStaticPaths() {
     return slug.startsWith('pt-br/') && !data.draft;
   });
 
-  return posts.map((post) => {
+  const sortedPosts = posts.sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  );
+
+  return sortedPosts.map((post, index) => {
     const slug = post.slug.split('/').slice(1).join('/');
+    const prevPost = index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null;
+    const nextPost = index > 0 ? sortedPosts[index - 1] : null;
     return {
       params: { slug },
-      props: { post },
+      props: { post, prevPost, nextPost },
     };
   });
 }
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  prevPost: CollectionEntry<'blog'> | null;
+  nextPost: CollectionEntry<'blog'> | null;
 }
 
-const { post } = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { headings } = await post.render();
 ---
 
-<PostLayout post={post} lang="pt-br" headings={headings} />
-
+<PostLayout post={post} lang="pt-br" headings={headings} prevPost={prevPost} nextPost={nextPost} />

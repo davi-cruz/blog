@@ -1,0 +1,12 @@
+---
+import { getEntry } from 'astro:content';
+import AuthorLayout from '../../layouts/AuthorLayout.astro';
+
+const author = await getEntry('authors', 'en/default');
+if (!author) {
+  throw new Error('Author bio for en not found');
+}
+---
+
+<AuthorLayout author={author} lang="en" />
+

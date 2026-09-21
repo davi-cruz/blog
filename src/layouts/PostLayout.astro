@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import SocialShare from '../components/SocialShare.astro';
+import Comments from '../components/Comments.astro';
 import Alert from '../components/Alert.astro';
 import type { CollectionEntry } from 'astro:content';
 import { useTranslations, type Lang } from '../i18n/ui';
@@ -11,9 +12,11 @@ interface Props {
   post: CollectionEntry<'blog'>;
   lang: Lang;
   headings: { depth: number; slug: string; text: string }[];
+  prevPost?: CollectionEntry<'blog'> | null;
+  nextPost?: CollectionEntry<'blog'> | null;
 }
 
-const { post, lang, headings } = Astro.props;
+const { post, lang, headings, prevPost, nextPost } = Astro.props;
 const { Content } = await post.render();
 const t = useTranslations(lang);
 
@@ -33,6 +36,11 @@ const formattedDate = new Intl.DateTimeFormat(
 ).format(post.data.pubDate);
 
 const backUrl = lang === 'pt-br' ? '/' : `/${lang}/`;
+
+function getPostUrl(p: CollectionEntry<'blog'>) {
+  const slugPart = p.slug.split('/').slice(1).join('/');
+  return lang === 'pt-br' ? `/${slugPart}` : `/${lang}/${slugPart}`;
+}
 ---
 
 <BaseLayout
@@ -75,17 +83,21 @@ const backUrl = lang === 'pt-br' ? '/' : `/${lang}/`;
       <!-- Tags & Author Row -->
       <div class="mt-6 flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 pb-6 dark:border-neutral-800">
         <!-- Author Profile -->
-        <div class="flex items-center gap-3">
-          <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-pink-500 to-rose-400 p-[2px]">
-            <div class="flex h-full w-full items-center justify-center rounded-full bg-white dark:bg-neutral-950 font-bold text-xs text-primary-500">
-              DC
-            </div>
-          </div>
+        <a href={lang === 'pt-br' ? '/sobre' : lang === 'es' ? '/es/acerca-de' : '/en/about'} class="group flex items-center gap-3">
+          <img
+            src="/images/avatar.png"
+            alt="Davi Cruz"
+            class="h-11 w-11 rounded-full object-cover ring-2 ring-primary-500/30 group-hover:ring-primary-500 transition"
+          />
           <div>
-            <p class="text-sm font-semibold text-neutral-900 dark:text-white">Davi Cruz</p>
-            <p class="text-xs text-neutral-500 dark:text-neutral-400">Security Researcher & SysAdmin</p>
+            <p class="text-sm font-semibold text-neutral-900 group-hover:text-primary-600 dark:text-white dark:group-hover:text-primary-400 transition-colors">
+              Davi Cruz
+            </p>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">
+              Security Technical Specialist @ Microsoft
+            </p>
           </div>
-        </div>
+        </a>
 
         <!-- Tags -->
         {post.data.tags && post.data.tags.length > 0 && (
@@ -117,6 +129,42 @@ const backUrl = lang === 'pt-br' ? '/' : `/${lang}/`;
 
         <!-- Social Share Bar -->
         <SocialShare title={post.data.title} url={articleUrl} lang={lang} />
+
+        <!-- Prev / Next Post Navigation -->
+        {(prevPost || nextPost) && (
+          <nav class="my-10 grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-b border-neutral-200 py-6 dark:border-neutral-800 not-prose">
+            {prevPost ? (
+              <a
+                href={getPostUrl(prevPost)}
+                class="group flex flex-col rounded-xl border border-neutral-200 p-4 transition hover:border-primary-500 hover:shadow-sm dark:border-neutral-800 dark:hover:border-primary-500"
+              >
+                <span class="text-xs font-medium text-neutral-400 dark:text-neutral-500">
+                  {t('blog.prevPost')}
+                </span>
+                <span class="mt-1 font-semibold text-neutral-800 group-hover:text-primary-600 dark:text-neutral-200 dark:group-hover:text-primary-400 line-clamp-1 transition-colors">
+                  {prevPost.data.title}
+                </span>
+              </a>
+            ) : <div />}
+
+            {nextPost && (
+              <a
+                href={getPostUrl(nextPost)}
+                class="group flex flex-col text-right rounded-xl border border-neutral-200 p-4 transition hover:border-primary-500 hover:shadow-sm dark:border-neutral-800 dark:hover:border-primary-500"
+              >
+                <span class="text-xs font-medium text-neutral-400 dark:text-neutral-500">
+                  {t('blog.nextPost')}
+                </span>
+                <span class="mt-1 font-semibold text-neutral-800 group-hover:text-primary-600 dark:text-neutral-200 dark:group-hover:text-primary-400 line-clamp-1 transition-colors">
+                  {nextPost.data.title}
+                </span>
+              </a>
+            )}
+          </nav>
+        )}
+
+        <!-- Utteranc.es Comments Section -->
+        <Comments translationId={post.data.translationId} lang={lang} />
       </article>
 
       <!-- Desktop Sticky TOC Sidebar -->
@@ -126,4 +174,3 @@ const backUrl = lang === 'pt-br' ? '/' : `/${lang}/`;
     </div>
   </div>
 </BaseLayout>
-
