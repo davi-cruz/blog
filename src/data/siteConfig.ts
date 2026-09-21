@@ -18,7 +18,8 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   siteUrl: 'https://davicruz.com',
   author: 'Davi Cruz',
-  gtmId: process.env.PUBLIC_GTM_ID || 'GTM-XXXXXXX',
+  //gtmId: process.env.PUBLIC_GTM_ID || 'GTM-MF4PLJ5',
+  gtmId: 'GTM-MF4PLJ5',
   header: {
     'pt-br': {
       greeting: 'Olá, sou',
