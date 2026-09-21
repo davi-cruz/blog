@@ -2,92 +2,7 @@
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
-export type IconName =
-  | 'sun'
-  | 'moon'
-  | 'menu'
-  | 'close'
-  | 'chevron-down'
-  | 'chevron-left'
-  | 'chevron-right'
-  | 'check'
-  | 'toc'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'check-circle'
-  | 'question-circle'
-  | 'star'
-  | 'share'
-  | 'copy'
-  | 'comments'
-  | 'shield-check'
-  | 'github'
-  | 'linkedin'
-  | 'twitter'
-  | 'whatsapp'
-  | 'telegram'
-  | 'rss'
-  | 'translate'
-  | 'mail'
-  | 'external-link'
-  | 'zoom-in';
-
-export type IconSize = 'xs' | 'sm' | 'md' | 'lg';
-
-interface Props {
-  name: IconName;
-  size?: IconSize;
-  class?: string;
-  id?: string;
-  title?: string;
-  'aria-label'?: string;
-  'aria-hidden'?: boolean | 'true' | 'false';
-}
-
-const {
-  name,
-  size = 'md',
-  class: className = '',
-  id,
-  title,
-  'aria-label': ariaLabel,
-  'aria-hidden': ariaHidden = !ariaLabel && !title ? 'true' : undefined,
-} = Astro.props;
-
-/**
- * Mapping from canonical blog IconName to `@mui/icons-material/*` component module:
- * - sun:            import LightModeIcon from '@mui/icons-material/LightMode';
- * - moon:           import DarkModeIcon from '@mui/icons-material/DarkMode';
- * - menu:           import MenuIcon from '@mui/icons-material/Menu';
- * - close:          import CloseIcon from '@mui/icons-material/Close';
- * - chevron-down:   import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
- * - chevron-left:   import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
- * - chevron-right:  import ChevronRightIcon from '@mui/icons-material/ChevronRight';
- * - check:          import CheckIcon from '@mui/icons-material/Check';
- * - toc:            import TocIcon from '@mui/icons-material/Toc';
- * - info:           import InfoIcon from '@mui/icons-material/Info';
- * - warning:        import WarningIcon from '@mui/icons-material/Warning';
- * - error:          import ErrorIcon from '@mui/icons-material/Error';
- * - check-circle:   import CheckCircleIcon from '@mui/icons-material/CheckCircle';
- * - question-circle:import HelpIcon from '@mui/icons-material/Help';
- * - star:           import StarIcon from '@mui/icons-material/Star';
- * - share:          import ShareIcon from '@mui/icons-material/Share';
- * - copy:           import ContentCopyIcon from '@mui/icons-material/ContentCopy';
- * - comments:       import CommentIcon from '@mui/icons-material/Comment';
- * - shield-check:   import GppGoodIcon from '@mui/icons-material/GppGood';
- * - github:         import GitHubIcon from '@mui/icons-material/GitHub';
- * - linkedin:       import LinkedInIcon from '@mui/icons-material/LinkedIn';
- * - twitter:        import XIcon from '@mui/icons-material/X';
- * - whatsapp:       import WhatsAppIcon from '@mui/icons-material/WhatsApp';
- * - telegram:       import TelegramIcon from '@mui/icons-material/Telegram';
- * - rss:            import RssFeedIcon from '@mui/icons-material/RssFeed';
- * - translate:      import TranslateIcon from '@mui/icons-material/Translate';
- * - mail:           import EmailIcon from '@mui/icons-material/Email';
- * - external-link:  import OpenInNewIcon from '@mui/icons-material/OpenInNew';
- * - zoom-in:        import ZoomInIcon from '@mui/icons-material/ZoomIn';
- */
-export const MUI_ICON_MAP: Record<IconName, string> = {
+const MUI_ICON_MAP = {
   sun: 'LightMode',
   moon: 'DarkMode',
   menu: 'Menu',
@@ -117,7 +32,30 @@ export const MUI_ICON_MAP: Record<IconName, string> = {
   mail: 'Email',
   'external-link': 'OpenInNew',
   'zoom-in': 'ZoomIn',
-};
+} as const;
+
+type IconName = keyof typeof MUI_ICON_MAP;
+type IconSize = 'xs' | 'sm' | 'md' | 'lg';
+
+interface Props {
+  name: IconName;
+  size?: IconSize;
+  class?: string;
+  id?: string;
+  title?: string;
+  'aria-label'?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
+}
+
+const {
+  name,
+  size = 'md',
+  class: className = '',
+  id,
+  title,
+  'aria-label': ariaLabel,
+  'aria-hidden': ariaHidden = !ariaLabel && !title ? 'true' : undefined,
+} = Astro.props;
 
 interface SvgNode {
   paths: string[];

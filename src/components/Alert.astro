@@ -1,5 +1,5 @@
 ---
-import Icon, { type IconName } from './Icon.astro';
+import Icon from './Icon.astro';
 
 interface Props {
   kind?: 'info' | 'warning' | 'error' | 'success' | 'tip' | 'notice';
@@ -17,14 +17,14 @@ const styles = {
   notice: 'bg-gray-50 border-gray-500 text-gray-900 dark:bg-gray-900/60 dark:border-gray-500 dark:text-gray-200',
 };
 
-const iconMap: Record<NonNullable<Props['kind']>, IconName> = {
+const iconMap = {
   info: 'info',
   warning: 'warning',
   error: 'error',
   success: 'check-circle',
   tip: 'check-circle',
   notice: 'question-circle',
-};
+} as const;
 
 const currentStyle = styles[kind] || styles.info;
 const iconName = iconMap[kind] || 'info';
