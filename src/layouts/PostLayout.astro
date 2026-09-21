@@ -4,9 +4,10 @@ import TableOfContents from '../components/TableOfContents.astro';
 import SocialShare from '../components/SocialShare.astro';
 import Comments from '../components/Comments.astro';
 import Alert from '../components/Alert.astro';
-import type { CollectionEntry } from 'astro:content';
-import { useTranslations, type Lang } from '../i18n/ui';
+import { getEntry, type CollectionEntry } from 'astro:content';
+import { languages, useTranslations, type Lang } from '../i18n/ui';
 import { getReadingTime } from '../utils/readingTime';
+import type { FallbackInfo } from '../utils/postFallback';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -14,15 +15,22 @@ interface Props {
   headings: { depth: number; slug: string; text: string }[];
   prevPost?: CollectionEntry<'blog'> | null;
   nextPost?: CollectionEntry<'blog'> | null;
+  fallbackInfo?: FallbackInfo | null;
 }
 
-const { post, lang, headings, prevPost, nextPost } = Astro.props;
+const { post, lang, headings, prevPost, nextPost, fallbackInfo = null } = Astro.props;
 const { Content } = await post.render();
+const author = (await getEntry('authors', `${lang}/default`)) || (await getEntry('authors', 'en/default'));
 const t = useTranslations(lang);
 
 const siteUrl = (import.meta.env.SITE_URL || Astro.site?.toString() || 'https://davicruz.com').replace(/\/+$/, '');
 const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '';
 const articleUrl = `${siteUrl}${currentPath}`;
+
+const customAlternates = fallbackInfo?.availableVersions?.map((v) => ({
+  lang: v.lang,
+  url: `${siteUrl}${v.url}`,
+}));
 
 const readingMinutes = getReadingTime(post.body);
 
@@ -50,6 +58,8 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
   translationId={post.data.translationId}
   image={post.data.heroImage}
   article={true}
+  customAlternates={customAlternates}
+  noindex={!!fallbackInfo}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
     <!-- Back to blog link -->
@@ -94,7 +104,7 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
               Davi Cruz
             </p>
             <p class="text-xs text-gray-500 dark:text-gray-400">
-              Security Technical Specialist @ Microsoft
+              {author ? `${author.data.occupation} @ ${author.data.company}` : 'Security Specialist'}
             </p>
           </div>
         </a>
@@ -128,6 +138,39 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
           fetchpriority="high"
         />
       </div>
+    )}
+
+    {fallbackInfo && (
+      <aside class="mb-10 rounded-2xl border border-blue-200 bg-blue-50/70 p-5 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/30 not-prose" aria-label="Aviso de idioma">
+        <div class="flex items-start gap-4">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600 dark:bg-blue-900/60 dark:text-blue-300">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h2 class="text-base font-semibold text-blue-900 dark:text-blue-100">
+              {t('fallback.noticeTitle')}
+            </h2>
+            <p class="mt-1 text-sm text-blue-700 dark:text-blue-300">
+              {t('fallback.noticeSubtitle')}
+            </p>
+            <div class="mt-3.5 flex flex-wrap gap-2.5">
+              {fallbackInfo.availableVersions.map((v) => (
+                <a
+                  href={v.url}
+                  class="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-white px-3.5 py-1.5 text-xs font-semibold text-blue-700 shadow-sm transition hover:bg-blue-50 dark:border-blue-800 dark:bg-gray-900 dark:text-blue-300 dark:hover:bg-blue-950"
+                >
+                  <span>{languages[v.lang]?.flag}</span>
+                  <span>{languages[v.lang]?.name}:</span>
+                  <span class="underline underline-offset-2">{v.title}</span>
+                  <span>→</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </aside>
     )}
 
     <!-- Main Content Area with Sticky TOC -->

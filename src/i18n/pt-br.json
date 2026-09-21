@@ -58,5 +58,10 @@
     "pt-br": "Português",
     "en": "English",
     "es": "Español"
+  },
+  "fallback": {
+    "noticeTitle": "Este artigo ainda não está disponível em português",
+    "noticeSubtitle": "Exibindo a versão abaixo. Você também pode consultar as versões disponíveis:",
+    "availableVersions": "Versões disponíveis:"
   }
 }

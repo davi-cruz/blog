@@ -1,27 +1,24 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
 import type { Lang } from '../../i18n/ui';
+import { getPostRoutesForLang, type FallbackInfo } from '../../utils/postFallback';
 
 export async function getStaticPaths() {
-  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
-
   const paths = [];
 
   for (const l of ['en', 'es'] as Lang[]) {
-    const langPosts = allPosts
-      .filter((p) => p.slug.startsWith(`${l}/`))
-      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-    for (let index = 0; index < langPosts.length; index++) {
-      const post = langPosts[index];
-      const slug = post.slug.split('/').slice(1).join('/');
-      const prevPost = index < langPosts.length - 1 ? langPosts[index + 1] : null;
-      const nextPost = index > 0 ? langPosts[index - 1] : null;
-
+    const routes = await getPostRoutesForLang(l);
+    for (const r of routes) {
       paths.push({
-        params: { lang: l, slug },
-        props: { post, lang: l, prevPost, nextPost },
+        params: { lang: l, slug: r.slug },
+        props: {
+          post: r.post,
+          lang: l,
+          fallbackInfo: r.fallbackInfo,
+          prevPost: r.prevPost,
+          nextPost: r.nextPost,
+        },
       });
     }
   }
@@ -32,12 +29,20 @@ export async function getStaticPaths() {
 interface Props {
   post: CollectionEntry<'blog'>;
   lang: Lang;
+  fallbackInfo: FallbackInfo | null;
   prevPost: CollectionEntry<'blog'> | null;
   nextPost: CollectionEntry<'blog'> | null;
 }
 
-const { post, lang, prevPost, nextPost } = Astro.props;
+const { post, lang, fallbackInfo, prevPost, nextPost } = Astro.props;
 const { headings } = await post.render();
 ---
 
-<PostLayout post={post} lang={lang} headings={headings} prevPost={prevPost} nextPost={nextPost} />
+<PostLayout
+  post={post}
+  lang={lang}
+  headings={headings}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  fallbackInfo={fallbackInfo}
+/>

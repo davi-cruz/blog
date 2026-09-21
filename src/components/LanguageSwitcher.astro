@@ -28,18 +28,26 @@ if (customAlternates && customAlternates.length > 0) {
   }
 } else if (translationId) {
   const allPosts = await getCollection('blog');
+  const groupPosts = allPosts.filter((p) => p.data.translationId === translationId);
+  const priorityOrder: Lang[] = ['en', 'pt-br', 'es'];
+
   for (const lang of supportedLangs) {
-    const postMatch = allPosts.find((p) => {
-      const pLang = p.slug.split('/')[0];
-      return pLang === lang && p.data.translationId === translationId;
-    });
+    const postMatch = groupPosts.find((p) => p.slug.startsWith(`${lang}/`));
 
     if (postMatch) {
       const postSlug = postMatch.slug.split('/').slice(1).join('/');
-      if (lang === 'pt-br') {
-        targetUrls[lang] = `/${postSlug}`;
-      } else {
-        targetUrls[lang] = `/${lang}/${postSlug}`;
+      targetUrls[lang] = lang === 'pt-br' ? `/${postSlug}` : `/${lang}/${postSlug}`;
+    } else {
+      // Find best available fallback post according to priority: EN -> PT-BR -> ES
+      const fallbackOrder = priorityOrder.filter((l) => l !== lang);
+      let fallbackPost: typeof groupPosts[0] | undefined;
+      for (const fl of fallbackOrder) {
+        fallbackPost = groupPosts.find((p) => p.slug.startsWith(`${fl}/`));
+        if (fallbackPost) break;
+      }
+      if (fallbackPost) {
+        const fallbackSlug = fallbackPost.slug.split('/').slice(1).join('/');
+        targetUrls[lang] = lang === 'pt-br' ? `/${fallbackSlug}` : `/${lang}/${fallbackSlug}`;
       }
     }
   }

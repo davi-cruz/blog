@@ -1,12 +1,11 @@
 ---
 name: Davi Cruz
 avatar: /images/avatar.png
-occupation: Security Technical Specialist
-company: Microsoft
+occupation: Senior Customer Engineer, Security
+company: Google Cloud
 twitter: https://twitter.com/zerahzurc
 linkedin: https://linkedin.com/in/davicruz
 github: https://github.com/davi-cruz
-email: eu@davicruz.com
 ---
 
 Profesional con más de 12 años de experiencia en Tecnologías de la Información y Seguridad de la Información, desempeñándose en organizaciones de diversa escala como especialista de TI, consultor y *Customer Engineer*, actuando como *trusted advisor* y brindando soporte altamente técnico en soluciones de seguridad de Microsoft.

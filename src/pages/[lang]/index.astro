@@ -4,6 +4,7 @@ import FeaturedPostCard from '../../components/FeaturedPostCard.astro';
 import TimelinePostItem from '../../components/TimelinePostItem.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, type Lang } from '../../i18n/ui';
+import { siteConfig } from '../../data/siteConfig';
 
 export function getStaticPaths() {
   return [
@@ -38,40 +39,12 @@ const popularTags = Object.entries(tagCountMap)
   .sort((a, b) => b[1] - a[1])
   .slice(0, 8);
 
-const titles: Record<Lang, string> = {
-  'pt-br': 'Davi Cruz | Cibersegurança & Infraestrutura',
-  en: 'Davi Cruz | Cybersecurity & Infrastructure',
-  es: 'Davi Cruz | Ciberseguridad e Infraestructura',
-};
-
-const descriptions: Record<Lang, string> = {
-  'pt-br': 'Blog técnico sobre cibersegurança e infraestrutura.',
-  en: 'Technical blog focusing on cybersecurity, Hack The Box write-ups, Azure cloud security, and Linux administration.',
-  es: 'Blog técnico enfocado en ciberseguridad, write-ups de Hack The Box, seguridad en la nube de Azure y administración de Linux.',
-};
-
-const heroIntros: Record<Lang, string> = {
-  'pt-br': 'Bem-vindo ao meu blog técnico.',
-  en: "Welcome to my technical blog. Here I share detailed Hack The Box walkthroughs, security research, cloud computing guides (Azure Arc & Sentinel), and automation scripts.",
-  es: "Bienvenido a mi blog técnico. Aquí comparto write-ups detallados de Hack The Box, investigaciones de seguridad, computación en la nube (Azure Arc y Sentinel) y scripts de automatización.",
-};
-
-const greetings: Record<Lang, string> = {
-  'pt-br': 'Olá, sou',
-  en: "Hi, I'm",
-  es: 'Hola, soy',
-};
-
-const tagSectionLabel: Record<Lang, string> = {
-  'pt-br': 'Tópicos:',
-  en: 'Topics:',
-  es: 'Temas:',
-};
+const header = siteConfig.header[lang] || siteConfig.header.en;
 ---
 
 <BaseLayout
-  title={titles[lang] || titles.en}
-  description={descriptions[lang] || descriptions.en}
+  title={header.title}
+  description={header.description}
   lang={lang}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
@@ -79,15 +52,15 @@ const tagSectionLabel: Record<Lang, string> = {
       <!-- Header Section -->
       <header class="space-y-2 pb-8 pt-6 md:space-y-5">
         <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-          {greetings[lang]} <span class="text-primary-500">Davi Cruz</span>
+          {header.greeting} <span class="text-primary-500">{header.name}</span>
         </h1>
         <p class="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          {heroIntros[lang]}
+          {header.description}
         </p>
 
         {popularTags.length > 0 && (
           <div class="pt-2 flex flex-wrap items-center">
-            <span class="mr-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">{tagSectionLabel[lang]}</span>
+            <span class="mr-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">{header.topicsLabel}</span>
             {popularTags.map(([tag, count]) => (
               <a
                 href={`/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`}

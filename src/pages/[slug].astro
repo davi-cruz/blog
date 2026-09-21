@@ -1,35 +1,37 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import PostLayout from '../layouts/PostLayout.astro';
+import { getPostRoutesForLang, type FallbackInfo } from '../utils/postFallback';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ slug, data }) => {
-    return slug.startsWith('pt-br/') && !data.draft;
-  });
-
-  const sortedPosts = posts.sort(
-    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-  );
-
-  return sortedPosts.map((post, index) => {
-    const slug = post.slug.split('/').slice(1).join('/');
-    const prevPost = index < sortedPosts.length - 1 ? sortedPosts[index + 1] : null;
-    const nextPost = index > 0 ? sortedPosts[index - 1] : null;
-    return {
-      params: { slug },
-      props: { post, prevPost, nextPost },
-    };
-  });
+  const routes = await getPostRoutesForLang('pt-br');
+  return routes.map((r) => ({
+    params: { slug: r.slug },
+    props: {
+      post: r.post,
+      fallbackInfo: r.fallbackInfo,
+      prevPost: r.prevPost,
+      nextPost: r.nextPost,
+    },
+  }));
 }
 
 interface Props {
   post: CollectionEntry<'blog'>;
+  fallbackInfo: FallbackInfo | null;
   prevPost: CollectionEntry<'blog'> | null;
   nextPost: CollectionEntry<'blog'> | null;
 }
 
-const { post, prevPost, nextPost } = Astro.props;
+const { post, fallbackInfo, prevPost, nextPost } = Astro.props;
 const { headings } = await post.render();
 ---
 
-<PostLayout post={post} lang="pt-br" headings={headings} prevPost={prevPost} nextPost={nextPost} />
+<PostLayout
+  post={post}
+  lang="pt-br"
+  headings={headings}
+  prevPost={prevPost}
+  nextPost={nextPost}
+  fallbackInfo={fallbackInfo}
+/>

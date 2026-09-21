@@ -13,6 +13,7 @@ interface Props {
   image?: string;
   article?: boolean;
   customAlternates?: { lang: string; url: string }[];
+  noindex?: boolean;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   image = '/images/twitter-card.png',
   article = false,
   customAlternates,
+  noindex = false,
 } = Astro.props;
 
 // Read site URL from env or fallback
@@ -104,6 +106,7 @@ const ogLocale = ogLocaleMap[lang] || 'pt_BR';
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph / Facebook -->

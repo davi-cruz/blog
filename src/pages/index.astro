@@ -4,9 +4,11 @@ import FeaturedPostCard from '../components/FeaturedPostCard.astro';
 import TimelinePostItem from '../components/TimelinePostItem.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations } from '../i18n/ui';
+import { siteConfig } from '../data/siteConfig';
 
 const lang = 'pt-br';
 const t = useTranslations(lang);
+const header = siteConfig.header[lang];
 
 // Fetch all pt-br posts, excluding drafts, sorted by pubDate descending
 const allPosts = await getCollection('blog', ({ slug, data }) => {
@@ -33,8 +35,8 @@ const popularTags = Object.entries(tagCountMap)
 ---
 
 <BaseLayout
-  title="Davi Cruz | Cibersegurança & Infraestrutura"
-  description="Blog técnico sobre cibersegurança, ethical hacking, write-ups de máquinas do Hack The Box, Azure e administração de sistemas Linux/Windows."
+  title={header.title}
+  description={header.description}
   lang={lang}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
@@ -42,15 +44,15 @@ const popularTags = Object.entries(tagCountMap)
       <!-- Header Section -->
       <header class="space-y-2 pb-8 pt-6 md:space-y-5">
         <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
-          Olá, sou <span class="text-primary-500">Davi Cruz</span>
+          {header.greeting} <span class="text-primary-500">{header.name}</span>
         </h1>
         <p class="text-lg leading-7 text-gray-500 dark:text-gray-400">
-          Bem-vindo ao meu blog técnico. Aqui compartilho write-ups detalhados do Hack The Box, pesquisas de segurança da informação, computação em nuvem (Azure Arc & Sentinel) e automações.
+          {header.description}
         </p>
 
         {popularTags.length > 0 && (
           <div class="pt-2 flex flex-wrap items-center">
-            <span class="mr-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Tópicos:</span>
+            <span class="mr-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">{header.topicsLabel}</span>
             {popularTags.map(([tag, count]) => (
               <a
                 href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}

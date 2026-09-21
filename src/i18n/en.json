@@ -58,5 +58,10 @@
     "pt-br": "Português",
     "en": "English",
     "es": "Español"
+  },
+  "fallback": {
+    "noticeTitle": "This post is not available in English",
+    "noticeSubtitle": "Displaying the version below. You can also check out the available versions:",
+    "availableVersions": "Available versions:"
   }
 }
