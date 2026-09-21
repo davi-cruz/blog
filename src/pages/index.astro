@@ -38,62 +38,62 @@ const popularTags = Object.entries(tagCountMap)
   lang={lang}
 >
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Hero Greeting Section -->
-    <section class="mb-14 rounded-3xl bg-gradient-to-br from-neutral-50 via-pink-50/30 to-neutral-100/50 p-8 sm:p-12 border border-neutral-200/80 dark:from-neutral-900/60 dark:via-pink-950/20 dark:to-neutral-900/40 dark:border-neutral-800">
-      <div class="max-w-2xl">
-        <span class="inline-flex items-center gap-1.5 rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-950/60 dark:text-pink-300">
-          🔒 Cybersecurity & SysAdmin
-        </span>
-        <h1 class="mt-4 text-3xl sm:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-tight">
-          Olá, sou <span class="bg-gradient-to-r from-pink-500 to-rose-500 bg-clip-text text-transparent">Davi Cruz</span>
+    <div class="divide-y divide-gray-200 dark:divide-gray-700">
+      <!-- Header Section -->
+      <header class="space-y-2 pb-8 pt-6 md:space-y-5">
+        <h1 class="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-5xl md:leading-14">
+          Olá, sou <span class="text-primary-500">Davi Cruz</span>
         </h1>
-        <p class="mt-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
+        <p class="text-lg leading-7 text-gray-500 dark:text-gray-400">
           Bem-vindo ao meu blog técnico. Aqui compartilho write-ups detalhados do Hack The Box, pesquisas de segurança da informação, computação em nuvem (Azure Arc & Sentinel) e automações.
         </p>
 
         {popularTags.length > 0 && (
-          <div class="mt-6 flex flex-wrap items-center gap-2">
-            <span class="text-xs font-semibold text-neutral-500 dark:text-neutral-400">Tópicos:</span>
+          <div class="pt-2 flex flex-wrap items-center">
+            <span class="mr-3 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">Tópicos:</span>
             {popularTags.map(([tag, count]) => (
               <a
                 href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
-                class="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-neutral-600 shadow-sm border border-neutral-200/80 transition hover:border-pink-500 hover:text-pink-600 dark:bg-neutral-850 dark:border-neutral-700 dark:text-neutral-300 dark:hover:text-pink-400"
+                class="mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
               >
-                #{tag} <span class="text-neutral-400 text-[10px]">({count})</span>
+                {tag} <span class="text-xs text-gray-500 dark:text-gray-400">({count})</span>
               </a>
             ))}
           </div>
         )}
+      </header>
+
+      <!-- Posts Section -->
+      <div class="py-8 space-y-12">
+        <!-- Highlighted Latest Post (Option C) -->
+        {featuredPost && (
+          <section>
+            <FeaturedPostCard post={featuredPost} lang={lang} />
+          </section>
+        )}
+
+        <!-- Classic Timeline Archive -->
+        <section>
+          <div class="border-b border-gray-200 pb-4 dark:border-gray-700 flex items-center justify-between">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+              {t('blog.allPosts')}
+            </h2>
+            <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
+              {sortedPosts.length} artigos
+            </span>
+          </div>
+
+          {archivePosts.length === 0 && !featuredPost ? (
+            <p class="py-10 text-gray-500 dark:text-gray-400">{t('blog.noPosts')}</p>
+          ) : (
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+              {archivePosts.map((post) => (
+                <TimelinePostItem post={post} lang={lang} />
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
-    </section>
-
-    <!-- Highlighted Latest Post (Option C) -->
-    {featuredPost && (
-      <section class="mb-14">
-        <FeaturedPostCard post={featuredPost} lang={lang} />
-      </section>
-    )}
-
-    <!-- Classic Timeline Archive -->
-    <section>
-      <div class="border-b border-neutral-200 pb-4 dark:border-neutral-800 flex items-center justify-between">
-        <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-          {t('blog.allPosts')}
-        </h2>
-        <span class="text-sm font-medium text-neutral-500 dark:text-neutral-400">
-          {sortedPosts.length} artigos
-        </span>
-      </div>
-
-      {archivePosts.length === 0 && !featuredPost ? (
-        <p class="py-10 text-neutral-500 dark:text-neutral-400">{t('blog.noPosts')}</p>
-      ) : (
-        <ul class="divide-y divide-neutral-200 dark:divide-neutral-800">
-          {archivePosts.map((post) => (
-            <TimelinePostItem post={post} lang={lang} />
-          ))}
-        </ul>
-      )}
-    </section>
+    </div>
   </div>
 </BaseLayout>

@@ -9,8 +9,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: colors.pink,
-        gray: colors.neutral,
+        primary: colors.blue,
+        heading: colors.blue,
+        gray: colors.gray,
       },
       fontFamily: {
         sans: [
@@ -44,11 +45,11 @@ export default {
             },
             'h1,h2,h3,h4,h5,h6': {
               fontWeight: '700',
-              color: theme('colors.neutral.900'),
+              color: theme('colors.gray.900'),
             },
             code: {
               color: theme('colors.primary.600'),
-              backgroundColor: theme('colors.neutral.100'),
+              backgroundColor: theme('colors.gray.100'),
               padding: '0.2rem 0.4rem',
               borderRadius: '0.25rem',
               fontWeight: '500',
@@ -70,11 +71,11 @@ export default {
               },
             },
             'h1,h2,h3,h4,h5,h6': {
-              color: theme('colors.neutral.100'),
+              color: theme('colors.gray.100'),
             },
             code: {
               color: theme('colors.primary.300'),
-              backgroundColor: theme('colors.neutral.800'),
+              backgroundColor: theme('colors.gray.800'),
             },
           },
         },

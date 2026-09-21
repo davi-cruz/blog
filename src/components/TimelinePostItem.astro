@@ -26,65 +26,65 @@ const formattedDate = new Intl.DateTimeFormat(
 ).format(post.data.pubDate);
 ---
 
-<li class="py-10">
-  <article class="space-y-3 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
+<li class="py-12">
+  <article class="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
     <dl>
       <dt class="sr-only">{t('blog.publishedAt')}</dt>
-      <dd class="text-sm font-medium leading-6 text-neutral-500 dark:text-neutral-400">
+      <dd class="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
         <time datetime={post.data.pubDate.toISOString()}>
           {formattedDate}
         </time>
-        <span class="block text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">
+        <span class="block text-xs text-gray-400 dark:text-gray-500 mt-0.5">
           {readingMinutes} {t('blog.readTime')}
         </span>
       </dd>
     </dl>
 
-    <div class="space-y-4 xl:col-span-3">
-      <div class="space-y-3">
-        <!-- Tags -->
-        {post.data.tags && post.data.tags.length > 0 && (
-          <div class="flex flex-wrap gap-1.5">
-            {post.data.tags.map((tag) => {
-              const tagUrl = lang === 'pt-br' ? `/tags/${encodeURIComponent(tag.toLowerCase())}` : `/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`;
-              return (
-                <a
-                  href={tagUrl}
-                  class="rounded-md bg-neutral-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-primary-600 transition hover:bg-primary-50 dark:bg-neutral-850 dark:text-primary-400 dark:hover:bg-primary-950/60"
-                >
-                  {tag}
-                </a>
-              );
-            })}
-          </div>
-        )}
-
-        <!-- Title -->
-        <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">
-          <a
-            href={postUrl}
-            class="text-neutral-900 hover:text-primary-600 dark:text-neutral-100 dark:hover:text-primary-400 transition-colors"
-          >
-            {post.data.title}
-          </a>
-        </h2>
+    <div class="space-y-5 xl:col-span-3">
+      <div class="space-y-6">
+        <div>
+          <h2 class="text-2xl font-bold leading-8 tracking-tight">
+            <a
+              href={postUrl}
+              class="text-gray-900 hover:text-primary-500 dark:text-gray-100 dark:hover:text-primary-400 transition-colors"
+            >
+              {post.data.title}
+            </a>
+          </h2>
+          <!-- Tags -->
+          {post.data.tags && post.data.tags.length > 0 && (
+            <div class="flex flex-wrap mt-2">
+              {post.data.tags.map((tag) => {
+                const tagUrl = lang === 'pt-br' ? `/tags/${encodeURIComponent(tag.toLowerCase())}` : `/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`;
+                return (
+                  <a
+                    href={tagUrl}
+                    class="mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                  >
+                    {tag}
+                  </a>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         <!-- Description -->
         {post.data.description && (
-          <p class="text-neutral-600 dark:text-neutral-300 leading-relaxed text-base line-clamp-3">
+          <div class="prose max-w-none text-gray-500 dark:text-gray-400 leading-relaxed text-base">
             {post.data.description}
-          </p>
+          </div>
         )}
       </div>
 
       <!-- Read more link -->
-      <div class="text-sm font-semibold">
+      <div class="text-base font-medium leading-6">
         <a
           href={postUrl}
-          class="inline-flex items-center gap-1 text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
+          class="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
           aria-label={`Read "${post.data.title}"`}
         >
-          <span>{t('blog.readMore')}</span>
+          {t('blog.readMore')}
         </a>
       </div>
     </div>

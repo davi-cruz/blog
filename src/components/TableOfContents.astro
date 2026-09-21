@@ -22,24 +22,24 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 {toc.length > 0 && (
   <nav class="my-6">
     <!-- Mobile Accordion -->
-    <details class="lg:hidden rounded-xl border border-neutral-200 bg-neutral-50 p-4 dark:border-neutral-800 dark:bg-neutral-900/50">
-      <summary class="cursor-pointer font-semibold text-sm text-neutral-800 dark:text-neutral-200 select-none flex items-center justify-between">
+    <details class="lg:hidden rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-900/50">
+      <summary class="cursor-pointer font-semibold text-sm text-gray-800 dark:text-gray-200 select-none flex items-center justify-between">
         <span class="flex items-center gap-2">
           <svg class="h-4 w-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
           </svg>
           {t('blog.toc')}
         </span>
-        <svg class="h-4 w-4 text-neutral-500 transition-transform details-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="h-4 w-4 text-gray-500 transition-transform details-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
       </summary>
-      <ul class="mt-3 space-y-1.5 border-t border-neutral-200 pt-3 text-sm dark:border-neutral-800">
+      <ul class="mt-3 space-y-1.5 border-t border-gray-200 pt-3 text-sm dark:border-gray-800">
         {toc.map((heading) => (
           <li class={`${heading.depth === 3 ? 'ml-4' : ''}`}>
             <a
               href={`#${heading.slug}`}
-              class="block py-1 text-neutral-600 hover:text-primary-600 dark:text-neutral-400 dark:hover:text-primary-400 transition-colors"
+              class="block py-1 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors"
             >
               {heading.text}
             </a>
@@ -49,8 +49,8 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
     </details>
 
     <!-- Desktop Sticky TOC -->
-    <div class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-xl border border-neutral-200 bg-neutral-50/60 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
-      <h2 class="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+    <div class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-xl border border-gray-200 bg-gray-50/60 p-4 dark:border-gray-800 dark:bg-gray-900/40">
+      <h2 class="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
         <svg class="h-4 w-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
         </svg>
@@ -61,7 +61,7 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
           <li class={`${heading.depth === 3 ? 'ml-3' : ''}`}>
             <a
               href={`#${heading.slug}`}
-              class="block py-1 text-neutral-600 hover:text-primary-600 dark:text-neutral-400 dark:hover:text-primary-400 transition-colors leading-relaxed"
+              class="block py-1 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors leading-relaxed"
             >
               {heading.text}
             </a>

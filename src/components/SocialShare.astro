@@ -18,9 +18,9 @@ const whatsAppUrl = `https://api.whatsapp.com/send?text=${encodedTitle}%20${enco
 const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}`;
 ---
 
-<div class="my-8 rounded-xl border border-neutral-200 bg-neutral-50/70 p-4 dark:border-neutral-800 dark:bg-neutral-900/40">
+<div class="my-8 rounded-xl border border-gray-200 bg-gray-50/70 p-4 dark:border-gray-800 dark:bg-gray-900/40">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-    <span class="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">
       {t('share.title')}
     </span>
 
@@ -29,7 +29,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitl
       <button
         type="button"
         id="native-share-btn"
-        class="hidden items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-white"
+        class="hidden items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
         aria-label={t('share.native')}
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -43,7 +43,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitl
         href={linkedInUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-[#0A66C2] dark:hover:text-white"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-[#0A66C2] dark:hover:text-white"
         aria-label="LinkedIn"
       >
         <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -57,7 +57,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitl
         href={whatsAppUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-[#25D366] hover:text-white hover:border-[#25D366] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-[#25D366] dark:hover:text-white"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-[#25D366] hover:text-white hover:border-[#25D366] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-[#25D366] dark:hover:text-white"
         aria-label="WhatsApp"
       >
         <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -71,7 +71,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitl
         href={telegramUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-[#229ED9] hover:text-white hover:border-[#229ED9] dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-[#229ED9] dark:hover:text-white"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-[#229ED9] hover:text-white hover:border-[#229ED9] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-[#229ED9] dark:hover:text-white"
         aria-label="Telegram"
       >
         <svg class="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -84,7 +84,7 @@ const telegramUrl = `https://t.me/share/url?url=${encodedUrl}&text=${encodedTitl
       <button
         type="button"
         id="copy-link-btn"
-        class="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 transition hover:bg-neutral-100 hover:text-neutral-900 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-white"
+        class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white"
         aria-label={t('share.copyLink')}
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
