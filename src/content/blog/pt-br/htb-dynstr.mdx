@@ -21,8 +21,6 @@ A máquina desta semana será **Dynstr**, outra máquina Linux classificada como
   Write-ups para máquinas do Hack The Box são postados assim que as máquinas são aposentadas.
 </Alert>
 
-![HTB Dynstr](https://i.imgur.com/kqW8fwk.png)
-
 Tive a oportunidade de aprender muito com esta máquina! Primeiro enquanto brincava com alguns dicionários de code injection e depois para entender o funcionamento do utilitário `nsupdate`. Após obter execução de código e um shell reverso, encontrei uma chave privada RSA a ser utilizada em uma conexão SSH porém precisei contornar algumas restrições presentes no arquivo `authorized_keys` e, a partir desta outra conta, pude obter a credencial de `root` utilizando de globbing durante a escalação de privilégio.
 
 Espero que gostem!
