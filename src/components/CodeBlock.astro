@@ -1,0 +1,12 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={`code-block-wrapper my-6 ${className || ''}`}>
+  <slot />
+</div>
+

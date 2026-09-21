@@ -21,6 +21,8 @@ public/sitemap.xml
 
 # production
 /build
+/dist/
+.astro/
 *.xml
 
 # rss feed

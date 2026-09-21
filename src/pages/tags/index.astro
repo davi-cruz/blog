@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { useTranslations } from '../../i18n/ui';
+
+const lang = 'pt-br';
+const t = useTranslations(lang);
+
+const posts = await getCollection('blog', ({ slug, data }) => {
+  return slug.startsWith('pt-br/') && !data.draft;
+});
+
+const tagMap: Record<string, number> = {};
+for (const post of posts) {
+  for (const tag of post.data.tags || []) {
+    tagMap[tag] = (tagMap[tag] || 0) + 1;
+  }
+}
+
+const tags = Object.entries(tagMap).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout
+  title={`Tags | Davi Cruz`}
+  description="Navegue por todos os tópicos e categorias de artigos sobre cibersegurança e infraestrutura."
+  lang={lang}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
+    <header class="mb-10">
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+        {t('blog.tags')}
+      </h1>
+      <p class="mt-2 text-neutral-600 dark:text-neutral-400">
+        Navegue por {tags.length} tópicos e tecnologias abordadas no blog.
+      </p>
+    </header>
+
+    <div class="flex flex-wrap gap-3">
+      {tags.map(([tag, count]) => (
+        <a
+          href={`/tags/${encodeURIComponent(tag.toLowerCase())}`}
+          class="flex items-center gap-2 rounded-xl border border-neutral-200/80 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 shadow-sm transition hover:border-primary-500 hover:text-primary-600 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-300 dark:hover:border-primary-500 dark:hover:text-primary-400"
+        >
+          <span>#{tag}</span>
+          <span class="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
+            {count}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+

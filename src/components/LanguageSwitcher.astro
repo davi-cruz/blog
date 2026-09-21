@@ -1,0 +1,117 @@
+---
+import { getCollection } from 'astro:content';
+import { languages, supportedLangs, type Lang } from '../i18n/ui';
+
+interface Props {
+  currentLang: Lang;
+  translationId?: string;
+}
+
+const { currentLang, translationId } = Astro.props;
+
+// Prepare URLs for all supported languages
+const targetUrls: Record<Lang, string> = {
+  'pt-br': '/',
+  en: '/en/',
+  es: '/es/',
+};
+
+if (translationId) {
+  const allPosts = await getCollection('blog');
+  for (const lang of supportedLangs) {
+    const postMatch = allPosts.find((p) => {
+      const pLang = p.slug.split('/')[0];
+      return pLang === lang && p.data.translationId === translationId;
+    });
+
+    if (postMatch) {
+      const postSlug = postMatch.slug.split('/').slice(1).join('/');
+      if (lang === 'pt-br') {
+        targetUrls[lang] = `/${postSlug}`;
+      } else {
+        targetUrls[lang] = `/${lang}/${postSlug}`;
+      }
+    }
+  }
+}
+---
+
+<div class="relative inline-block text-left" id="lang-switcher">
+  <button
+    type="button"
+    id="lang-menu-button"
+    class="flex items-center gap-1.5 rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 focus:outline-none dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+    aria-expanded="false"
+    aria-haspopup="true"
+    aria-label="Change language"
+  >
+    <span>{languages[currentLang]?.flag}</span>
+    <span class="uppercase tracking-wider font-mono">{currentLang}</span>
+    <svg class="h-3.5 w-3.5 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <div
+    id="lang-menu-dropdown"
+    class="hidden absolute right-0 z-50 mt-2 w-36 origin-top-right rounded-lg bg-white p-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-neutral-900 dark:ring-neutral-800"
+    role="menu"
+    aria-orientation="vertical"
+    tabindex="-1"
+  >
+    {supportedLangs.map((lang) => {
+      const isActive = lang === currentLang;
+      const url = targetUrls[lang];
+      return (
+        <a
+          href={url}
+          class={`flex items-center gap-2 rounded-md px-3 py-2 text-xs font-medium transition-colors ${
+            isActive
+              ? 'bg-primary-50 text-primary-600 dark:bg-primary-950/60 dark:text-primary-400 font-semibold'
+              : 'text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800'
+          }`}
+          role="menuitem"
+        >
+          <span>{languages[lang].flag}</span>
+          <span>{languages[lang].name}</span>
+          {isActive && (
+            <span class="ml-auto text-primary-500">✓</span>
+          )}
+        </a>
+      );
+    })}
+  </div>
+</div>
+
+<script>
+  function setupLangMenu() {
+    const btn = document.getElementById('lang-menu-button');
+    const dropdown = document.getElementById('lang-menu-dropdown');
+    if (!btn || !dropdown) return;
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = dropdown.classList.contains('hidden');
+      dropdown.classList.toggle('hidden', !isHidden);
+      btn.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target as Node) && e.target !== btn) {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdown.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  setupLangMenu();
+  document.addEventListener('astro:after-swap', setupLangMenu);
+</script>
+

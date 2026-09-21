@@ -1,0 +1,136 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { defaultLang, supportedLangs, type Lang } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: Lang;
+  translationId?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const {
+  title = 'Davi Cruz | Cybersecurity & Infrastructure',
+  description = 'Technical blog covering cybersecurity, penetration testing, cloud security, and Linux administration.',
+  lang = defaultLang,
+  translationId,
+  image = '/images/twitter-card.png',
+  article = false,
+} = Astro.props;
+
+// Read site URL from env or fallback
+const siteUrl = (import.meta.env.SITE_URL || Astro.site?.toString() || 'https://davicruz.com').replace(/\/+$/, '');
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '';
+const canonicalUrl = `${siteUrl}${currentPath || '/'}`;
+
+// Absolute image URL
+const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
+
+// Compute hreflang alternates
+const hreflangLinks: Record<Lang | 'x-default', string> = {
+  'pt-br': `${siteUrl}/`,
+  en: `${siteUrl}/en/`,
+  es: `${siteUrl}/es/`,
+  'x-default': `${siteUrl}/`,
+};
+
+if (translationId) {
+  const allPosts = await getCollection('blog');
+  for (const l of supportedLangs) {
+    const match = allPosts.find((p) => {
+      const pLang = p.slug.split('/')[0];
+      return pLang === l && p.data.translationId === translationId;
+    });
+
+    if (match) {
+      const slugWithoutLang = match.slug.split('/').slice(1).join('/');
+      if (l === 'pt-br') {
+        hreflangLinks[l] = `${siteUrl}/${slugWithoutLang}`;
+      } else {
+        hreflangLinks[l] = `${siteUrl}/${l}/${slugWithoutLang}`;
+      }
+    }
+  }
+  hreflangLinks['x-default'] = hreflangLinks['pt-br'];
+} else if (currentPath.includes('/tags/')) {
+  // Localized tag page hreflangs
+  const tagPart = currentPath.split('/tags/')[1] || '';
+  hreflangLinks['pt-br'] = `${siteUrl}/tags/${tagPart}`;
+  hreflangLinks['en'] = `${siteUrl}/en/tags/${tagPart}`;
+  hreflangLinks['es'] = `${siteUrl}/es/tags/${tagPart}`;
+  hreflangLinks['x-default'] = `${siteUrl}/tags/${tagPart}`;
+}
+
+const ogLocaleMap: Record<Lang, string> = {
+  'pt-br': 'pt_BR',
+  en: 'en_US',
+  es: 'es_ES',
+};
+const ogLocale = ogLocaleMap[lang] || 'pt_BR';
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="Davi Cruz Blog RSS Feed" href="/rss.xml" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Hreflang Alternates for Multilingual SEO -->
+    <link rel="alternate" hreflang="pt-br" href={hreflangLinks['pt-br']} />
+    <link rel="alternate" hreflang="en" href={hreflangLinks['en']} />
+    <link rel="alternate" hreflang="es" href={hreflangLinks['es']} />
+    <link rel="alternate" hreflang="x-default" href={hreflangLinks['x-default']} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Davi Cruz" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content={ogLocale} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:site" content="@zerahzurc" />
+    <meta name="twitter:creator" content="@zerahzurc" />
+
+    <!-- Prevent FOUC Theme Script -->
+    <script is:inline>
+      const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 selection:bg-primary-500 selection:text-white">
+    <Header currentLang={lang} translationId={translationId} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer currentLang={lang} />
+  </body>
+</html>
+

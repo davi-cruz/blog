@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { useTranslations } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ slug, data }) => {
+    return slug.startsWith('pt-br/') && !data.draft;
+  });
+
+  const tagMap: Record<string, { rawTag: string; posts: CollectionEntry<'blog'>[] }> = {};
+
+  for (const post of posts) {
+    for (const tag of post.data.tags || []) {
+      const lower = tag.toLowerCase();
+      if (!tagMap[lower]) {
+        tagMap[lower] = { rawTag: tag, posts: [] };
+      }
+      tagMap[lower].posts.push(post);
+    }
+  }
+
+  return Object.entries(tagMap).map(([tagKey, data]) => {
+    return {
+      params: { tag: tagKey },
+      props: {
+        rawTag: data.rawTag,
+        posts: data.posts.sort(
+          (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+        ),
+      },
+    };
+  });
+}
+
+interface Props {
+  rawTag: string;
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { rawTag, posts } = Astro.props;
+const lang = 'pt-br';
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  title={`Tag #${rawTag} | Davi Cruz`}
+  description={`Artigos e tutoriais com a tag #${rawTag}.`}
+  lang={lang}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-12">
+    <div class="mb-10">
+      <a
+        href="/tags/"
+        class="inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-primary-500 transition-colors mb-4"
+      >
+        ← Todas as tags
+      </a>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900 dark:text-white">
+        {t('blog.postsTaggedWith')} <span class="text-primary-500">#{rawTag}</span>
+      </h1>
+      <p class="mt-2 text-neutral-600 dark:text-neutral-400">
+        {posts.length} {posts.length === 1 ? 'artigo encontrado' : 'artigos encontrados'}.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {posts.map((post) => (
+        <PostCard post={post} lang={lang} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+

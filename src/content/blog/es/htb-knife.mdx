@@ -1,0 +1,51 @@
+---
+title: 'Walkthrough: HTB Knife'
+description: 'Esta semana la máquina elegida será Knife, otra máquina Linux de dificultad fácil de Hack The Box.'
+pubDate: 2021-08-28
+tags:
+  - HackTheBox
+  - HTB Easy
+  - HTB Linux
+  - Walkthrough
+translationId: htb-knife
+draft: false
+heroImage: 'https://i.imgur.com/U5A7c9y.png'
+---
+
+¡Hola a todos!
+
+La máquina de esta semana será **Knife**, otra máquina Linux con calificación fácil de [Hack The Box](https://www.hackthebox.eu/), creada por [MrKN16H](https://app.hackthebox.eu/users/98767).
+
+<Alert kind="info" title="Información">
+  Los write-ups de máquinas de Hack The Box se publican en cuanto las máquinas son retiradas.
+</Alert>
+
+![HTB Knife](https://i.imgur.com/3IO9vBj.png)
+
+Esta fue una máquina bastante directa donde se debe prestar atención a los detalles (en el caso del servidor web vulnerable) y siempre buscar primero los frutos maduros más accesibles como abusar de los permisos `sudo` que el usuario ya posee.
+
+¡Espero que lo disfruten!
+
+## Enumeración
+
+Como de costumbre, comencé con un escaneo rápido con `nmap` para verificar los servicios publicados en esta máquina:
+
+```bash
+$ nmap -sC -sV -Pn -oA quick 10.10.10.242
+Host discovery disabled (-Pn). All addresses will be marked 'up' and scan times will be slower.
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-08-10 17:50 -03
+Nmap scan report for 10.10.10.242
+Host is up (0.072s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+|_http-server-header: Apache/2.4.41 (Ubuntu)
+|_http-title:  Emergent Medical Idea
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+```
+
+### 80/TCP - Servicio HTTP
+
+Accediendo al sitio web podemos observar una página institucional sencilla de una empresa de salud.
+

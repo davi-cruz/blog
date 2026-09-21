@@ -1,0 +1,129 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import SocialShare from '../components/SocialShare.astro';
+import Alert from '../components/Alert.astro';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { getReadingTime } from '../utils/readingTime';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  lang: Lang;
+  headings: { depth: number; slug: string; text: string }[];
+}
+
+const { post, lang, headings } = Astro.props;
+const { Content } = await post.render();
+const t = useTranslations(lang);
+
+const siteUrl = (import.meta.env.SITE_URL || Astro.site?.toString() || 'https://davicruz.com').replace(/\/+$/, '');
+const currentPath = Astro.url.pathname.replace(/\/+$/, '') || '';
+const articleUrl = `${siteUrl}${currentPath}`;
+
+const readingMinutes = getReadingTime(post.body);
+
+const formattedDate = new Intl.DateTimeFormat(
+  lang === 'pt-br' ? 'pt-BR' : lang === 'es' ? 'es-ES' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+).format(post.data.pubDate);
+
+const backUrl = lang === 'pt-br' ? '/' : `/${lang}/`;
+---
+
+<BaseLayout
+  title={`${post.data.title} | Davi Cruz`}
+  description={post.data.description}
+  lang={lang}
+  translationId={post.data.translationId}
+  image={post.data.heroImage}
+  article={true}
+>
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Back to blog link -->
+    <a
+      href={backUrl}
+      class="inline-flex items-center gap-1 text-sm font-medium text-neutral-500 hover:text-primary-500 transition-colors mb-8"
+    >
+      {t('blog.backToBlog')}
+    </a>
+
+    <!-- Article Header -->
+    <header class="mb-10">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-500 dark:text-neutral-400 mb-3">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formattedDate}
+        </time>
+        <span>•</span>
+        <span>{readingMinutes} {t('blog.readTime')}</span>
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-neutral-900 dark:text-white leading-tight">
+        {post.data.title}
+      </h1>
+
+      {post.data.description && (
+        <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-300 leading-relaxed">
+          {post.data.description}
+        </p>
+      )}
+
+      <!-- Tags & Author Row -->
+      <div class="mt-6 flex flex-wrap items-center justify-between gap-4 border-b border-neutral-200 pb-6 dark:border-neutral-800">
+        <!-- Author Profile -->
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 rounded-full bg-gradient-to-tr from-pink-500 to-rose-400 p-[2px]">
+            <div class="flex h-full w-full items-center justify-center rounded-full bg-white dark:bg-neutral-950 font-bold text-xs text-primary-500">
+              DC
+            </div>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-neutral-900 dark:text-white">Davi Cruz</p>
+            <p class="text-xs text-neutral-500 dark:text-neutral-400">Security Researcher & SysAdmin</p>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-1.5">
+            {post.data.tags.map((tag) => {
+              const tagUrl = lang === 'pt-br' ? `/tags/${encodeURIComponent(tag.toLowerCase())}` : `/${lang}/tags/${encodeURIComponent(tag.toLowerCase())}`;
+              return (
+                <a
+                  href={tagUrl}
+                  class="rounded-md bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600 transition hover:bg-primary-50 hover:text-primary-600 dark:bg-neutral-800 dark:text-neutral-400 dark:hover:bg-primary-950/60 dark:hover:text-primary-400"
+                >
+                  #{tag}
+                </a>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <!-- Main Content Area with Sticky TOC -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-10 items-start">
+      <article class="min-w-0 prose prose-neutral max-w-none dark:prose-invert prose-headings:scroll-mt-24 prose-img:rounded-xl prose-img:shadow-md prose-headings:font-bold prose-pre:my-6">
+        <!-- Mobile TOC Accordion -->
+        <TableOfContents headings={headings} lang={lang} />
+
+        <!-- Render MDX with global Alert component -->
+        <Content components={{ Alert }} />
+
+        <!-- Social Share Bar -->
+        <SocialShare title={post.data.title} url={articleUrl} lang={lang} />
+      </article>
+
+      <!-- Desktop Sticky TOC Sidebar -->
+      <aside class="hidden lg:block">
+        <TableOfContents headings={headings} lang={lang} />
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+

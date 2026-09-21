@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "tags": "Etiquetas",
+    "projects": "Proyectos"
+  },
+  "blog": {
+    "allPosts": "Todos los Artículos",
+    "latestPosts": "Últimos Artículos",
+    "readTime": "min de lectura",
+    "publishedAt": "Publicado el",
+    "updatedAt": "Actualizado el",
+    "tags": "Etiquetas",
+    "backToBlog": "← Volver al Blog",
+    "noPosts": "No se encontraron artículos.",
+    "toc": "En Esta Página",
+    "viewAll": "Ver todos",
+    "postsTaggedWith": "Artículos con la etiqueta"
+  },
+  "share": {
+    "title": "Compartir artículo",
+    "native": "Compartir",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "copyLink": "Copiar enlace",
+    "copied": "¡Enlace copiado!"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "rss": "Feed RSS"
+  },
+  "theme": {
+    "toggle": "Cambiar tema",
+    "dark": "Oscuro",
+    "light": "Claro"
+  },
+  "language": {
+    "select": "Seleccionar idioma",
+    "pt-br": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}
+

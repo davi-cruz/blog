@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Home",
+    "blog": "Blog",
+    "tags": "Tags",
+    "projects": "Projects"
+  },
+  "blog": {
+    "allPosts": "All Posts",
+    "latestPosts": "Latest Posts",
+    "readTime": "min read",
+    "publishedAt": "Published on",
+    "updatedAt": "Updated on",
+    "tags": "Tags",
+    "backToBlog": "← Back to Blog",
+    "noPosts": "No posts found.",
+    "toc": "On This Page",
+    "viewAll": "View all",
+    "postsTaggedWith": "Posts tagged with"
+  },
+  "share": {
+    "title": "Share this post",
+    "native": "Share",
+    "linkedin": "LinkedIn",
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "copyLink": "Copy link",
+    "copied": "Link copied!"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "rss": "RSS Feed"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "dark": "Dark",
+    "light": "Light"
+  },
+  "language": {
+    "select": "Select language",
+    "pt-br": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}
+
