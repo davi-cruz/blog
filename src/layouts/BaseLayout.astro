@@ -1,6 +1,9 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SchemaOrg from '../components/SchemaOrg.astro';
+import GoogleTagManager from '../components/GoogleTagManager.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 import { getCollection } from 'astro:content';
 import { defaultLang, supportedLangs, type Lang } from '../i18n/ui';
 import '../styles/global.css';
@@ -12,6 +15,9 @@ interface Props {
   translationId?: string;
   image?: string;
   article?: boolean;
+  pubDate?: Date;
+  updatedDate?: Date;
+  tags?: string[];
   customAlternates?: { lang: string; url: string }[];
   noindex?: boolean;
 }
@@ -23,6 +29,9 @@ const {
   translationId,
   image = '/images/twitter-card.png',
   article = false,
+  pubDate,
+  updatedDate,
+  tags = [],
   customAlternates,
   noindex = false,
 } = Astro.props;
@@ -35,20 +44,30 @@ const canonicalUrl = `${siteUrl}${currentPath || '/'}`;
 // Absolute image URL
 const ogImageUrl = image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? '' : '/'}${image}`;
 
-// Compute hreflang alternates
-const hreflangLinks: Record<Lang | 'x-default', string> = {
-  'pt-br': `${siteUrl}/`,
-  en: `${siteUrl}/en/`,
-  es: `${siteUrl}/es/`,
-  'x-default': `${siteUrl}/`,
+// BCP 47 language mapping
+const BCP47_MAP: Record<string, string> = {
+  'pt-br': 'pt-BR',
+  en: 'en',
+  es: 'es',
+  'x-default': 'x-default',
 };
 
+// Compute dynamic, accurate hreflang alternates (ONLY valid existing URLs)
+interface HreflangEntry {
+  lang: string;
+  url: string;
+}
+let hreflangEntries: HreflangEntry[] = [];
+
 if (customAlternates && customAlternates.length > 0) {
-  for (const alt of customAlternates) {
-    hreflangLinks[alt.lang as Lang | 'x-default'] = alt.url;
-  }
+  hreflangEntries = customAlternates.map((alt) => ({
+    lang: BCP47_MAP[alt.lang] || alt.lang,
+    url: alt.url.replace(/\/+$/, '') || `${siteUrl}/`,
+  }));
 } else if (translationId) {
-  const allPosts = await getCollection('blog');
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+  const matchedPosts: { lang: Lang; url: string }[] = [];
+
   for (const l of supportedLangs) {
     const match = allPosts.find((p) => {
       const pLang = p.slug.split('/')[0];
@@ -57,31 +76,79 @@ if (customAlternates && customAlternates.length > 0) {
 
     if (match) {
       const slugWithoutLang = match.slug.split('/').slice(1).join('/');
-      if (l === 'pt-br') {
-        hreflangLinks[l] = `${siteUrl}/${slugWithoutLang}`;
-      } else {
-        hreflangLinks[l] = `${siteUrl}/${l}/${slugWithoutLang}`;
-      }
+      const postUrl = l === 'pt-br' ? `${siteUrl}/${slugWithoutLang}` : `${siteUrl}/${l}/${slugWithoutLang}`;
+      matchedPosts.push({ lang: l, url: postUrl });
     }
   }
-  hreflangLinks['x-default'] = hreflangLinks['pt-br'];
+
+  // Only emit alternates for languages that actually have this post!
+  for (const m of matchedPosts) {
+    hreflangEntries.push({
+      lang: BCP47_MAP[m.lang] || m.lang,
+      url: m.url,
+    });
+  }
+
+  // x-default: prefer English version if available, otherwise Portuguese default
+  const defaultTarget = matchedPosts.find((m) => m.lang === 'en') || matchedPosts.find((m) => m.lang === 'pt-br') || matchedPosts[0];
+  if (defaultTarget) {
+    hreflangEntries.push({
+      lang: 'x-default',
+      url: defaultTarget.url,
+    });
+  }
 } else if (currentPath === '/sobre' || currentPath === '/en/about' || currentPath === '/es/acerca-de') {
-  hreflangLinks['pt-br'] = `${siteUrl}/sobre`;
-  hreflangLinks['en'] = `${siteUrl}/en/about`;
-  hreflangLinks['es'] = `${siteUrl}/es/acerca-de`;
-  hreflangLinks['x-default'] = `${siteUrl}/sobre`;
+  hreflangEntries = [
+    { lang: 'pt-BR', url: `${siteUrl}/sobre` },
+    { lang: 'en', url: `${siteUrl}/en/about` },
+    { lang: 'es', url: `${siteUrl}/es/acerca-de` },
+    { lang: 'x-default', url: `${siteUrl}/sobre` },
+  ];
 } else if (currentPath === '/projetos' || currentPath === '/en/projects' || currentPath === '/es/proyectos') {
-  hreflangLinks['pt-br'] = `${siteUrl}/projetos`;
-  hreflangLinks['en'] = `${siteUrl}/en/projects`;
-  hreflangLinks['es'] = `${siteUrl}/es/proyectos`;
-  hreflangLinks['x-default'] = `${siteUrl}/projetos`;
+  hreflangEntries = [
+    { lang: 'pt-BR', url: `${siteUrl}/projetos` },
+    { lang: 'en', url: `${siteUrl}/en/projects` },
+    { lang: 'es', url: `${siteUrl}/es/proyectos` },
+    { lang: 'x-default', url: `${siteUrl}/projetos` },
+  ];
+} else if (currentPath === '' || currentPath === '/' || currentPath === '/en' || currentPath === '/es') {
+  hreflangEntries = [
+    { lang: 'pt-BR', url: `${siteUrl}/` },
+    { lang: 'en', url: `${siteUrl}/en` },
+    { lang: 'es', url: `${siteUrl}/es` },
+    { lang: 'x-default', url: `${siteUrl}/` },
+  ];
+} else if (currentPath === '/tags' || currentPath === '/en/tags' || currentPath === '/es/tags') {
+  hreflangEntries = [
+    { lang: 'pt-BR', url: `${siteUrl}/tags` },
+    { lang: 'en', url: `${siteUrl}/en/tags` },
+    { lang: 'es', url: `${siteUrl}/es/tags` },
+    { lang: 'x-default', url: `${siteUrl}/tags` },
+  ];
 } else if (currentPath.includes('/tags/')) {
-  // Localized tag page hreflangs
-  const tagPart = currentPath.split('/tags/')[1] || '';
-  hreflangLinks['pt-br'] = `${siteUrl}/tags/${tagPart}`;
-  hreflangLinks['en'] = `${siteUrl}/en/tags/${tagPart}`;
-  hreflangLinks['es'] = `${siteUrl}/es/tags/${tagPart}`;
-  hreflangLinks['x-default'] = `${siteUrl}/tags/${tagPart}`;
+  // Check if tag exists in each language before outputting hreflang
+  const tagPart = decodeURIComponent(currentPath.split('/tags/')[1] || '').toLowerCase();
+  const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+  for (const l of supportedLangs) {
+    const hasTagInLang = allPosts.some(
+      (p) => p.slug.startsWith(`${l}/`) && p.data.tags?.some((t) => t.toLowerCase() === tagPart)
+    );
+    if (hasTagInLang) {
+      const tagUrl = l === 'pt-br' ? `${siteUrl}/tags/${encodeURIComponent(tagPart)}` : `${siteUrl}/${l}/tags/${encodeURIComponent(tagPart)}`;
+      hreflangEntries.push({
+        lang: BCP47_MAP[l] || l,
+        url: tagUrl,
+      });
+    }
+  }
+
+  const ptEntry = hreflangEntries.find((e) => e.lang === 'pt-BR');
+  if (ptEntry) {
+    hreflangEntries.push({ lang: 'x-default', url: ptEntry.url });
+  } else if (hreflangEntries.length > 0) {
+    hreflangEntries.push({ lang: 'x-default', url: hreflangEntries[0].url });
+  }
 }
 
 const ogLocaleMap: Record<Lang, string> = {
@@ -101,6 +168,9 @@ const ogLocale = ogLocaleMap[lang] || 'pt_BR';
     <link rel="alternate" type="application/rss+xml" title="Davi Cruz Blog RSS Feed" href="/rss.xml" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Google Tag Manager & Consent Mode v2 -->
+    <GoogleTagManager part="head" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -127,10 +197,23 @@ const ogLocale = ogLocaleMap[lang] || 'pt_BR';
     <meta name="twitter:creator" content="@zerahzurc" />
 
     <!-- Hreflang Tags for Multi-language SEO -->
-    <link rel="alternate" hreflang="pt-br" href={hreflangLinks['pt-br']} />
-    <link rel="alternate" hreflang="en" href={hreflangLinks['en']} />
-    <link rel="alternate" hreflang="es" href={hreflangLinks['es']} />
-    <link rel="alternate" hreflang="x-default" href={hreflangLinks['x-default']} />
+    {hreflangEntries.map((entry) => (
+      <link rel="alternate" hreflang={entry.lang} href={entry.url} />
+    ))}
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <SchemaOrg
+      title={title}
+      description={description}
+      canonicalUrl={canonicalUrl}
+      siteUrl={siteUrl}
+      lang={lang}
+      article={article}
+      pubDate={pubDate}
+      updatedDate={updatedDate}
+      image={ogImageUrl}
+      tags={tags}
+    />
 
     <!-- Dark Mode Initializer to Prevent Flash of Unstyled Content (FOUC) -->
     <script is:inline>
@@ -152,10 +235,14 @@ const ogLocale = ogLocaleMap[lang] || 'pt_BR';
     </script>
   </head>
   <body class="min-h-screen bg-white text-gray-900 selection:bg-primary-500 selection:text-white dark:bg-gray-950 dark:text-gray-100 flex flex-col antialiased">
+    <!-- Google Tag Manager (noscript) -->
+    <GoogleTagManager part="body" />
+
     <Header currentLang={lang} translationId={translationId} customAlternates={customAlternates} />
     <main class="flex-grow">
       <slot />
     </main>
     <Footer lang={lang} />
+    <CookieConsent lang={lang} />
   </body>
 </html>

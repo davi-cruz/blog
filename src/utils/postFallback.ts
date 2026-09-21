@@ -130,3 +130,4 @@ export async function getPostRoutesForLang(lang: Lang): Promise<PostRoute[]> {
 
   return routes;
 }
+

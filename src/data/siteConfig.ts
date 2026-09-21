@@ -11,12 +11,14 @@ export interface HeaderConfig {
 export interface SiteConfig {
   siteUrl: string;
   author: string;
+  gtmId?: string;
   header: Record<Lang, HeaderConfig>;
 }
 
 export const siteConfig: SiteConfig = {
   siteUrl: 'https://davicruz.com',
   author: 'Davi Cruz',
+  gtmId: process.env.PUBLIC_GTM_ID || 'GTM-XXXXXXX',
   header: {
     'pt-br': {
       greeting: 'Olá, sou',
@@ -44,3 +46,4 @@ export const siteConfig: SiteConfig = {
     },
   },
 };
+

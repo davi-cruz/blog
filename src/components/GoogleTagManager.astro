@@ -1,0 +1,56 @@
+---
+import { siteConfig } from '../data/siteConfig';
+
+interface Props {
+  part?: 'head' | 'body';
+}
+
+const { part = 'head' } = Astro.props;
+const gtmId = import.meta.env.PUBLIC_GTM_ID || siteConfig.gtmId || '';
+const isEnabled = Boolean(gtmId && gtmId !== 'GTM-XXXXXXX');
+
+const headScript = `
+window.dataLayer = window.dataLayer || [];
+function gtag(){window.dataLayer.push(arguments);}
+window.gtag = gtag;
+
+var savedConsent = null;
+try {
+  savedConsent = localStorage.getItem('davi_privacy_consent');
+} catch (e) {}
+
+var isGranted = savedConsent === 'granted';
+if (navigator.globalPrivacyControl === true) {
+  isGranted = false;
+}
+
+gtag('consent', 'default', {
+  'analytics_storage': isGranted ? 'granted' : 'denied',
+  'ad_storage': isGranted ? 'granted' : 'denied',
+  'ad_user_data': isGranted ? 'granted' : 'denied',
+  'ad_personalization': isGranted ? 'granted' : 'denied',
+  'wait_for_update': 500
+});
+
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${gtmId}');
+`;
+---
+
+{isEnabled && part === 'head' && (
+  <script is:inline set:html={headScript} />
+)}
+
+{isEnabled && part === 'body' && (
+  <noscript>
+    <iframe
+      src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+      height="0"
+      width="0"
+      style="display:none;visibility:hidden"
+    ></iframe>
+  </noscript>
+)}

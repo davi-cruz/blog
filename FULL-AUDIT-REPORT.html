@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>full-audit-report</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="FULL-AUDIT-REPORT_files/libs/clipboard/clipboard.min.js"></script>
+<script src="FULL-AUDIT-REPORT_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="FULL-AUDIT-REPORT_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="FULL-AUDIT-REPORT_files/libs/quarto-html/popper.min.js"></script>
+<script src="FULL-AUDIT-REPORT_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="FULL-AUDIT-REPORT_files/libs/quarto-html/anchor.min.js"></script>
+<link href="FULL-AUDIT-REPORT_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="FULL-AUDIT-REPORT_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="FULL-AUDIT-REPORT_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="FULL-AUDIT-REPORT_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="FULL-AUDIT-REPORT_files/libs/bootstrap/bootstrap-c52130ade3316f54abf8ae8b034519d0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="full-seo-audit-report-davi-cruz-technical-blog" class="level1">
+<h1>Full SEO Audit Report: Davi Cruz Technical Blog</h1>
+<p><strong>Target Directory:</strong> <code>/opt/dcruz/blog-private/dist</code> (147 built HTML pages)<br>
+<strong>Audit Date:</strong> September 20, 2026<br>
+<strong>Auditor:</strong> Antigravity SEO Engine (Deterministic LLM-First Audit)<br>
+<strong>Category Focus:</strong> International SEO (i18n), Technical Blog Content Quality, Schema/E-E-A-T, AI Search (GEO), and Privacy Compliance Architecture (GDPR/LGPD/CCPA).</p>
+<hr>
+<section id="executive-summary-overall-score" class="level2">
+<h2 class="anchored" data-anchor-id="executive-summary-overall-score">Executive Summary &amp; Overall Score</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: center;">Score</th>
+<th style="text-align: center;">Weight</th>
+<th style="text-align: center;">Weighted Score</th>
+<th style="text-align: left;">Status</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Technical SEO &amp; Crawlability</strong></td>
+<td style="text-align: center;">78 / 100</td>
+<td style="text-align: center;">25%</td>
+<td style="text-align: center;">19.5 / 25</td>
+<td style="text-align: left;">⚠️ Good (needs XML sitemap &amp; robots fix)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>International SEO (i18n)</strong></td>
+<td style="text-align: center;">62 / 100</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">12.4 / 20</td>
+<td style="text-align: left;">🔴 Critical (hreflang 404s &amp; homepage fallbacks)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Content Quality &amp; Tech Blog Architecture</strong></td>
+<td style="text-align: center;">92 / 100</td>
+<td style="text-align: center;">20%</td>
+<td style="text-align: center;">18.4 / 20</td>
+<td style="text-align: left;">✅ Excellent (Expressive Code, KaTeX, deep writeups)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Schema &amp; Structured Data (E-E-A-T)</strong></td>
+<td style="text-align: center;">30 / 100</td>
+<td style="text-align: center;">15%</td>
+<td style="text-align: center;">4.5 / 15</td>
+<td style="text-align: left;">🔴 Critical (0 JSON-LD schemas detected)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Performance &amp; Mobile Usability</strong></td>
+<td style="text-align: center;">94 / 100</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">9.4 / 10</td>
+<td style="text-align: left;">✅ Excellent (Static Astro, zero runtime JS bloat)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>AI Search Readiness (GEO / AEO)</strong></td>
+<td style="text-align: center;">65 / 100</td>
+<td style="text-align: center;">10%</td>
+<td style="text-align: center;">6.5 / 10</td>
+<td style="text-align: left;">⚠️ Needs Improvement (missing <code>llms.txt</code> &amp; AI crawler policy)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Total SEO Score</strong></td>
+<td style="text-align: center;"><strong>70.7 / 100</strong></td>
+<td style="text-align: center;"><strong>100%</strong></td>
+<td style="text-align: center;"><strong>Good (Solid foundations with critical i18n &amp; schema gaps)</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="international-seo-i18n-audit" class="level2">
+<h2 class="anchored" data-anchor-id="international-seo-i18n-audit">1. International SEO (i18n) Audit</h2>
+<section id="critical-finding-1.1-hreflang-points-non-translated-posts-to-homepages" class="level3">
+<h3 class="anchored" data-anchor-id="critical-finding-1.1-hreflang-points-non-translated-posts-to-homepages">🔴 Critical Finding 1.1: Hreflang Points Non-Translated Posts to Homepages</h3>
+<ul>
+<li><p><strong>Evidence:</strong><br>
+On <code>https://davicruz.com/htb-explore</code> and <code>https://davicruz.com/en/htb-explore</code>, the generated HTML in <code>dist/</code> contains:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"alternate"</span><span class="ot"> hreflang</span><span class="op">=</span><span class="st">"es"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://davicruz.com/es/"</span><span class="ot"> </span><span class="dt">/&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And on <code>dist/es/htb-explore/index.html</code> (the fallback page):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"alternate"</span><span class="ot"> hreflang</span><span class="op">=</span><span class="st">"es"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://davicruz.com/es/"</span><span class="ot"> </span><span class="dt">/&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Impact:</strong><br>
+Google’s International SEO guidelines strictly state that hreflang tags must point to <strong>equivalent content</strong>, never to a language’s homepage. Furthermore, this creates asymmetric/missing return tags: <code>https://davicruz.com/es/</code> points its <code>hreflang="pt-br"</code> to <code>https://davicruz.com/</code>, NOT to <code>/htb-explore</code>. Google invalidates the entire alternate cluster when return tags do not match bidirectionally.</p></li>
+<li><p><strong>Fix:</strong><br>
+In <code>src/layouts/BaseLayout.astro</code>, only include <code>hreflang</code> tags for languages that have a genuine translated post. If a post is only in Portuguese and English, output <strong>only</strong> <code>pt-BR</code>, <code>en</code>, and <code>x-default</code>. Omit <code>es</code> completely.</p></li>
+</ul>
+</section>
+<section id="critical-finding-1.2-tag-pages-point-hreflang-to-non-existent-pages-404" class="level3">
+<h3 class="anchored" data-anchor-id="critical-finding-1.2-tag-pages-point-hreflang-to-non-existent-pages-404">🔴 Critical Finding 1.2: Tag Pages Point Hreflang to Non-Existent Pages (404)</h3>
+<ul>
+<li><p><strong>Evidence:</strong><br>
+On <code>dist/tags/azure/index.html</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"alternate"</span><span class="ot"> hreflang</span><span class="op">=</span><span class="st">"es"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://davicruz.com/es/tags/azure"</span><span class="ot"> </span><span class="dt">/&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>dist/es/tags/azure/index.html</code> does not exist in the build because there are no Spanish articles tagged with <code>azure</code>. Conversely, on <code>dist/es/tags/bienvenida/index.html</code>, it points <code>pt-br</code> to <code>/tags/bienvenida</code> (404) and <code>en</code> to <code>/en/tags/bienvenida</code> (404).</p></li>
+<li><p><strong>Impact:</strong><br>
+Search engines treat hreflang pointing to 404s as severe crawl errors, dropping trust in all hreflang signals on the domain.</p></li>
+<li><p><strong>Fix:</strong><br>
+In <code>src/layouts/BaseLayout.astro</code>, tag page hreflangs must verify against existing tags in each language before emitting an alternate link, or tag pages should only generate alternates if that tag exists in the target locale.</p></li>
+</ul>
+</section>
+<section id="warning-finding-1.3-trailing-slash-mismatch-on-language-root-canonicals" class="level3">
+<h3 class="anchored" data-anchor-id="warning-finding-1.3-trailing-slash-mismatch-on-language-root-canonicals">⚠️ Warning Finding 1.3: Trailing Slash Mismatch on Language Root Canonicals</h3>
+<ul>
+<li><strong>Evidence:</strong><br>
+On <code>dist/en/index.html</code>:
+<ul>
+<li>Canonical: <code>&lt;link rel="canonical" href="https://davicruz.com/en" /&gt;</code> (no slash)</li>
+<li>Hreflang self-reference: <code>&lt;link rel="alternate" hreflang="en" href="https://davicruz.com/en/" /&gt;</code> (with slash)</li>
+</ul></li>
+<li><strong>Impact:</strong><br>
+Rule 1 &amp; 6 of Hreflang: Self-referencing hreflang URL must match the canonical URL byte-for-byte. Divergence causes Google Search Console “Alternate page with proper canonical tag” warnings.</li>
+<li><strong>Fix:</strong><br>
+Standardize URL formatting across <code>canonicalUrl</code> and <code>hreflangLinks</code> so both use clean URLs without trailing slashes (or consistent trailing slashes).</li>
+</ul>
+</section>
+<section id="ℹ-info-finding-1.4-iso-language-code-formatting" class="level3">
+<h3 class="anchored" data-anchor-id="ℹ-info-finding-1.4-iso-language-code-formatting">ℹ️ Info Finding 1.4: ISO Language Code Formatting</h3>
+<ul>
+<li><strong>Evidence:</strong> Currently emitting <code>hreflang="pt-br"</code>.</li>
+<li><strong>Recommendation:</strong> Use BCP 47 standard casing <code>pt-BR</code> for region specification, or <code>pt</code> for general Portuguese.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="technical-seo-crawlability-audit" class="level2">
+<h2 class="anchored" data-anchor-id="technical-seo-crawlability-audit">2. Technical SEO &amp; Crawlability Audit</h2>
+<section id="critical-finding-2.1-missing-xml-sitemap" class="level3">
+<h3 class="anchored" data-anchor-id="critical-finding-2.1-missing-xml-sitemap">🔴 Critical Finding 2.1: Missing XML Sitemap</h3>
+<ul>
+<li><strong>Evidence:</strong> No <code>sitemap.xml</code> or <code>sitemap-index.xml</code> in <code>dist/</code>.</li>
+<li><strong>Impact:</strong> Search crawlers must discover 147 pages solely via internal links. Sitemaps are required for Google to track multi-language alternates, last modification dates, and indexation rates.</li>
+<li><strong>Fix:</strong> Install and enable <code>@astrojs/sitemap</code> in <code>astro.config.mjs</code> with multi-language i18n support.</li>
+</ul>
+</section>
+<section id="warning-finding-2.2-robots.txt-misconfiguration" class="level3">
+<h3 class="anchored" data-anchor-id="warning-finding-2.2-robots.txt-misconfiguration">⚠️ Warning Finding 2.2: <code>robots.txt</code> Misconfiguration</h3>
+<ul>
+<li><p><strong>Evidence:</strong><br>
+Current <code>dist/robots.txt</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode txt code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>User-agent: *</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Allow: /</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Sitemap: https://davicruz.com/rss.xml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>Impact:</strong><br>
+Pointing <code>Sitemap</code> to an RSS feed is non-standard. Google requires a standard XML sitemap format (<code>sitemap-index.xml</code>). Furthermore, no rules are set for AI search engines or aggressive scrapers.</p></li>
+<li><p><strong>Fix:</strong><br>
+Update <code>public/robots.txt</code> to point to <code>https://davicruz.com/sitemap-index.xml</code>.</p></li>
+</ul>
+</section>
+<section id="warning-finding-2.3-duplicate-h2-headings-in-table-of-contents" class="level3">
+<h3 class="anchored" data-anchor-id="warning-finding-2.3-duplicate-h2-headings-in-table-of-contents">⚠️ Warning Finding 2.3: Duplicate H2 Headings in Table of Contents</h3>
+<ul>
+<li><strong>Evidence:</strong><br>
+In <code>src/components/TableOfContents.astro</code>:
+<ul>
+<li>Line 7: <code>&lt;h2 class="..."&gt;Nesta Página&lt;/h2&gt;</code> (Mobile TOC)</li>
+<li>Line 24: <code>&lt;h2 class="..."&gt;Nesta Página&lt;/h2&gt;</code> (Desktop TOC)</li>
+</ul></li>
+<li><strong>Impact:</strong><br>
+Injects two identical <code>&lt;h2&gt;</code> headings into every article’s outline, diluting topical relevance for search algorithms.</li>
+<li><strong>Fix:</strong><br>
+Change the TOC heading to a <code>&lt;p class="font-bold ..."&gt;</code> or <code>&lt;div role="heading" aria-level="2"&gt;</code> inside <code>&lt;nav aria-label="Table of contents"&gt;</code>.</li>
+</ul>
+</section>
+<section id="warning-finding-2.4-empty-social-links-in-footer" class="level3">
+<h3 class="anchored" data-anchor-id="warning-finding-2.4-empty-social-links-in-footer">⚠️ Warning Finding 2.4: Empty Social Links in Footer</h3>
+<ul>
+<li><strong>Evidence:</strong><br>
+In <code>src/components/Footer.astro</code>, the GitHub, LinkedIn, Twitter, and RSS links wrap only SVGs without <code>aria-label</code> or inner text.</li>
+<li><strong>Impact:</strong><br>
+Flagged by Lighthouse and SEO crawlers as links without descriptive text.</li>
+<li><strong>Fix:</strong><br>
+Add <code>aria-label="GitHub profile"</code>, <code>aria-label="LinkedIn profile"</code>, <code>aria-label="Twitter profile"</code>, and <code>aria-label="RSS Feed"</code>.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="schema-structured-data-e-e-a-t" class="level2">
+<h2 class="anchored" data-anchor-id="schema-structured-data-e-e-a-t">3. Schema &amp; Structured Data (E-E-A-T)</h2>
+<section id="critical-finding-3.1-zero-json-ld-structured-data" class="level3">
+<h3 class="anchored" data-anchor-id="critical-finding-3.1-zero-json-ld-structured-data">🔴 Critical Finding 3.1: Zero JSON-LD Structured Data</h3>
+<ul>
+<li><strong>Evidence:</strong> <code>grep -rn "application/ld+json" dist/</code> returns 0 results.</li>
+<li><strong>Impact:</strong> Missing Google Rich Results (article rich cards, author knowledge panels, breadcrumb trails in SERPs). Technical blogs thrive when Google recognizes the author’s security expertise.</li>
+<li><strong>Fix:</strong> Implement automated JSON-LD schemas:
+<ol type="1">
+<li><code>TechArticle</code> / <code>BlogPosting</code> on all posts with:
+<ul>
+<li><code>headline</code>, <code>description</code>, <code>datePublished</code>, <code>dateModified</code>, <code>inLanguage</code></li>
+<li><code>image</code>, <code>mainEntityOfPage</code></li>
+<li><code>author</code>: <code>Person</code> with <code>name: "Davi Cruz"</code>, <code>jobTitle: "Senior Customer Engineer, Security"</code>, <code>worksFor: { "@type": "Organization", "name": "Google Cloud" }</code>, <code>sameAs: ["https://linkedin.com/in/davicruz", "https://twitter.com/zerahzurc", "https://github.com/davi-cruz"]</code></li>
+<li><code>knowsAbout: ["Cybersecurity", "Threat Intelligence", "Security Operations", "Penetration Testing", "Cloud Security"]</code></li>
+</ul></li>
+<li><code>BreadcrumbList</code> on all posts and tag pages.</li>
+<li><code>WebSite</code> with author and description on Homepages.</li>
+</ol></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="content-type-technical-blog-best-practices" class="level2">
+<h2 class="anchored" data-anchor-id="content-type-technical-blog-best-practices">4. Content Type &amp; Technical Blog Best Practices</h2>
+<section id="strengths" class="level3">
+<h3 class="anchored" data-anchor-id="strengths">✅ Strengths:</h3>
+<ul>
+<li><strong>Expressive Code</strong>: Clean code blocks with terminal frames, copy buttons, and dark/light mode syntax highlighting.</li>
+<li><strong>Math Rendering</strong>: KaTeX integration for cryptographic formulas and technical algorithms.</li>
+<li><strong>Reading Time &amp; Dates</strong>: Clear <code>time datetime="..."</code> tags and localized read time estimates.</li>
+<li><strong>Author Attribution</strong>: Prominent author box linked to author bio with Google Cloud security credentials.</li>
+</ul>
+</section>
+<section id="improvement-opportunities" class="level3">
+<h3 class="anchored" data-anchor-id="improvement-opportunities">⚠️ Improvement Opportunities:</h3>
+<ul>
+<li><strong>AI Search Readiness (GEO/AEO)</strong>:
+<ul>
+<li>Add <code>llms.txt</code> and <code>llms-full.txt</code> (standard for AI indexing by ChatGPT, Perplexity, Claude).</li>
+<li>Include summary callouts at the top of long CTF writeups (ideal for Answer Engine Optimization).</li>
+</ul></li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="privacy-compliance-architecture-ga4-microsoft-clarity" class="level2">
+<h2 class="anchored" data-anchor-id="privacy-compliance-architecture-ga4-microsoft-clarity">5. Privacy &amp; Compliance Architecture: GA4 + Microsoft Clarity</h2>
+<p>The user plans to integrate <strong>Google Analytics 4</strong> and <strong>Microsoft Clarity</strong> while strictly respecting: - <strong>GDPR</strong> (European Union / UK) - <strong>LGPD</strong> (Brazil - Lei nº 13.709/2018) - <strong>CCPA / CPRA</strong> (California Consumer Privacy Act)</p>
+<section id="legal-technical-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="legal-technical-requirements">5.1 Legal &amp; Technical Requirements</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Framework</th>
+<th style="text-align: left;">Core Requirement</th>
+<th style="text-align: left;">How It Affects GA4 &amp; Microsoft Clarity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>GDPR (EU)</strong></td>
+<td style="text-align: left;">Prior Opt-in Consent (Art. 6 &amp; 7)</td>
+<td style="text-align: left;">No analytics cookies (<code>_ga</code>, <code>_clck</code>) or session replay can run before explicit consent. Accept &amp; Decline must have equal visual weight.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>LGPD (Brazil)</strong></td>
+<td style="text-align: left;">Purpose &amp; Transparency (Art. 6 &amp; 7)</td>
+<td style="text-align: left;">Clarity records user clicks and sessions. Because Davi Cruz is based in Brazil and blog defaults to <code>pt-BR</code>, ANPD requires explicit consent for behavioral telemetry &amp; third-party data sharing.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>CCPA/CPRA (CA)</strong></td>
+<td style="text-align: left;">Opt-out &amp; GPC Recognition</td>
+<td style="text-align: left;">Must honor Global Privacy Control (<code>navigator.globalPrivacyControl</code>). Must disclose categories of personal data collected.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="specific-considerations-for-microsoft-clarity" class="level3">
+<h3 class="anchored" data-anchor-id="specific-considerations-for-microsoft-clarity">5.2 Specific Considerations for Microsoft Clarity</h3>
+<blockquote class="blockquote">
+<p>[!WARNING] Microsoft Clarity terms declare Microsoft as an <strong>independent data controller</strong>, using session data to train machine learning models and improve advertising products. Therefore: 1. Clarity <strong>cannot</strong> be loaded under “Legitimate Interest” under GDPR or LGPD. 2. Clarity scripts must be <strong>completely blocked</strong> until the user clicks “Accept” in the consent banner. 3. Strict Masking must be enabled to prevent recording sensitive textual inputs.</p>
+</blockquote>
+</section>
+<section id="specific-considerations-for-google-analytics-4-ga4" class="level3">
+<h3 class="anchored" data-anchor-id="specific-considerations-for-google-analytics-4-ga4">5.3 Specific Considerations for Google Analytics 4 (GA4)</h3>
+<ul>
+<li><p>Must implement <strong>Google Consent Mode v2</strong>.</p></li>
+<li><p>Default consent states must be pushed before loading <code>gtag.js</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">window</span><span class="op">.</span><span class="at">dataLayer</span> <span class="op">=</span> <span class="bu">window</span><span class="op">.</span><span class="at">dataLayer</span> <span class="op">||</span> []<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">gtag</span>(){dataLayer<span class="op">.</span><span class="fu">push</span>(<span class="kw">arguments</span>)<span class="op">;</span>}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">gtag</span>(<span class="st">'consent'</span><span class="op">,</span> <span class="st">'default'</span><span class="op">,</span> {</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'analytics_storage'</span><span class="op">:</span> <span class="st">'denied'</span><span class="op">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'ad_storage'</span><span class="op">:</span> <span class="st">'denied'</span><span class="op">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'ad_user_data'</span><span class="op">:</span> <span class="st">'denied'</span><span class="op">,</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'ad_personalization'</span><span class="op">:</span> <span class="st">'denied'</span><span class="op">,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">'wait_for_update'</span><span class="op">:</span> <span class="dv">500</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>When consent is granted:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gtag</span>(<span class="st">'consent'</span><span class="op">,</span> <span class="st">'update'</span><span class="op">,</span> {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">'analytics_storage'</span><span class="op">:</span> <span class="st">'granted'</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="architecture-for-a-zero-bloat-compliant-astro-consent-component" class="level3">
+<h3 class="anchored" data-anchor-id="architecture-for-a-zero-bloat-compliant-astro-consent-component">5.4 Architecture for a Zero-Bloat, Compliant Astro Consent Component</h3>
+<ol type="1">
+<li><strong>Lightweight Astro Component (<code>src/components/CookieConsent.astro</code>)</strong>:
+<ul>
+<li>Zero external npm dependencies (pure vanilla JS + Tailwind).</li>
+<li>Rendered at the bottom of the page in <code>BaseLayout.astro</code>.</li>
+<li>Hidden by default; checks <code>localStorage.getItem('davi_privacy_consent')</code>.</li>
+<li>Automatic GPC check: If <code>navigator.globalPrivacyControl === true</code>, defaults to <code>denied</code>.</li>
+</ul></li>
+<li><strong>Equal-Choice UI</strong>:
+<ul>
+<li>Localized strings (<code>pt-br</code>, <code>en</code>, <code>es</code>) explaining the use of Google Analytics and Microsoft Clarity.</li>
+<li>Two equal buttons: <strong>“Aceitar” / “Accept”</strong> and <strong>“Recusar” / “Decline”</strong>.</li>
+<li>Link to Privacy Policy (<code>/sobre</code> or dedicated <code>/privacidade</code>).</li>
+</ul></li>
+<li><strong>Execution Pipeline</strong>:
+<ul>
+<li>If user accepts:
+<ul>
+<li>Saves <code>localStorage.setItem('davi_privacy_consent', 'granted')</code>.</li>
+<li>Updates Google Consent Mode (<code>analytics_storage: 'granted'</code>).</li>
+<li>Dynamically loads GA4 tag script (<code>https://www.googletagmanager.com/gtag/js?id=G-XXXXX</code>).</li>
+<li>Dynamically injects Microsoft Clarity script (<code>window.clarity(...)</code>).</li>
+</ul></li>
+<li>If user declines:
+<ul>
+<li>Saves <code>localStorage.setItem('davi_privacy_consent', 'denied')</code>.</li>
+<li>No cookies dropped, no Clarity script injected.</li>
+</ul></li>
+</ul></li>
+<li><strong>Persistent Footer Trigger</strong>:
+<ul>
+<li>Link in <code>Footer.astro</code>: <code>"Privacidade &amp; Cookies"</code> / <code>"Privacy &amp; Cookies"</code> allowing the user to reopen the modal and revoke consent at any time (mandatory under GDPR Art. 7(3)).</li>
+</ul></li>
+</ol>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -14,9 +14,17 @@ const year = new Date().getFullYear();
 
 <footer class="mt-20 border-t border-gray-200/80 bg-gray-50/50 py-10 dark:border-gray-800/80 dark:bg-gray-950/50">
   <div class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6 lg:px-8">
-    <!-- Copyright -->
-    <div class="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
+    <!-- Copyright & Privacy -->
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
       <p>© {year} Davi Cruz. {t('footer.rights')}</p>
+      <span class="hidden sm:inline text-gray-400 dark:text-gray-600">•</span>
+      <button
+        type="button"
+        id="open-cookie-settings-btn"
+        class="hover:text-primary-500 dark:hover:text-primary-400 underline underline-offset-2 transition-colors cursor-pointer"
+      >
+        {activeLang === 'pt-br' ? 'Preferências de Cookies' : activeLang === 'es' ? 'Preferencias de Cookies' : 'Cookie Settings'}
+      </button>
     </div>
 
     <!-- Socials & RSS -->
@@ -73,3 +81,9 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<script is:inline>
+  document.getElementById('open-cookie-settings-btn')?.addEventListener('click', function () {
+    window.dispatchEvent(new CustomEvent('open-cookie-banner'));
+  });
+</script>

@@ -50,12 +50,12 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
     <!-- Desktop Sticky TOC -->
     <div class="hidden lg:block sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-xl border border-gray-200 bg-gray-50/60 p-4 dark:border-gray-800 dark:bg-gray-900/40">
-      <h2 class="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+      <p class="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
         <svg class="h-4 w-4 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
         </svg>
         {t('blog.toc')}
-      </h2>
+      </p>
       <ul class="space-y-1.5 text-xs">
         {toc.map((heading) => (
           <li class={`${heading.depth === 3 ? 'ml-3' : ''}`}>

@@ -1,0 +1,160 @@
+---
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'pt-br' } = Astro.props;
+
+const copy: Record<
+  Lang,
+  {
+    title: string;
+    description: string;
+    acceptAll: string;
+    essentialOnly: string;
+    privacyPolicy: string;
+    privacyUrl: string;
+  }
+> = {
+  'pt-br': {
+    title: 'Privacidade & Cookies',
+    description:
+      'Este site utiliza cookies técnicos essenciais e ferramentas de análise (Google Tag Manager, Analytics e Microsoft Clarity) para compreender o tráfego e melhorar os artigos técnicos. Respeitamos a sua privacidade: nenhum dado analítico ou gravação é iniciado sem o seu consentimento prévio, em total conformidade com a LGPD e GDPR.',
+    acceptAll: 'Aceitar todos',
+    essentialOnly: 'Apenas essenciais',
+    privacyPolicy: 'Saiba mais na página Sobre',
+    privacyUrl: '/sobre',
+  },
+  en: {
+    title: 'Privacy & Cookies',
+    description:
+      'This site uses essential technical cookies and analytics tools (Google Tag Manager, Analytics, and Microsoft Clarity) to understand traffic and improve technical articles. We respect your privacy: no tracking telemetry or session recording is loaded without your prior consent, in full compliance with GDPR, LGPD, and CCPA.',
+    acceptAll: 'Accept all',
+    essentialOnly: 'Essential only',
+    privacyPolicy: 'Learn more on the About page',
+    privacyUrl: '/en/about',
+  },
+  es: {
+    title: 'Privacidad y Cookies',
+    description:
+      'Este sitio web utiliza cookies técnicas esenciales y herramientas de análisis (Google Tag Manager, Analytics y Microsoft Clarity) para comprender el tráfico y mejorar los artículos técnicos. Respetamos su privacidad: no se carga ninguna telemetría ni grabación de sesión sin su consentimiento previo, en total conformidad con GDPR, LGPD y CCPA.',
+    acceptAll: 'Aceptar todos',
+    essentialOnly: 'Solo esenciales',
+    privacyPolicy: 'Más información en Acerca de',
+    privacyUrl: '/es/acerca-de',
+  },
+};
+
+const t = copy[lang] || copy['pt-br'];
+---
+
+<div
+  id="cookie-consent-banner"
+  class="fixed bottom-4 left-4 right-4 z-50 mx-auto hidden max-w-3xl transform transition-all duration-300 ease-out sm:bottom-6 sm:left-6 sm:right-6"
+  role="region"
+  aria-label="Consentimento de Cookies"
+>
+  <div class="rounded-2xl border border-gray-200 bg-white/95 p-5 shadow-2xl backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/95 sm:p-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <svg class="h-5 w-5 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          <h3 class="text-base font-bold text-gray-900 dark:text-white">
+            {t.title}
+          </h3>
+        </div>
+        <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          {t.description}
+          <a href={t.privacyUrl} class="font-medium text-primary-600 hover:underline dark:text-primary-400">
+            {t.privacyPolicy} →
+          </a>
+        </p>
+      </div>
+
+      <div class="flex shrink-0 flex-col gap-2.5 sm:flex-row sm:items-center">
+        <button
+          type="button"
+          id="cookie-btn-decline"
+          class="rounded-xl border border-gray-300 bg-transparent px-4 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800 text-center"
+        >
+          {t.essentialOnly}
+        </button>
+        <button
+          type="button"
+          id="cookie-btn-accept"
+          class="rounded-xl bg-primary-600 px-5 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 text-center"
+        >
+          {t.acceptAll}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    const banner = document.getElementById('cookie-consent-banner');
+    const btnAccept = document.getElementById('cookie-btn-accept');
+    const btnDecline = document.getElementById('cookie-btn-decline');
+
+    if (!banner || !btnAccept || !btnDecline) return;
+
+    function applyConsent(status) {
+      try {
+        localStorage.setItem('davi_privacy_consent', status);
+      } catch (e) {}
+
+      if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', {
+          analytics_storage: status === 'granted' ? 'granted' : 'denied',
+          ad_storage: status === 'granted' ? 'granted' : 'denied',
+          ad_user_data: status === 'granted' ? 'granted' : 'denied',
+          ad_personalization: status === 'granted' ? 'granted' : 'denied',
+        });
+      }
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'consent_update',
+        analytics_consent: status,
+      });
+
+      banner.classList.add('hidden');
+    }
+
+    function showBanner() {
+      banner.classList.remove('hidden');
+    }
+
+    btnAccept.addEventListener('click', function () {
+      applyConsent('granted');
+    });
+
+    btnDecline.addEventListener('click', function () {
+      applyConsent('denied');
+    });
+
+    // Check existing consent
+    var currentConsent = null;
+    try {
+      currentConsent = localStorage.getItem('davi_privacy_consent');
+    } catch (e) {}
+
+    // Respect Global Privacy Control (GPC)
+    if (navigator.globalPrivacyControl === true && !currentConsent) {
+      applyConsent('denied');
+    } else if (!currentConsent) {
+      // Show banner after brief delay so it doesn't cause CLS
+      setTimeout(showBanner, 600);
+    }
+
+    // Global listener to reopen banner (e.g. from footer link)
+    window.addEventListener('open-cookie-banner', function () {
+      showBanner();
+    });
+  })();
+</script>

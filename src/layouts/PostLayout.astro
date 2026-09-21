@@ -58,6 +58,9 @@ function getPostUrl(p: CollectionEntry<'blog'>) {
   translationId={post.data.translationId}
   image={post.data.heroImage}
   article={true}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  tags={post.data.tags}
   customAlternates={customAlternates}
   noindex={!!fallbackInfo}
 >

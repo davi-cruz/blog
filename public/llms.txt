@@ -1,0 +1,22 @@
+# Davi Cruz - Technical Blog
+
+> Technical blog sharing research, practical guides, and thoughts on Security Operations (SecOps), Threat Intelligence, Cloud Security, and CTF machine write-ups.
+
+## Author
+- **Name:** Davi Cruz
+- **Role:** Senior Customer Engineer, Security @ Google Cloud
+- **Topics:** Security Operations, Threat Intelligence, Penetration Testing, Cloud Infrastructure (Google Cloud, Azure), Linux Administration.
+- **Website:** https://davicruz.com
+- **LinkedIn:** https://linkedin.com/in/davicruz
+- **GitHub:** https://github.com/davi-cruz
+- **Twitter:** https://twitter.com/zerahzurc
+
+## Key Sections
+- [Posts (PT-BR)](https://davicruz.com/): Primary technical articles and machine walkthroughs in Portuguese.
+- [Posts (English)](https://davicruz.com/en/): Technical articles and machine walkthroughs in English.
+- [Posts (Español)](https://davicruz.com/es/): Technical articles in Spanish.
+- [Projects](https://davicruz.com/projetos): Open source tools and research projects.
+- [About](https://davicruz.com/sobre): Professional background and certifications.
+- [Tags Index](https://davicruz.com/tags): Browse content by technical topic and tags.
+- [RSS Feed](https://davicruz.com/rss.xml): Latest publications.
+- [Sitemap](https://davicruz.com/sitemap-index.xml): Full site index.
