@@ -5,11 +5,18 @@ import sitemap from '@astrojs/sitemap';
 import expressiveCode from 'astro-expressive-code';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { loadEnv } from 'vite';
+
+const env = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
+const alphadaviTarget = process.env.ALPHADAVI;
 
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://davicruz.com',
+  site: process.env.SITE_URL || env.SITE_URL || 'https://davicruz.com',
   base: '/',
   output: 'static',
+  redirects: {
+    '/alphadavi': alphadaviTarget,
+  },
   i18n: {
     defaultLocale: 'pt-br',
     locales: ['pt-br', 'en', 'es'],
